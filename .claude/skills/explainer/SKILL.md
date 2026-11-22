@@ -7,10 +7,13 @@ description: Create a new explainer for learn.ankerl.com, or update one. Use thi
 
 An explainer is one page of learn.ankerl.com. It answers one question for a reader who has no special knowledge. It uses plain language and graphics that the reader can change.
 
-Read these two files before you write:
+Read these three files before you write:
 
 - `references/writing.md`: rules for the text, in English and German.
 - `references/components.md`: the HTML parts of the theme, the chart helpers, and the rules for graphics.
+- `references/lessons.md`: problems from earlier work, and how to prevent them.
+
+`docs/decisions.md` in the repository gives the reasons for how the site works. Read it before you change the theme or the tool.
 
 The best example is the newest folder in `site/`. Read its `index.html` to see the level of quality that is necessary.
 
@@ -27,6 +30,8 @@ Commands:
 python3 tools/learn.py new 2026-12-01-how-gps-works   # start from the template
 python3 tools/learn.py check                          # examine all pages
 python3 tools/learn.py serve                          # build and open http://localhost:8000
+python3 tools/learn.py shots 2026-12-01-how-gps-works # pictures of each section, into _shots/
+python3 tools/learn.py texts 2026-12-01-how-gps-works # English and German text, key by key
 ```
 
 ## Make a new explainer
@@ -104,11 +109,11 @@ Draw `cover.svg` (320 x 180): one simple picture of the main idea, with the colo
 ### 9. Check, build, look
 
 1. Run `python3 tools/learn.py check`. Correct all errors.
-2. Run `python3 tools/learn.py serve`.
-3. Look at the page. If you have a browser tool, take pictures at a width of 390 px and at 1440 px. Do this in bright and dark mode, and in each language. At 1440 px the figures are wider than the text and the list of sections is in the left margin. At 390 px, scroll down and open the list of sections under the site bar.
+2. Run `python3 tools/learn.py shots <slug>`. It writes one picture for each section into `_shots/<slug>/`: at 390 px in bright mode and English, at 390 px in dark mode and German, and at 1440 px. Look at all pictures. Correct what is wrong, and run the command again.
+3. If you have a browser tool, also open the page with `python3 tools/learn.py serve`. Scroll down at 390 px and open the list of sections under the site bar. The pictures from step 2 do not show this.
 4. Look at `_site/<slug>/share.png`, if the build wrote it. The title must fit and the cover must be clear.
-5. Use each control one time. Look for errors in the browser console.
-6. Read the full text one more time as the reader. Each sentence must be clear without the sentences after it.
+5. If you have a browser tool, use each control one time and look for errors in the browser console. If you have none, read the page script one more time, and say in the pull request that nobody used the controls.
+6. Run `python3 tools/learn.py texts <slug>`. Read the full text one more time as the reader, in each language. Each sentence must be clear without the sentences after it. The German text must say the same as the English text.
 
 Then go through the checklist at the end of this file.
 
@@ -131,6 +136,8 @@ Then go through the checklist at the end of this file.
 - A change in `site/assets/theme.css` or `theme.js` changes all pages. After the change, look at each explainer, not only at one.
 - Add a part to the theme only if a second explainer needs it. Until then, keep it in the `<style>` of the page.
 - Add each new shared part to `references/components.md`.
+- Run `python3 tools/learn.py shots` without a name. It makes pictures of all pages. Look at them.
+- If you change how the site works, update `docs/decisions.md`.
 - Keep the names of the colour variables. Pages use them.
 
 ## Rules that have no exception

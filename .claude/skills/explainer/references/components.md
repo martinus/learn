@@ -225,6 +225,19 @@ For a picture with a fixed layout (a diagram, a map), write a normal inline `<sv
 - The check compares the keys of the HTML with the keys of the JSON. They must be identical.
 - A page in one language has `"languages": ["en"]`, no `data-i18n` keys and no `#i18n-de`.
 
+## Review mode
+
+For pictures of a page, add settings to the address. They apply to one page view and are not stored.
+
+| Setting | Effect |
+|---|---|
+| `?theme=dark` or `?theme=light` | colour mode |
+| `?lang=de` or `?lang=en` | language |
+| `?only=s03` | show only section 03. `?only=top` shows only the page header |
+| `?review=1` | the page writes the height of its content into `data-review-height` on `<html>` |
+
+Combine them with `&`. `python3 tools/learn.py shots` uses these settings.
+
 ## Cover
 
 `cover.svg` has `viewBox="0 0 320 180"`. The home page puts it into the card, so the theme variables work. Use `style="stroke:var(--c1)"` and not fixed colours. Use no text. Keep it simple: the cover is small on a phone.

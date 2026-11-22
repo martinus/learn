@@ -38,6 +38,8 @@ Other commands:
 python3 tools/learn.py check                 # examine all pages, change nothing
 python3 tools/learn.py build                 # write the site to _site/
 python3 tools/learn.py new 2026-12-01-topic  # start a page from the template
+python3 tools/learn.py shots                 # pictures of all pages into _shots/ (needs Chrome)
+python3 tools/learn.py texts 2026-12-01-topic  # English and German text, key by key
 ```
 
 ## How the repository is organized
@@ -50,6 +52,8 @@ python3 tools/learn.py new 2026-12-01-topic  # start a page from the template
 | `tools/learn.py` | the build tool |
 | `site.json` | name and address of the site, publisher, contact address, names of the tags |
 | `.claude/skills/explainer/` | the instructions for the AI model |
+| `docs/decisions.md` | decisions about the site, with reasons |
+| `docs/ideas.md` | things that are not built |
 
 The build puts the site bar, the byline, links to the sections, "Read next" cards and the footer into each page. It writes the home page, the privacy page, `sitemap.xml` and `404.html`.
 
