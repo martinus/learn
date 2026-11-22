@@ -18,7 +18,7 @@ The best example is the newest folder in `site/`. Read its `index.html` to see t
 
 - Each explainer is a folder `site/YYYY-MM-DD-slug/` with `index.html` and `cover.svg`. The date is the day of publication.
 - `site/assets/theme.css` and `site/assets/theme.js` are the shared theme. They supply the colours, the bright and dark mode, the language switch and the chart helpers.
-- `tools/learn.py` builds the site into `_site/`. The build adds the site bar, the byline and the footer to each page, and it writes the home page.
+- `tools/learn.py` builds the site into `_site/`. The build adds the site bar, the byline, the section links, the "Read next" cards and the footer to each page. It writes the home page and a preview picture for each page. The preview pictures need Chrome or Chromium on the computer. Without it, the build works but writes no pictures.
 - A push to `main` starts the deployment to GitHub Pages. You do not start it yourself.
 
 Commands:
@@ -105,9 +105,10 @@ Draw `cover.svg` (320 x 180): one simple picture of the main idea, with the colo
 
 1. Run `python3 tools/learn.py check`. Correct all errors.
 2. Run `python3 tools/learn.py serve`.
-3. Look at the page. If you have a browser tool, take pictures at a width of 390 px and at a desktop width. Do this in bright and dark mode, and in each language.
-4. Use each control one time. Look for errors in the browser console.
-5. Read the full text one more time as the reader. Each sentence must be clear without the sentences after it.
+3. Look at the page. If you have a browser tool, take pictures at a width of 390 px and at 1440 px. Do this in bright and dark mode, and in each language. At 1440 px the figures are wider than the text and the list of sections is in the left margin. At 390 px, scroll down and open the list of sections under the site bar.
+4. Look at `_site/<slug>/share.png`, if the build wrote it. The title must fit and the cover must be clear.
+5. Use each control one time. Look for errors in the browser console.
+6. Read the full text one more time as the reader. Each sentence must be clear without the sentences after it.
 
 Then go through the checklist at the end of this file.
 
@@ -120,7 +121,7 @@ Then go through the checklist at the end of this file.
 ## Update an explainer
 
 - **A small correction:** change the text in English and in German. Set `updated` to today.
-- **New state of a story:** collect the new facts with sources first. Change the status box, the lists and the text that are no longer correct. Do not only add a paragraph at the end. Update each date in the text ("status of ..."). Set `updated` to today.
+- **New state of a story:** collect the new facts with sources first. Change the status box, the lists and the text that are no longer correct. Do not only add a paragraph at the end. Update each date in the text ("status of ..."). Add an entry at the top of the change list (`details.changes`, see `references/components.md`). If the page has no change list, add one. Set `updated` to today.
 - Do not change the folder name. The address of a page must stay the same.
 - Do not delete an old statement silently if it was wrong. Say in the pull request what was wrong.
 - Then do steps 9 and 10.
@@ -150,6 +151,8 @@ Then go through the checklist at the end of this file.
 - [ ] Each graphic is correct: the axes, the units, the numbers in the caption.
 - [ ] Each difficult word is explained where it first occurs, or it is replaced.
 - [ ] The page is good at 390 px: no horizontal scrolling, text is readable, controls are large enough for a finger.
+- [ ] The page is good at 1440 px: wide figures are sharp and complete, the list of sections in the margin is correct.
+- [ ] The headings of the sections are short enough for the navigation.
 - [ ] Bright mode and dark mode are both readable.
 - [ ] English and German are complete. Numbers and dates use the format of the language.
 - [ ] The sources are complete and the links are correct.

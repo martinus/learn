@@ -19,7 +19,7 @@ site/                       the website (source)
   assets/fonts/             font files with their licences
   YYYY-MM-DD-slug/          one explainer: index.html and cover.svg
 templates/                  page parts that the build inserts, and the start template
-tools/learn.py              check, build, serve, new (Python standard library only)
+tools/learn.py              check, build, serve, new (Python standard library only; Chrome is optional, for preview pictures)
 site.json                   name, address, publisher, contact address, names of the tags
 _site/                      build result (not in git)
 ```

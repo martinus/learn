@@ -51,7 +51,9 @@ python3 tools/learn.py new 2026-12-01-topic  # start a page from the template
 | `site.json` | name and address of the site, publisher, contact address, names of the tags |
 | `.claude/skills/explainer/` | the instructions for the AI model |
 
-The build puts the site bar, the byline and the footer into each page, and writes the home page, the privacy page, `sitemap.xml` and `404.html`. The check stops the build if a page has an error, for example a missing German text or a file that loads from a different server.
+The build puts the site bar, the byline, links to the sections, "Read next" cards and the footer into each page. It writes the home page, the privacy page, `sitemap.xml` and `404.html`.
+
+The build also writes a preview picture (`share.png`) for each page. Chat programs and social networks show it when a person shares a link. For this, the build uses Chrome or Chromium, if it is installed. Without it, the build works, but writes no preview pictures. On GitHub, Chrome is available. The check stops the build if a page has an error, for example a missing German text or a file that loads from a different server.
 
 ## Hosting
 

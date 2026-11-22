@@ -29,6 +29,14 @@ All parts are in `site/assets/theme.css` and `site/assets/theme.js`. Use them as
 
 The build replaces the four `learn:` markers. Do not write a viewport tag, font links, the site bar or the footer yourself.
 
+## What the build and the theme add without your help
+
+- **Section ids and link marks.** Write each section exactly as `<section>` and then `<span class="num">01</span>`. The build makes `<section id="s01">` from it, and makes the number a link to the section. Do not write ids yourself. Each section needs its own number and one `<h2>`.
+- **Section navigation.** With three or more sections, the theme shows the current section under the site bar. On a wide screen it shows all sections in the left margin. The text comes from the `<h2>` of each section, so keep the headings short.
+- **Wider figures.** On a desktop, each `<figure>` that is a direct child of a section is wider than the text. A chart must draw again when its width changes. `Learn.onChange` does that.
+- **"Read next".** The build adds cards for up to three other explainers at the end of the page.
+- **Preview picture.** The build makes `share.png` from the English title, the tags and `cover.svg`. Chat programs and social networks show it for a link. The cover is large there, on a white background, so it must look good in that size too.
+
 ## Colours
 
 Use the variables. Do not write colour values in a page.
@@ -67,6 +75,20 @@ For a story in progress, or for one important limit. At most one on a page, dire
   <b data-i18n="st_b">Status: first checks passed, one check open</b>
   <span data-i18n="st_t">Two or three sentences with a date.</span>
 </div>
+```
+
+### Change list
+
+For a story in progress. Put it directly under the status box. It is closed at the start. The newest entry is first. Each entry says what changed for the reader, in one or two sentences.
+
+```html
+<details class="changes">
+  <summary><span data-i18n="chg_h">What changed on this page</span></summary>
+  <ol>
+    <li><time data-i18n="chg2d">22 Nov 2026</time><span data-i18n="chg2t">New section 06 about the second proof.</span></li>
+    <li><time data-i18n="chg1d">21 Nov 2026</time><span data-i18n="chg1t">First version.</span></li>
+  </ol>
+</details>
 ```
 
 ### Summary cards
