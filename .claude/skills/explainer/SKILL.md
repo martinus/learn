@@ -102,7 +102,6 @@ In `<script type="application/json" id="explainer-meta">`:
 - `published`: the date in the folder name. `updated`: the same date for a new page.
 - `tags`: one to three. Use tags from `site.json` if they fit. Add a new tag to `site.json` with its English and German name.
 - `model`: your own model name, as exactly as you know it. Do not copy the name from a different page.
-- `reviewed_by`: keep it empty. Fill it only when the user says that a person read and confirmed the page.
 
 Draw `cover.svg` (320 x 180): one simple picture of the main idea, with the colours of the theme. Use no text in it.
 
@@ -113,14 +112,15 @@ Draw `cover.svg` (320 x 180): one simple picture of the main idea, with the colo
 3. If you have a browser tool, also open the page with `python3 tools/learn.py serve`. Scroll down at 390 px and open the list of sections under the site bar. The pictures from step 2 do not show this.
 4. Look at `_site/<slug>/share.png`, if the build wrote it. The title must fit and the cover must be clear.
 5. If you have a browser tool, use each control one time and look for errors in the browser console. If you have none, read the page script one more time, and say in the pull request that nobody used the controls.
-6. Run `python3 tools/learn.py texts <slug>`. Read the full text one more time as the reader, in each language. Each sentence must be clear without the sentences after it. The German text must say the same as the English text.
+6. Check the facts a second time. No person checks the content after you: the user publishes the page without a review of the facts. Go through the page and compare each fact, number, name and date with its source. Remove what you cannot confirm.
+7. Run `python3 tools/learn.py texts <slug>`. Read the full text one more time as the reader, in each language. Each sentence must be clear without the sentences after it. The German text must say the same as the English text.
 
 Then go through the checklist at the end of this file.
 
 ### 10. Hand over
 
 - Make a branch `explainer/<slug>`. Commit. Push. Open a pull request.
-- Do not merge. The user merges after reading the page. Merging is the review by a person.
+- Do not merge. The user decides about the merge.
 - In the pull request, give: the question of the page, the sources, what is uncertain, and what you could not check.
 
 ## Update an explainer
@@ -147,7 +147,7 @@ Then go through the checklist at the end of this file.
 - **No invented quotes, numbers or people.** Quote at most one short phrase from each source. Say all other things in your own words.
 - **The page loads nothing from other servers.** No fonts, scripts, pictures or trackers from outside. The check enforces this.
 - **No pictures of real people, and no logos.**
-- **The page says that an AI made it.** The build writes this from `model`. Do not remove the markers.
+- **The page says that an AI made it.** The build writes this from `model`. Do not remove the markers. Do not write that a person checked or reviewed the page.
 - **The page works without a build framework.** Plain HTML, CSS and JavaScript. `tools/learn.py` uses only the Python standard library.
 
 ## Checklist before the pull request
@@ -155,6 +155,7 @@ Then go through the checklist at the end of this file.
 - [ ] `python3 tools/learn.py check` shows no errors.
 - [ ] The first screen tells the reader what the page is about and why it matters.
 - [ ] Each section has one clear statement. Each main section has a graphic.
+- [ ] You compared each fact, number, name and date with its source a second time.
 - [ ] Each graphic is correct: the axes, the units, the numbers in the caption.
 - [ ] Each difficult word is explained where it first occurs, or it is replaced.
 - [ ] The page is good at 390 px: no horizontal scrolling, text is readable, controls are large enough for a finger.

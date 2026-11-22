@@ -5,7 +5,7 @@ This file lists decisions about the site and the reason for each. Read it before
 ## Content
 
 - **Each page says that an AI made it.** The byline and the footer name the model and the publisher. Reason: honesty to the reader, and the transparency rules of the EU for AI text.
-- **`reviewed_by` stays empty until Martin says that he read the page.** Reason: the page must not claim a review that did not occur.
+- **No page says that a person reviewed it.** Martin publishes the pages, but he does not check the content. For this reason the model must check each fact against its source a second time before the hand-over.
 - **Each fact has a source in the list at the end.** At most one short quote from each source. Reason: the reader can check the page, and the page respects the work of other authors.
 - **A story in progress has a status box with a date and a change list.** Reason: readers must see how old the facts are, and what changed since their last visit.
 - **English is the base language. German is a full translation.** The page starts in German for a browser with German as language. Reason: the main readers are in Austria, but English reaches more people.
@@ -31,7 +31,7 @@ This file lists decisions about the site and the reason for each. Read it before
 ## Work on the repository
 
 - **All changes go through a pull request.** A rule on GitHub blocks a direct push to `main`. Merge method: squash.
-- **A merge is the review by a person.** An AI model does not merge without a request from Martin.
+- **Martin decides about each merge.** An AI model does not merge without his request. A merge is a decision to publish. It is not a review of the facts.
 - **A merge to `main` deploys the site** with GitHub Actions. If the check fails, the old site stays online.
 - **Licences:** MIT for code, CC BY 4.0 for text and graphics, SIL OFL for the fonts.
 

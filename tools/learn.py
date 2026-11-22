@@ -234,15 +234,12 @@ class Explainer:
             "site_name": esc(CFG["name"]), "og_type": "article", "url": url, "root": root, "v": version,
             "og_image": og_image_tags(url + "share.png") if share else "",
         })
-        reviewed = str(meta.get("reviewed_by", "")).strip()
         upd = meta["updated"] != meta["published"]
         byline = fill(tpl("_byline.html"), {
             "model": esc(meta["model"]), "publisher": esc(CFG["publisher"]), "minutes": self.minutes,
             "date_en": fmt_date(meta["published"], "en"), "date_de": fmt_date(meta["published"], "de"),
             "updated_en": ", updated %s" % fmt_date(meta["updated"], "en") if upd else "",
             "updated_de": ", aktualisiert am %s" % fmt_date(meta["updated"], "de") if upd else "",
-            "reviewed_en": " &middot; Reviewed by <b>%s</b>" % esc(reviewed) if reviewed else "",
-            "reviewed_de": " &middot; Gepr&uuml;ft von <b>%s</b>" % esc(reviewed) if reviewed else "",
         })
         src_url = "%s/tree/%s/site/%s" % (CFG["repo"], CFG["branch"], self.slug)
         issue_url = "%s/issues/new?title=%s" % (CFG["repo"], esc("Error in " + self.slug))

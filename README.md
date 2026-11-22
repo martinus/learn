@@ -14,7 +14,7 @@ Open the repository in Claude Code and write, for example:
 /explainer How does GPS find my position?
 ```
 
-The skill in `.claude/skills/explainer/` tells the AI model how to do the work: collect the facts, plan the page, write the text, make the graphics, add the German text, check the page and open a pull request. You read the page in the pull request and merge it. The merge publishes the page.
+The skill in `.claude/skills/explainer/` tells the AI model how to do the work: collect the facts, plan the page, write the text, make the graphics, add the German text, check the page and open a pull request. You merge the pull request, and the merge publishes the page. No person checks the facts of a page before publication, so the skill tells the model to check each fact against its source two times.
 
 To update a page, write for example:
 
