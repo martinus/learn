@@ -10,7 +10,7 @@
 An explainer is a folder site/YYYY-MM-DD-slug/ with index.html and cover.svg.
 The build puts the shared head, site bar, byline and footer into each page
 (at the comment markers "learn:head", "learn:header", "learn:byline", "learn:footer")
-and writes the home page, sitemap.xml and 404.html.
+and writes the home page, the privacy page, sitemap.xml and 404.html.
 """
 import datetime
 import functools
@@ -230,7 +230,8 @@ class Explainer:
             '<a href="%s"><span class="l-en">All explainers</span><span class="l-de">Alle Erkl&auml;rst&uuml;cke</span></a>'
             '<a href="%s"><span class="l-en">Report an error</span><span class="l-de">Fehler melden</span></a>'
             '<a href="%s"><span class="l-en">Source of this page</span><span class="l-de">Quelltext dieser Seite</span></a>'
-        ) % (root, issue_url, src_url)
+            '<a href="%sprivacy/"><span class="l-en">Privacy</span><span class="l-de">Datenschutz</span></a>'
+        ) % (root, issue_url, src_url, root)
         made_en = "An AI model (%s) made the text and graphics of this page. %s published it and is responsible for the content. AI models make mistakes." % (esc(meta["model"]), esc(CFG["publisher"]))
         made_de = "Ein KI-Modell (%s) hat Text und Grafiken dieser Seite erstellt. %s hat sie ver&ouml;ffentlicht und ist f&uuml;r den Inhalt verantwortlich. KI-Modelle machen Fehler." % (esc(meta["model"]), esc(CFG["publisher"]))
         out = self.source
@@ -289,22 +290,26 @@ def site_header(root, langs, progress=False, wide=False):
     }).rstrip("\n")
 
 
-def site_page(template_name, version, values, url, title, root=""):
-    """Home page and 404: both languages, wide layout."""
+def site_page(template_name, version, values, url, title, root="", title_de=None, wide=True):
+    """Home page, 404 and privacy page: both languages."""
     page = fill(tpl(template_name), values)
     head = fill(tpl("_head.html"), {
         "description": esc(CFG["description"]["en"]), "title": esc(title), "site_name": esc(CFG["name"]),
         "og_type": "website", "url": url, "root": root, "v": version,
     })
-    nav = '<a href="%s"><span class="l-en">Source on GitHub</span><span class="l-de">Quelltext auf GitHub</span></a>' % CFG["repo"]
+    nav = (
+        '<a href="%s"><span class="l-en">All explainers</span><span class="l-de">Alle Erkl&auml;rst&uuml;cke</span></a>'
+        '<a href="%s"><span class="l-en">Source on GitHub</span><span class="l-de">Quelltext auf GitHub</span></a>'
+        '<a href="%sprivacy/"><span class="l-en">Privacy</span><span class="l-de">Datenschutz</span></a>'
+    ) % (root or "./", CFG["repo"], root)
     made_en = "AI models made the text and graphics of this site. %s publishes it and is responsible for the content." % esc(CFG["publisher"])
     made_de = "KI-Modelle haben Text und Grafiken dieser Website erstellt. %s ver&ouml;ffentlicht sie und ist f&uuml;r den Inhalt verantwortlich." % esc(CFG["publisher"])
     page = page.replace(marker("head"), head.rstrip("\n"))
-    page = page.replace(marker("header"), site_header(root, list(LANGS), wide=True))
+    page = page.replace(marker("header"), site_header(root, list(LANGS), wide=wide))
     page = page.replace(marker("footer"), fill(tpl("_footer.html"), {
-        "wide": " wide", "made_en": made_en, "made_de": made_de, "repo": CFG["repo"], "branch": CFG["branch"], "nav": nav,
+        "wide": " wide" if wide else "", "made_en": made_en, "made_de": made_de, "repo": CFG["repo"], "branch": CFG["branch"], "nav": nav,
     }).rstrip("\n"))
-    attrs = 'lang="en" data-langs="%s" data-title-de="%s"' % (" ".join(LANGS), esc(title))
+    attrs = 'lang="en" data-langs="%s" data-title-de="%s"' % (" ".join(LANGS), esc(title_de or title))
     return re.sub(r"<html\b[^>]*>", "<html %s>" % attrs, page, count=1)
 
 
@@ -351,6 +356,10 @@ def cmd_build():
     (OUT / "index.html").write_text(home, encoding="utf-8")
     # 404 page: GitHub Pages serves it for all unknown paths, so its links must start at the root.
     (OUT / "404.html").write_text(site_page("404.html", version, {}, CFG["url"] + "/404.html", "Page not found", root="/"), encoding="utf-8")
+    (OUT / "privacy").mkdir()
+    privacy = site_page("privacy.html", version, {"publisher": esc(CFG["publisher"]), "email": esc(CFG["contact_email"])},
+                        CFG["url"] + "/privacy/", "Privacy", root="../", title_de="Datenschutz", wide=False)
+    (OUT / "privacy" / "index.html").write_text(privacy, encoding="utf-8")
     urls = [(CFG["url"] + "/", max([it.meta["updated"] for it in items] or [datetime.date.today().isoformat()]))]
     urls += [("%s/%s/" % (CFG["url"], it.slug), it.meta["updated"]) for it in items]
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

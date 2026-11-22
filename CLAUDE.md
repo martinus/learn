@@ -20,7 +20,7 @@ site/                       the website (source)
   YYYY-MM-DD-slug/          one explainer: index.html and cover.svg
 templates/                  page parts that the build inserts, and the start template
 tools/learn.py              check, build, serve, new (Python standard library only)
-site.json                   name, address, publisher, names of the tags
+site.json                   name, address, publisher, contact address, names of the tags
 _site/                      build result (not in git)
 ```
 
@@ -36,7 +36,8 @@ python3 tools/learn.py new YYYY-MM-DD-slug
 
 - Write all documentation and all page text in plain language: short sentences, active voice, one word for one thing.
 - No frameworks and no packages. Plain HTML, CSS and JavaScript. Python standard library for tools.
-- A page loads nothing from other servers.
+- A page loads nothing from other servers. Visits are counted by Cloudflare Web Analytics, which Cloudflare adds when it delivers the site. Do not add other analytics or trackers.
+- If the site starts to process data in a new way, update `templates/privacy.html` in the same pull request.
 - Work on a branch and open a pull request. Do not push to `main`. Do not merge without a request from the user.
 - A merge to `main` deploys the site.
 - Text and graphics have the licence CC BY 4.0. Code has the MIT licence.
