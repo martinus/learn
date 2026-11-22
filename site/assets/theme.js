@@ -7,6 +7,9 @@
      Learn.t({en:..,de:..})  select the text for the current language
      Learn.onChange(fn)      call fn at start, and again when language or page width changes
      Learn.mk, Learn.plot, Learn.ticks, Learn.fmt, Learn.sgn, Learn.short   chart helpers
+   Review mode, for pictures of a page (tools/learn.py shots uses it). Add to the address:
+     ?theme=dark   ?lang=de   ?only=s03 (show one section; "top" is the page header)   ?review=1
+   These settings apply to one page view. The page does not store them.
    Text of a page: English is in the HTML. German is in <script type="application/json" id="i18n-de">,
    with one entry for each data-i18n and data-i18n-aria key. */
 (function(){
@@ -15,14 +18,20 @@ var root=document.documentElement;
 var NS='http://www.w3.org/2000/svg';
 var store={get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
 
+/* ---- review mode: settings from the address ---- */
+var Q={};
+(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{Q[decodeURIComponent(kv.slice(0,i))]=decodeURIComponent(kv.slice(i+1));}catch(e){}}});
+
 /* ---- colour mode: set as early as possible ---- */
 var savedTheme=store.get('learn-theme');
-if(savedTheme==='light'||savedTheme==='dark')root.setAttribute('data-theme',savedTheme);
+if(Q.theme==='light'||Q.theme==='dark')root.setAttribute('data-theme',Q.theme);
+else if(savedTheme==='light'||savedTheme==='dark')root.setAttribute('data-theme',savedTheme);
 function curTheme(){var a=root.getAttribute('data-theme');if(a==='dark'||a==='light')return a;return window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
 
 /* ---- language: set as early as possible ---- */
 var langs=(root.getAttribute('data-langs')||'en').split(/\s+/);
 function pickLang(){
+  if(Q.lang&&langs.indexOf(Q.lang)>=0)return Q.lang;
   var h=(location.hash||'').replace('#','');
   if(langs.indexOf(h)>=0)return h;
   var s=store.get('learn-lang');
@@ -94,7 +103,7 @@ function fillNav(){
 function markNav(){
   if(!NAV)return;
   var cur=-1,i,end=NAV.main.getBoundingClientRect().bottom;
-  for(i=0;i<NAV.secs.length;i++){if(NAV.secs[i].getBoundingClientRect().top<=120)cur=i;}
+  for(i=0;i<NAV.secs.length;i++){if(NAV.secs[i].getClientRects().length&&NAV.secs[i].getBoundingClientRect().top<=120)cur=i;}
   if(end<120)cur=-1;
   NAV.rail.classList.toggle('off',end<220);
   if(cur===NAV.cur)return;
@@ -131,8 +140,19 @@ function start(){
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fire);
 
   buildNav();
+  if(Q.only){
+    root.classList.add('review-only');
+    var mainEl=document.querySelector('main.explainer');
+    if(mainEl){[].forEach.call(mainEl.children,function(c){var keep=Q.only==='top'?c.tagName==='HEADER':c.id===Q.only;if(!keep)c.style.display='none';});}
+    [].forEach.call(document.querySelectorAll('.next,.site-foot'),function(c){c.style.display='none';});
+  }
   started=true;
   applyLang(lang,false);
+  if(Q.review||Q.only){
+    /* The tool reads this value to make a picture with the exact height of the content. */
+    var measure=function(){root.setAttribute('data-review-height',Math.ceil(document.documentElement.scrollHeight));};
+    measure();setTimeout(measure,300);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(measure,50);});
+  }
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 

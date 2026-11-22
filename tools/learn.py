@@ -6,6 +6,10 @@
   python3 tools/learn.py serve [port]     build, then serve _site/ on http://localhost:8000
   python3 tools/learn.py new DATE-SLUG    start a new explainer from the template,
                                           for example: new 2026-12-01-how-gps-works
+  python3 tools/learn.py shots [SLUG]     write pictures of the pages into _shots/, to look at
+                                          the result (needs Chrome). Without SLUG: all pages.
+  python3 tools/learn.py texts SLUG       print the English and German text of one explainer,
+                                          key by key, to compare the two languages
 
 An explainer is a folder site/YYYY-MM-DD-slug/ with index.html and cover.svg.
 The build puts the shared head, site bar, byline and footer into each page
@@ -22,6 +26,7 @@ import hashlib
 import html
 import http.server
 import json
+import concurrent.futures
 import math
 import os
 import re
@@ -229,15 +234,12 @@ class Explainer:
             "site_name": esc(CFG["name"]), "og_type": "article", "url": url, "root": root, "v": version,
             "og_image": og_image_tags(url + "share.png") if share else "",
         })
-        reviewed = str(meta.get("reviewed_by", "")).strip()
         upd = meta["updated"] != meta["published"]
         byline = fill(tpl("_byline.html"), {
             "model": esc(meta["model"]), "publisher": esc(CFG["publisher"]), "minutes": self.minutes,
             "date_en": fmt_date(meta["published"], "en"), "date_de": fmt_date(meta["published"], "de"),
             "updated_en": ", updated %s" % fmt_date(meta["updated"], "en") if upd else "",
             "updated_de": ", aktualisiert am %s" % fmt_date(meta["updated"], "de") if upd else "",
-            "reviewed_en": " &middot; Reviewed by <b>%s</b>" % esc(reviewed) if reviewed else "",
-            "reviewed_de": " &middot; Gepr&uuml;ft von <b>%s</b>" % esc(reviewed) if reviewed else "",
         })
         src_url = "%s/tree/%s/site/%s" % (CFG["repo"], CFG["branch"], self.slug)
         issue_url = "%s/issues/new?title=%s" % (CFG["repo"], esc("Error in " + self.slug))
@@ -502,6 +504,86 @@ def cmd_serve(port):
     return 0
 
 
+SHOTS = ROOT / "_shots"
+VARIANTS = (("390-light-en", 390, "light", "en"), ("390-dark-de", 390, "dark", "de"), ("1440-light-en", 1440, "light", "en"))
+
+
+def chrome_run(chrome, args, url, profile):
+    cmd = [chrome, "--headless=new", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
+           "--force-device-scale-factor=1", "--virtual-time-budget=4000", "--user-data-dir=" + profile] + args + [url]
+    return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=120, check=False)
+
+
+def take_shot(chrome, job):
+    """job: (page file, query, width, target png). First measure the height of the content, then make the picture."""
+    page, query, width, target = job
+    url = page.as_uri() + "?review=1&" + query
+    with tempfile.TemporaryDirectory() as profile:
+        dom = chrome_run(chrome, ["--window-size=%d,200" % width, "--dump-dom"], url, profile).stdout.decode("utf-8", "replace")
+        m = re.search(r'data-review-height="(\d+)"', dom)
+        height = min(max(int(m.group(1)) if m else 1600, 300), 9000)
+        chrome_run(chrome, ["--window-size=%d,%d" % (width, height), "--screenshot=" + str(target)], url, profile)
+    return target if target.is_file() else None
+
+
+def cmd_shots(slug):
+    chrome = find_chrome()
+    if not chrome:
+        print("Chrome or Chromium is necessary for pictures, but it was not found. Set the variable CHROME to its path.", file=sys.stderr)
+        return 1
+    if cmd_build():
+        return 1
+    items = [it for it in load_all() if slug in (None, it.slug)]
+    if slug and not items:
+        print("No explainer with the name %s." % slug, file=sys.stderr)
+        return 1
+    if SHOTS.exists():
+        shutil.rmtree(SHOTS)
+    jobs = []
+    for it in items:
+        folder = SHOTS / it.slug
+        folder.mkdir(parents=True)
+        built = OUT / it.slug / "index.html"
+        parts = ["top"] + re.findall(r'<section id="(s\d+)">', built.read_text(encoding="utf-8"))
+        for name, width, theme, lang in VARIANTS:
+            lang = lang if lang in it.langs() else "en"
+            for part in parts:
+                jobs.append((built, "only=%s&theme=%s&lang=%s" % (part, theme, lang), width, folder / ("%s-%s.png" % (name, part))))
+    if not slug:
+        (SHOTS / "home").mkdir(parents=True)
+        for name, width, theme, lang in VARIANTS:
+            jobs.append((OUT / "index.html", "theme=%s&lang=%s" % (theme, lang), width, SHOTS / "home" / (name + ".png")))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        done = list(pool.map(lambda job: take_shot(chrome, job), jobs))
+    failed = [str(job[3].relative_to(ROOT)) for job, ok in zip(jobs, done) if not ok]
+    for f in failed:
+        print("ERROR  no picture: " + f, file=sys.stderr)
+    print("Wrote %d picture(s) into %s/. One file for each section: width, colour mode, language, section." % (len(jobs) - len(failed), SHOTS.relative_to(ROOT)))
+    print("These pictures show the page at rest. They do not show what a slider or a button does.")
+    return 1 if failed else 0
+
+
+def cmd_texts(slug):
+    folder = SITE / slug
+    if not (folder / "index.html").is_file():
+        print("No explainer with the name %s." % slug, file=sys.stderr)
+        return 1
+    src = (folder / "index.html").read_text(encoding="utf-8")
+    dm = re.search(r'<script type="application/json" id="i18n-de">(.*?)</script>', src, re.S)
+    de = json.loads(dm.group(1)) if dm else {}
+    seen = set()
+    for m in re.finditer(r'<(\w+)\b[^>]*\bdata-i18n="([^"]+)"[^>]*>(.*?)</\1>', src, re.S):
+        key = m.group(2)
+        if key in seen:
+            continue
+        seen.add(key)
+        print("[%s]\n  EN: %s\n  DE: %s\n" % (key, " ".join(strip_tags(m.group(3)).split()),
+                                              " ".join(strip_tags(str(de.get(key, "(missing)"))).split())))
+    for m in re.finditer(r'aria-label="([^"]*)"[^>]*data-i18n-aria="([^"]+)"', src):
+        print("[%s] (label for screen readers)\n  EN: %s\n  DE: %s\n" % (m.group(2), html.unescape(m.group(1)), de.get(m.group(2), "(missing)")))
+    return 0
+
+
 def cmd_new(slug):
     m = SLUG_RE.match(slug)
     if not m:
@@ -528,9 +610,18 @@ def main(argv):
         return cmd_serve(int(argv[2]) if len(argv) > 2 else 8000)
     if cmd == "new" and len(argv) == 3:
         return cmd_new(argv[2])
+    if cmd == "shots":
+        return cmd_shots(argv[2] if len(argv) > 2 else None)
+    if cmd == "texts" and len(argv) == 3:
+        return cmd_texts(argv[2])
     print(__doc__)
     return 2
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    try:
+        sys.exit(main(sys.argv))
+    except BrokenPipeError:
+        # The reader of the output stopped early, for example "| head". This is not an error.
+        os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
+        sys.exit(0)
