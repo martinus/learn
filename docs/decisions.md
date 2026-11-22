@@ -9,6 +9,7 @@ This file lists decisions about the site and the reason for each. Read it before
 - **Each fact has a source in the list at the end.** At most one short quote from each source. Reason: the reader can check the page, and the page respects the work of other authors.
 - **A story in progress has a status box with a date and a change list.** Reason: readers must see how old the facts are, and what changed since their last visit.
 - **English is the base language. German is a full translation.** The page starts in German for a browser with German as language. Reason: the main readers are in Austria, but English reaches more people.
+- **German numbers use a dot between thousands and a comma before decimals:** 1.000.000 and 30,1. The theme formats them with the locale `de-DE`, not `de-AT`, because `de-AT` writes a space (1 000 000). Reason: the dot is the common form for readers in Austria and Germany, and the text of a page uses it too, so a page shows one format.
 - **Plain language** (the idea of ISO 24495 and Simplified Technical English) for pages and for documents in this repository. Reason: the reader has no knowledge of the subject, and many readers do not have English as first language.
 
 ## Privacy
