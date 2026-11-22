@@ -48,10 +48,10 @@ python3 tools/learn.py new 2026-12-01-topic  # start a page from the template
 | `site/assets/` | the shared theme (`theme.css`, `theme.js`) and the fonts |
 | `templates/` | page parts that the build inserts, and the start template |
 | `tools/learn.py` | the build tool |
-| `site.json` | name and address of the site, publisher, names of the tags |
+| `site.json` | name and address of the site, publisher, contact address, names of the tags |
 | `.claude/skills/explainer/` | the instructions for the AI model |
 
-The build puts the site bar, the byline and the footer into each page, and writes the home page, `sitemap.xml` and `404.html`. The check stops the build if a page has an error, for example a missing German text or a file that loads from a different server.
+The build puts the site bar, the byline and the footer into each page, and writes the home page, the privacy page, `sitemap.xml` and `404.html`. The check stops the build if a page has an error, for example a missing German text or a file that loads from a different server.
 
 ## Hosting
 
@@ -64,6 +64,10 @@ Settings that are necessary one time:
 3. DNS: a `CNAME` record with the name `learn` and the target `martinus.github.io`.
 
 The pages load no files from other servers. The fonts are part of the site.
+
+## Counting visits
+
+The site uses Cloudflare Web Analytics. It works without cookies. It is not in this repository: Cloudflare delivers the site and adds a small script to each page (Cloudflare dashboard, Web Analytics, automatic setup). The page `/privacy/` tells visitors about it. Its text is in `templates/privacy.html`.
 
 ## Licences
 
