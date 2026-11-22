@@ -201,6 +201,11 @@ main.home{max-width:68rem;margin:0 auto;padding:2.6rem var(--gutter) 3rem;displa
   .steps li{grid-template-columns:1fr;gap:.1rem}
   .checks li{grid-template-columns:1fr;gap:.35rem}
   .pill{justify-self:start}
+  .site-bar .in{gap:.5rem}
+  .toggles{gap:.3rem}
+  .seg button{padding:.42rem .5rem}
+}
+@media (max-width:330px){
   .brand span{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}.card{transition:none}.card:hover{transform:none}}
