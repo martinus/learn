@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="TODO: one sentence about the picture">
+<!-- The home page puts this file into the card, so the colours of the theme are available:
+     var(--c1), var(--c2), var(--c3), var(--band), var(--tint), var(--ink), var(--muted).
+     Use inline style, not fill="..." with fixed colours. Then the cover works in bright and dark mode. -->
+<path d="M24 150 C 90 150, 120 40, 296 30" style="fill:none;stroke:var(--c1);stroke-width:2.5"/>
+<circle cx="296" cy="30" r="5" style="fill:var(--c3)"/>
+</svg>

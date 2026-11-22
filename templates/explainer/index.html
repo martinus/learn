@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TODO: title of the explainer</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "TODO: title", "de": "TODO: Titel"},
+ "summary": {"en": "TODO: two or three sentences for the card on the home page.", "de": "TODO: zwei oder drei Sätze für die Karte auf der Startseite."},
+ "published": "YYYY-MM-DD",
+ "updated": "YYYY-MM-DD",
+ "languages": ["en", "de"],
+ "tags": ["TODO"],
+ "model": "TODO: the AI model that makes this page",
+ "reviewed_by": ""
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow" data-i18n="ey">TODO: topic or state, for example &ldquo;Physics&rdquo;</span>
+  <h1 data-i18n="h1">TODO: title</h1>
+  <!-- learn:byline -->
+  <p class="lead" data-i18n="lead">TODO: three or four sentences. What is the question? Why does it matter? What does the reader get from this page?</p>
+  <div class="short">
+    <div><h3 data-i18n="c1h">TODO</h3><span data-i18n="c1t">TODO: the first main point in two sentences.</span></div>
+    <div><h3 data-i18n="c2h">TODO</h3><span data-i18n="c2t">TODO: the second main point.</span></div>
+    <div><h3 data-i18n="c3h">TODO</h3><span data-i18n="c3t">TODO: the third main point.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2 data-i18n="s1h">TODO: heading of the first section</h2>
+  <p data-i18n="s1p1">TODO: text.</p>
+
+  <figure>
+    <div class="fig-title" data-i18n="f1t">TODO: title of the chart</div>
+    <div class="ctl">
+      <label for="amount"><span data-i18n="f1l">TODO: what the slider changes</span> <output id="amountOut">5</output></label>
+      <input type="range" id="amount" min="1" max="10" step="1" value="5">
+    </div>
+    <div class="legend"><span><i class="sw"></i><span data-i18n="lg1">TODO: name of the line</span></span></div>
+    <svg class="chart" id="chart1" role="img" aria-label="TODO: what the chart shows, in one sentence" data-i18n-aria="a1"></svg>
+    <figcaption data-i18n="f1c">TODO: what the reader must see in the chart.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2 data-i18n="srch">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://example.org/" data-i18n="src1">TODO: source</a></li>
+  </ul>
+</section>
+
+</main>
+<!-- learn:footer -->
+<script type="application/json" id="i18n-de">
+{
+"ey": "TODO",
+"h1": "TODO",
+"lead": "TODO",
+"c1h": "TODO",
+"c1t": "TODO",
+"c2h": "TODO",
+"c2t": "TODO",
+"c3h": "TODO",
+"c3t": "TODO",
+"s1h": "TODO",
+"s1p1": "TODO",
+"f1t": "TODO",
+"f1l": "TODO",
+"lg1": "TODO",
+"a1": "TODO",
+"f1c": "TODO",
+"srch": "Quellen",
+"src1": "TODO"
+}
+</script>
+<script>
+(function(){
+'use strict';
+var L=window.Learn;
+function $(id){return document.getElementById(id);}
+var amount=$('amount');
+
+function draw(){
+  var a=+amount.value;
+  $('amountOut').textContent=L.fmt(a);
+  var svg=$('chart1');
+  var p=L.plot(svg,{h:220,x0:0,x1:10,y0:0,y1:100});
+  var d='';
+  for(var i=0;i<=100;i++){var x=i/10;d+=(i?'L':'M')+p.sx(x).toFixed(1)+' '+p.sy(Math.min(100,a*x)).toFixed(1);}
+  L.mk('path',{d:d,'class':'l-c1'},svg);
+}
+amount.addEventListener('input',draw);
+
+/* Learn.onChange calls draw at the start, and again when the language or the page width changes. */
+L.onChange(draw);
+})();
+</script>
+</body>
+</html>
