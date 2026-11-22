@@ -10,8 +10,8 @@
   "de": "Ein möglicher Beweis der Riemannschen Vermutung"
  },
  "summary": {
-  "en": "For 167 years nobody could solve the most famous riddle in mathematics. Now a mathematician and an AI say that they did. What the riddle is, what the idea is, and how sure we can be.",
-  "de": "167 Jahre lang konnte niemand das berühmteste Rätsel der Mathematik lösen. Jetzt sagen ein Mathematiker und eine KI, sie hätten es geschafft. Was das Rätsel ist, was die Idee ist und wie sicher das Ergebnis ist."
+  "en": "For 167 years nobody could solve the most famous riddle in mathematics. Now a mathematician and an AI say that they did, and the experts for the checking program agree. What the riddle is, what the idea is, and how sure we can be.",
+  "de": "167 Jahre lang konnte niemand das berühmteste Rätsel der Mathematik lösen. Jetzt sagen ein Mathematiker und eine KI, sie hätten es geschafft, und die Fachleute für das Prüfprogramm stimmen zu. Was das Rätsel ist, was die Idee ist und wie sicher das Ergebnis ist."
  },
  "published": "2026-11-21",
  "updated": "2026-11-22",
@@ -23,8 +23,7 @@
   "mathematics",
   "ai"
  ],
- "model": "Claude Fable 5.2",
- "reviewed_by": ""
+ "model": "Claude Fable 5.2"
 }
 </script>
 <!-- learn:head -->
@@ -59,18 +58,18 @@
 <main class="explainer">
 
 <header>
-  <span class="eyebrow" data-i18n="ey">Developing story &middot; status of 21 November 2026</span>
+  <span class="eyebrow" data-i18n="ey">Developing story &middot; status of 22 November 2026</span>
   <h1 data-i18n="h1">A claimed proof of the Riemann Hypothesis</h1>
   <!-- learn:byline -->
   <p class="lead" data-i18n="lead">For 167 years, nobody could solve the most famous riddle in mathematics. On 20 November 2026 the mathematician Levent Alpöge said that he solved it together with Claude, an AI program. This page explains the riddle, the idea, and how sure we can be. You need no mathematics from school to read it.</p>
   <div class="status">
-    <b data-i18n="st_b">Status: all completed checks passed, one is still running</b>
-    <span data-i18n="st_t">Other mathematicians ran the proof through several independent checking programs. Each completed check passed. One long final check was still running on 21 November. No person understands the full proof yet. On the same day, a second proof appeared that was made by people only. It has reported problems (section 06).</span>
+    <b data-i18n="st_b">Status: the experts for the checking program certify the proof</b>
+    <span data-i18n="st_t">On 21 November, the communities behind the checking program Lean published a joint statement: they have full confidence that the proof is correct. No check has failed. No person understands the full proof yet, and the Clay institute still lists the riddle as unsolved. The second proof, made by people only, has two concrete objections (section 06).</span>
   </div>
   <details class="changes">
     <summary><span data-i18n="chg_h">What changed on this page</span></summary>
     <ol>
-      <li><time data-i18n="chg3d">22 Nov 2026</time><span data-i18n="chg3t">The page moved to learn.ankerl.com. It has a navigation for the sections and this change list. The facts are the same as before: they show the status of 21 November.</span></li>
+      <li><time data-i18n="chg3d">22 Nov 2026</time><span data-i18n="chg3t">New: the joint statement of the Lean and Mathlib communities, which certifies the proof. The list of checks in section 05 is new. Section 06 names the two concrete objections against the second proof. The page also moved to learn.ankerl.com.</span></li>
       <li><time data-i18n="chg2d">21 Nov 2026, afternoon</time><span data-i18n="chg2t">New section 06 about the second proof by Alessandro Masullo. The list of checks now shows that four checking programs accepted the first proof. German text added.</span></li>
       <li><time data-i18n="chg1d">21 Nov 2026, morning</time><span data-i18n="chg1t">First public version. Independent mathematicians ran the proof on their own computers, and it passed.</span></li>
     </ol>
@@ -237,19 +236,22 @@
 <section>
   <span class="num">05</span>
   <h2 data-i18n="s5h">Can you trust a proof that no person has read?</h2>
-  <p data-i18n="s5p1">The proof is a computer file with 175,187 parts. A checking program with the name Lean examines each step. Think of a very strict auditor. The auditor does not understand the business. But the auditor recalculates each line and accepts nothing without a reason.</p>
+  <p data-i18n="s5p1">The proof is a computer file with 175,187 parts and about 17 million lines. A checking program with the name Lean examines each step. Think of a very strict auditor. The auditor does not understand the business. But the auditor recalculates each line and accepts nothing without a reason.</p>
   <p data-i18n="s5p2">Such a check can still go wrong in two ways. The file can prove a different, easier claim than the real riddle. Or it can contain a hidden shortcut: a step that it assumes but does not prove. So other people must examine these points. Andrew Sutherland of the university MIT keeps a public list of all checks.</p>
+  <p data-i18n="s5p5"><strong>The certificate.</strong> On 21 November, the people who build Lean and its mathematics library published a joint statement. They write that they have &ldquo;full confidence&rdquo; that the proof is correct, and they certify the claim and the proof. The two organizations that lead this work, the Lean FRO and the Mathlib Initiative, support the statement. These are the checks behind it:</p>
   <ul class="checks">
-    <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k1t">The check works on other computers.</span><span class="d" data-i18n="k1d">Sutherland ran all 175,187 parts on his own computers. The result: zero errors.</span></span></li>
+    <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k1t">The check works on other computers.</span><span class="d" data-i18n="k1d">Dozens of people ran the file on their own computers. All got the same result, with zero errors.</span></span></li>
+    <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k4t">The file proves the real riddle.</span><span class="d" data-i18n="k4d">Two tools compared the proved claim with the standard form of the riddle in the mathematics library of Lean. The two are identical.</span></span></li>
     <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k2t">No hidden shortcuts.</span><span class="d" data-i18n="k2d">The proof uses only the three basic assumptions that all of mathematics uses. Sutherland puts the chance of a trick at &ldquo;approximately zero&rdquo;.</span></span></li>
-    <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k3t">Other auditors come to the same result.</span><span class="d" data-i18n="k3d">Four separate checking programs accepted the proof.</span></span></li>
-    <li><span class="pill prog" data-i18n="plRun">Running</span><span><span data-i18n="k4t">The large final check.</span><span class="d" data-i18n="k4d">It has three parts. Two are complete and passed: the file proves the real riddle, and it has no shortcuts. The third part is a slow recalculation. It was still running at the last report on 21 November, 09:30 UTC.</span></span></li>
-    <li><span class="pill no" data-i18n="plNo">Not yet</span><span><span data-i18n="k5t">People understand the proof.</span><span class="d" data-i18n="k5d">Nobody can explain today why it works. The well-known mathematician Terence Tao expects that this will take time.</span></span></li>
+    <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k3t">Other auditors come to the same result.</span><span class="d" data-i18n="k3d">Several separate checking programs accepted the proof. Some of them are written in other programming languages.</span></span></li>
+    <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k8t">A new build in a sealed environment.</span><span class="d" data-i18n="k8d">A separate computer built all parts again, closed off from outside influence. The result is identical to the published one, byte for byte.</span></span></li>
+    <li><span class="pill prog" data-i18n="plRun">Running</span><span><span data-i18n="k9t">Three long runs on Sutherland&rsquo;s list.</span><span class="d" data-i18n="k9d">They use the standard checker in its slowest modes. They were not complete on 22 November at 02:25 UTC. The joint statement names complete runs of the same tools.</span></span></li>
+    <li><span class="pill no" data-i18n="plNo">Not yet</span><span><span data-i18n="k5t">People understand the proof.</span><span class="d" data-i18n="k5d">Nobody can explain today why it works. After a first look, the well-known mathematician Terence Tao writes that the proof seems to use two large areas of modern mathematics, and that it takes time to see how the parts fit together.</span></span></li>
     <li><span class="pill no" data-i18n="plNo">Not yet</span><span><span data-i18n="k6t">A text that people can read.</span><span class="d" data-i18n="k6d">A printed version would have more than 250,000 pages. The author decided not to publish that.</span></span></li>
-    <li><span class="pill no" data-i18n="plNo">Not yet</span><span><span data-i18n="k7t">The prize of 1 million dollars.</span><span class="d" data-i18n="k7d">The rules of the Clay institute require a publication and then a waiting time of two years or more.</span></span></li>
+    <li><span class="pill no" data-i18n="plNo">Not yet</span><span><span data-i18n="k7t">Official recognition, and the prize of 1 million dollars.</span><span class="d" data-i18n="k7d">The Clay institute still lists the riddle as unsolved. Its rules require a publication and then a waiting time of two years or more.</span></span></li>
   </ul>
-  <p data-i18n="s5p3"><strong>The short answer:</strong> the proof is very probably correct. No check has failed. But checked is not the same as understood. The next task for mathematicians is to find out why the proof works.</p>
-  <p class="small" data-i18n="s5p4">Sutherland also names limits of his own test. One example: his computers did not run the check in a sealed environment. This comparison is still open.</p>
+  <p data-i18n="s5p3"><strong>The short answer:</strong> the proof passed the strongest test that exists for a proof of this type, and the experts for this test confirm it. So it is correct with very high probability. But checked is not the same as understood, and the mathematical community has not accepted it officially yet. The next task is to find out why the proof works.</p>
+  <p class="small" data-i18n="s5p4">One limit stays. A checking program confirms that the claim follows from the definitions in its library. It cannot confirm that these definitions say what people mean. For this riddle, experts examined the definition before the proof appeared.</p>
 </section>
 
 <section>
@@ -275,7 +277,7 @@
         <dt data-i18n="r_form">Form</dt><dd data-i18n="va2">computer file with 175,187 parts</dd>
         <dt data-i18n="r_chk">Checked by</dt><dd data-i18n="va3">programs</dd>
         <dt data-i18n="r_weak">Weak point</dt><dd data-i18n="va4">nobody understands it</dd>
-        <dt data-i18n="r_state">State</dt><dd data-i18n="va5">all completed checks passed</dd>
+        <dt data-i18n="r_state">State</dt><dd data-i18n="va5">certified by the Lean community</dd>
       </dl>
     </div>
     <div class="world b">
@@ -286,7 +288,7 @@
         <dt data-i18n="r_form">Form</dt><dd data-i18n="vb2">paper with 940 pages</dd>
         <dt data-i18n="r_chk">Checked by</dt><dd data-i18n="vb3">people</dd>
         <dt data-i18n="r_weak">Weak point</dt><dd data-i18n="vb4">nobody confirmed it</dd>
-        <dt data-i18n="r_state">State</dt><dd data-i18n="vb5">problems reported, large revision</dd>
+        <dt data-i18n="r_state">State</dt><dd data-i18n="vb5">two concrete objections, large revision</dd>
       </dl>
     </div>
   </div>
@@ -297,8 +299,9 @@
   <h3 data-i18n="s6h3">The state of the second proof</h3>
   <ul class="plain">
     <li data-i18n="l61">Brian Conrad of Stanford, the former teacher of Masullo, examined the paper for months. He confirms this, but he does not say that the proof is correct. He says that the paper is in a large revision.</li>
-    <li data-i18n="l62">Readers reported problems to Vakil some hours after the publication. Nobody knows yet how serious the problems are, or if a repair is possible.</li>
-    <li data-i18n="l63">One public note says that a step near the end of the argument fails. Experts have not examined this note yet.</li>
+    <li data-i18n="l62">Two concrete objections are public, as the mathematician John Baez reports on 22 November. First: Eric Naslund examined the paper with the help of AI. A formula of the paper, tested near the prime 2, gives a different result than the paper says. Second: readers found a step on page 444 that uses a property which is apparently false in that situation.</li>
+    <li data-i18n="l63">The chapter that must get the final result from the main formula contains only placeholders.</li>
+    <li data-i18n="l64">Baez writes that the objections can still be repairable, or wrong. He does not say that the proof works, and he does not say that it failed.</li>
   </ul>
   <p data-i18n="s6p3"><strong>Can both proofs be correct?</strong> Yes. Two different routes can go to the same result. And a problem in the second proof says nothing about the riddle itself. It only means that this route is not confirmed. If both are correct, the paper of Masullo is the version that people can read and learn from.</p>
 </section>
@@ -308,7 +311,7 @@
   <h2 data-i18n="s7h">What this means for you</h2>
   <ul class="plain">
     <li data-i18n="m1"><strong>Your bank card stays safe.</strong> Encryption on the internet uses prime numbers. But the proof gives no method to break it. It only confirms what experts already assumed.</li>
-    <li data-i18n="m2"><strong>Nothing changes in daily life tomorrow.</strong> This is basic knowledge about numbers. Its effect is inside mathematics: many hundreds of results started with the words &ldquo;if the Riemann Hypothesis is true&rdquo;. These results now become facts.</li>
+    <li data-i18n="m2"><strong>Nothing changes in daily life tomorrow.</strong> This is basic knowledge about numbers. Its effect is inside mathematics: many hundreds of results started with the words &ldquo;if the Riemann Hypothesis is true&rdquo;. With an accepted proof, these results become facts.</li>
     <li data-i18n="m3"><strong>The method of work is the real news.</strong> An AI did a large part of the hardest work on the hardest known riddle. And machines confirmed the result before a person understood it. That is new.</li>
     <li data-i18n="m4"><strong>Mathematicians have mixed feelings.</strong> Alpöge writes that he lost a guiding light of his life, and that he sees the start of something much larger for all of science. Masullo writes to his colleagues that human mathematicians are still here.</li>
   </ul>
@@ -322,30 +325,31 @@
     <div><dt data-i18n="g2t">Zeta function</dt><dd data-i18n="g2d">The formula of Riemann that connects all primes. In this page: the sheet of music.</dd></div>
     <div><dt data-i18n="g3t">Zero</dt><dd data-i18n="g3d">A point where the zeta function has the value 0. In this page: one tone.</dd></div>
     <div><dt data-i18n="g4t">Lean</dt><dd data-i18n="g4d">A program that checks a mathematical proof step by step. In this page: the auditor.</dd></div>
-    <div><dt data-i18n="g5t">Generalized Riemann Hypothesis</dt><dd data-i18n="g5d">A larger version of the riddle for a full family of similar formulas. The two proofs claim to solve this version too.</dd></div>
+    <div><dt data-i18n="g5t">Generalized Riemann Hypothesis</dt><dd data-i18n="g5d">A larger version of the riddle for a full family of similar formulas. The two proofs claim to solve this version too. The checked computer file covers one important group of these formulas.</dd></div>
   </dl>
   <h3 data-i18n="srch">Sources</h3>
   <ul class="sources">
     <li><a href="https://alpo.ge/remark.pdf" data-i18n="src1">The note by Levent Alpöge (alpo.ge/remark.pdf)</a></li>
+    <li><a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/" data-i18n="src8">Lean and Mathlib communities: joint statement of 21 November 2026</a></li>
     <li><a href="https://math.mit.edu/~drew/grh/" data-i18n="src2">Andrew Sutherland, MIT: public list of the checks</a></li>
     <li><a href="https://www.scientificamerican.com/article/the-ai-riemann-hypothesis-proof-is-almost-certainly-true-independent-mathematicians-attest/" data-i18n="src3">Scientific American: independent mathematicians on the checks</a></li>
+    <li><a href="https://kingy.ai/blog/levent-alpoge-claude-riemann-hypothesis-proof/" data-i18n="src9">Kingy AI: overview of the checks and the first reactions, with the words of Terence Tao</a></li>
     <li><a href="https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/" data-i18n="src4">Ravi Vakil: announcement of the paper by Alessandro Masullo</a></li>
-    <li><a href="https://www.nacionale.com/en/articles/what-is-generalized-riemann-hypothesis-grh-explained-alpoge-claude-proof" data-i18n="src5">Nacionale: the two proofs and the reported problems</a></li>
+    <li><a href="https://johncarlosbaez.wordpress.com/2026/11/22/masullo-on-the-riemann-hypothesis/" data-i18n="src7">John Baez: the paper by Masullo and the objections against it</a></li>
     <li><a href="https://www.nacionale.com/en/articles/when-will-we-know-riemann-hypothesis-proof-verified-alpoge-claude-lean-what-happens-next" data-i18n="src6">Nacionale: the steps of the verification and the Clay rules</a></li>
-    <li><a href="https://philarchive.org/archive/NIEIOM" data-i18n="src7">Public note about a possible error in the second proof (not reviewed)</a></li>
   </ul>
 </section>
 
-<p class="page-note" data-i18n="foot">The charts calculate their data in your browser. Sections 03 and 06 simplify very advanced mathematics. Status of the checks: afternoon of 21 November 2026.</p>
+<p class="page-note" data-i18n="foot">The charts calculate their data in your browser. Sections 03 and 06 simplify very advanced mathematics. Status of the facts: 22 November 2026, midday.</p>
 </main>
 <!-- learn:footer -->
 <script type="application/json" id="i18n-de">
 {
-"ey": "Laufende Entwicklung &middot; Stand: 21. November 2026",
+"ey": "Laufende Entwicklung &middot; Stand: 22. November 2026",
 "h1": "Ein möglicher Beweis der Riemannschen Vermutung",
 "lead": "167 Jahre lang konnte niemand das berühmteste Rätsel der Mathematik lösen. Am 20. November 2026 erklärte der Mathematiker Levent Alpöge, er habe es gemeinsam mit Claude gelöst, einem KI-Programm. Diese Seite erklärt das Rätsel, die Idee und wie sicher das Ergebnis ist. Schulmathematik ist dafür nicht nötig.",
-"st_b": "Stand: Alle fertigen Prüfungen bestanden, eine läuft noch",
-"st_t": "Andere Mathematiker haben den Beweis mit mehreren unabhängigen Prüfprogrammen kontrolliert. Jede fertige Prüfung war erfolgreich. Eine lange Schlussprüfung lief am 21. November noch. Kein Mensch versteht den ganzen Beweis bisher. Am selben Tag erschien ein zweiter Beweis, den nur Menschen gemacht haben. Bei ihm wurden Probleme gemeldet (Abschnitt 06).",
+"st_b": "Stand: Die Fachleute für das Prüfprogramm bestätigen den Beweis",
+"st_t": "Am 21. November haben die Gemeinschaften hinter dem Prüfprogramm Lean eine gemeinsame Erklärung veröffentlicht: Sie haben volles Vertrauen, dass der Beweis richtig ist. Keine Prüfung ist gescheitert. Kein Mensch versteht den ganzen Beweis bisher, und das Clay-Institut führt das Rätsel weiter als ungelöst. Gegen den zweiten Beweis, den nur Menschen gemacht haben, gibt es zwei konkrete Einwände (Abschnitt 06).",
 "c1h": "Das Rätsel",
 "c1t": "Primzahlen tauchen ohne erkennbares Muster auf. Die Riemannsche Vermutung sagt: Dahinter steckt eine strenge Ordnung.",
 "c2h": "Die Behauptung",
@@ -434,27 +438,27 @@
 "who2": "<strong>Claude</strong> machte viel von der technischen Arbeit, vor allem am Ende. Der Autor schreibt, dass die KI ihm in dieser Phase weit voraus war und wichtige Vorschläge machte.",
 "who3": "<strong>Gemeinsam</strong> schrieben sie den Beweis in einer Form, die ein Computer prüfen kann. Der Autor sagt offen, dass er noch nicht alle Teile versteht.",
 "s5h": "Kann man einem Beweis trauen, den kein Mensch gelesen hat?",
-"s5p1": "Der Beweis ist eine Computerdatei mit 175.187 Teilen. Ein Prüfprogramm mit dem Namen Lean kontrolliert jeden Schritt. Man kann an einen sehr strengen Buchprüfer denken. Der Buchprüfer versteht das Geschäft nicht. Aber er rechnet jede Zeile nach und akzeptiert nichts ohne Begründung.",
+"s5p1": "Der Beweis ist eine Computerdatei mit 175.187 Teilen und etwa 17 Millionen Zeilen. Ein Prüfprogramm mit dem Namen Lean kontrolliert jeden Schritt. Man kann an einen sehr strengen Buchprüfer denken. Der Buchprüfer versteht das Geschäft nicht. Aber er rechnet jede Zeile nach und akzeptiert nichts ohne Begründung.",
 "s5p2": "So eine Prüfung kann trotzdem auf zwei Arten schiefgehen. Die Datei kann eine andere, leichtere Behauptung beweisen als das echte Rätsel. Oder sie enthält eine versteckte Abkürzung: einen Schritt, den sie annimmt, aber nicht beweist. Darum müssen andere Leute diese Punkte kontrollieren. Andrew Sutherland von der Universität MIT führt eine öffentliche Liste aller Prüfungen.",
 "plOk": "Bestanden",
 "plRun": "Läuft",
 "plNo": "Noch nicht",
 "k1t": "Die Prüfung klappt auf anderen Computern.",
-"k1d": "Sutherland ließ alle 175.187 Teile auf eigenen Computern laufen. Das Ergebnis: null Fehler.",
+"k1d": "Dutzende Personen ließen die Datei auf eigenen Computern laufen. Alle bekamen das gleiche Ergebnis, mit null Fehlern.",
 "k2t": "Keine versteckten Abkürzungen.",
 "k2d": "Der Beweis verwendet nur die drei Grundannahmen, die die ganze Mathematik verwendet. Sutherland nennt die Chance auf einen Trick &bdquo;ungefähr null&ldquo;.",
 "k3t": "Andere Buchprüfer kommen zum gleichen Ergebnis.",
-"k3d": "Vier getrennte Prüfprogramme haben den Beweis akzeptiert.",
-"k4t": "Die große Schlussprüfung.",
-"k4d": "Sie hat drei Teile. Zwei sind fertig und bestanden: Die Datei beweist das echte Rätsel, und sie hat keine Abkürzungen. Der dritte Teil ist ein langsames Nachrechnen. Er lief beim letzten Bericht am 21. November um 10:30 Uhr (MEZ) noch.",
+"k3d": "Mehrere getrennte Prüfprogramme haben den Beweis akzeptiert. Einige davon sind in anderen Programmiersprachen geschrieben.",
+"k4t": "Die Datei beweist das echte Rätsel.",
+"k4d": "Zwei Werkzeuge haben die bewiesene Behauptung mit der Standardform des Rätsels in der Mathematik-Bibliothek von Lean verglichen. Beide sind identisch.",
 "k5t": "Menschen verstehen den Beweis.",
-"k5d": "Niemand kann heute erklären, warum er funktioniert. Der bekannte Mathematiker Terence Tao erwartet, dass das Zeit braucht.",
+"k5d": "Niemand kann heute erklären, warum er funktioniert. Der bekannte Mathematiker Terence Tao schreibt nach einem ersten Blick, dass der Beweis offenbar zwei große Gebiete der modernen Mathematik verwendet und dass es Zeit braucht, bis man sieht, wie die Teile zusammenpassen.",
 "k6t": "Ein Text, den Menschen lesen können.",
 "k6d": "Eine gedruckte Fassung hätte mehr als 250.000 Seiten. Der Autor hat entschieden, sie nicht zu veröffentlichen.",
-"k7t": "Der Preis von 1 Million Dollar.",
-"k7d": "Die Regeln des Clay-Instituts verlangen eine Veröffentlichung und danach eine Wartezeit von zwei Jahren oder mehr.",
-"s5p3": "<strong>Die kurze Antwort:</strong> Der Beweis ist sehr wahrscheinlich richtig. Keine Prüfung ist gescheitert. Aber geprüft ist nicht das Gleiche wie verstanden. Die nächste Aufgabe der Mathematiker ist herauszufinden, warum der Beweis funktioniert.",
-"s5p4": "Sutherland nennt auch Grenzen seines eigenen Tests. Ein Beispiel: Seine Computer haben die Prüfung nicht in einer abgeschotteten Umgebung ausgeführt. Dieser Vergleich ist noch offen.",
+"k7t": "Offizielle Anerkennung und der Preis von 1 Million Dollar.",
+"k7d": "Das Clay-Institut führt das Rätsel weiter als ungelöst. Seine Regeln verlangen eine Veröffentlichung und danach eine Wartezeit von zwei Jahren oder mehr.",
+"s5p3": "<strong>Die kurze Antwort:</strong> Der Beweis hat die strengste Prüfung bestanden, die es für einen Beweis dieser Art gibt, und die Fachleute für diese Prüfung bestätigen das. Er ist also mit sehr hoher Wahrscheinlichkeit richtig. Aber geprüft ist nicht das Gleiche wie verstanden, und die Mathematik als Gemeinschaft hat ihn noch nicht offiziell anerkannt. Die nächste Aufgabe ist herauszufinden, warum der Beweis funktioniert.",
+"s5p4": "Eine Grenze bleibt. Ein Prüfprogramm bestätigt, dass die Behauptung aus den Definitionen seiner Bibliothek folgt. Es kann nicht bestätigen, dass diese Definitionen das sagen, was Menschen meinen. Bei diesem Rätsel haben Fachleute die Definition schon geprüft, bevor der Beweis erschien.",
 "s6h": "Ein zweiter Beweis, nur von Menschen gemacht",
 "s6p1": "Einige Stunden nach der ersten Nachricht wurde ein zweiter Beweis öffentlich. Ravi Vakil, der Präsident der American Mathematical Society, veröffentlichte einen Entwurf des Mathematikers Alessandro Masullo. Die Arbeit heißt &bdquo;The Music of the Primes&ldquo; (Die Musik der Primzahlen). Masullo schreibt, dass er fast 12 Jahre daran gearbeitet hat, ohne KI. Er schreibt auch, dass der Entwurf nicht fertig ist und dass man ihm geraten hat, ihn jetzt zu veröffentlichen.",
 "f7t": "Arbeitszeit für jeden Beweis",
@@ -476,22 +480,22 @@
 "va2": "Computerdatei mit 175.187 Teilen",
 "va3": "Programmen",
 "va4": "niemand versteht ihn",
-"va5": "alle fertigen Prüfungen bestanden",
+"va5": "von der Lean-Gemeinschaft bestätigt",
 "vb1": "einem Menschen, mit Rat seines Lehrers",
 "vb2": "Arbeit mit 940 Seiten",
 "vb3": "Menschen",
 "vb4": "niemand hat ihn bestätigt",
-"vb5": "Probleme gemeldet, große Überarbeitung",
+"vb5": "zwei konkrete Einwände, große Überarbeitung",
 "s6h2": "Eine andere Idee",
 "s6p2": "Masullo verwendet nicht die Kette aus Abschnitt 03. Er berechnet eine Größe auf zwei Arten: einmal mit den Primzahlen und einmal mit den Tönen aus Abschnitt 02. Das macht er in einer besonderen Umgebung. In dieser Umgebung können nur Töne nahe der Mittellinie klingen. Er kann diesen Bereich so schmal machen, wie er will. Die zwei Ergebnisse müssen gleich sein. Also bleibt kein Platz für einen Ton abseits der Linie. Masullo schreibt auch, dass seine Methode bei den gewöhnlichen Zahlen funktioniert, aber nicht in der Modellwelt. Der erste Beweis geht den umgekehrten Weg: Seine Idee kommt aus der Modellwelt.",
 "s6h3": "Der Stand beim zweiten Beweis",
 "l61": "Brian Conrad von der Universität Stanford, der frühere Lehrer von Masullo, hat die Arbeit monatelang geprüft. Er bestätigt das, sagt aber nicht, dass der Beweis richtig ist. Er sagt, dass die Arbeit gerade stark überarbeitet wird.",
-"l62": "Leser meldeten Vakil schon einige Stunden nach der Veröffentlichung Probleme. Niemand weiß bisher, wie schwer die Probleme sind und ob man sie reparieren kann.",
-"l63": "Eine öffentliche Notiz sagt, dass ein Schritt kurz vor dem Ende der Argumentation nicht stimmt. Fachleute haben diese Notiz noch nicht geprüft.",
+"l62": "Zwei konkrete Einwände sind öffentlich, wie der Mathematiker John Baez am 22. November berichtet. Erstens: Eric Naslund hat die Arbeit mit Hilfe von KI geprüft. Eine Formel der Arbeit liefert in der Nähe der Primzahl 2 ein anderes Ergebnis, als die Arbeit sagt. Zweitens: Leser fanden auf Seite 444 einen Schritt, der eine Eigenschaft verwendet, die in dieser Situation offenbar nicht gilt.",
+"l63": "Das Kapitel, das aus der Hauptformel das Endergebnis gewinnen soll, enthält nur Platzhalter.",
 "s6p3": "<strong>Können beide Beweise richtig sein?</strong> Ja. Zwei verschiedene Wege können zum gleichen Ergebnis führen. Und ein Problem im zweiten Beweis sagt nichts über das Rätsel selbst. Es bedeutet nur, dass dieser Weg nicht bestätigt ist. Wenn beide richtig sind, ist die Arbeit von Masullo die Fassung, die Menschen lesen und aus der sie lernen können.",
 "s7h": "Was das für Sie bedeutet",
 "m1": "<strong>Ihre Bankomatkarte bleibt sicher.</strong> Verschlüsselung im Internet verwendet Primzahlen. Aber der Beweis liefert keine Methode, sie zu knacken. Er bestätigt nur, was Fachleute schon angenommen haben.",
-"m2": "<strong>Im Alltag ändert sich morgen nichts.</strong> Es geht um Grundwissen über Zahlen. Die Wirkung liegt in der Mathematik: Viele Hundert Ergebnisse begannen mit den Worten &bdquo;wenn die Riemannsche Vermutung stimmt&ldquo;. Diese Ergebnisse werden jetzt zu Tatsachen.",
+"m2": "<strong>Im Alltag ändert sich morgen nichts.</strong> Es geht um Grundwissen über Zahlen. Die Wirkung liegt in der Mathematik: Viele Hundert Ergebnisse begannen mit den Worten &bdquo;wenn die Riemannsche Vermutung stimmt&ldquo;. Mit einem anerkannten Beweis werden diese Ergebnisse zu Tatsachen.",
 "m3": "<strong>Die Arbeitsweise ist die eigentliche Nachricht.</strong> Eine KI hat einen großen Teil der schwersten Arbeit am schwersten bekannten Rätsel gemacht. Und Maschinen haben das Ergebnis bestätigt, bevor ein Mensch es verstanden hat. Das ist neu.",
 "m4": "<strong>Mathematiker haben gemischte Gefühle.</strong> Alpöge schreibt, dass er einen Leitstern seines Lebens verloren hat und dass er den Anfang von etwas viel Größerem für die ganze Wissenschaft sieht. Masullo schreibt seinen Kollegen, dass die menschlichen Mathematiker noch da sind.",
 "s8h": "Kleines Glossar",
@@ -504,23 +508,30 @@
 "g4t": "Lean",
 "g4d": "Ein Programm, das einen mathematischen Beweis Schritt für Schritt prüft. Auf dieser Seite: der Buchprüfer.",
 "g5t": "Verallgemeinerte Riemannsche Vermutung",
-"g5d": "Eine größere Fassung des Rätsels für eine ganze Familie ähnlicher Formeln. Beide Beweise behaupten, auch diese Fassung zu lösen.",
+"g5d": "Eine größere Fassung des Rätsels für eine ganze Familie ähnlicher Formeln. Beide Beweise behaupten, auch diese Fassung zu lösen. Die geprüfte Computerdatei deckt eine wichtige Gruppe dieser Formeln ab.",
 "srch": "Quellen",
 "src1": "Die Notiz von Levent Alpöge (alpo.ge/remark.pdf, englisch)",
 "src2": "Andrew Sutherland, MIT: öffentliche Liste der Prüfungen (englisch)",
 "src3": "Scientific American: unabhängige Mathematiker über die Prüfungen (englisch)",
 "src4": "Ravi Vakil: Ankündigung der Arbeit von Alessandro Masullo (englisch)",
-"src5": "Nacionale: die zwei Beweise und die gemeldeten Probleme (englisch)",
 "src6": "Nacionale: die Schritte der Überprüfung und die Clay-Regeln (englisch)",
-"src7": "Öffentliche Notiz über einen möglichen Fehler im zweiten Beweis (nicht geprüft, englisch)",
-"foot": "Die Diagramme berechnen ihre Daten in Ihrem Browser. Die Abschnitte 03 und 06 vereinfachen sehr anspruchsvolle Mathematik. Stand der Prüfungen: Nachmittag des 21. November 2026.",
+"src7": "John Baez: die Arbeit von Masullo und die Einwände dagegen (englisch)",
+"foot": "Die Diagramme berechnen ihre Daten in Ihrem Browser. Die Abschnitte 03 und 06 vereinfachen sehr anspruchsvolle Mathematik. Stand der Fakten: 22. November 2026, mittags.",
 "chg_h": "Was sich auf dieser Seite geändert hat",
 "chg3d": "22. Nov. 2026",
-"chg3t": "Die Seite ist auf learn.ankerl.com umgezogen. Sie hat eine Navigation für die Abschnitte und diese Änderungsliste. Die Fakten sind gleich geblieben: Sie zeigen den Stand vom 21. November.",
+"chg3t": "Neu: die gemeinsame Erklärung der Lean- und Mathlib-Gemeinschaften, die den Beweis bestätigt. Die Liste der Prüfungen in Abschnitt 05 ist neu. Abschnitt 06 nennt die zwei konkreten Einwände gegen den zweiten Beweis. Die Seite ist außerdem auf learn.ankerl.com umgezogen.",
 "chg2d": "21. Nov. 2026, Nachmittag",
 "chg2t": "Neuer Abschnitt 06 über den zweiten Beweis von Alessandro Masullo. Die Liste der Prüfungen zeigt jetzt, dass vier Prüfprogramme den ersten Beweis akzeptiert haben. Deutscher Text ergänzt.",
 "chg1d": "21. Nov. 2026, Vormittag",
-"chg1t": "Erste öffentliche Fassung. Unabhängige Mathematiker haben den Beweis auf eigenen Computern laufen lassen, und er hat bestanden."
+"chg1t": "Erste öffentliche Fassung. Unabhängige Mathematiker haben den Beweis auf eigenen Computern laufen lassen, und er hat bestanden.",
+"s5p5": "<strong>Die Bestätigung.</strong> Am 21. November haben die Menschen, die Lean und seine Mathematik-Bibliothek entwickeln, eine gemeinsame Erklärung veröffentlicht. Sie schreiben, dass sie &bdquo;volles Vertrauen&ldquo; haben, dass der Beweis richtig ist, und sie bestätigen die Behauptung und den Beweis. Die zwei Organisationen, die diese Arbeit leiten, die Lean FRO und die Mathlib Initiative, unterstützen die Erklärung. Das sind die Prüfungen dahinter:",
+"k8t": "Ein neuer Aufbau in einer abgeschotteten Umgebung.",
+"k8d": "Ein anderer Computer hat alle Teile noch einmal gebaut, abgeschirmt von äußeren Einflüssen. Das Ergebnis ist mit dem veröffentlichten identisch, Byte für Byte.",
+"k9t": "Drei lange Läufe auf Sutherlands Liste.",
+"k9d": "Sie verwenden das Standard-Prüfprogramm in seinen langsamsten Betriebsarten. Am 22. November um 03:25 Uhr (MEZ) waren sie nicht fertig. Die gemeinsame Erklärung nennt fertige Läufe der gleichen Werkzeuge.",
+"l64": "Baez schreibt, dass die Einwände noch reparierbar oder selbst falsch sein können. Er sagt nicht, dass der Beweis funktioniert, und er sagt nicht, dass er gescheitert ist.",
+"src8": "Lean- und Mathlib-Gemeinschaften: gemeinsame Erklärung vom 21. November 2026 (englisch)",
+"src9": "Kingy AI: Überblick über die Prüfungen und die ersten Reaktionen, mit den Worten von Terence Tao (englisch)"
 }
 </script>
 <script>
