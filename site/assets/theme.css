@@ -39,7 +39,7 @@
 
 /* ---------- base ---------- */
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:4rem}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:6rem}
 body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body)}
 p,ul,ol,dl,h1,h2,h3,figure{margin:0}
 h1{font:400 clamp(2.3rem,8vw,3.5rem)/1.04 var(--font-display);letter-spacing:-.01em;text-wrap:balance}
@@ -49,6 +49,9 @@ a{color:var(--c1);text-underline-offset:.15em}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--c1);outline-offset:3px;border-radius:4px}
 strong{font-weight:600}
 img,svg{max-width:100%}
+
+/* Text for screen readers only. */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
 /* Two-language text that the build writes: only one of the two is visible. */
 html[lang="de"] .l-en{display:none}
@@ -68,6 +71,30 @@ html:not([lang="de"]) .l-de{display:none}
 .progress{height:2px;background:transparent}
 .progress i{display:block;height:100%;width:0;background:var(--c1)}
 
+/* ---------- section navigation ----------
+   Small and medium screens: a row under the site bar shows the current section. A tap opens the list.
+   Wide screens: the list of sections is in the left margin (the rail). theme.js builds the two parts. */
+.sec-now{display:none;position:absolute;left:0;right:0;top:100%;background:var(--paper);border-bottom:1px solid var(--rule)}
+.sec-now.on{display:block}
+.sec-now > button{display:flex;align-items:center;gap:.55rem;width:100%;max-width:calc(var(--col) + 2*var(--gutter));margin:0 auto;padding:.55rem var(--gutter);background:none;border:0;color:var(--ink);font:500 .86rem/1.2 var(--font-body);text-align:left;cursor:pointer}
+.sec-now .n,.sec-menu .n,.rail .n{font:500 .74rem/1.5 var(--font-mono);color:var(--c1);letter-spacing:.06em}
+.sec-now .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sec-now .chev{flex:0 0 auto;width:14px;height:14px;color:var(--muted);transition:transform .15s ease}
+.sec-now > button[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.sec-menu{max-width:calc(var(--col) + 2*var(--gutter));margin:0 auto;padding:0 var(--gutter) .5rem;display:flex;flex-direction:column;max-height:62vh;overflow:auto}
+.sec-menu[hidden]{display:none}
+.sec-menu a{display:grid;grid-template-columns:1.7rem 1fr;gap:.3rem;padding:.6rem 0;border-top:1px solid var(--rule);color:var(--ink);text-decoration:none;font-size:.93rem;line-height:1.3}
+.sec-menu a[aria-current="true"] .t,.rail a[aria-current="true"] .t{font-weight:600}
+.rail{display:none}
+@media (min-width:1320px){
+  .sec-now,.sec-now.on{display:none}
+  .rail{display:flex;flex-direction:column;position:fixed;top:6.2rem;left:calc(50% - 26.5rem - 14rem);width:12rem;max-height:calc(100vh - 8rem);overflow:auto;font-size:.82rem;line-height:1.3}
+  .rail.off{visibility:hidden}
+  .rail a{display:grid;grid-template-columns:1.6rem 1fr;gap:.2rem;padding:.42rem .5rem .42rem .65rem;border-left:2px solid var(--rule);color:var(--muted);text-decoration:none}
+  .rail a:hover{color:var(--ink)}
+  .rail a[aria-current="true"]{color:var(--ink);border-left-color:var(--c1)}
+}
+
 /* ---------- explainer page ---------- */
 main.explainer{max-width:calc(var(--col) + 2*var(--gutter));margin:0 auto;padding:2.2rem var(--gutter) 3rem;display:flex;flex-direction:column;gap:3.25rem}
 main.explainer > section, main.explainer > header{display:flex;flex-direction:column;gap:1.05rem}
@@ -76,6 +103,11 @@ main.explainer > section, main.explainer > header{display:flex;flex-direction:co
 .byline{font-size:.86rem;color:var(--muted);line-height:1.5}
 .byline b{font-weight:500;color:var(--ink)}
 .num{font:500 .76rem/1 var(--font-mono);color:var(--c1);letter-spacing:.09em}
+/* The build makes the number of a section a link to that section. */
+a.num{text-decoration:none;align-self:flex-start;padding:.3rem .4rem .3rem 0}
+a.num .hash{opacity:0;transition:opacity .15s ease}
+a.num:hover .hash,a.num:focus-visible .hash{opacity:1}
+@media (hover:none){a.num .hash{opacity:.45}}
 .mono{font-family:var(--font-mono);font-size:.92em}
 .small{font-size:.9rem;color:var(--muted);line-height:1.5}
 ul.plain,ol.plain{padding-left:1.15rem;display:flex;flex-direction:column;gap:.45rem}
@@ -85,6 +117,16 @@ ul.plain,ol.plain{padding-left:1.15rem;display:flex;flex-direction:column;gap:.4
 /* callout: the state of a developing story, or an important limit */
 .status{border-left:4px solid var(--warn);background:var(--surface);padding:.95rem 1.05rem;border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:.3rem}
 .status b{color:var(--warn);font:600 .8rem/1.2 var(--font-mono);letter-spacing:.07em;text-transform:uppercase}
+
+/* change list for a story in progress: closed at the start, newest entry first */
+details.changes{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.7rem .95rem;font-size:.93rem;line-height:1.45}
+details.changes summary{cursor:pointer;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:1rem;list-style:none}
+details.changes summary::-webkit-details-marker{display:none}
+details.changes summary::after{content:"+";font:500 1.1rem/1 var(--font-mono);color:var(--c1)}
+details.changes[open] summary::after{content:"\2212"}
+details.changes ol{list-style:none;padding:0;margin:.75rem 0 .2rem;display:flex;flex-direction:column;gap:.65rem}
+details.changes li{display:grid;grid-template-columns:6.6rem 1fr;gap:.7rem}
+details.changes time{font:500 .8rem/1.8 var(--font-mono);color:var(--c1)}
 
 /* summary cards under the lead: two to four short boxes */
 .short{display:grid;grid-template-columns:repeat(auto-fit,minmax(11.5rem,1fr));gap:.75rem}
@@ -193,10 +235,30 @@ main.home{max-width:68rem;margin:0 auto;padding:2.6rem var(--gutter) 3rem;displa
 .card .meta{margin-top:auto;padding-top:.4rem;display:flex;flex-wrap:wrap;gap:.3rem .8rem;font:500 .74rem/1.3 var(--font-mono);color:var(--muted);letter-spacing:.03em}
 .card .tags{display:flex;flex-wrap:wrap;gap:.3rem}
 .card .tags span{font:500 .7rem/1 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--c1);background:var(--tint);border-radius:4px;padding:.3rem .4rem}
+.card h3{font:400 1.4rem/1.15 var(--font-display);text-wrap:balance}
+/* the newest explainer: one large card over the full width */
+.card.feature{margin-bottom:1.1rem}
+@media (min-width:760px){
+  .card.feature{flex-direction:row}
+  .card.feature .cover{flex:0 0 54%;border-bottom:0;border-right:1px solid var(--rule)}
+  .card.feature .body{padding:1.7rem 1.8rem;justify-content:center;gap:.8rem}
+  .card.feature h2{font-size:2.35rem;line-height:1.08}
+  .card.feature p{font-size:1.03rem}
+  .card.feature .meta{margin-top:.3rem}
+}
+/* "Read next" at the end of an explainer */
+.next{border-top:1px solid var(--rule);margin-top:1rem}
+.next .in{max-width:calc(var(--col) + 10rem + 2*var(--gutter));margin:0 auto;padding:2.2rem var(--gutter) 1.4rem;display:flex;flex-direction:column;gap:1.1rem}
+.next h2{font-size:1.75rem}
 .about{border-top:1px solid var(--rule);padding-top:1.4rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.2rem;font-size:.94rem;line-height:1.5;color:var(--muted)}
 .about h3{color:var(--ink);margin-bottom:.3rem}
 
+/* On a desktop, figures are wider than the text column. */
+@media (min-width:940px){
+  main.explainer > section > figure{margin-inline:-5rem}
+}
 @media (max-width:460px){
+  details.changes li{grid-template-columns:1fr;gap:.05rem}
   .stats{grid-template-columns:repeat(2,1fr)}
   .steps li{grid-template-columns:1fr;gap:.1rem}
   .checks li{grid-template-columns:1fr;gap:.35rem}
@@ -209,4 +271,4 @@ main.home{max-width:68rem;margin:0 auto;padding:2.6rem var(--gutter) 3rem;displa
   .brand span{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}.card{transition:none}.card:hover{transform:none}}
-@media print{.site-bar,.site-foot nav,.seg{display:none}body{background:#fff}}
+@media print{.site-bar,.site-foot nav,.seg,.rail,.next{display:none}body{background:#fff}main.explainer > section > figure{margin-inline:0}}
