@@ -43,7 +43,8 @@ var lang=pickLang();
 root.setAttribute('lang',lang);
 
 var DICT={},EN={},EN_ARIA={},EN_TITLE='',i18nEls=[],ariaEls=[],listeners=[],started=false;
-var LOC={en:'en-US',de:'de-AT'};
+/* Number formats. German uses de-DE: 1.000.000 and 30,1, as references/writing.md asks. de-AT writes 1 000 000. */
+var LOC={en:'en-US',de:'de-DE'};
 
 function applyLang(l,save){
   if(langs.indexOf(l)<0)l=langs[0];
