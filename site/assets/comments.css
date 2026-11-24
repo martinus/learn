@@ -40,7 +40,9 @@
 .cm-x svg{width:18px;height:18px}
 .cm-body{overflow:auto;padding:.8rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:.85rem;font-size:.92rem;line-height:1.45}
 .cm-hint,.cm-msg{color:var(--muted);font-size:.86rem}
-.cm-msg:empty{display:none}
+.cm-msg[hidden]{display:none}
+.cm-msg button{background:none;border:0;padding:0 0 0 .5rem;color:var(--c1);text-decoration:underline;text-underline-offset:.15em}
+.cm-msg button[hidden]{display:none}
 .cm-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
 .cm-list li{border:1px solid var(--rule);border-radius:10px;padding:.65rem .75rem;display:flex;flex-direction:column;gap:.35rem;background:var(--paper)}
 .cm-list li.cm-none{border-style:dashed;color:var(--muted);background:none}
@@ -50,25 +52,22 @@
 .cm-lost{font-size:.8rem;color:var(--warn)}
 .cm-text{white-space:pre-wrap;overflow-wrap:anywhere}
 .cm-row{display:flex;flex-wrap:wrap;gap:.4rem}
-.cm-list .cm-row button,.cm-more button,.cm-whole{background:none;border:0;padding:.35rem 0;color:var(--c1);text-decoration:underline;text-underline-offset:.15em;margin-right:.6rem}
+.cm-link,.cm-more button,.cm-whole{background:none;border:0;padding:.35rem 0;color:var(--c1);text-decoration:underline;text-underline-offset:.15em;margin-right:.6rem}
 .cm-whole{align-self:flex-start}
+.cm-ui .cm-delbtn{color:var(--warn)}
+.cm-list .cm-link:last-child{margin-right:0}
+/* the comment that is open for editing */
+.cm-list li.cm-editing{border-color:var(--c1);box-shadow:0 0 0 1px var(--c1);background:var(--surface)}
+.cm-editing .cm-delbtn{margin-left:auto}
+.cm-input{width:100%;font:16px/1.45 var(--font-body);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:.55rem .65rem;resize:vertical}
+.cm-input:focus-visible{outline:2px solid var(--c1);outline-offset:1px}
 .cm-act{display:flex;flex-wrap:wrap;gap:.5rem}
-.cm-act button,.cm-dlg .cm-row button{min-height:2.5rem;padding:.55rem .95rem;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink)}
-.cm-ui .cm-primary{background:var(--c1);border-color:var(--c1);color:var(--surface)}
+.cm-act button,.cm-editing .cm-row button{min-height:2.5rem;padding:.55rem .95rem;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink)}
+.cm-ui .cm-primary,.cm-editing .cm-row .cm-primary{background:var(--c1);border-color:var(--c1);color:var(--surface)}
 .cm-prompt summary{cursor:pointer;color:var(--muted);font-size:.86rem}
 .cm-prompt[hidden]{display:none}
 .cm-prompt textarea{width:100%;margin-top:.4rem;font:.78rem/1.45 var(--font-mono);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:.5rem;resize:vertical}
 .cm-more{display:flex;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:.5rem}
 .cm-more button{color:var(--muted)}
-
-/* editor */
-.cm-dlg{width:min(34rem,calc(100vw - 2rem));padding:0;border:1px solid var(--rule);border-radius:14px;background:var(--surface);color:var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.25)}
-.cm-dlg::backdrop{background:rgba(10,14,26,.45)}
-.cm-dlg form{display:flex;flex-direction:column;gap:.7rem;padding:1rem 1.1rem 1.1rem}
-.cm-dlg .cm-quote{max-height:9rem;overflow:auto}
-.cm-dlg textarea{width:100%;font:16px/1.45 var(--font-body);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:.6rem .7rem;resize:vertical}
-.cm-dlg textarea:focus-visible{outline:2px solid var(--c1);outline-offset:1px}
-.cm-dlg .cm-del{margin-left:auto;color:var(--warn)}
-.cm-dlg .cm-del[hidden]{display:none}
 
 @media print{.cm-ui{display:none !important}}

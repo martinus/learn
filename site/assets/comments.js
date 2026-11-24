@@ -1,11 +1,12 @@
 /* learn.ankerl.com: comments of the reader on an explainer.
    theme.js loads this file when the reader turns comments on (footer button "Comment on this page").
 
-   What the reader can do:
-     select text in the page, then press "Comment"      a comment on that text
-     press the comment button of a section               a comment on the whole section
-     open the panel (button at the bottom right)         see all comments, copy them as one prompt
-                                                         for an AI agent, or open them as a GitHub issue
+   What the reader can do. All writing, editing and deleting happens in the panel at the side (bottom on a phone):
+     select text in the page, then press "Comment"      the panel opens with a new comment on that text
+     press the comment button of a section               the panel opens with a new comment on the section
+     click marked text                                   the panel opens with that comment, ready to edit
+     open the panel (button at the bottom right)         see all comments in page order, copy them as one
+                                                         prompt for an AI agent, or open them as a GitHub issue
    Storage: localStorage of the browser, key "learn-comments:<path of the page>". Nothing goes to a server.
    A comment finds its text again with the text itself (whitespace collapsed) and the number of the
    occurrence in its section. If the page text changed, the comment stays in the list as "text not found".
@@ -24,7 +25,7 @@ var TXT={
   comment:{en:'Comment',de:'Kommentieren'},
   comments:{en:'Comments',de:'Kommentare'},
   panelTitle:{en:'Your comments on this page',de:'Ihre Kommentare zu dieser Seite'},
-  hint:{en:'Select text and press “Comment”, or use the comment button of a section. The comments stay in this browser until you copy or send them.',de:'Markieren Sie Text und drücken Sie „Kommentieren“, oder verwenden Sie die Kommentar-Schaltfläche eines Abschnitts. Die Kommentare bleiben in diesem Browser, bis Sie sie kopieren oder senden.'},
+  hint:{en:'Select text and press “Comment”, or use the comment button of a section. A click on marked text opens its comment. The comments stay in this browser until you copy or send them.',de:'Markieren Sie Text und drücken Sie „Kommentieren“, oder verwenden Sie die Kommentar-Schaltfläche eines Abschnitts. Ein Klick auf markierten Text öffnet seinen Kommentar. Die Kommentare bleiben in diesem Browser, bis Sie sie kopieren oder senden.'},
   none:{en:'No comments yet.',de:'Noch keine Kommentare.'},
   whole:{en:'Comment on the whole page',de:'Ganze Seite kommentieren'},
   copy:{en:'Copy prompt',de:'Prompt kopieren'},
@@ -45,6 +46,8 @@ var TXT={
   copied:{en:'Copied. Paste the prompt into the agent.',de:'Kopiert. Fügen Sie den Prompt beim Agenten ein.'},
   copyFail:{en:'The browser did not allow the copy. Open “Show the prompt” and copy the text.',de:'Der Browser hat das Kopieren nicht erlaubt. Öffnen Sie „Prompt anzeigen“ und kopieren Sie den Text.'},
   long:{en:'The prompt is too long for a link. It is on your clipboard: paste it into the issue.',de:'Der Prompt ist zu lang für einen Link. Er ist in der Zwischenablage: Fügen Sie ihn in das Issue ein.'},
+  deleted:{en:'Comment deleted.',de:'Kommentar gelöscht.'},
+  undo:{en:'Undo',de:'Rückgängig'},
   confirmAll:{en:'Delete all comments on this page?',de:'Alle Kommentare zu dieser Seite löschen?'}
 };
 function t(k){return Learn.t(TXT[k]);}
@@ -148,7 +151,7 @@ selBtn.addEventListener('mousedown',function(e){e.preventDefault();});
 selBtn.addEventListener('click',function(){
   if(!pending)return;
   var p=pending;selBtn.hidden=true;
-  openEditor({sec:p.sec,head:p.head,quote:p.quote,occ:p.occ,range:p.range},true);
+  startDraft({sec:p.sec,head:p.head,quote:p.quote,occ:p.occ,range:p.range},true);
   var s=window.getSelection();if(s)s.removeAllRanges();
 });
 function readSelection(){
@@ -183,45 +186,53 @@ window.addEventListener('resize',function(){if(!alive||selBtn.hidden)return;clea
 function addPartButtons(){
   parts().forEach(function(p){
     if(p.querySelector(':scope > .cm-part'))return;
-    var b=btn('cm-ui cm-part',p,'',function(){openEditor({sec:partId(p),head:partHead(p),quote:'',occ:0},true);});
+    var b=btn('cm-ui cm-part',p,'',function(){startDraft({sec:partId(p),head:partHead(p),quote:'',occ:0},true);});
     b.innerHTML=ICON;
     b.setAttribute('aria-label',t('comment')+': '+partHead(p));
     b.title=t('comment');
   });
 }
 
-/* ---------- editor ---------- */
-var dlg=el('dialog','cm-ui cm-dlg',document.body);
-dlg.innerHTML='<form method="dialog"><p class="cm-where"></p><blockquote class="cm-quote"></blockquote><textarea rows="5"></textarea><div class="cm-row"><button type="submit" value="save" class="cm-primary"></button><button type="submit" value="cancel" class="cm-cancel"></button><button type="button" class="cm-del"></button></div></form>';
-var dArea=dlg.querySelector('textarea'),dWhere=dlg.querySelector('.cm-where'),dQuote=dlg.querySelector('.cm-quote');
-var dSave=dlg.querySelector('.cm-primary'),dCancel=dlg.querySelector('.cm-cancel'),dDel=dlg.querySelector('.cm-del');
-var editing=null,editingNew=false;
-function openEditor(c,isNew){
-  editing=c;editingNew=isNew;
-  dWhere.textContent=partLabel(c);
-  dQuote.textContent=c.quote?shorten(c.quote,400):'';dQuote.hidden=!c.quote;
-  dArea.value=c.text||'';dArea.placeholder=t('placeholder');
-  dSave.textContent=t('save');dCancel.textContent=t('cancel');dDel.textContent=t('del');dDel.hidden=isNew;
+/* ---------- editing: all in the panel ----------
+   The draft is the one comment that the panel shows with a text field: a new comment, or one of the list. */
+var draft=null,undo=null;
+function newId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function startDraft(c,isNew){
+  keepDraft();
+  draft={c:c,isNew:isNew,text:c.text||''};
+  open();
   markNow(c.range||null);
-  if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
-  dArea.focus();
+  focusDraft(true);
 }
-/* Save at once on submit: the "close" event comes later, when a new comment can already be open. */
-dlg.querySelector('form').addEventListener('submit',function(e){
-  var c=editing,v=dArea.value.trim();
-  editing=null;
-  if(!c||!e.submitter||e.submitter.value!=='save'||!v)return;
-  c.text=v;
-  if(editingNew){c.id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);c.time=new Date().toISOString();c.lang=Learn.lang();list.push(c);}
+/* A draft with text is saved when a different draft starts or the panel closes, so typed text does not get lost. */
+function keepDraft(){if(draft&&draft.text.trim())commit();else endDraft();}
+function commit(){
+  var d=draft;if(!d)return;
+  var v=d.text.trim();
+  if(v){
+    d.c.text=v;
+    if(d.isNew){d.c.id=newId();d.c.time=new Date().toISOString();d.c.lang=Learn.lang();list.push(d.c);}
+    save();
+  }
+  endDraft();relocate();
+}
+function endDraft(){draft=null;markNow(null);}
+function remove(c){
+  var i=list.indexOf(c);if(i<0)return;
+  list.splice(i,1);undo={c:c,i:i};
+  if(draft&&draft.c===c)endDraft();
   save();relocate();render();
-});
-dlg.addEventListener('close',function(){markNow(null);editing=null;});
-dArea.addEventListener('keydown',function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();dSave.click();}});
-dDel.addEventListener('click',function(){
-  if(editing){list=list.filter(function(c){return c!==editing;});save();relocate();render();}
-  editing=null;dlg.close();
-});
-/* A click on marked text opens its comment. */
+  msg(t('deleted'),t('undo'),function(){if(!undo)return;list.splice(Math.min(undo.i,list.length),0,undo.c);undo=null;save();relocate();render();msg('');});
+}
+/* after Save or Cancel: the keyboard focus stays in the panel */
+function done(){render();panel.focus({preventScroll:true});}
+function focusDraft(scroll){
+  var ta=P('.cm-input');if(!ta)return;
+  if(scroll)ta.closest('li').scrollIntoView({block:'nearest'});
+  ta.focus({preventScroll:true});
+  var n=ta.value.length;try{ta.setSelectionRange(n,n);}catch(e){}
+}
+/* A click on marked text opens its comment in the panel. */
 main.addEventListener('click',function(e){
   if(!alive)return;
   if(e.target.closest('a,button,input,select,textarea,label,.cm-ui'))return;
@@ -232,9 +243,21 @@ main.addEventListener('click',function(e){
   else return;
   for(var i=0;i<list.length;i++){
     var r=list[i].range;
-    try{if(r&&r.isPointInRange(node,off)&&!(r.endContainer===node&&r.endOffset===off)){openEditor(list[i],false);return;}}catch(err){}
+    try{if(r&&r.isPointInRange(node,off)&&!(r.endContainer===node&&r.endOffset===off)){startDraft(list[i],false);return;}}catch(err){}
   }
 });
+
+/* ---------- order: as in the page ---------- */
+function partIndex(c){if(!c.sec)return -1;var i=parts().indexOf(partEl(c.sec));return i<0?999:i;}
+function sorted(items){
+  return items.slice().sort(function(a,b){
+    var d=partIndex(a)-partIndex(b);if(d)return d;
+    if(!a.quote!==!b.quote)return a.quote?1:-1;   /* a comment on the whole section comes first */
+    if(a.range&&b.range){d=a.range.compareBoundaryPoints(Range.START_TO_START,b.range);if(d)return d;}
+    else if(a.range||b.range)return a.range?-1:1; /* text not found: at the end of its section */
+    return (a.time||'~')<(b.time||'~')?-1:1;
+  });
+}
 
 /* ---------- panel ---------- */
 var fab=btn('cm-ui cm-fab',document.body,'',function(){if(panel.hidden)open();else closePanel();});
@@ -245,20 +268,30 @@ panel.innerHTML='<div class="cm-head"><h2></h2><button type="button" class="cm-x
   '<div class="cm-body"><p class="cm-hint"></p><ol class="cm-list"></ol>'+
   '<button type="button" class="cm-whole"></button>'+
   '<div class="cm-act"><button type="button" class="cm-primary cm-copy"></button><button type="button" class="cm-issue"></button></div>'+
-  '<p class="cm-msg" role="status"></p>'+
+  '<p class="cm-msg" role="status"><span></span><button type="button"></button></p>'+
   '<details class="cm-prompt"><summary></summary><textarea readonly rows="12"></textarea></details>'+
   '<div class="cm-more"><button type="button" class="cm-delall"></button><button type="button" class="cm-off"></button></div></div>';
 var P=function(s){return panel.querySelector(s);};
 P('.cm-x').addEventListener('click',closePanel);
-P('.cm-whole').addEventListener('click',function(){openEditor({sec:'',head:'',quote:'',occ:0},true);});
-P('.cm-copy').addEventListener('click',function(){copy(prompt(),function(ok){msg(ok?t('copied'):t('copyFail'));if(!ok)P('.cm-prompt').open=true;});});
-P('.cm-issue').addEventListener('click',openIssue);
-P('.cm-delall').addEventListener('click',function(){if(list.length&&window.confirm(t('confirmAll'))){list=[];save();relocate();render();}});
-P('.cm-off').addEventListener('click',function(){store.set('learn-comments','off');closePanel();teardown();});
+P('.cm-whole').addEventListener('click',function(){startDraft({sec:'',head:'',quote:'',occ:0},true);});
+P('.cm-copy').addEventListener('click',function(){keepDraft();render();copy(prompt(),function(ok){msg(ok?t('copied'):t('copyFail'));if(!ok)P('.cm-prompt').open=true;});});
+P('.cm-issue').addEventListener('click',function(){keepDraft();render();openIssue();});
+P('.cm-delall').addEventListener('click',function(){if(list.length&&window.confirm(t('confirmAll'))){list=[];endDraft();save();relocate();render();}});
+P('.cm-off').addEventListener('click',function(){keepDraft();store.set('learn-comments','off');closePanel();teardown();});
+var msgFn=null;
+P('.cm-msg button').addEventListener('click',function(){if(msgFn)msgFn();});
 panel.addEventListener('keydown',function(e){if(e.key==='Escape')closePanel();});
-function open(){panel.hidden=false;fab.setAttribute('aria-expanded','true');render();panel.focus();}
-function closePanel(){panel.hidden=true;fab.setAttribute('aria-expanded','false');msg('');}
-function msg(s){P('.cm-msg').textContent=s;}
+function open(){
+  var was=!panel.hidden;
+  panel.hidden=false;fab.setAttribute('aria-expanded','true');render();
+  if(!was&&!draft)panel.focus();
+}
+function closePanel(){keepDraft();panel.hidden=true;fab.setAttribute('aria-expanded','false');msg('');render();}
+function msg(s,action,fn){
+  P('.cm-msg span').textContent=s;
+  var b=P('.cm-msg button');b.textContent=action||'';b.hidden=!action;msgFn=fn||null;
+  P('.cm-msg').hidden=!s;
+}
 
 function render(){
   var n=list.length;
@@ -278,18 +311,36 @@ function render(){
   P('.cm-prompt').hidden=!n;
   P('.cm-prompt textarea').value=n?prompt():'';
   [].forEach.call(document.querySelectorAll('.cm-part'),function(b){b.title=t('comment');});
-  var ol=P('.cm-list');ol.innerHTML='';
-  if(!n){el('li','cm-none',ol,t('none'));return;}
-  list.forEach(function(c){
-    var li=el('li','',ol);
+  var ol=P('.cm-list'),ae=document.activeElement,hadFocus=!!(draft&&ae&&ae.classList&&ae.classList.contains('cm-input'));
+  ol.innerHTML='';
+  var items=list.slice();if(draft&&draft.isNew)items.push(draft.c);
+  if(!items.length){el('li','cm-none',ol,t('none'));return;}
+  sorted(items).forEach(function(c){
+    var li=el('li','',ol),ed=!!(draft&&draft.c===c),row;
     el('span','cm-where',li,partLabel(c));
     if(c.quote)el('blockquote','cm-quote',li,shorten(c.quote,200));
     if(c.quote&&!c.range)el('span','cm-lost',li,t('lost'));
-    el('p','cm-text',li,c.text);
-    var row=el('div','cm-row',li);
-    btn('',row,t('edit'),function(){openEditor(c,false);});
-    if(c.range||(!c.quote&&partEl(c.sec)))btn('',row,t('go'),function(){goTo(c);});
+    if(ed){
+      li.className='cm-editing';
+      var ta=el('textarea','cm-input',li);ta.rows=4;ta.value=draft.text;ta.placeholder=t('placeholder');ta.setAttribute('aria-label',t('placeholder'));
+      ta.addEventListener('input',function(){draft.text=ta.value;});
+      ta.addEventListener('keydown',function(e){
+        if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();commit();done();}
+        else if(e.key==='Escape'){e.stopPropagation();endDraft();done();}
+      });
+      row=el('div','cm-row',li);
+      btn('cm-primary',row,t('save'),function(){commit();done();});
+      btn('cm-plain',row,t('cancel'),function(){endDraft();done();});
+      if(!draft.isNew)btn('cm-plain cm-delbtn',row,t('del'),function(){remove(c);});
+    }else{
+      el('p','cm-text',li,c.text);
+      row=el('div','cm-row',li);
+      btn('cm-link',row,t('edit'),function(){startDraft(c,false);});
+      if(c.range||(!c.quote&&partEl(c.sec)))btn('cm-link',row,t('go'),function(){goTo(c);});
+      btn('cm-link cm-delbtn',row,t('del'),function(){remove(c);});
+    }
   });
+  if(hadFocus)focusDraft(false);
 }
 function goTo(c){
   var r=c.range,target=r?r.getBoundingClientRect():partEl(c.sec).getBoundingClientRect();
@@ -309,7 +360,7 @@ function prompt(){
   L.push('Load the skill `explainer` and follow "Comments from the reader". It says how to answer a question, how to check a correction, and what the pull request must list.');
   L.push('');
   L.push('The reader left '+list.length+' comment'+(list.length===1?'':'s')+'.');
-  list.forEach(function(c,i){
+  sorted(list).forEach(function(c,i){
     L.push('');
     L.push('## Comment '+(i+1));
     L.push('Section: '+(c.sec?(c.sec==='top'?'page header':c.sec.replace(/^s/,'')+' "'+c.head+'"'):'whole page'));
@@ -356,6 +407,6 @@ addPartButtons();
 /* Language change or new width: the text can move or change, so find each comment again. */
 Learn.onChange(function(){if(!alive)return;relocate();render();});
 window.LearnComments={open:open,prompt:prompt,list:function(){return list;}};
-relocate();render();
+msg('');relocate();render();
 if(window.LEARN_COMMENTS_OPEN)open();
 })();
