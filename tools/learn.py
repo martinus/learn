@@ -10,6 +10,8 @@
                                           the result (needs Chrome). Without SLUG: all pages.
   python3 tools/learn.py texts SLUG       print the text of one explainer, to read it one more time.
                                           For a page with German text: English and German, key by key
+  python3 tools/learn.py terms SLUG       list each abbreviation and each Greek or mathematical symbol of one
+                                          explainer with the sentence where it first occurs
   python3 tools/learn.py try SLUG         use every slider and button of one explainer once (needs Chrome)
                                           and report script errors and a page wider than a phone
 
@@ -22,11 +24,13 @@ If Chrome or Chromium is installed, the build also writes a preview picture
 (share.png) for each page. Social networks and chat programs show it for a link.
 Without Chrome the build works, but writes no preview pictures.
 """
+import contextlib
 import datetime
 import functools
 import hashlib
 import html
 import http.server
+import io
 import json
 import concurrent.futures
 import math
@@ -737,6 +741,43 @@ def print_plain_text(src):
     return 0
 
 
+def cmd_terms(slug):
+    """List each abbreviation and each Greek or mathematical symbol with the sentence where it first occurs.
+    The reader does not know these terms. The sentence that brings one in must say what it means.
+    A program cannot judge this, but it can show the places, so that no term is overlooked."""
+    page = SITE / slug / "index.html"
+    if not page.is_file():
+        print("No explainer with the name %s." % slug, file=sys.stderr)
+        return 1
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        print_plain_text(page.read_text(encoding="utf-8"))
+    # An abbreviation has two or more capitals or digits (DES, DR2, ΛCDM). A symbol is a Greek letter or a
+    # mathematical sign. The minus sign and the multiplication dot are in every text, so they are left out.
+    token = re.compile(r"(?<![A-Za-z\u0370-\u03ff])[A-Z\u0391-\u03a9][A-Z0-9\u0391-\u03a9]+(?![a-z])|[\u0370-\u03ff]|[\u2200-\u2211\u2213-\u22c4\u22c6-\u22ff]")
+    seen, section = {}, "first screen"
+    for line in out.getvalue().split("\n"):
+        if line.startswith("## "):
+            section = "section " + line[3:5] if line[6:] != "Sources" else None
+            line = line[6:]
+        if section is None:  # the titles of the sources are not text of the page
+            continue
+        if line.startswith("(label for screen readers)"):
+            continue
+        for m in token.finditer(line):
+            if m.group(0) in seen:
+                continue
+            dot = line.rfind(". ", 0, m.start())
+            start = dot + 2 if dot >= 0 else 0
+            end = line.find(". ", m.end())
+            sentence = line[start:end + 1 if end >= 0 else len(line)].strip()
+            seen[m.group(0)] = (section, sentence if len(sentence) <= 170 else sentence[:167] + "...")
+    for term, (where, sentence) in seen.items():
+        print("%-8s %-13s %s" % (term, where, sentence))
+    print("\n%d terms. For each one, this sentence or the sentence before it must say what the term means." % len(seen))
+    return 0
+
+
 def cmd_new(slug):
     m = SLUG_RE.match(slug)
     if not m:
@@ -767,6 +808,8 @@ def main(argv):
         return cmd_shots(argv[2] if len(argv) > 2 else None)
     if cmd == "texts" and len(argv) == 3:
         return cmd_texts(argv[2])
+    if cmd == "terms" and len(argv) == 3:
+        return cmd_terms(argv[2])
     if cmd == "try" and len(argv) == 3:
         return cmd_try(argv[2])
     print(__doc__)

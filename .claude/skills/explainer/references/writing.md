@@ -15,7 +15,7 @@ This is Martin, the publisher. The page is public and others read it, so do not 
 
 **Knows, so do not explain:** programming, data structures, algorithms and their cost, how a computer works (memory, caches, threads, networks), the usual tools (compiler, Git, shell), and the mathematics and logic an engineer uses. Use the exact terms.
 
-**Does not know, so explain at first use, in one sentence:** terms of other fields (medicine, law, finance, biology, physics beyond school, history). Specialist corners of software outside daily work (database internals, the inside of a machine learning model) also need an explanation, starting from what an engineer knows.
+**Does not know, so explain at first use, in one sentence:** terms of other fields (medicine, law, finance, biology, physics beyond school, history). An abbreviation and a symbol are terms too: say in words what CPL, Λ or σ stands for, and write "is proportional to" instead of ∝. The first use is where the reader meets the term, also in the opening or in a card. An entry in the glossary does not replace it. Specialist corners of software outside daily work (database internals, the inside of a machine learning model) also need an explanation, starting from what an engineer knows.
 
 **Depth:**
 
@@ -53,6 +53,7 @@ The page text uses plain language: short, exact sentences are fast to read, also
 
 - For a mathematical relation, show the formula (markup: "Formula" in `components.md`). Do not write an equation as code: a function that only evaluates a formula says less than the formula and takes longer to read.
 - Use the same notation in the formula and in the text around it, and explain each symbol where it first occurs.
+- Say where a formula comes from: the principle that it follows from, or who stated it and when, with a source. This reader asks "How do they know that?" of a formula too.
 - For an algorithm, a data layout or an interface, show code. This reader reads ten lines of code faster than a paragraph about them.
 - C++ unless the topic has its own language. Name the required standard, for example C++20.
 - At most about 25 lines per example, and only the parts the idea needs.
@@ -60,9 +61,9 @@ The page text uses plain language: short, exact sentences are fast to read, also
 
 ## Page structure
 
-1. **Opening:** topic line, title, three or four sentences on what the question is and why it matters.
+1. **Opening:** topic line, title, three or four sentences on what the question is and why it matters. It says what the main term of the title is.
 2. **Status box:** only for a story in progress or one important limit.
-3. **Three summary cards.** A reader who stops here has the essentials.
+3. **Three summary cards.** A reader who stops here has the essentials. The reader sees them before any section, so they use only terms that the opening explained.
 4. **Numbered sections,** each answering one sub-question.
 5. **"What this means in practice":** if the topic affects the reader's work or life. If it does not, say so.
 6. **Glossary:** if needed.

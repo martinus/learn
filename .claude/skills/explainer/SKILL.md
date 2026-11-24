@@ -46,6 +46,7 @@ python3 tools/learn.py check                 # validate all pages, change nothin
 python3 tools/learn.py shots [slug]          # build, then screenshots into _shots/ (needs Chrome)
 python3 tools/learn.py try slug              # use every slider and button once, report script errors (needs Chrome)
 python3 tools/learn.py texts slug            # page text as plain lines, for the final read
+python3 tools/learn.py terms slug            # each abbreviation and symbol with the sentence of its first use
 python3 tools/learn.py serve                 # build, then http://localhost:8000
 ```
 
@@ -110,7 +111,7 @@ Repeat until a full pass finds nothing: run, look, fix.
 4. The pictures show the page at rest. `python3 tools/learn.py try <slug>` uses every slider and button once at 390 px. It reports script errors, a result that is not a number, and a page that is wider than the window. Read its lines: each control must change what its figure shows. With a browser tool, also run `serve`, scroll at 390 px and open the section list under the site bar. Without one, say in the pull request that nobody scrolled the page by hand.
 5. Second fact check. Re-open every source and compare every fact, number, name and date on the page with it. Include summary cards, captions and `aria-label` texts, and compare what a caption says about a chart with the data in the page script. Remove what you cannot confirm. Search once more for news that is newer than your sources.
 6. Find every statement without a source. It is marked as an inference, or it is stable textbook knowledge. Otherwise find a source or delete it.
-7. `python3 tools/learn.py texts <slug>` and read the whole text as the reader. Each sentence is clear without the sentences after it. Each section tells this reader something new.
+7. `python3 tools/learn.py texts <slug>` and read the whole text as the reader. Each sentence is clear without the sentences after it. Each section tells this reader something new. Then `python3 tools/learn.py terms <slug>`: for each abbreviation and symbol in its list, the sentence shown or the one before it says what the term means. Read the opening and the cards once more alone: they need no knowledge from a section.
 8. Compile and run every code example if a compiler is available.
 
 Then go through "Done when".
@@ -150,7 +151,7 @@ The reader writes comments on a live page (footer button "Comment on this page")
 2. Sort each comment: a question, a correction, or a request (more depth, a graphic, shorter text).
 3. **Question:** answer it in the pull request. If this reader needs the answer to understand the page, also add it to the page.
 4. **Correction:** research it (`references/research.md`) before you change anything. The reader can be wrong. Change the page only if current sources support the correction. If they do not, keep the text and give the sources in the pull request.
-5. **Request:** do it if it fits this skill. If it does not, say why in the pull request.
+5. **Request:** do it if it fits this skill. If it does not, say why in the pull request. A request that needs a change of the theme or the tool gets its own pull request ("Change the theme or the tool"), and the pull request of the page links it.
 6. Then "Update a page": `updated` is today, and a story in progress gets an entry in the change list. Then steps 8 to 10. Branch: `explainer/<slug>-comments`.
 7. The pull request lists each comment (short), what you did, and the sources. If the prompt came from a GitHub issue, write `Closes #<number>`.
 
@@ -194,7 +195,7 @@ Keep no list of lessons and no log of sessions: a lesson that is not a rule or a
 - [ ] Every inference and every uncertain statement is marked in its sentence, and "How sure is this?" is complete and true.
 - [ ] Every source entry has its kind and date, and its link opens the exact page.
 - [ ] Every code example is correct, and was compiled or is reported as not compiled.
-- [ ] Every term from outside software is explained where it first occurs.
+- [ ] Every term, abbreviation and symbol from outside software is explained where the reader first meets it (`terms`).
 - [ ] Section headings are short enough for the navigation.
 - [ ] The page note says where the page simplifies and gives the date of the facts.
 - [ ] `updated` is today.
