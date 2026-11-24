@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="A flat dashed line for a constant dark energy and a curve that rises above it and falls again">
+<path d="M28 150 H296 M28 150 V26" style="fill:none;stroke:var(--rule);stroke-width:1.5"/>
+<path d="M28 96 H296" style="fill:none;stroke:var(--c2);stroke-width:2.5;stroke-dasharray:8 6"/>
+<path d="M28 96 C 52 74, 72 62, 96 62 C 150 62, 220 112, 296 138" style="fill:none;stroke:var(--c3);stroke-width:3;stroke-linecap:round"/>
+<circle cx="96" cy="62" r="6" style="fill:var(--c3)"/>
+<circle cx="28" cy="96" r="5" style="fill:var(--ink)"/>
+</svg>

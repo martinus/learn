@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Is dark energy fading? The final DES result</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "Is dark energy fading? The final DES result"},
+ "summary": {"en": "In May 2026 the Dark Energy Survey combined all of its measurements. Together with data from other experiments, they fit a dark energy that changes over time better than a constant one, at 3.0σ. How this is measured, how small the effect is, and why 3σ is a hint and no discovery."},
+ "published": "2026-11-24",
+ "updated": "2026-11-24",
+ "languages": ["en"],
+ "tags": ["science"],
+ "model": "Claude Fable 5.2"
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+.fig-seg{flex-wrap:wrap;border-radius:14px;align-self:flex-start}
+.fig-seg button{padding:.62rem .8rem;font-size:.86rem}
+.l-faint{fill:none;stroke:var(--muted);stroke-width:1.3;opacity:.6}
+.l-mark{stroke:var(--c3);stroke-width:1.5}
+.l-ref{stroke:var(--muted);stroke-width:1.3;stroke-dasharray:2 3}
+.hb .bar{fill:var(--c1)} .hb .bar.hi{fill:var(--c3)}
+.hb .hollow{fill:none;stroke:var(--c1);stroke-width:1.6}
+.hb .val{fill:var(--ink);font:500 11px var(--font-mono)}
+.hb .cat{fill:var(--ink);font:500 12px var(--font-body)}
+.hb .cat2{fill:var(--muted);font:11px var(--font-body)}
+.sw.sol{height:10px;width:14px;border:0;background:var(--c1)}
+.sw.sol.hi{background:var(--c3)}
+.sw.hol{height:10px;width:14px;border:1.6px solid var(--c1);background:none}
+.sw.dot{border-top:2px dotted var(--muted)}
+.sw.faint{border-top:2px solid var(--muted);opacity:.6}
+.d-ink{fill:var(--ink)}
+.ring{fill:none;stroke:var(--c1);stroke-width:2.5}
+.alt{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.75rem}
+.alt .world dl{grid-template-columns:1fr;gap:.1rem}
+.alt .world dt{font:500 .72rem/1.3 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;margin-top:.35rem}
+@media (max-width:460px){.stats.s3{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow">Cosmology &middot; status of 24 November 2026</span>
+  <h1>Is dark energy fading? The final DES result</h1>
+  <!-- learn:byline -->
+  <p class="lead">The standard model of cosmology treats dark energy as a constant: every cubic metre of space holds the same amount of it, at all times. In May 2026 the Dark Energy Survey (DES) published the analysis that combines all of its measurements. Together with data from other experiments, a dark energy that changes over time fits better than a constant one, at 3.0σ. This page explains what was measured, how small the effect is, and how much weight 3σ can carry.</p>
+  <div class="status">
+    <b>Status: a hint, no discovery</b>
+    <span>The DES paper is a preprint of 26 May 2026, revised on 2 June 2026 and submitted to the journal Physical Review Letters. On 24 November 2026, arXiv listed no journal publication for it. The convention in physics for a discovery is 5σ. The next larger dataset, the full five-year survey of the DESI experiment, is expected in 2027.</span>
+  </div>
+  <details class="changes">
+    <summary><span>What changed on this page</span></summary>
+    <ol>
+      <li><time>24 Nov 2026</time><span>First version.</span></li>
+    </ol>
+  </details>
+  <div class="short">
+    <div><h3>The claim</h3><span>In the best fit, dark energy is thinning out today, and it was denser a few billion years ago. A cosmological constant never changes.</span></div>
+    <div><h3>The size</h3><span>The best fit moves the distances to far galaxies by less than 2&nbsp;%, as computed on this page. Supernova brightness must be calibrated to about 0.01 magnitudes to see that.</span></div>
+    <div><h3>The strength</h3><span>3.0σ with all data, 2.2σ from DES alone. A DES supernova paper translates a similar 3.2σ into odds of about 5 to 1.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2>What w says about dark energy</h2>
+  <p>In 1998, two teams found from about 50 exploding stars that the expansion of the universe speeds up. The cause got the name dark energy. In the standard model it makes up about 70&nbsp;% of the energy in the universe. The question of this page is whether its density changes while space expands.</p>
+  <p>Two numbers describe the expansion. The <strong>scale factor</strong> <span class="mono">a</span> is the size of the universe relative to today: <span class="mono">a = 0.5</span> means that all distances between far galaxies were half as large. Astronomers measure the <strong>redshift</strong> <span class="mono">z</span> instead. Light that left a galaxy at scale factor <span class="mono">a</span> arrives with its wavelength stretched by <span class="mono">1 + z = 1/a</span>. A larger <span class="mono">z</span> is further away and further in the past.</p>
+  <p>Each ingredient of the universe thins out in its own way while space grows. Physics describes this with one number per ingredient, the <strong>equation of state</strong> <span class="mono">w</span>, the ratio of pressure to energy density. The density then follows <span class="mono">&rho; &prop; a<sup>&minus;3(1+w)</sup></span>.</p>
+  <ul class="plain">
+    <li><strong>Matter:</strong> <span class="mono">w = 0</span>. The density falls with the volume, <span class="mono">a<sup>&minus;3</sup></span>.</li>
+    <li><strong>Cosmological constant &Lambda;:</strong> <span class="mono">w = &minus;1</span>. The exponent is zero, so the density never changes. This is the dark energy of the standard model, which is called &Lambda;CDM (&Lambda; plus cold dark matter).</li>
+    <li><strong><span class="mono">w &gt; &minus;1</span>:</strong> the density falls while space grows. <strong><span class="mono">w &lt; &minus;1</span>:</strong> the density rises. Physicists call this case &ldquo;phantom&rdquo;.</li>
+  </ul>
+  <p>To test the constant, the DES paper lets <span class="mono">w</span> change with time in the simplest way, a straight line in <span class="mono">a</span>:</p>
+  <pre class="code"><code>// CPL parametrisation
+w(a) = w0 + wa * (1 - a)
+// w0: the value today (a = 1)
+// wa: the change towards the past
+// Lambda-CDM: (w0, wa) = (-1, 0)</code></pre>
+  <p>So the test is a comparison of nested models. The larger model has two more parameters, and the standard model is one point inside it. With all data combined, the DES paper finds <span class="mono">w0 = &minus;0.82 &plusmn; 0.05</span> and <span class="mono">wa = &minus;0.63</span> (+0.21, &minus;0.18).</p>
+  <p>Integrating the density rule for this <span class="mono">w(a)</span> gives <span class="mono">&rho;(a)/&rho;(1) = a<sup>&minus;3(1+w0+wa)</sup> &middot; e<sup>&minus;3&middot;wa&middot;(1&minus;a)</sup></span>. The chart draws it for the DES fit.</p>
+
+  <figure>
+    <div class="fig-title">Density of dark energy, relative to today</div>
+    <div class="ctl">
+      <label for="wS"><span>A dark energy with constant w</span> <output id="wOut">w = &minus;0.82</output></label>
+      <input type="range" id="wS" min="-1.25" max="-0.75" step="0.01" value="-0.82">
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i><span>constant w (slider)</span></span>
+      <span><i class="sw c2"></i><span>&Lambda;CDM, w = &minus;1</span></span>
+      <span><i class="sw c3"></i><span>DES fit, all data</span></span>
+    </div>
+    <svg class="chart" id="cRho" role="img" aria-label="Density of dark energy against redshift. The standard model is a flat line. The DES fit rises to a peak 9 percent above today at redshift 0.4 and falls below today's value further in the past."></svg>
+    <div class="stats">
+      <div><small>Constant w: density at z = 1</small><b id="rW1">1.45 &times;</b></div>
+      <div><small>DES fit: density at z = 1</small><b id="rF1">1.01 &times;</b></div>
+      <div><small>DES fit: highest density</small><b id="rFp">1.09 &times;</b></div>
+      <div><small>DES fit: highest at redshift</small><b id="rFz">0.40</b></div>
+    </div>
+    <figcaption>The slider starts at <span class="mono">w = &minus;0.82</span>, the value of the DES fit today. With this value alone, dark energy would have been much denser in the past. The second parameter <span class="mono">wa</span> bends the curve back down. The dot marks the highest density of the fit. The vertical axis starts at 0.5. Central values: DES Collaboration, 26 May 2026. Curves computed on this page.</figcaption>
+  </figure>
+
+  <p>This page computes the curve of the DES fit from the central values. No source states these densities. In this curve, dark energy grew until redshift 0.40, was then 9&nbsp;% denser than today, and has thinned out since. Redshift 0.40 is about 4.4 billion years ago. This time is also computed here, with the &Lambda;CDM parameters of the DES analysis of January 2026.</p>
+  <p class="aside">The curve is one of many that fit. The uncertainty of <span class="mono">wa</span> is about a third of its value, and the two parameters are correlated. The data constrain <span class="mono">w</span> best at redshift 0.32, where the paper finds <span class="mono">w = &minus;0.97 &plusmn; 0.02</span>.</p>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2>The effect: under 2&nbsp;% in distance</h2>
+  <p>No instrument measures the density of dark energy. What astronomers can measure is the distance to objects at a known redshift. The link between the two is the expansion rate <span class="mono">H(z)</span>. In a flat universe with matter and dark energy, the Friedmann equation of general relativity gives it from the two densities. The distance is the path that light covers while space expands, an integral over <span class="mono">1/H</span>.</p>
+  <pre class="code"><code>// C++20. Flat universe: matter plus dark energy
+// with w(a) = w0 + wa * (1 - a).
+#include &lt;cmath&gt;
+
+struct Model { double om, w0, wa; };  // om: matter share
+
+// Dark energy density at scale factor a, today = 1.
+double rho_de(const Model&amp; m, double a) {
+    return std::pow(a, -3 * (1 + m.w0 + m.wa))
+         * std::exp(-3 * m.wa * (1 - a));
+}
+
+// Expansion rate H(z) / H0 (Friedmann equation).
+double E(const Model&amp; m, double z) {
+    double a = 1 / (1 + z);
+    return std::sqrt(m.om / (a * a * a)
+                   + (1 - m.om) * rho_de(m, a));
+}
+
+// Distance to redshift z in units of c / H0 (Simpson).
+double dist(const Model&amp; m, double z, int n = 1000) {
+    double h = z / n, s = 1 / E(m, 0) + 1 / E(m, z);
+    for (int i = 1; i &lt; n; ++i)
+        s += (i % 2 ? 4 : 2) / E(m, i * h);
+    return s * h / 3;
+}</code></pre>
+  <p><span class="mono">om</span> is the share of matter in today&rsquo;s energy density. The DES fit gives 0.311 &plusmn; 0.005. <span class="mono">H0</span> is the expansion rate today. With the <span class="mono">H0</span> of the fit, 67.4 km/s/Mpc, the unit <span class="mono">c/H0</span> is about 4,400 megaparsecs. That is more than 14 billion light years. The code leaves out radiation, which matters only in the very early universe.</p>
+  <p>The call <span class="mono">dist({0.31, -0.82, -0.63}, 0.5) / dist({0.31, -1, 0}, 0.5)</span> returns 0.9836. With the same <span class="mono">om</span> and <span class="mono">H0</span>, an object at redshift 0.5 is 1.64&nbsp;% closer in the DES fit than in the standard model. The chart shows this ratio for all redshifts that the surveys cover.</p>
+
+  <figure>
+    <div class="fig-title">Distance in the fit, compared with &Lambda;CDM</div>
+    <div class="seg fig-seg" role="group" aria-label="Select the data combination" id="fitSeg">
+      <button type="button" data-f="0" aria-pressed="false">DES alone</button>
+      <button type="button" data-f="1" aria-pressed="false">DES + DESI</button>
+      <button type="button" data-f="2" aria-pressed="true">All data</button>
+    </div>
+    <div class="legend">
+      <span><i class="sw c3"></i><span>selected fit</span></span>
+      <span><i class="sw faint"></i><span>the other two fits</span></span>
+      <span><i class="sw c2"></i><span>&Lambda;CDM</span></span>
+      <span><i class="sw band"></i><span>&plusmn;0.01 mag in supernova brightness</span></span>
+    </div>
+    <svg class="chart" id="cD" role="img" aria-label="Change of distance against redshift for three fits. All three curves lie between 0 and minus 2 percent, with the largest change near redshift 0.5."></svg>
+    <div class="stats s3">
+      <div><small>Largest change</small><b id="rD1">&minus;1.64 %</b></div>
+      <div><small>At redshift</small><b id="rD2">0.51</b></div>
+      <div><small>In supernova brightness</small><b id="rD3">&minus;0.036 mag</b></div>
+    </div>
+    <figcaption>Each curve changes only <span class="mono">w0</span> and <span class="mono">wa</span> and keeps the matter share at 0.31 and <span class="mono">H0</span> fixed. A real fit also adjusts these two, so the difference between the two best-fitting models is not exactly this curve. Central values: DES Collaboration, 26 May 2026. Curves computed on this page.</figcaption>
+  </figure>
+
+  <p>The whole signal is a shift of one to two percent that depends on redshift. Supernova surveys measure brightness in magnitudes, a logarithmic unit: 1&nbsp;% in distance is 0.022 mag. The DES supernova team cites a 2024 paper by Efstathiou on what this demands. The brightness scale of nearby and distant supernovae must agree within 0.01 mag, across several telescopes. This page converts 0.01 mag to 0.46&nbsp;% in distance, which is the band in the chart.</p>
+</section>
+
+<section>
+  <span class="num">03</span>
+  <h2>Three measurements, one camera</h2>
+  <p>DES used one instrument: a 570-megapixel camera on the 4-metre Blanco telescope in Chile. It observed on 760 nights or half-nights between 15 August 2013 and 9 January 2019 and covered about 5,000 square degrees, one eighth of the sky. From these pictures, the collaboration built three different measurements. Two of them measure distance. The third measures how fast matter clumps together.</p>
+
+  <div class="worlds">
+    <div class="world a">
+      <span class="tag">Distance</span>
+      <h3>Supernovae</h3>
+      <span>A type Ia supernova is an exploding star with a nearly fixed peak brightness. After corrections, the scatter is about 0.15 mag. The observed brightness then gives the distance.</span>
+      <dl><dt>Data</dt><dd>1,623 from DES, about 200 nearby ones from older surveys</dd><dt>Weak point</dt><dd>calibration between telescopes</dd></dl>
+    </div>
+    <div class="world a">
+      <span class="tag">Distance</span>
+      <h3>BAO</h3>
+      <span>Sound waves in the hot early universe left a preferred distance between galaxies: about 147 megaparsecs in today&rsquo;s scale (480 million light years). The angle under which this ruler appears gives the distance. The name is baryon acoustic oscillations.</span>
+      <dl><dt>Data</dt><dd>16 million galaxies, distance to 2.1&nbsp;% at z = 0.85</dd><dt>Weak point</dt><dd>redshift from colours only</dd></dl>
+    </div>
+    <div class="world a">
+      <span class="tag">Growth</span>
+      <h3>3&times;2pt</h3>
+      <span>Gravity pulls matter into clumps, and dark energy works against it. Mass bends light and distorts the images of the galaxies behind it. DES correlates galaxy positions and galaxy shapes in three combinations.</span>
+      <dl><dt>Data</dt><dd>140 million shapes, 9 million positions</dd><dt>Weak point</dt><dd>many modelling choices</dd></dl>
+    </div>
+    <div class="world b">
+      <span class="tag">Anchor, not DES</span>
+      <h3>CMB</h3>
+      <span>The cosmic microwave background is light from redshift 1,089. It fixes the far end of the distance scale: the angle of the same sound ruler is known there to 0.01&nbsp;%.</span>
+      <dl><dt>Data</dt><dd>Planck satellite, ACT and SPT telescopes</dd><dt>Weak point</dt><dd>see section 06</dd></dl>
+    </div>
+  </div>
+
+  <p>A <strong>two-point correlation function</strong> is a histogram over pairs. Take all pairs of galaxies, sort them into bins by their angle on the sky, and compare each bin with the count for random positions. For shapes, each pair contributes the product of its two measured distortions. The distortion of one galaxy by lensing is far smaller than its own irregular shape, so the signal shows only in the statistics of very many pairs. &ldquo;3&times;2pt&rdquo; stands for the three functions: shapes with shapes, positions with positions, and positions with shapes.</p>
+  <p>The fourth dataset in the combination comes from DESI, an instrument in Arizona. DESI takes a spectrum of each galaxy through one of 5,000 optical fibres and reads the redshift from it. DES is a camera and estimates the redshift from the colours in a few filters, which is less exact. The DESI data in this analysis are called DR2 and come from the first three years. Their BAO measurement uses more than 14 million galaxies and quasars. A quasar is the very bright centre of a distant galaxy.</p>
+
+  <figure>
+    <div class="fig-title">Which redshifts each measurement covers</div>
+    <div class="legend">
+      <span><i class="sw sol"></i><span>range of the measurement</span></span>
+      <span><i class="sw hol"></i><span>supernovae from older surveys</span></span>
+      <span><i class="sw c3"></i><span>where the fit crosses w = &minus;1</span></span>
+    </div>
+    <svg class="chart hb" id="cCov" role="img" aria-label="Horizontal ranges over redshift. Supernovae cover 0.025 to 1.13, DES BAO 0.6 to 1.2, DESI BAO 0.295 to 2.33, galaxy positions 0.2 to 1.2 and galaxy shapes up to about 2. The microwave background lies far outside at redshift 1089."></svg>
+    <figcaption>The supernovae, the DESI BAO data and both 3&times;2pt samples cover redshift 0.40, where the central fit turns from rising to falling. The DES BAO data start at 0.6. Ranges: DES Collaboration, 26 May 2026, and DESI Collaboration, March 2025 (upper end of the supernovae). The lower axis is the light travel time, computed on this page for &Lambda;CDM with a matter share of 0.302 and H0 = 68.3 km/s/Mpc, the DES values of January 2026.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">04</span>
+  <h2>No single probe carries the 3.0σ</h2>
+  <p>For each combination of data, the paper states how far the standard model lies from the fit, in σ. Section 05 explains the unit. The 3&times;2pt data alone agree with a constant. The distance from the standard model grows as more datasets join.</p>
+
+  <figure>
+    <div class="fig-title">Distance of the fit from &Lambda;CDM, in σ</div>
+    <div class="seg fig-seg" role="group" aria-label="Select the view" id="sigSeg">
+      <button type="button" data-v="0" aria-pressed="true">Add data step by step</button>
+      <button type="button" data-v="1" aria-pressed="false">Leave one out</button>
+    </div>
+    <div class="legend">
+      <span><i class="sw sol"></i><span>subset of the data</span></span>
+      <span><i class="sw sol hi"></i><span>all data</span></span>
+      <span><i class="sw dot"></i><span>5σ, the convention for a discovery</span></span>
+    </div>
+    <svg class="chart hb" id="cSig" role="img" aria-label="Bars of significance for combinations of data. The values run from 1.0 sigma for one DES measurement alone to 3.0 sigma for all data. Leaving out one dataset gives between 2.3 and 3.2 sigma. All bars end far below the line at 5 sigma."></svg>
+    <figcaption>Source: DES Collaboration, table 1, 26 May 2026. &ldquo;All BAO&rdquo; means the BAO data of DES and DESI together.</figcaption>
+  </figure>
+
+  <p>Press &ldquo;Leave one out&rdquo;. Without the supernovae the result is 2.6σ, without the CMB 2.3σ, without any BAO data 2.4σ. The paper states that the best fit stays in the same region in every case: <span class="mono">w0 &gt; &minus;1</span> and <span class="mono">wa &lt; 0</span>. So no single dataset produces the preference alone. Without any one of them, at least 2.3σ remain.</p>
+  <p>The same table also gives reasons for caution:</p>
+  <ul class="plain">
+    <li><strong>More data did not raise the number.</strong> Supernovae, BAO and CMB without the DES 3&times;2pt data give 3.2σ. With 3&times;2pt, the constraint on <span class="mono">w0</span> and <span class="mono">wa</span> is 10&nbsp;% tighter, by the paper&rsquo;s measure for the size of the uncertainty region. The result is 3.0σ.</li>
+    <li><strong>A recalibration already cost one σ.</strong> With the first version of the DES supernova data, the combination with DESI and the CMB gave 4.2σ. In November 2025 the team published a new calibration, named DES-Dovekie. The same combination then gave 3.2σ.</li>
+    <li><strong>A constant <span class="mono">w</span> other than &minus;1 is not preferred.</strong> If <span class="mono">w</span> may differ from &minus;1 but not change, the DES analysis of January 2026 finds <span class="mono">w = &minus;0.981</span> (+0.021, &minus;0.022). It combines 3&times;2pt, the CMB, DESI BAO, supernovae and galaxy clusters. Only the model with a change in time fits better.</li>
+  </ul>
+  <p>The DES team worked blind. It fixed all choices of the analysis before it looked at the cosmological result.</p>
+</section>
+
+<section>
+  <span class="num">05</span>
+  <h2>How strong is 3σ?</h2>
+  <p>The fit produces a probability distribution over the plane of <span class="mono">w0</span> and <span class="mono">wa</span>, from a sampler. The paper draws the contour of equal probability density that runs through the standard model at (&minus;1, 0) and measures which fraction <span class="mono">&Delta;</span> of the distribution lies inside. It then reports the number of standard deviations at which a Gaussian holds the same fraction: <span class="mono">n = &radic;2 &middot; erf<sup>&minus;1</sup>(&Delta;)</span>. A second method, the difference in <span class="mono">&chi;&sup2;</span> between the best fits of the two models, gives nearly the same numbers.</p>
+
+  <figure>
+    <div class="fig-title">Gaussian probability outside &plusmn;nσ</div>
+    <div class="ctl">
+      <label for="sS"><span>Distance from the standard model</span> <output id="sOut">3.0σ</output></label>
+      <input type="range" id="sS" min="0.5" max="5.5" step="0.1" value="3">
+    </div>
+    <svg class="chart" id="cS" role="img" aria-label="Probability outside plus or minus n sigma of a Gaussian, on a logarithmic axis. It falls from 1 in 3 at 1 sigma to 1 in 370 at 3 sigma and 1 in 1.7 million at 5 sigma."></svg>
+    <div class="stats s3">
+      <div><small>Fraction outside the contour</small><b id="rS1">0.27 %</b></div>
+      <div><small>As a ratio</small><b id="rS2">1 in 370</b></div>
+      <div><small>Fraction inside</small><b id="rS3">99.73 %</b></div>
+    </div>
+    <figcaption>The vertical axis is logarithmic. From 3σ to 5σ, the probability falls by a factor of about 4,700. The conversion is the standard Gaussian formula, computed on this page. Marked values: DES Collaboration, 26 May 2026.</figcaption>
+  </figure>
+
+  <p>3.0σ means that 99.73&nbsp;% of the distribution lies inside the contour through the standard model. The <span class="mono">&chi;&sup2;</span> method gives the same 3.0σ and allows a second reading. If the standard model is true and all errors are understood, a fit that is this much better appears by chance in about 1 of 370 cases. Three things make the number weaker than it looks.</p>
+  <ul class="plain">
+    <li><strong>It holds only if all errors are in the model.</strong> A calibration error that nobody knows about is not part of the distribution. The step from 4.2σ to 3.2σ in section 04 came from such a correction and not from chance.</li>
+    <li><strong>It does not compare the two models.</strong> The number says how surprising the data are under the standard model. A Bayesian comparison also charges the larger model for its two extra parameters. The DES-Dovekie paper gives this figure for its 3.2σ: odds of about 5 to 1 for the changing dark energy. By the usual thresholds, the paper calls that a weak preference.</li>
+    <li><strong>The same question is tested again with each data release.</strong> A preprint by Kim, Mota and Tamosiunas (version of 22 October 2026) argues that this inflates the false-positive rate. For the DESI BAO data it calls the signal fragile. This page read only its abstract. The work looks at DESI data and not at the DES combination.</li>
+  </ul>
+  <p>The DES paper itself speaks of a &ldquo;weak preference for evolving dark energy&rdquo;. The DESI paper of 2025 names 5σ as the usual threshold to establish new physics. That is a chance of 1 in 1.7 million.</p>
+</section>
+
+<section>
+  <span class="num">06</span>
+  <h2>What else could explain it</h2>
+  <p>The sources discuss four explanations. None of them is ruled out on 24 November 2026.</p>
+  <div class="alt">
+    <div class="world a">
+      <h3>Chance</h3>
+      <dl><dt>For</dt><dd>A 3σ result appears by chance about once in 370 tries. The DESI paper names a statistical fluctuation as the simplest alternative.</dd><dt>Against</dt><dd>Every subset of the data that the DES paper tested points to the same region of w0 and wa.</dd></dl>
+    </div>
+    <div class="world a">
+      <h3>Supernova calibration</h3>
+      <dl><dt>For</dt><dd>The DESI paper says the supernova evidence rests on the comparison of the nearby ones (z &lt; 0.1) with the rest. The nearby ones come from a mix of older surveys. One recalibration already removed one σ.</dd><dt>Against</dt><dd>Without any supernovae, the DES combination still gives 2.6σ. Two other supernova catalogues, combined with DESI and CMB data, give 3.2σ and 3.4σ after their own new analyses.</dd></dl>
+    </div>
+    <div class="world a">
+      <h3>The early universe</h3>
+      <dl><dt>For</dt><dd>The first stars ionised the gas in the universe, and free electrons scatter some of the CMB light. The optical depth &tau; measures how much. Sailer, Farren, Ferraro and White show that &tau; near 0.09 lowers the preference in DESI and CMB data from about 3σ to about 1.5σ.</dd><dt>Against</dt><dd>The Planck satellite measured &tau; = 0.0544 &plusmn; 0.0073. The authors put the gap at 3 to 5σ and see no sign of an error in the Planck data.</dd></dl>
+    </div>
+    <div class="world b">
+      <h3>Dark energy changes</h3>
+      <dl><dt>For</dt><dd>It fits all datasets at once, in every subset that the paper tested.</dd><dt>Against</dt><dd>The best fits cross w = &minus;1. The DES paper states that a single ordinary scalar field cannot do this. It would need a coupling between dark energy and dark matter, or a change to gravity.</dd></dl>
+    </div>
+  </div>
+  <p>Quanta Magazine reports that some theorists doubt a changing dark energy for a further reason. Physics cannot yet explain why the energy of empty space has its small value. A value that also changes slowly would need a second explanation. Quanta also puts the &tau; idea into time: the gas would have to be ionised about 200 million years earlier than the roughly 700 million years after the Big Bang that the standard model assumes.</p>
+  <p class="aside">The line <span class="mono">w0 + wa(1 &minus; a)</span> is a parametrisation and no physical theory. The DES-Dovekie paper notes that it can approximate many physical models. A preference for it says that some change over time fits better than none. It does not say that <span class="mono">w</span> follows this line.</p>
+</section>
+
+<section>
+  <span class="num">07</span>
+  <h2>What comes next</h2>
+  <ol class="steps">
+    <li><time>1998</time><span>Two teams find the accelerated expansion from about 50 supernovae.</span></li>
+    <li><time>Mar 2025</time><span>DESI publishes its second data release (DR2). With the CMB, a changing dark energy is preferred at 3.1σ. With supernovae added, the value is between 2.8σ and 4.2σ, depending on the supernova catalogue.</span></li>
+    <li><time>Nov 2025</time><span>The DES supernova team publishes the DES-Dovekie recalibration. Its combination falls from 4.2σ to 3.2σ.</span></li>
+    <li><time>Jan 2026</time><span>DES publishes the 3&times;2pt analysis of all six years. Alone, it agrees with &Lambda;CDM.</span></li>
+    <li><time>15 Apr 2026</time><span>DESI completes its planned five-year survey with more than 47 million galaxies and quasars, against a plan of 34 million. It continues to observe through 2028.</span></li>
+    <li><time>26 May 2026</time><span>DES publishes the combination of all its probes: 3.0σ with DESI and the CMB.</span></li>
+    <li><time>30 Jun 2026</time><span>The Rubin Observatory in Chile starts its ten-year survey. Quanta Magazine reports that astronomers expect about 10 billion galaxies and millions of supernovae from it.</span></li>
+    <li><time>2027</time><span>Expected: the first dark energy results from the full five-year DESI survey.</span></li>
+  </ol>
+  <p>The DESI results of 2027 are the next test. They rest on five years of observation instead of three. This page infers what to watch for: if the effect is real, the significance should rise with the amount of data. If it stays near 3σ or falls, chance or a calibration error becomes more likely. The DESI paper notes that no supernova catalogue so far holds nearby and distant supernovae from one uniform programme. It expects such samples from the Rubin survey.</p>
+  <p>The DES paper announces a longer paper with the full analysis. A search on arXiv on 24 November 2026 found no such paper.</p>
+  <p><strong>In practice,</strong> nothing changes for daily life or for engineering. The result concerns the expansion of the universe over billions of years. What an engineer can take from it is the method: blind analysis, three different measurements of one quantity, and a table that shows what happens when each input is removed.</p>
+</section>
+
+<section>
+  <span class="num">08</span>
+  <h2>Short glossary</h2>
+  <dl class="gloss">
+    <div><dt>Redshift z</dt><dd>The factor by which the expansion stretched the light of an object, minus 1. It serves as a measure of distance and of time into the past.</dd></div>
+    <div><dt>Equation of state w</dt><dd>Pressure divided by energy density. It fixes how the density of an ingredient changes while space expands.</dd></div>
+    <div><dt>&Lambda;CDM</dt><dd>The standard model of cosmology: a cosmological constant &Lambda; with w = &minus;1, plus cold dark matter.</dd></div>
+    <div><dt>CPL parametrisation</dt><dd>w(a) = w0 + wa(1 &minus; a), named after Chevallier, Polarski and Linder. The model with it is written w0waCDM.</dd></div>
+    <div><dt>Megaparsec (Mpc)</dt><dd>A unit of distance in astronomy: 3.26 million light years.</dd></div>
+    <div><dt>Magnitude (mag)</dt><dd>A logarithmic unit of brightness. A difference of 0.01 mag is 0.9&nbsp;% in brightness or 0.46&nbsp;% in distance.</dd></div>
+    <div><dt>BAO</dt><dd>Baryon acoustic oscillations: a preferred distance between galaxies of about 147 Mpc, left by sound waves in the early universe.</dd></div>
+    <div><dt>CMB</dt><dd>Cosmic microwave background: light from the time when the universe became transparent, at redshift 1,089.</dd></div>
+    <div><dt>3&times;2pt</dt><dd>Three two-point correlation functions of galaxy positions and galaxy shapes, analysed together.</dd></div>
+    <div><dt>DES and DESI</dt><dd>Two different projects. DES was a camera survey in Chile (2013 to 2019). DESI is a spectrograph in Arizona that has observed since 2021.</dd></div>
+  </dl>
+</section>
+
+<section>
+  <span class="num">09</span>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>All values of w0 and wa, all σ values, the sizes of the datasets, the method behind the σ values and the leave-one-out results come from the DES preprint of 26 May 2026 (version of 2 June), read in full.</span><span class="d">The survey facts and the constant-w result come from the DES paper of January 2026. The supernova recalibration, the 0.01 mag requirement and the odds of 5 to 1 come from the DES-Dovekie paper. The DESI values come from the DESI paper of 2025, the optical depth from Sailer and others. These four are reviewed papers. This page read the parts that it uses, not every section.</span></span></li>
+    <li><span class="pill done">Sourced</span>
+        <span><span>Only reporting, by Quanta Magazine (16 November 2026): the doubts of theorists, the 200 million years of earlier ionisation, and the numbers expected from the Rubin Observatory.</span><span class="d">The DESI schedule comes from a press release of Berkeley Lab, and the start of the Rubin survey from the observatory&rsquo;s own announcement.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>Computed on this page from the central values of the fit: all density curves, the peak of 9&nbsp;% at redshift 0.40, the distance changes of up to 1.64&nbsp;%, and the light travel times. The page ignores the uncertainty of the fit in these numbers.</span><span class="d">Also inferred: the conversions between magnitudes and distance, and the reading of what a rising or falling significance in 2027 would mean. The basics in section 01, the description of two-point functions and the Gaussian conversion in section 05 are textbook knowledge of the model that wrote this page.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>Whether dark energy changes is open. The evidence is 3.0σ, below the 5σ convention, and the DES paper was not yet published in a journal on 24 November 2026.</span><span class="d">The distance chart keeps the matter share and H0 fixed, which a real fit does not. The preprint by Kim, Mota and Tamosiunas was read as an abstract only. The Quanta article was read through an automatic text extraction, so a detail of its wording may be missing here.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">10</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://arxiv.org/abs/2605.27221">DES Collaboration: Constraints on Dynamical Dark Energy from Multiple Probes in the Full Dark Energy Survey</a> &middot; preprint, submitted to Physical Review Letters, 26 May 2026, version 2 of 2 June 2026. Observations of 2013 to 2019</li>
+    <li><a href="https://arxiv.org/abs/2601.14559">DES Collaboration: Dark Energy Survey Year 6 Results: Cosmological Constraints from Galaxy Clustering and Weak Lensing</a> &middot; paper accepted by Physical Review D, 21 January 2026, version 3 of 20 November 2026</li>
+    <li><a href="https://arxiv.org/abs/2511.07517">Popovic and others: The Dark Energy Survey Supernova Program: A Reanalysis of Cosmology Results and Evidence for Evolving Dark Energy with an Updated Type Ia Supernova Calibration</a> &middot; reviewed paper (Monthly Notices of the Royal Astronomical Society, 2026), first posted 10 November 2025</li>
+    <li><a href="https://arxiv.org/abs/2503.14738">DESI Collaboration: DESI DR2 Results II: Measurements of Baryon Acoustic Oscillations and Cosmological Constraints</a> &middot; reviewed paper (Physical Review D 112, 083515), first posted 18 March 2025. Data of the first three years</li>
+    <li><a href="https://arxiv.org/abs/2504.16932">Sailer, Farren, Ferraro, White: Dispu&tau;able: the high cost of a low optical depth</a> &middot; reviewed paper (Physical Review Letters 136, 081002, 2026), first posted 23 April 2025</li>
+    <li><a href="https://arxiv.org/abs/2607.28918">Kim, Mota, Tamosiunas: An E-value Reanalysis of DESI&rsquo;s Dynamical Dark Energy Signal</a> &middot; preprint, 31 July 2026, version 3 of 22 October 2026, abstract only</li>
+    <li><a href="https://newscenter.lbl.gov/2026/04/15/desi-completes-planned-3d-map-of-the-universe-and-continues-exploring/">Berkeley Lab: DESI Completes Planned 3D Map of the Universe and Continues Exploring</a> &middot; press release, 15 April 2026</li>
+    <li><a href="https://rubinobservatory.org/news/action-rubin-lsst-begins">Rubin Observatory: Action! NSF&ndash;DOE Vera C. Rubin Observatory Begins Capturing the Greatest Cosmic Movie Ever Made</a> &middot; announcement, 30 June 2026</li>
+    <li><a href="https://www.quantamagazine.org/what-makes-up-the-cosmos-a-20-year-survey-hints-that-something-is-missing-20261116/">Quanta Magazine (Charlie Wood): What Makes Up the Cosmos? A 20-Year Survey Hints That Something Is Missing</a> &middot; reporting, 16 November 2026, corrected 17 November 2026</li>
+  </ul>
+</section>
+
+<p class="page-note">This page simplifies. It describes a flat universe with matter and dark energy only, and it leaves out radiation, neutrinos and the details of each analysis. The curves use the central values of the fit and ignore its uncertainty. The page does not discuss the Hubble tension or the clustering amplitude S8, two other open questions in cosmology. Status of the facts: 24 November 2026.</p>
+
+</main>
+<!-- learn:footer -->
+<script>
+(function(){
+'use strict';
+var L=window.Learn,mk=L.mk;
+function $(id){return document.getElementById(id);}
+function frame(svg,h){var w=Math.max(260,svg.getBoundingClientRect().width||640);svg.setAttribute('viewBox','0 0 '+w+' '+h);svg.setAttribute('height',h);L.clear(svg);return w;}
+function press(group,btn){[].forEach.call(group.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',b===btn?'true':'false');});}
+function txt(svg,x,y,s,cls,anchor){var t=mk('text',{x:x,y:y,'class':cls||'lbl'},svg);if(anchor)t.setAttribute('text-anchor',anchor);t.textContent=s;return t;}
+
+/* ---------- the model: flat universe, matter plus dark energy with w(a) = w0 + wa (1 - a) ---------- */
+var OM=0.31;
+function rhoDE(w0,wa,a){return Math.pow(a,-3*(1+w0+wa))*Math.exp(-3*wa*(1-a));}
+function E(om,w0,wa,z){var a=1/(1+z);return Math.sqrt(om/(a*a*a)+(1-om)*rhoDE(w0,wa,a));}
+/* distance in units of c/H0 at z = k * zmax / n, for k = 0..n. Simpson's rule on each step. */
+function distGrid(om,w0,wa,zmax,n){
+  var dz=zmax/n,out=[0],prev=1/E(om,w0,wa,0),s=0;
+  for(var i=1;i<=n;i++){var mid=1/E(om,w0,wa,(i-0.5)*dz),cur=1/E(om,w0,wa,i*dz);s+=dz*(prev+4*mid+cur)/6;out.push(s);prev=cur;}
+  return out;
+}
+/* Central values of the fits: DES Collaboration, arXiv:2605.27221v2, equations 2 to 4. */
+var FITS=[{w0:-0.84,wa:-0.44},{w0:-0.84,wa:-0.53},{w0:-0.82,wa:-0.63}];
+var ALL=FITS[2];
+function crossing(F){var a=1-(-1-F.w0)/F.wa;return 1/a-1;} /* redshift where w(a) = -1 */
+
+/* draw y = f(x) and stop where the curve leaves the range of the chart */
+function curve(svg,p,f,x0,x1,cls,lo,hi){
+  var d='',n=150,on=false;
+  for(var i=0;i<=n;i++){var x=x0+(x1-x0)*i/n,y=f(x);if(y<lo||y>hi){on=false;continue;}d+=(on?'L':'M')+p.sx(x).toFixed(1)+' '+p.sy(y).toFixed(1);on=true;}
+  return mk('path',{d:d,'class':cls},svg);
+}
+
+/* ---------- figure 1: density of dark energy ---------- */
+var wS=$('wS');
+function drawRho(){
+  var w=+wS.value;
+  $('wOut').textContent='w = '+L.sgn(w,2);
+  var svg=$('cRho'),p=L.plot(svg,{h:240,x0:0,x1:2.5,y0:0.5,y1:2});
+  curve(svg,p,function(){return 1;},0,2.5,'l-c2',0.5,2);
+  curve(svg,p,function(z){return Math.pow(1+z,3*(1+w));},0,2.5,'l-c1',0.5,2);
+  curve(svg,p,function(z){return rhoDE(ALL.w0,ALL.wa,1/(1+z));},0,2.5,'l-c3',0.5,2);
+  var zc=crossing(ALL),top=rhoDE(ALL.w0,ALL.wa,1/(1+zc));
+  mk('circle',{cx:p.sx(zc),cy:p.sy(top),r:4,'class':'d-c3'},svg);
+  txt(svg,p.m.l+6,p.m.t+10,'density / density today');
+  txt(svg,p.w-p.m.r-2,p.h-p.m.b-6,'redshift z (the past is to the right)','lbl','end');
+  $('rW1').textContent=L.sgn(Math.pow(2,3*(1+w)),2)+' ×';
+  $('rF1').textContent=L.sgn(rhoDE(ALL.w0,ALL.wa,0.5),2)+' ×';
+  $('rFp').textContent=L.sgn(top,2)+' ×';
+  $('rFz').textContent=L.sgn(zc,2);
+}
+wS.addEventListener('input',drawRho);
+
+/* ---------- figure 2: change of distance ---------- */
+var fitSel=2,fitSeg=$('fitSeg');
+[].forEach.call(fitSeg.querySelectorAll('button'),function(b){b.addEventListener('click',function(){fitSel=+b.getAttribute('data-f');press(fitSeg,b);drawDist();});});
+var MAG=100*(Math.pow(10,0.01/5)-1); /* 0.01 mag as a change of distance in percent */
+function drawDist(){
+  var svg=$('cD'),p=L.plot(svg,{h:230,x0:0,x1:2.5,y0:-2.5,y1:1});
+  var N=500,base=distGrid(OM,-1,0,2.5,N);
+  mk('rect',{x:p.sx(0),y:p.sy(MAG),width:p.sx(2.5)-p.sx(0),height:p.sy(-MAG)-p.sy(MAG),'class':'f-band'},svg);
+  mk('line',{x1:p.sx(0),x2:p.sx(2.5),y1:p.sy(0),y2:p.sy(0),'class':'l-c2'},svg);
+  var best={z:0,v:0};
+  [0,1,2].filter(function(i){return i!==fitSel;}).concat([fitSel]).forEach(function(i){
+    var F=FITS[i],g=distGrid(OM,F.w0,F.wa,2.5,N),d='M'+p.sx(0).toFixed(1)+' '+p.sy(0).toFixed(1);
+    for(var k=1;k<=N;k++){
+      var z=2.5*k/N,v=100*(g[k]/base[k]-1);
+      d+='L'+p.sx(z).toFixed(1)+' '+p.sy(v).toFixed(1);
+      if(i===fitSel&&v<best.v)best={z:z,v:v};
+    }
+    mk('path',{d:d,'class':i===fitSel?'l-c3':'l-faint'},svg);
+  });
+  mk('circle',{cx:p.sx(best.z),cy:p.sy(best.v),r:4,'class':'d-c3'},svg);
+  txt(svg,p.m.l+6,p.m.t+10,'change of distance in %');
+  txt(svg,p.w-p.m.r-2,p.h-p.m.b-6,'redshift z','lbl','end');
+  $('rD1').textContent=L.sgn(best.v,2)+' %';
+  $('rD2').textContent=L.sgn(best.z,2);
+  $('rD3').textContent=L.sgn(5*Math.log(1+best.v/100)/Math.LN10,3)+' mag';
+}
+
+/* ---------- figure 3: redshift ranges of the measurements ---------- */
+/* Ranges: arXiv:2605.27221v2 section II. Upper end of the DES supernovae (z = 1.13): arXiv:2503.14738. */
+var COV=[
+  ['Supernovae','brightness gives distance',[[0.025,0.1,'hollow'],[0.1,1.13,'bar']]],
+  ['DES BAO','ruler gives distance',[[0.6,1.2,'bar']]],
+  ['DESI BAO','ruler gives distance',[[0.295,2.33,'bar']]],
+  ['3×2pt, galaxy positions','growth',[[0.2,1.2,'bar']]],
+  ['3×2pt, galaxy shapes','growth',[[0,2,'bar']]],
+  ['CMB','anchor at z = 1,089',null]
+];
+/* light travel time in billion years, flat Lambda-CDM with om = 0.302 and h = 0.683 (arXiv:2601.14559) */
+function lookback(z){
+  var om=0.302,h=0.683,n=400,dz=z/n,s=0;
+  for(var i=0;i<n;i++){var zz=(i+0.5)*dz;s+=dz/((1+zz)*Math.sqrt(om*Math.pow(1+zz,3)+1-om));}
+  return s*9.7779/h;
+}
+function drawCov(){
+  var svg=$('cCov'),rh=38,top=20,h=top+COV.length*rh+52,w=frame(svg,h),l=8,r=14;
+  function sx(z){return l+z/2.5*(w-l-r);}
+  var g=mk('g',{'class':'ax'},svg),yb=top+COV.length*rh;
+  [0,0.5,1,1.5,2,2.5].forEach(function(z){
+    mk('line',{x1:sx(z),x2:sx(z),y1:top,y2:yb},g);
+    var a=z===0?'start':z===2.5?'end':'middle';
+    mk('text',{x:sx(z),y:yb+15,'text-anchor':a},g).textContent=z===0?'z = 0':L.sgn(z,1);
+    mk('text',{x:sx(z),y:yb+31,'text-anchor':a},g).textContent=z===0?'today':L.sgn(lookback(z),1);
+  });
+  txt(svg,sx(2.5),yb+47,'z: redshift · below: billion years ago','lbl','end');
+  var zc=crossing(ALL);
+  txt(svg,sx(zc),top-6,'z = '+L.sgn(zc,2),'t-c3','middle');
+  COV.forEach(function(rw,i){
+    var y=top+i*rh;
+    var t=mk('text',{x:l,y:y+14,'class':'cat'},svg);t.textContent=rw[0];
+    var s=mk('tspan',{'class':'cat2',dx:6},t);s.textContent=rw[1];
+    if(rw[2])mk('line',{x1:sx(zc),x2:sx(zc),y1:y+16,y2:y+34,'class':'l-mark'},svg);
+    if(!rw[2]){
+      var xe=sx(2.5),ym=y+25;
+      mk('path',{d:'M'+(xe-58)+' '+ym+'H'+(xe-8)+'M'+(xe-15)+' '+(ym-5)+'L'+(xe-7)+' '+ym+'L'+(xe-15)+' '+(ym+5),'class':'l-c1'},svg);
+      txt(svg,xe-64,ym+4,'far outside this chart','val','end');
+      return;
+    }
+    rw[2].forEach(function(b){
+      if(b[2]==='hollow')mk('rect',{x:sx(b[0])+0.8,y:y+19.8,width:Math.max(2,sx(b[1])-sx(b[0])-1.6),height:10.4,'class':'hollow'},svg);
+      else mk('rect',{x:sx(b[0]),y:y+19,width:sx(b[1])-sx(b[0]),height:12,'class':'bar'},svg);
+    });
+  });
+}
+
+/* ---------- figure 4: significance per combination ---------- */
+/* arXiv:2605.27221v2, table 1, column "Distance to Lambda-CDM (sigma)" */
+var SIG=[
+  [['DES 3×2pt alone','',1.0],['All DES','3×2pt + supernovae + DES BAO',2.2],['All DES + DESI BAO','no CMB',2.3],['All data','with the CMB',3.0,true]],
+  [['All data','',3.0,true],['Without DES 3×2pt','',3.2],['Without DESI BAO','',2.8],['Without supernovae','',2.6],['Without all BAO','',2.4],['Without CMB','',2.3]]
+];
+var sigSel=0,sigSeg=$('sigSeg');
+[].forEach.call(sigSeg.querySelectorAll('button'),function(b){b.addEventListener('click',function(){sigSel=+b.getAttribute('data-v');press(sigSeg,b);drawSig();});});
+function drawSig(){
+  var rows=SIG[sigSel],svg=$('cSig'),rh=40,top=8,h=top+rows.length*rh+26,w=frame(svg,h),l=8,r=20,max=5.5;
+  function sx(v){return l+v/max*(w-l-r);}
+  var g=mk('g',{'class':'ax'},svg);
+  [0,1,2,3,4,5].forEach(function(v){
+    mk('line',{x1:sx(v),x2:sx(v),y1:top,y2:h-22},g);
+    mk('text',{x:sx(v),y:h-6,'text-anchor':v?'middle':'start'},g).textContent=v+'σ';
+  });
+  mk('line',{x1:sx(5),x2:sx(5),y1:top,y2:h-22,'class':'l-ref'},svg);
+  rows.forEach(function(rw,i){
+    var y=top+i*rh;
+    var t=mk('text',{x:l,y:y+13,'class':'cat'},svg);t.textContent=rw[0];
+    if(rw[1]){var s=mk('tspan',{'class':'cat2',dx:6},t);s.textContent=rw[1];}
+    mk('rect',{x:l,y:y+19,width:sx(rw[2])-l,height:13,'class':'bar'+(rw[3]?' hi':'')},svg);
+    mk('text',{x:sx(rw[2])+5,y:y+30,'class':'val'},svg).textContent=L.sgn(rw[2],1)+'σ';
+  });
+}
+
+/* ---------- figure 5: sigma to probability ---------- */
+/* complementary error function, relative error below 1.2e-7 (Numerical Recipes, erfcc) */
+function erfc(x){
+  var z=Math.abs(x),t=1/(1+0.5*z);
+  var r=t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277)))))))));
+  return x>=0?r:2-r;
+}
+function tail(s){return erfc(s/Math.SQRT2);} /* probability outside plus or minus s sigma */
+function pct(p){var x=p*100,d=x>=1?1:Math.max(2,1-Math.floor(Math.log(x)/Math.LN10));return L.sgn(x,d)+' %';}
+function oneIn(p){var n=1/p;if(n>=1e6)return '1 in '+L.sgn(n/1e6,1)+' million';if(n>=100){var q=Math.pow(10,Math.floor(Math.log(n)/Math.LN10)-1);n=Math.round(n/q)*q;}return '1 in '+(n<10?L.sgn(n,1):L.fmt(n));}
+var sS=$('sS');
+function drawProb(){
+  var s=+sS.value;
+  $('sOut').textContent=L.sgn(s,1)+'σ';
+  var svg=$('cS'),h=250,w=frame(svg,h),m={l:66,r:12,t:12,b:26},dec=7,max=5.5;
+  function sx(x){return m.l+x/max*(w-m.l-m.r);}
+  function sy(p){return m.t-(Math.log(p)/Math.LN10)/dec*(h-m.t-m.b);}
+  var g=mk('g',{'class':'ax'},svg);
+  [[1,'1'],[1e-2,'1 in 100'],[1e-4,'1 in 10k'],[1e-6,'1 in 1M']].forEach(function(a){
+    mk('line',{x1:m.l,x2:w-m.r,y1:sy(a[0]),y2:sy(a[0])},g);
+    mk('text',{x:m.l-6,y:sy(a[0])+4,'text-anchor':'end'},g).textContent=a[1];
+  });
+  [0,1,2,3,4,5].forEach(function(v){mk('text',{x:sx(v),y:h-6,'text-anchor':'middle'},g).textContent=v+'σ';});
+  var d='';
+  for(var i=0;i<=110;i++){var x=max*i/110;d+=(i?'L':'M')+sx(x).toFixed(1)+' '+sy(tail(x)).toFixed(1);}
+  mk('path',{d:d,'class':'l-c1'},svg);
+  [[2.2,'DES alone, 2.2σ','d-ink','lbl','start'],[3.0,'all data, 3.0σ','d-c3','t-c3','start'],[5,'discovery, 5σ','d-ink','lbl','end']].forEach(function(a){
+    var e=a[4]==='end';
+    mk('circle',{cx:sx(a[0]),cy:sy(tail(a[0])),r:4,'class':a[2]},svg);
+    txt(svg,sx(a[0])+(e?-8:8),sy(tail(a[0]))+(e?4:-5),a[1],a[3],a[4]);
+  });
+  mk('circle',{cx:sx(s),cy:sy(tail(s)),r:8,'class':'ring'},svg);
+  var p=tail(s);
+  $('rS1').textContent=pct(p);
+  $('rS2').textContent=oneIn(p);
+  var q=p*100;
+  $('rS3').textContent=L.sgn(100-q,q>=0.01?2:Math.ceil(-Math.log(q)/Math.LN10)+1)+' %';
+}
+sS.addEventListener('input',drawProb);
+
+/* Learn.onChange calls the function at the start, and again when the page width changes. */
+L.onChange(function(){drawRho();drawDist();drawCov();drawSig();drawProb();});
+})();
+</script>
+</body>
+</html>
