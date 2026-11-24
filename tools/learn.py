@@ -186,6 +186,11 @@ class Explainer:
         ):
             if re.search(pat, src, re.I):
                 self.err("the page loads %s. Put the file into the folder of the explainer." % what)
+        # A fixed-width font means code on this site. A page uses it through <pre class="code"> and the class "mono".
+        for style in re.findall(r"<style>(.*?)</style>", src, re.S):
+            if re.search(r"font-mono|monospace", style):
+                self.err('the <style> of the page uses a fixed-width font. It is for code only: '
+                         'use <pre class="code"> for a block and class="mono" for a code word, and the text font for all other text')
         for bad in ("lorem ipsum", "TODO", "FIXME"):
             if bad.lower() in src.lower():
                 self.err('placeholder text found: "%s"' % bad)

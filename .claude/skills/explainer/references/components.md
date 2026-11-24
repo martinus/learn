@@ -54,6 +54,8 @@ Use the variables and write no colour values in a page, because the dark mode sw
 
 Give each colour one meaning per page and keep it.
 
+The fixed-width font (`--font-mono`) means code: a code block, terminal output, a log, and a code word with the class `mono`. Do not use it as a style for labels, dates, numbers or chart text, and not for a formula. `check` rejects it in the `<style>` of a page.
+
 ## Text parts
 
 ```html
@@ -62,7 +64,7 @@ Give each colour one meaning per page and keep it.
 <span class="num">01</span>                      <!-- section number, above each h2 -->
 <p class="aside">...</p>                         <!-- a comparison, or a limit of the page -->
 <p class="small">...</p>                         <!-- a less important note -->
-<span class="mono">ln(t)</span>                  <!-- formula or code word inside a sentence -->
+<span class="mono">canvas.rs</span>              <!-- code word inside a sentence: a file, a command, an identifier -->
 <ul class="plain"> <li>...</li> </ul>            <!-- normal list -->
 <p class="page-note">...</p>                     <!-- last element in main: limits, date of the facts -->
 ```
