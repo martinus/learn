@@ -68,7 +68,7 @@ Decide before you write HTML:
 - What this reader already knows. The page skips it.
 - 4 to 8 sections, each answering one sub-question. One explains how the thing works at the level of the mechanism.
 - One graphic per main section: what it shows at rest, and the one thing the reader can change.
-- Where code explains faster than prose.
+- Where a formula or code explains faster than prose: a formula for a mathematical relation, code for an algorithm, a data layout or an interface.
 - Where the page simplifies, and what is uncertain.
 
 ### 4. Scaffold

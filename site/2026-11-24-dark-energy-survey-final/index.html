@@ -56,6 +56,7 @@
   <details class="changes">
     <summary><span>What changed on this page</span></summary>
     <ol>
+      <li><time>24 Nov 2026, later</time><span>Formulas are now set as formulas. Section 02 shows the two equations for the distance and no longer a C++ example.</span></li>
       <li><time>24 Nov 2026</time><span>First version.</span></li>
     </ol>
   </details>
@@ -70,21 +71,20 @@
   <span class="num">01</span>
   <h2>What w says about dark energy</h2>
   <p>In 1998, two teams found from about 50 exploding stars that the expansion of the universe speeds up. The cause got the name dark energy. In the standard model it makes up about 70&nbsp;% of the energy in the universe. The question of this page is whether its density changes while space expands.</p>
-  <p>Two numbers describe the expansion. The <strong>scale factor</strong> <span class="mono">a</span> is the size of the universe relative to today: <span class="mono">a = 0.5</span> means that all distances between far galaxies were half as large. Astronomers measure the <strong>redshift</strong> <span class="mono">z</span> instead. Light that left a galaxy at scale factor <span class="mono">a</span> arrives with its wavelength stretched by <span class="mono">1 + z = 1/a</span>. A larger <span class="mono">z</span> is further away and further in the past.</p>
-  <p>Each ingredient of the universe thins out in its own way while space grows. Physics describes this with one number per ingredient, the <strong>equation of state</strong> <span class="mono">w</span>, the ratio of pressure to energy density. The density then follows <span class="mono">&rho; &prop; a<sup>&minus;3(1+w)</sup></span>.</p>
+  <p>Two numbers describe the expansion. The <strong>scale factor</strong> <math><mi>a</mi></math> is the size of the universe relative to today: <math><mi>a</mi><mo>=</mo><mn>0.5</mn></math> means that all distances between far galaxies were half as large. Astronomers measure the <strong>redshift</strong> <math><mi>z</mi></math> instead. Light that left a galaxy at scale factor <math><mi>a</mi></math> arrives with its wavelength stretched by <math><mn>1</mn><mo>+</mo><mi>z</mi><mo>=</mo><mn>1</mn><mo>/</mo><mi>a</mi></math>. A larger <math><mi>z</mi></math> is further away and further in the past.</p>
+  <p>Each ingredient of the universe thins out in its own way while space grows. Physics describes this with one number per ingredient, the <strong>equation of state</strong> <math><mi>w</mi></math>, the ratio of pressure to energy density. The density then follows <math><mi>&rho;</mi><mo>&prop;</mo><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>w</mi><mo stretchy="false">)</mo></mrow></msup></math>.</p>
   <ul class="plain">
-    <li><strong>Matter:</strong> <span class="mono">w = 0</span>. The density falls with the volume, <span class="mono">a<sup>&minus;3</sup></span>.</li>
-    <li><strong>Cosmological constant &Lambda;:</strong> <span class="mono">w = &minus;1</span>. The exponent is zero, so the density never changes. This is the dark energy of the standard model, which is called &Lambda;CDM (&Lambda; plus cold dark matter).</li>
-    <li><strong><span class="mono">w &gt; &minus;1</span>:</strong> the density falls while space grows. <strong><span class="mono">w &lt; &minus;1</span>:</strong> the density rises. Physicists call this case &ldquo;phantom&rdquo;.</li>
+    <li><strong>Matter:</strong> <math><mi>w</mi><mo>=</mo><mn>0</mn></math>. The density falls with the volume, <math><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn></mrow></msup></math>.</li>
+    <li><strong>Cosmological constant &Lambda;:</strong> <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>. The exponent is zero, so the density never changes. This is the dark energy of the standard model, which is called &Lambda;CDM (&Lambda; plus cold dark matter).</li>
+    <li><strong><math><mi>w</mi><mo>&gt;</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>:</strong> the density falls while space grows. <strong><math><mi>w</mi><mo>&lt;</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>:</strong> the density rises. Physicists call this case &ldquo;phantom&rdquo;.</li>
   </ul>
-  <p>To test the constant, the DES paper lets <span class="mono">w</span> change with time in the simplest way, a straight line in <span class="mono">a</span>:</p>
-  <pre class="code"><code>// CPL parametrisation
-w(a) = w0 + wa * (1 - a)
-// w0: the value today (a = 1)
-// wa: the change towards the past
-// Lambda-CDM: (w0, wa) = (-1, 0)</code></pre>
-  <p>So the test is a comparison of nested models. The larger model has two more parameters, and the standard model is one point inside it. With all data combined, the DES paper finds <span class="mono">w0 = &minus;0.82 &plusmn; 0.05</span> and <span class="mono">wa = &minus;0.63</span> (+0.21, &minus;0.18).</p>
-  <p>Integrating the density rule for this <span class="mono">w(a)</span> gives <span class="mono">&rho;(a)/&rho;(1) = a<sup>&minus;3(1+w0+wa)</sup> &middot; e<sup>&minus;3&middot;wa&middot;(1&minus;a)</sup></span>. The chart draws it for the DES fit.</p>
+  <p>To test the constant, the DES paper lets <math><mi>w</mi></math> change with time in the simplest way, a straight line in <math><mi>a</mi></math>:</p>
+  <div class="formula"><math display="block"><mi>w</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><mi>a</mi><mo stretchy="false">)</mo></math></div>
+  <p><math><msub><mi>w</mi><mn>0</mn></msub></math> is the value today, at <math><mi>a</mi><mo>=</mo><mn>1</mn></math>. <math><msub><mi>w</mi><mi>a</mi></msub></math> says how much <math><mi>w</mi></math> changes towards the past. The form is called the CPL parametrisation. &Lambda;CDM is the single point <math><mo stretchy="false">(</mo><msub><mi>w</mi><mn>0</mn></msub><mo>,</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mo form="prefix">&minus;</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false">)</mo></math>.</p>
+  <p>So the test is a comparison of nested models. The larger model has two more parameters, and the standard model is one point inside it. With all data combined, the DES paper finds <math><msub><mi>w</mi><mn>0</mn></msub><mo>=</mo><mo form="prefix">&minus;</mo><mn>0.82</mn><mo>&plusmn;</mo><mn>0.05</mn></math> and <math><msub><mi>w</mi><mi>a</mi></msub><mo>=</mo><mo form="prefix">&minus;</mo><mn>0.63</mn></math> (+0.21, &minus;0.18).</p>
+  <p>Integrating the density rule for this <math><mi>w</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></math> gives the density of dark energy relative to today:</p>
+  <div class="formula"><math display="block"><mfrac><mrow><msub><mi>&rho;</mi><mi>DE</mi></msub><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mrow><msub><mi>&rho;</mi><mi>DE</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mfrac><mo>=</mo><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">)</mo></mrow></msup><mo>&middot;</mo><msup><mi>e</mi><mrow><mo>&minus;</mo><mn>3</mn><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><mi>a</mi><mo stretchy="false">)</mo></mrow></msup></math></div>
+  <p>The chart draws this formula for the DES fit.</p>
 
   <figure>
     <div class="fig-title">Density of dark energy, relative to today</div>
@@ -104,45 +104,23 @@ w(a) = w0 + wa * (1 - a)
       <div><small>DES fit: highest density</small><b id="rFp">1.09 &times;</b></div>
       <div><small>DES fit: highest at redshift</small><b id="rFz">0.40</b></div>
     </div>
-    <figcaption>The slider starts at <span class="mono">w = &minus;0.82</span>, the value of the DES fit today. With this value alone, dark energy would have been much denser in the past. The second parameter <span class="mono">wa</span> bends the curve back down. The dot marks the highest density of the fit. The vertical axis starts at 0.5. Central values: DES Collaboration, 26 May 2026. Curves computed on this page.</figcaption>
+    <figcaption>The slider starts at <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>0.82</mn></math>, the value of the DES fit today. With this value alone, dark energy would have been much denser in the past. The second parameter <math><msub><mi>w</mi><mi>a</mi></msub></math> bends the curve back down. The dot marks the highest density of the fit. The vertical axis starts at 0.5. Central values: DES Collaboration, 26 May 2026. Curves computed on this page.</figcaption>
   </figure>
 
   <p>This page computes the curve of the DES fit from the central values. No source states these densities. In this curve, dark energy grew until redshift 0.40, was then 9&nbsp;% denser than today, and has thinned out since. Redshift 0.40 is about 4.4 billion years ago. This time is also computed here, with the &Lambda;CDM parameters of the DES analysis of January 2026.</p>
-  <p class="aside">The curve is one of many that fit. The uncertainty of <span class="mono">wa</span> is about a third of its value, and the two parameters are correlated. The data constrain <span class="mono">w</span> best at redshift 0.32, where the paper finds <span class="mono">w = &minus;0.97 &plusmn; 0.02</span>.</p>
+  <p class="aside">The curve is one of many that fit. The uncertainty of <math><msub><mi>w</mi><mi>a</mi></msub></math> is about a third of its value, and the two parameters are correlated. The data constrain <math><mi>w</mi></math> best at redshift 0.32, where the paper finds <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>0.97</mn><mo>&plusmn;</mo><mn>0.02</mn></math>.</p>
 </section>
 
 <section>
   <span class="num">02</span>
   <h2>The effect: under 2&nbsp;% in distance</h2>
-  <p>No instrument measures the density of dark energy. What astronomers can measure is the distance to objects at a known redshift. The link between the two is the expansion rate <span class="mono">H(z)</span>. In a flat universe with matter and dark energy, the Friedmann equation of general relativity gives it from the two densities. The distance is the path that light covers while space expands, an integral over <span class="mono">1/H</span>.</p>
-  <pre class="code"><code>// C++20. Flat universe: matter plus dark energy
-// with w(a) = w0 + wa * (1 - a).
-#include &lt;cmath&gt;
-
-struct Model { double om, w0, wa; };  // om: matter share
-
-// Dark energy density at scale factor a, today = 1.
-double rho_de(const Model&amp; m, double a) {
-    return std::pow(a, -3 * (1 + m.w0 + m.wa))
-         * std::exp(-3 * m.wa * (1 - a));
-}
-
-// Expansion rate H(z) / H0 (Friedmann equation).
-double E(const Model&amp; m, double z) {
-    double a = 1 / (1 + z);
-    return std::sqrt(m.om / (a * a * a)
-                   + (1 - m.om) * rho_de(m, a));
-}
-
-// Distance to redshift z in units of c / H0 (Simpson).
-double dist(const Model&amp; m, double z, int n = 1000) {
-    double h = z / n, s = 1 / E(m, 0) + 1 / E(m, z);
-    for (int i = 1; i &lt; n; ++i)
-        s += (i % 2 ? 4 : 2) / E(m, i * h);
-    return s * h / 3;
-}</code></pre>
-  <p><span class="mono">om</span> is the share of matter in today&rsquo;s energy density. The DES fit gives 0.311 &plusmn; 0.005. <span class="mono">H0</span> is the expansion rate today. With the <span class="mono">H0</span> of the fit, 67.4 km/s/Mpc, the unit <span class="mono">c/H0</span> is about 4,400 megaparsecs. That is more than 14 billion light years. The code leaves out radiation, which matters only in the very early universe.</p>
-  <p>The call <span class="mono">dist({0.31, -0.82, -0.63}, 0.5) / dist({0.31, -1, 0}, 0.5)</span> returns 0.9836. With the same <span class="mono">om</span> and <span class="mono">H0</span>, an object at redshift 0.5 is 1.64&nbsp;% closer in the DES fit than in the standard model. The chart shows this ratio for all redshifts that the surveys cover.</p>
+  <p>No instrument measures the density of dark energy. What astronomers can measure is the distance to objects at a known redshift. The link between the two is the expansion rate <math><mi>H</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></math>. Write it relative to today&rsquo;s rate <math><msub><mi>H</mi><mn>0</mn></msub></math>, as <math><mi>E</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo>/</mo><msub><mi>H</mi><mn>0</mn></msub></math>. In a flat universe with matter and dark energy, the Friedmann equation of general relativity gives it from the two densities:</p>
+  <div class="formula"><math display="block"><mi>E</mi><mo stretchy="false">(</mo><mi>z</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>=</mo><msub><mi>&Omega;</mi><mi>m</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>z</mi><msup><mo stretchy="false">)</mo><mrow><mn>3</mn></mrow></msup><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><msub><mi>&Omega;</mi><mi>m</mi></msub><mo stretchy="false">)</mo><mspace width="0.2em"></mspace><mfrac><mrow><msub><mi>&rho;</mi><mi>DE</mi></msub><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo></mrow><mrow><msub><mi>&rho;</mi><mi>DE</mi></msub><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></mfrac></math></div>
+  <p><math><msub><mi>&Omega;</mi><mi>m</mi></msub></math> is the share of matter in today&rsquo;s energy density. The DES fit gives 0.311 &plusmn; 0.005. The last term is the density formula of section 01, with <math><mi>a</mi><mo>=</mo><mn>1</mn><mo>/</mo><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>z</mi><mo stretchy="false">)</mo></math>. The equation leaves out radiation, which matters only in the very early universe.</p>
+  <p>The distance to an object at redshift <math><mi>z</mi></math> is the path that its light covers while space expands:</p>
+  <div class="formula"><math display="block"><mi>D</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mi>c</mi><msub><mi>H</mi><mn>0</mn></msub></mfrac><msubsup><mo>&int;</mo><mn>0</mn><mi>z</mi></msubsup><mfrac><mrow><mi>d</mi><msup><mi>z</mi><mo>&prime;</mo></msup></mrow><mrow><mi>E</mi><mo stretchy="false">(</mo><msup><mi>z</mi><mo>&prime;</mo></msup><mo stretchy="false">)</mo></mrow></mfrac></math></div>
+  <p>The factor <math><mi>c</mi><mo>/</mo><msub><mi>H</mi><mn>0</mn></msub></math> sets the scale. With the <math><msub><mi>H</mi><mn>0</mn></msub></math> of the fit, 67.4 km/s/Mpc, it is about 4,400 megaparsecs. That is more than 14 billion light years. The integral has no simple closed form, so the script of this page computes it with Simpson&rsquo;s rule.</p>
+  <p>An example for <math><mi>z</mi><mo>=</mo><mn>0.5</mn></math>: with the same <math><msub><mi>&Omega;</mi><mi>m</mi></msub><mo>=</mo><mn>0.31</mn></math> and the same <math><msub><mi>H</mi><mn>0</mn></msub></math>, the distance in the DES fit is 0.9836 times the distance in the standard model. The object is 1.64&nbsp;% closer. The chart shows this change for all redshifts that the surveys cover.</p>
 
   <figure>
     <div class="fig-title">Distance in the fit, compared with &Lambda;CDM</div>
@@ -163,7 +141,7 @@ double dist(const Model&amp; m, double z, int n = 1000) {
       <div><small>At redshift</small><b id="rD2">0.51</b></div>
       <div><small>In supernova brightness</small><b id="rD3">&minus;0.036 mag</b></div>
     </div>
-    <figcaption>Each curve changes only <span class="mono">w0</span> and <span class="mono">wa</span> and keeps the matter share at 0.31 and <span class="mono">H0</span> fixed. A real fit also adjusts these two, so the difference between the two best-fitting models is not exactly this curve. Central values: DES Collaboration, 26 May 2026. Curves computed on this page.</figcaption>
+    <figcaption>Each curve changes only <math><msub><mi>w</mi><mn>0</mn></msub></math> and <math><msub><mi>w</mi><mi>a</mi></msub></math> and keeps <math><msub><mi>&Omega;</mi><mi>m</mi></msub><mo>=</mo><mn>0.31</mn></math> and <math><msub><mi>H</mi><mn>0</mn></msub></math> fixed. A real fit also adjusts these two, so the difference between the two best-fitting models is not exactly this curve. Central values: DES Collaboration, 26 May 2026. Curves computed on this page.</figcaption>
   </figure>
 
   <p>The whole signal is a shift of one to two percent that depends on redshift. Supernova surveys measure brightness in magnitudes, a logarithmic unit: 1&nbsp;% in distance is 0.022 mag. The DES supernova team cites a 2024 paper by Efstathiou on what this demands. The brightness scale of nearby and distant supernovae must agree within 0.01 mag, across several telescopes. This page converts 0.01 mag to 0.46&nbsp;% in distance, which is the band in the chart.</p>
@@ -236,12 +214,12 @@ double dist(const Model&amp; m, double z, int n = 1000) {
     <figcaption>Source: DES Collaboration, table 1, 26 May 2026. &ldquo;All BAO&rdquo; means the BAO data of DES and DESI together.</figcaption>
   </figure>
 
-  <p>Press &ldquo;Leave one out&rdquo;. Without the supernovae the result is 2.6σ, without the CMB 2.3σ, without any BAO data 2.4σ. The paper states that the best fit stays in the same region in every case: <span class="mono">w0 &gt; &minus;1</span> and <span class="mono">wa &lt; 0</span>. So no single dataset produces the preference alone. Without any one of them, at least 2.3σ remain.</p>
+  <p>Press &ldquo;Leave one out&rdquo;. Without the supernovae the result is 2.6σ, without the CMB 2.3σ, without any BAO data 2.4σ. The paper states that the best fit stays in the same region in every case: <math><msub><mi>w</mi><mn>0</mn></msub><mo>&gt;</mo><mo form="prefix">&minus;</mo><mn>1</mn></math> and <math><msub><mi>w</mi><mi>a</mi></msub><mo>&lt;</mo><mn>0</mn></math>. So no single dataset produces the preference alone. Without any one of them, at least 2.3σ remain.</p>
   <p>The same table also gives reasons for caution:</p>
   <ul class="plain">
-    <li><strong>More data did not raise the number.</strong> Supernovae, BAO and CMB without the DES 3&times;2pt data give 3.2σ. With 3&times;2pt, the constraint on <span class="mono">w0</span> and <span class="mono">wa</span> is 10&nbsp;% tighter, by the paper&rsquo;s measure for the size of the uncertainty region. The result is 3.0σ.</li>
+    <li><strong>More data did not raise the number.</strong> Supernovae, BAO and CMB without the DES 3&times;2pt data give 3.2σ. With 3&times;2pt, the constraint on <math><msub><mi>w</mi><mn>0</mn></msub></math> and <math><msub><mi>w</mi><mi>a</mi></msub></math> is 10&nbsp;% tighter, by the paper&rsquo;s measure for the size of the uncertainty region. The result is 3.0σ.</li>
     <li><strong>A recalibration already cost one σ.</strong> With the first version of the DES supernova data, the combination with DESI and the CMB gave 4.2σ. In November 2025 the team published a new calibration, named DES-Dovekie. The same combination then gave 3.2σ.</li>
-    <li><strong>A constant <span class="mono">w</span> other than &minus;1 is not preferred.</strong> If <span class="mono">w</span> may differ from &minus;1 but not change, the DES analysis of January 2026 finds <span class="mono">w = &minus;0.981</span> (+0.021, &minus;0.022). It combines 3&times;2pt, the CMB, DESI BAO, supernovae and galaxy clusters. Only the model with a change in time fits better.</li>
+    <li><strong>A constant <math><mi>w</mi></math> other than &minus;1 is not preferred.</strong> If <math><mi>w</mi></math> may differ from &minus;1 but not change, the DES analysis of January 2026 finds <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>0.981</mn></math> (+0.021, &minus;0.022). It combines 3&times;2pt, the CMB, DESI BAO, supernovae and galaxy clusters. Only the model with a change in time fits better.</li>
   </ul>
   <p>The DES team worked blind. It fixed all choices of the analysis before it looked at the cosmological result.</p>
 </section>
@@ -249,7 +227,9 @@ double dist(const Model&amp; m, double z, int n = 1000) {
 <section>
   <span class="num">05</span>
   <h2>How strong is 3σ?</h2>
-  <p>The fit produces a probability distribution over the plane of <span class="mono">w0</span> and <span class="mono">wa</span>, from a sampler. The paper draws the contour of equal probability density that runs through the standard model at (&minus;1, 0) and measures which fraction <span class="mono">&Delta;</span> of the distribution lies inside. It then reports the number of standard deviations at which a Gaussian holds the same fraction: <span class="mono">n = &radic;2 &middot; erf<sup>&minus;1</sup>(&Delta;)</span>. A second method, the difference in <span class="mono">&chi;&sup2;</span> between the best fits of the two models, gives nearly the same numbers.</p>
+  <p>The fit produces a probability distribution over the plane of <math><msub><mi>w</mi><mn>0</mn></msub></math> and <math><msub><mi>w</mi><mi>a</mi></msub></math>, from a sampler. The paper draws the contour of equal probability density that runs through the standard model at (&minus;1, 0) and measures which fraction <math><mi>&Delta;</mi></math> of the distribution lies inside. It then reports the number of standard deviations <math><mi>n</mi></math> at which a Gaussian holds the same fraction:</p>
+  <div class="formula"><math display="block"><mi>n</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>&middot;</mo><msup><mi>erf</mi><mrow><mo>&minus;</mo><mn>1</mn></mrow></msup><mo stretchy="false">(</mo><mi>&Delta;</mi><mo stretchy="false">)</mo></math></div>
+  <p>A second method, the difference in <math><msup><mi>&chi;</mi><mrow><mn>2</mn></mrow></msup></math> between the best fits of the two models, gives nearly the same numbers.</p>
 
   <figure>
     <div class="fig-title">Gaussian probability outside &plusmn;nσ</div>
@@ -266,7 +246,7 @@ double dist(const Model&amp; m, double z, int n = 1000) {
     <figcaption>The vertical axis is logarithmic. From 3σ to 5σ, the probability falls by a factor of about 4,700. The conversion is the standard Gaussian formula, computed on this page. Marked values: DES Collaboration, 26 May 2026.</figcaption>
   </figure>
 
-  <p>3.0σ means that 99.73&nbsp;% of the distribution lies inside the contour through the standard model. The <span class="mono">&chi;&sup2;</span> method gives the same 3.0σ and allows a second reading. If the standard model is true and all errors are understood, a fit that is this much better appears by chance in about 1 of 370 cases. Three things make the number weaker than it looks.</p>
+  <p>3.0σ means that 99.73&nbsp;% of the distribution lies inside the contour through the standard model. The <math><msup><mi>&chi;</mi><mrow><mn>2</mn></mrow></msup></math> method gives the same 3.0σ and allows a second reading. If the standard model is true and all errors are understood, a fit that is this much better appears by chance in about 1 of 370 cases. Three things make the number weaker than it looks.</p>
   <ul class="plain">
     <li><strong>It holds only if all errors are in the model.</strong> A calibration error that nobody knows about is not part of the distribution. The step from 4.2σ to 3.2σ in section 04 came from such a correction and not from chance.</li>
     <li><strong>It does not compare the two models.</strong> The number says how surprising the data are under the standard model. A Bayesian comparison also charges the larger model for its two extra parameters. The DES-Dovekie paper gives this figure for its 3.2σ: odds of about 5 to 1 for the changing dark energy. By the usual thresholds, the paper calls that a weak preference.</li>
@@ -298,7 +278,7 @@ double dist(const Model&amp; m, double z, int n = 1000) {
     </div>
   </div>
   <p>Quanta Magazine reports that some theorists doubt a changing dark energy for a further reason. Physics cannot yet explain why the energy of empty space has its small value. A value that also changes slowly would need a second explanation. Quanta also puts the &tau; idea into time: the gas would have to be ionised about 200 million years earlier than the roughly 700 million years after the Big Bang that the standard model assumes.</p>
-  <p class="aside">The line <span class="mono">w0 + wa(1 &minus; a)</span> is a parametrisation and no physical theory. The DES-Dovekie paper notes that it can approximate many physical models. A preference for it says that some change over time fits better than none. It does not say that <span class="mono">w</span> follows this line.</p>
+  <p class="aside">The line <math><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><mi>a</mi><mo stretchy="false">)</mo></math> is a parametrisation and no physical theory. The DES-Dovekie paper notes that it can approximate many physical models. A preference for it says that some change over time fits better than none. It does not say that <math><mi>w</mi></math> follows this line.</p>
 </section>
 
 <section>

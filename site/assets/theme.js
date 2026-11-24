@@ -127,6 +127,38 @@ function markNav(){
   else{NAV.menu.hidden=true;NAV.btn.setAttribute('aria-expanded','false');}
 }
 
+/* ---- syntax colours for <pre class="code" data-lang="cpp"> ----
+   Marks comments, strings, numbers and keywords. A block without data-lang stays plain.
+   The site uses no packages, so this is a small scanner and no full parser. */
+var KEYWORDS={
+  cpp:'alignas alignof auto bool break case catch char class concept const consteval constexpr constinit const_cast continue co_await co_return co_yield decltype default delete do double dynamic_cast else enum explicit export extern false float for friend goto if inline int long mutable namespace new noexcept nullptr operator private protected public reinterpret_cast requires return short signed sizeof static static_assert static_cast struct switch template this thread_local throw true try typedef typename union unsigned using virtual void volatile while',
+  js:'async await break case catch class const continue default delete do else export extends false finally for function if import in instanceof let new null of return static super switch this throw true try typeof undefined var void while yield',
+  py:'False None True and as assert async await break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield',
+  sh:'case do done elif else esac export fi for function if in local return then until while',
+  rust:'as async await break const continue crate dyn else enum extern false fn for if impl in let loop match mod move mut pub ref return self Self static struct super trait true type unsafe use where while'
+};
+KEYWORDS.c=KEYWORDS.cpp;
+function colourCode(code){
+  var lang=code.parentNode.getAttribute('data-lang'),words=KEYWORDS[lang];
+  if(!words)return;
+  var kw={};words.split(' ').forEach(function(w){kw[w]=1;});
+  var hash=lang==='py'||lang==='sh';
+  /* groups: 1 comment, 2 string, 3 number, 4 word */
+  var re=new RegExp((hash?'(#[^\\n]*)':'(\\/\\/[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)')+
+    '|("(?:\\\\.|[^"\\\\\\n])*"|\'(?:\\\\.|[^\'\\\\\\n])*\''+(lang==='js'?'|`(?:\\\\.|[^`\\\\])*`':'')+')'+
+    '|(\\b(?:0[xX][\\da-fA-F\']+|\\d[\\d\']*\\.?\\d*(?:[eE][+-]?\\d+)?)\\w*)'+
+    '|([A-Za-z_#]\\w*)','g');
+  var src=code.textContent,out=document.createDocumentFragment(),last=0,m;
+  function add(text,cls){if(!text)return;if(!cls){out.appendChild(document.createTextNode(text));return;}var e=document.createElement('span');e.className=cls;e.textContent=text;out.appendChild(e);}
+  while((m=re.exec(src))){
+    var cls=m[1]?'tk-c':m[2]?'tk-s':m[3]?'tk-n':(kw[m[4]]||(!hash&&m[4].charAt(0)==='#'))?'tk-k':'';
+    if(!cls)continue;
+    add(src.slice(last,m.index));add(m[0],cls);last=m.index+m[0].length;
+  }
+  add(src.slice(last));
+  code.textContent='';code.appendChild(out);
+}
+
 function start(){
   EN_TITLE=document.title;
   var dj=document.getElementById('i18n-de');
@@ -153,6 +185,7 @@ function start(){
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fire);
 
   buildNav();
+  [].forEach.call(document.querySelectorAll('pre.code[data-lang] > code'),colourCode);
   if(document.querySelector('main.explainer')&&!Q.review&&!Q.only){
     [].forEach.call(document.querySelectorAll('[data-comments-on]'),function(b){b.addEventListener('click',function(){store.set('learn-comments','on');loadComments(true);});});
     if(store.get('learn-comments')==='on')loadComments(false);
