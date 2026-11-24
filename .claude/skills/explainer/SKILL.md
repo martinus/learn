@@ -36,7 +36,7 @@ Read each file when you reach the work it covers. A new page needs the first thr
 | `references/components.md` | writing HTML, charts or the cover; changing the theme |
 | `docs/decisions.md` | changing the theme, the tool, a template or a site-wide rule |
 
-`site/2026-11-21-*` and `site/2026-11-22-*` show the layout and the quality of the graphics. Their text targets a lay reader and they carry German `data-i18n` keys, so copy neither their depth nor their keys.
+`site/2026-11-24-dark-energy-survey-final/` is the model for a new page: English only and written for this reader. The two older pages target a lay reader and carry German `data-i18n` keys, so copy neither their depth nor their keys.
 
 ## Commands
 
@@ -44,6 +44,7 @@ Read each file when you reach the work it covers. A new page needs the first thr
 python3 tools/learn.py new YYYY-MM-DD-slug   # copy the template into site/
 python3 tools/learn.py check                 # validate all pages, change nothing
 python3 tools/learn.py shots [slug]          # build, then screenshots into _shots/ (needs Chrome)
+python3 tools/learn.py try slug              # use every slider and button once, report script errors (needs Chrome)
 python3 tools/learn.py texts slug            # page text as plain lines, for the final read
 python3 tools/learn.py serve                 # build, then http://localhost:8000
 ```
@@ -104,10 +105,10 @@ In `<script type="application/json" id="explainer-meta">`:
 Repeat until a full pass finds nothing: run, look, fix.
 
 1. `python3 tools/learn.py check` reports no errors.
-2. `python3 tools/learn.py shots <slug>`, then open every picture in `_shots/<slug>/`. Files are `<width>-<mode>-<lang>-<part>.png`: 390 px light, 390 px dark, 1440 px light, for `top` and each section. Every earlier page had a layout fault that `check` did not catch and the pictures showed.
+2. `python3 tools/learn.py shots <slug>`, then open every picture in `_shots/<slug>/`. Files are `<width>-<mode>-<lang>-<part>.png`: 390 px light, 390 px dark, 1440 px light, for `top` and each section. Every earlier page had a layout fault that `check` did not catch and the pictures showed. Your image tool scales down a picture that is taller than about 2,000 px, and small faults then disappear. Cut such a picture into parts first, for example `magick in.png -crop 390x1250 +repage part-%d.png`.
 3. Open `_site/<slug>/share.png` if the build wrote it. The title fits and the cover is clear.
-4. The pictures show the page at rest. With a browser tool, also run `serve`, scroll at 390 px, open the section list under the site bar, use every control once and read the console. Without a browser tool, re-read the page script and state in the pull request that nobody used the controls.
-5. Second fact check. Re-open every source and compare every fact, number, name and date on the page with it. Remove what you cannot confirm. Search once more for news that is newer than your sources.
+4. The pictures show the page at rest. `python3 tools/learn.py try <slug>` uses every slider and button once at 390 px. It reports script errors, a result that is not a number, and a page that is wider than the window. Read its lines: each control must change what its figure shows. With a browser tool, also run `serve`, scroll at 390 px and open the section list under the site bar. Without one, say in the pull request that nobody scrolled the page by hand.
+5. Second fact check. Re-open every source and compare every fact, number, name and date on the page with it. Include summary cards, captions and `aria-label` texts, and compare what a caption says about a chart with the data in the page script. Remove what you cannot confirm. Search once more for news that is newer than your sources.
 6. Find every statement without a source. It is marked as an inference, or it is stable textbook knowledge. Otherwise find a source or delete it.
 7. `python3 tools/learn.py texts <slug>` and read the whole text as the reader. Each sentence is clear without the sentences after it. Each section tells this reader something new.
 8. Compile and run every code example if a compiler is available.
@@ -117,6 +118,10 @@ Then go through "Done when".
 ### 9. Hand over
 
 Branch `explainer/<slug>`, commit, push, open a pull request. The description gives: the question, the sources, what is sourced, what is inferred, what is uncertain, and what you could not check or test (a link that did not open, a paywall, controls nobody used, code that was not compiled).
+
+### 10. Reflect
+
+Follow "Reflect" below. Every task ends with it, also an update, an answer to comments and a change of the theme or the tool.
 
 ## Add German
 
@@ -135,7 +140,7 @@ Only on request. The tool supports `en` and `de`. Any other language first needs
 - **A page that has German text keeps it.** Change the German value of a key in the same commit as the English text. `check` finds a missing key but not a stale translation. Remove German only on request.
 - The folder name never changes, because it is the URL.
 - If an old statement was wrong, say so in the pull request instead of silently replacing it.
-- Then do steps 8 and 9.
+- Then do steps 8 to 10.
 
 ## Comments from the reader
 
@@ -146,24 +151,41 @@ The reader writes comments on a live page (footer button "Comment on this page")
 3. **Question:** answer it in the pull request. If this reader needs the answer to understand the page, also add it to the page.
 4. **Correction:** research it (`references/research.md`) before you change anything. The reader can be wrong. Change the page only if current sources support the correction. If they do not, keep the text and give the sources in the pull request.
 5. **Request:** do it if it fits this skill. If it does not, say why in the pull request.
-6. Then "Update a page": `updated` is today, and a story in progress gets an entry in the change list. Then steps 8 and 9. Branch: `explainer/<slug>-comments`.
+6. Then "Update a page": `updated` is today, and a story in progress gets an entry in the change list. Then steps 8 to 10. Branch: `explainer/<slug>-comments`.
 7. The pull request lists each comment (short), what you did, and the sources. If the prompt came from a GitHub issue, write `Closes #<number>`.
 
 ## Change the theme or the tool
 
-- `site/assets/theme.css` and `theme.js` affect every page. Run `python3 tools/learn.py shots` (no slug) and look at all pages.
+- `site/assets/theme.css` and `theme.js` affect every page. Run `python3 tools/learn.py shots` (no slug) and look at all pages. This run takes a few minutes, so start it in the background. Also run `try` for one page: a script error in `theme.js` stops every page, and only the browser console shows it.
 - A new part goes into the theme only when a second page needs it. Until then it lives in the `<style>` of its page.
 - Document every shared part in `references/components.md`.
 - Keep the names of the colour variables, because pages use them.
 - A change to how the site works also updates `docs/decisions.md` in the same pull request.
 
-## Improve these instructions
+## Reflect
 
-When you hit a problem that the next agent would also hit, add the rule with its reason to the file where it applies, in the same pull request. These files are read only by agents. Keep them short and specific, and remove a rule that no longer holds.
+Every task ends with a reflection, after its pull request is open and while the session is still in your context. The aim: the next session reaches the same quality with less work. These files and the tool are the only memory between sessions, because each session starts without the last one.
+
+1. **Collect.** Go through the session and note:
+   - what the user corrected, asked for a second time, or named as a preference
+   - a fault that a late step caught (pictures, `try`, second fact check) and that an earlier step could have prevented
+   - time that was lost: a step done twice, a tool that failed or gave a wrong result, a search for something that a file here could have said
+   - work done by hand that a script can do
+   - a rule in these files that was wrong, unclear or out of date, or that you did not need
+2. **Filter.** Keep a finding only if the next session would meet it too and could not learn it fast by reading the repository. Drop what belongs only to the topic of this page.
+3. **Choose the strongest fix,** in this order:
+   1. Change `tools/learn.py` or the theme so that the fault cannot occur, or so that `check`, `shots` or `try` reports it. A check works every time. A rule works only when the agent reads it and remembers it.
+   2. Correct or remove the rule that led you wrong.
+   3. Add a rule in the file that an agent reads at the moment it needs the rule: a step of the work in `SKILL.md`, a how-to in a reference file, a rule for every session in this repository in `CLAUDE.md`, a changed decision in `docs/decisions.md`.
+4. **Write** like the rest of these files: one specific rule that can be checked, with its reason, in the terms that the file already uses. No emphasis words and no dates. For each rule that you add, look for one to merge or remove, because every line costs attention in every later session.
+5. **Check the files.** `SKILL.md` has fewer than 500 lines and `CLAUDE.md` fewer than 200. A reference file with more than 100 lines starts with a contents line. `SKILL.md` links every reference file, and a reference file links no further file. Read each changed passage once as an agent that does not know this session.
+6. **Hand over** in a separate pull request from a fresh `main`, branch `skill/reflect-<slug>`. Reason: a page must not wait for a change of the agent files, and the user can judge separately what changes the work of all later sessions. The description lists each finding, what you changed for it, and each finding that you dropped, with the reason. A change of the tool or the theme also follows "Change the theme or the tool". If no finding passes the filter, open no pull request and say so in your reply. A pull request that comes from a reflection needs no reflection of its own.
+
+Keep no list of lessons and no log of sessions: a lesson that is not a rule or a check in its place is not read. Do not store a lesson in a private memory of your tool, because other agents and cloud sessions read only this repository.
 
 ## Done when
 
-- [ ] `check` passes, and you looked at every picture from `shots`: 390 px without horizontal scrolling, controls large enough for a finger, 1440 px with sharp and complete figures and a correct section list, light and dark both readable.
+- [ ] `check` and `try` pass, and you looked at every picture from `shots`: 390 px without horizontal scrolling, controls large enough for a finger, 1440 px with sharp and complete figures and a correct section list, light and dark both readable.
 - [ ] The first screen says what the page answers and why it matters.
 - [ ] The page explains the mechanism, and explains nothing that a software engineer already knows.
 - [ ] Each section makes one clear statement, and each main section has a graphic with correct axes, units and caption numbers.
@@ -177,3 +199,4 @@ When you hit a problem that the next agent would also hit, add the rule with its
 - [ ] The page note says where the page simplifies and gives the date of the facts.
 - [ ] `updated` is today.
 - [ ] With German text: every key is translated and says the same as the English.
+- [ ] After the hand-over: the reflection is done.
