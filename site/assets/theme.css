@@ -65,6 +65,8 @@ html:not([lang="de"]) .l-de{display:none}
 .brand span{color:var(--muted);font:500 .74rem/1 var(--font-mono);letter-spacing:.04em;margin-left:.15rem}
 .toggles{display:flex;gap:.45rem;align-items:center}
 .seg{display:inline-flex;gap:2px;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--surface)}
+/* a page in one language has no language switch */
+.seg[hidden]{display:none}
 .seg button{background:transparent;color:var(--muted);border:0;border-radius:999px;padding:.42rem .7rem;font:500 .8rem/1 var(--font-body);cursor:pointer;display:inline-flex;align-items:center}
 .seg button svg{width:15px;height:15px;display:block}
 .seg button[aria-pressed="true"]{background:var(--c1);color:var(--surface)}
@@ -111,6 +113,9 @@ a.num .hash{opacity:0;transition:opacity .15s ease}
 a.num:hover .hash,a.num:focus-visible .hash{opacity:1}
 @media (hover:none){a.num .hash{opacity:.45}}
 .mono{font-family:var(--font-mono);font-size:.92em}
+/* code block: a long line scrolls inside the block, the page does not */
+pre.code{margin:0;padding:.85rem 1rem;background:var(--surface);border:1px solid var(--rule);border-radius:8px;overflow-x:auto;font:400 .84rem/1.55 var(--font-mono);tab-size:2}
+pre.code code{font:inherit;white-space:pre}
 .small{font-size:.9rem;color:var(--muted);line-height:1.5}
 ul.plain,ol.plain{padding-left:1.15rem;display:flex;flex-direction:column;gap:.45rem}
 .aside{border-left:3px solid var(--rule);padding-left:.9rem;color:var(--muted);font-size:.95rem}

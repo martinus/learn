@@ -6,11 +6,14 @@ This file lists decisions about the site and the reason for each. Read it before
 
 - **Each page says that an AI made it.** The byline and the footer name the model and the publisher. Reason: honesty to the reader, and the transparency rules of the EU for AI text.
 - **No page says that a person reviewed it.** Martin publishes the pages, but he does not check the content. For this reason the model must check each fact against its source a second time before the hand-over.
-- **Each fact has a source in the list at the end.** At most one short quote from each source. Reason: the reader can check the page, and the page respects the work of other authors.
+- **The pages are written for one reader: Martin.** He is a software engineer with experience in C++ and lives in Austria. A page does not explain what a software engineer knows. It explains the mechanism of its topic, and it describes Austria first if a topic is different in each country. Reason: a text for a reader without knowledge is slow to read for him, and it leaves out the part that he wants to know. The pages stay public, so they do not name him or give personal data. The two pages of November 2026 were written for a reader without knowledge.
+- **Each fact that can change or that a person could dispute has a source in the list at the end.** Stable textbook knowledge can come from the knowledge of the model. At most one short quote from each source. Reason: the reader can check the page, and the page respects the work of other authors.
+- **The model searches for the current state before it states a fact.** It prefers primary sources and gives the date of each source. Reason: the knowledge of a model ends at its training, and the world changed after that.
+- **Each page shows what is sourced, what is inferred and what is uncertain.** An inference and an uncertain statement are marked in their sentence. The section "How sure is this?" before the sources gives the overview. Reason: the reader must know how much weight each statement can carry.
 - **A story in progress has a status box with a date and a change list.** Reason: readers must see how old the facts are, and what changed since their last visit.
-- **English is the base language. German is a full translation.** The page starts in German for a browser with German as language. Reason: the main readers are in Austria, but English reaches more people.
-- **German numbers use a dot between thousands and a comma before decimals:** 1.000.000 and 30,1. The theme formats them with the locale `de-DE`, not `de-AT`, because `de-AT` writes a space (1 000 000). Reason: the dot is the common form for readers in Austria and Germany, and the text of a page uses it too, so a page shows one format.
-- **Plain language** (the idea of ISO 24495 and Simplified Technical English) for pages and for documents in this repository. Reason: the reader has no knowledge of the subject, and many readers do not have English as first language.
+- **A page is in English only.** A page gets German text only if Martin asks for it. Then English is the base language, German is a full translation, and the page starts in German for a browser with German as language. Reason: Martin reads English, and a translation makes each page two times the work to write, to check and to update. The two pages of November 2026 have German text and keep it. The home page and the privacy page stay in the two languages.
+- **On a page with German text, German numbers use a dot between thousands and a comma before decimals:** 1.000.000 and 30,1. The theme formats them with the locale `de-DE`, not `de-AT`, because `de-AT` writes a space (1 000 000). Reason: the dot is the common form for readers in Austria and Germany, and the text of a page uses it too, so a page shows one format.
+- **Plain language** (the idea of ISO 24495 and Simplified Technical English) for pages and for documents in this repository. Reason: short and exact sentences are fast to read, also for a reader who knows the subject. Plain language is a rule for the sentences. It is not a rule to make the content simple: a page uses the exact terms of software.
 
 ## Privacy
 
@@ -25,7 +28,7 @@ This file lists decisions about the site and the reason for each. Read it before
 - **One self-contained `index.html` for each explainer,** with its own script and its German text. Reason: a page is easy to move, to review and to repair.
 - **The build inserts the shared parts** (head, site bar, byline, section links, "Read next", footer). Reason: a change of the shared parts reaches all pages without an edit of each page.
 - **The home page is not in git.** The build writes it. Reason: two branches with two new explainers do not conflict.
-- **German text is a dictionary with keys, not a second copy of the HTML.** The check compares the keys. Reason: a missing translation is an error that a program can find.
+- **German text, where a page has it, is a dictionary with keys, not a second copy of the HTML.** The check compares the keys. Reason: a missing translation is an error that a program can find.
 - **Chrome is an optional tool** for preview pictures (`share.png`) and for review pictures (`shots`). Reason: Python alone cannot draw a web page. GitHub has Chrome, so the live site always gets preview pictures.
 - **Addresses:** a page is `/<date>-<slug>/`. The folder name never changes after publication. `#de` and `#en` set the language. `#s03` opens a section. A link cannot have the two at the same time.
 
@@ -34,6 +37,7 @@ This file lists decisions about the site and the reason for each. Read it before
 - **All changes go through a pull request.** A rule on GitHub blocks a direct push to `main`. Merge method: squash.
 - **Martin decides about each merge.** An AI model does not merge without his request. A merge is a decision to publish. It is not a review of the facts.
 - **A merge to `main` deploys the site** with GitHub Actions. If the check fails, the old site stays online.
+- **`CLAUDE.md` and the files of the skill are written for AI agents only.** They are short and specific, each rule has its reason, and the skill loads a reference file only when the work needs it. They follow the guidelines of Anthropic for skills and for `CLAUDE.md`: `SKILL.md` has fewer than 500 lines, `CLAUDE.md` has fewer than 200 lines. Reason: no person reads these files, and an agent follows short and specific instructions better. An agent that finds a new problem adds the rule to the file where it applies. There is no separate list of lessons.
 - **Licences:** MIT for code, CC BY 4.0 for text and graphics, SIL OFL for the fonts.
 
 ## Hosting

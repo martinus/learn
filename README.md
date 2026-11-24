@@ -2,7 +2,7 @@
 
 Hard topics, made clear: https://learn.ankerl.com
 
-Each page explains one topic in plain language, with graphics that the reader can change. The pages work on a phone, have a bright and a dark mode, and are available in English and German.
+Each page explains one topic in plain language, with graphics that the reader can change. The pages are written for a software engineer, and they show what is sourced, what is inferred and what is uncertain. The pages work on a phone and have a bright and a dark mode. They are in English. The first two pages are available in German too.
 
 AI models write the text and draw the graphics. Each page names the model, the date and its sources. Martin Leitner-Ankerl publishes the pages and is responsible for the content.
 
@@ -14,7 +14,7 @@ Open the repository in Claude Code and write, for example:
 /explainer How does GPS find my position?
 ```
 
-The skill in `.claude/skills/explainer/` tells the AI model how to do the work: collect the facts, plan the page, write the text, make the graphics, add the German text, check the page and open a pull request. You merge the pull request, and the merge publishes the page. No person checks the facts of a page before publication, so the skill tells the model to check each fact against its source two times.
+The skill in `.claude/skills/explainer/` tells the AI model how to do the work: search for current sources, collect the facts, plan the page, write the text, make the graphics, check the page and open a pull request. You merge the pull request, and the merge publishes the page. No person checks the facts of a page before publication, so the skill tells the model to check each fact against its source two times.
 
 To update a page, write for example:
 
@@ -39,7 +39,7 @@ python3 tools/learn.py check                 # examine all pages, change nothing
 python3 tools/learn.py build                 # write the site to _site/
 python3 tools/learn.py new 2026-12-01-topic  # start a page from the template
 python3 tools/learn.py shots                 # pictures of all pages into _shots/ (needs Chrome)
-python3 tools/learn.py texts 2026-12-01-topic  # English and German text, key by key
+python3 tools/learn.py texts 2026-12-01-topic  # the text of a page, to read it one more time
 ```
 
 ## How the repository is organized
@@ -51,7 +51,7 @@ python3 tools/learn.py texts 2026-12-01-topic  # English and German text, key by
 | `templates/` | page parts that the build inserts, and the start template |
 | `tools/learn.py` | the build tool |
 | `site.json` | name and address of the site, publisher, contact address, names of the tags |
-| `.claude/skills/explainer/` | the instructions for the AI model |
+| `.claude/skills/explainer/` | the instructions for the AI model, written for AI agents only |
 | `docs/decisions.md` | decisions about the site, with reasons |
 | `docs/ideas.md` | things that are not built |
 

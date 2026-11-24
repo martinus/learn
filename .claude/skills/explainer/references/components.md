@@ -1,8 +1,10 @@
-# Parts of the theme
+# Theme parts
 
-All parts are in `site/assets/theme.css` and `site/assets/theme.js`. Use them as they are. A working example of each part is in `site/2026-11-21-riemann-hypothesis-claim/index.html`.
+All parts live in `site/assets/theme.css` and `site/assets/theme.js`. Use them as they are. `site/2026-11-21-riemann-hypothesis-claim/index.html` shows every part in use. That page has German text, so its elements carry `data-i18n` keys. An English page has none.
 
-## Frame of a page
+Contents: Page frame · What the build adds · Colours · Text parts · Figures · Chart helpers · Rules for graphics · Pitfalls · A second language · Review mode · Cover
+
+## Page frame
 
 ```html
 <!DOCTYPE html>
@@ -21,97 +23,106 @@ All parts are in `site/assets/theme.css` and `site/assets/theme.js`. Use them as
   <section> ... </section>
 </main>
 <!-- learn:footer -->
-<script type="application/json" id="i18n-de">{ ... }</script>
 <script>/* page script */</script>
 </body>
 </html>
 ```
 
-The build replaces the four `learn:` markers. Do not write a viewport tag, font links, the site bar or the footer yourself.
+The build replaces the four `learn:` markers. The viewport tag, font links, site bar and footer come from the build.
 
-## What the build and the theme add without your help
+## What the build adds
 
-- **Section ids and link marks.** Write each section exactly as `<section>` and then `<span class="num">01</span>`. The build makes `<section id="s01">` from it, and makes the number a link to the section. Do not write ids yourself. Each section needs its own number and one `<h2>`.
-- **Section navigation.** With three or more sections, the theme shows the current section under the site bar. On a wide screen it shows all sections in the left margin. The text comes from the `<h2>` of each section, so keep the headings short.
-- **Wider figures.** On a desktop, each `<figure>` that is a direct child of a section is wider than the text. A chart must draw again when its width changes. `Learn.onChange` does that.
-- **"Read next".** The build adds cards for up to three other explainers at the end of the page.
-- **Preview picture.** The build makes `share.png` from the English title, the tags and `cover.svg`. Chat programs and social networks show it for a link. The cover is large there, on a white background, so it must look good in that size too.
+- **Section ids and anchors.** Write each section exactly as `<section>` followed by `<span class="num">01</span>` and one `<h2>`. The build turns this into `<section id="s01">` and makes the number a link. Write no ids yourself. Every section has its own number.
+- **Section navigation.** With three or more sections, the current section shows under the site bar, and on a wide screen all sections show in the left margin. The text is the `<h2>`, so keep headings short.
+- **Wide figures.** On a desktop, a `<figure>` that is a direct child of a section is 10 rem wider than the text.
+- **"Read next"** cards for up to three other pages.
+- **`share.png`** from the English title, the tags and `cover.svg`. Chat programs show it for a link. The cover appears large on white there.
 
 ## Colours
 
-Use the variables. Do not write colour values in a page.
+Use the variables and write no colour values in a page, because the dark mode swaps the variables.
 
 | Variable | Use |
 |---|---|
-| `--paper`, `--surface` | background of the page, background of cards and figures |
+| `--paper`, `--surface` | page background, background of cards and figures |
 | `--ink`, `--muted`, `--rule` | text, secondary text, lines |
-| `--c1` | the main series of a chart, links, active controls |
-| `--c2` | the second series, or a permitted range (`--band` is its transparent fill) |
-| `--c3` | a highlight: the thing the reader must look at |
-| `--good`, `--warn` | state only: passed, open. Never as decoration |
-| `--tint` | a quiet background for small boxes |
+| `--c1` | main series of a chart, links, active controls |
+| `--c2` | second series, or a permitted range (`--band` is its transparent fill) |
+| `--c3` | highlight: the thing the reader must look at |
+| `--good`, `--warn` | state only (passed, open), never decoration |
+| `--tint` | quiet background for small boxes |
 
-Give each colour one meaning on a page and keep it. In the Riemann page, blue is always "the true count" and raspberry is always "zeros and tones".
+Give each colour one meaning per page and keep it.
 
 ## Text parts
 
 ```html
-<span class="eyebrow" data-i18n="ey">Physics</span>          <!-- topic line above the title -->
-<p class="lead" data-i18n="lead">...</p>                      <!-- opening paragraph -->
-<span class="num">01</span>                                   <!-- section number, above each h2 -->
-<p class="aside" data-i18n="...">...</p>                      <!-- a comparison, or a limit of the page -->
-<p class="small" data-i18n="...">...</p>                      <!-- a less important note -->
-<span class="mono">ln(t)</span>                               <!-- a formula or a code word -->
-<ul class="plain"> <li>...</li> </ul>                         <!-- a normal list -->
-<p class="page-note" data-i18n="foot">...</p>                 <!-- last element in main: limits, date of the facts -->
+<span class="eyebrow">Physics</span>             <!-- topic line above the title -->
+<p class="lead">...</p>                          <!-- opening paragraph -->
+<span class="num">01</span>                      <!-- section number, above each h2 -->
+<p class="aside">...</p>                         <!-- a comparison, or a limit of the page -->
+<p class="small">...</p>                         <!-- a less important note -->
+<span class="mono">ln(t)</span>                  <!-- formula or code word inside a sentence -->
+<ul class="plain"> <li>...</li> </ul>            <!-- normal list -->
+<p class="page-note">...</p>                     <!-- last element in main: limits, date of the facts -->
+```
+
+### Code block
+
+Escape `<`, `>` and `&`. A long line scrolls inside the block, so keep lines under about 60 characters for a phone. There is no syntax colouring. Put a comment where the reader should look.
+
+```html
+<pre class="code"><code>// C++20
+std::span&lt;const int&gt; s{v};
+</code></pre>
 ```
 
 ### Status box
 
-For a story in progress, or for one important limit. At most one on a page, directly under the lead.
+For a story in progress or one important limit. At most one per page, directly under the lead.
 
 ```html
 <div class="status">
-  <b data-i18n="st_b">Status: first checks passed, one check open</b>
-  <span data-i18n="st_t">Two or three sentences with a date.</span>
+  <b>Status: first checks passed, one check open</b>
+  <span>Two or three sentences with a date.</span>
 </div>
 ```
 
 ### Change list
 
-For a story in progress. Put it directly under the status box. It is closed at the start. The newest entry is first. Each entry says what changed for the reader, in one or two sentences.
+For a story in progress, directly under the status box. Closed at the start, newest entry first. Each entry says in one or two sentences what changed for the reader.
 
 ```html
 <details class="changes">
-  <summary><span data-i18n="chg_h">What changed on this page</span></summary>
+  <summary><span>What changed on this page</span></summary>
   <ol>
-    <li><time data-i18n="chg2d">22 Nov 2026</time><span data-i18n="chg2t">New section 06 about the second proof.</span></li>
-    <li><time data-i18n="chg1d">21 Nov 2026</time><span data-i18n="chg1t">First version.</span></li>
+    <li><time>22 Nov 2026</time><span>New section 06 about the second proof.</span></li>
+    <li><time>21 Nov 2026</time><span>First version.</span></li>
   </ol>
 </details>
 ```
 
 ### Summary cards
 
-Two to four cards under the lead. A reader who stops here has the essentials.
+Two to four cards under the lead.
 
 ```html
 <div class="short">
-  <div><h3 data-i18n="c1h">The riddle</h3><span data-i18n="c1t">Two sentences.</span></div>
+  <div><h3>The riddle</h3><span>Two sentences.</span></div>
   ...
 </div>
 ```
 
 ### Comparison cards
 
-Two things next to each other. `done` and `open` show a state. `a` and `b` show two equal sides.
+Two things side by side. `done` and `open` show a state, `a` and `b` show two equal sides.
 
 ```html
 <div class="worlds">
   <div class="world a">
-    <span class="tag" data-i18n="...">Proof 1</span>
-    <h3 data-i18n="...">Name</h3>
-    <dl><dt data-i18n="...">Form</dt><dd data-i18n="...">computer file</dd></dl>
+    <span class="tag">Proof 1</span>
+    <h3>Name</h3>
+    <dl><dt>Form</dt><dd>computer file</dd></dl>
   </div>
   <div class="world b"> ... </div>
 </div>
@@ -121,71 +132,85 @@ Two things next to each other. `done` and `open` show a state. `a` and `b` show 
 
 ```html
 <div class="who">
-  <div data-i18n="who1"><strong>Name</strong> did this.</div>
+  <div><strong>Name</strong> did this.</div>
 </div>
 ```
 
-### Check list with state
+### Check list with state pills
 
 ```html
 <ul class="checks">
-  <li><span class="pill done" data-i18n="plOk">Passed</span>
-      <span><span data-i18n="k1t">What was checked.</span><span class="d" data-i18n="k1d">Detail and source.</span></span></li>
+  <li><span class="pill done">Passed</span>
+      <span><span>What was checked.</span><span class="d">Detail and source.</span></span></li>
 </ul>
 ```
 
-Pills: `done` (passed), `rep` (reported, not confirmed), `prog` (in progress or open), `no` (not yet). The word in the pill says the state. The colour only supports it.
+Pills: `done` (passed), `rep` (reported, not confirmed), `prog` (in progress or open), `no` (not yet). The word in the pill carries the state. The colour only supports it.
 
-### Timeline list, glossary, sources, table
+### "How sure is this?"
+
+The section directly before "Sources". It uses the check list with three fixed pills. `research.md` says what each row contains. A group may have more than one row.
 
 ```html
-<ol class="steps"><li><time>6 Oct</time><span data-i18n="...">What occurred.</span></li></ol>
+<ul class="checks">
+  <li><span class="pill done">Sourced</span>
+      <span><span>Main statements that rest on primary sources.</span><span class="d">What rests only on reporting.</span></span></li>
+  <li><span class="pill rep">Inferred</span>
+      <span><span>Every important inference of the page.</span></span></li>
+  <li><span class="pill prog">Uncertain</span>
+      <span><span>What is disputed, unresolved or weakly sourced.</span><span class="d">Sources read only as an abstract.</span></span></li>
+</ul>
+```
 
-<dl class="gloss"><div><dt data-i18n="g1t">Term</dt><dd data-i18n="g1d">One sentence.</dd></div></dl>
+### Timeline, glossary, sources, table
 
-<ul class="sources"><li><a href="https://..." data-i18n="src1">Who: what</a></li></ul>
+```html
+<ol class="steps"><li><time>6 Oct</time><span>What occurred.</span></li></ol>
 
-<div class="scroll-x"><table> ... </table></div>   <!-- a table can scroll sideways, the page cannot -->
+<dl class="gloss"><div><dt>Term</dt><dd>One sentence.</dd></div></dl>
+
+<ul class="sources"><li><a href="https://...">Who: what</a> &middot; kind of source, date</li></ul>
+
+<div class="scroll-x"><table> ... </table></div>   <!-- a table may scroll sideways, the page may not -->
 ```
 
 ## Figures
 
-Each graphic is in a `<figure>`. The sequence inside is fixed: title, controls, legend, chart, numbers, caption.
+Every graphic sits in a `<figure>`. The order inside is fixed: title, controls, legend, chart, numbers, caption.
 
 ```html
 <figure>
-  <div class="fig-title" data-i18n="f1t">True count and prediction</div>
+  <div class="fig-title">True count and prediction</div>
   <div class="ctl">
-    <label for="xs"><span data-i18n="f1l">Count the primes up to X</span> <output id="xo">X = 100</output></label>
+    <label for="xs"><span>Count the primes up to X</span> <output id="xo">X = 100</output></label>
     <input type="range" id="xs" min="2" max="6" step="0.01" value="2">
   </div>
   <div class="legend">
-    <span><i class="sw"></i><span data-i18n="lg1a">true count</span></span>
-    <span><i class="sw c2"></i><span data-i18n="lg1b">prediction</span></span>
+    <span><i class="sw"></i><span>true count</span></span>
+    <span><i class="sw c2"></i><span>prediction</span></span>
   </div>
-  <svg class="chart" id="cA" role="img" aria-label="One sentence that says what the chart shows" data-i18n-aria="aA"></svg>
+  <svg class="chart" id="cA" role="img" aria-label="One sentence that says what the chart shows"></svg>
   <div class="stats">
-    <div><small data-i18n="stA">Primes up to X</small><b id="rPi">25</b></div>
+    <div><small>Primes up to X</small><b id="rPi">25</b></div>
   </div>
-  <figcaption data-i18n="f1c">What the reader must see.</figcaption>
+  <figcaption>What the reader must see.</figcaption>
 </figure>
 ```
 
 - Legend marks: `sw` (line in `--c1`), `sw c2` (dashed), `sw c3`, `sw ink`, `sw band` (filled range).
-- A button that starts an action: `<button type="button" class="act">`.
-- A small picture next to text: `<div class="split"><svg ...></svg><div class="txt">...</div></div>`. It stacks on a phone.
-- Classes for chart marks: lines `l-c1`, `l-c2`, `l-c3`, `l-ink`, `l-base`; filled range `f-band`; dots `d-c1`, `d-c3`; text `lbl`, `t-c2`, `t-c3`.
+- Action button: `<button type="button" class="act">`.
+- Small picture next to text: `<div class="split"><svg ...></svg><div class="txt">...</div></div>`. It stacks on a phone.
+- Chart mark classes: lines `l-c1`, `l-c2`, `l-c3`, `l-ink`, `l-base`; filled range `f-band`; dots `d-c1`, `d-c3`; text `lbl`, `t-c2`, `t-c3`.
+- A picture with a fixed layout (diagram, map) is a normal inline `<svg viewBox="...">` with `max-width` and the classes above.
 
 ## Chart helpers in `theme.js`
 
 ```js
 var L = window.Learn;
-L.lang()                      // "en" or "de"
-L.t({en: 'tones', de: 'Töne'})// text for the current language
-L.fmt(1234567)                // "1,234,567" or "1.234.567"
-L.sgn(-5.13, 1)               // "−5.1" or "−5,1": fixed decimals, real minus sign
+L.fmt(1234567)                // "1,234,567"
+L.sgn(-5.13, 1)               // "−5.1": fixed decimals, real minus sign
 L.short(250000)               // "250k": short axis label
-L.mk('path', {d: d, 'class': 'l-c1'}, svg)   // make an SVG element and add it
+L.mk('path', {d: d, 'class': 'l-c1'}, svg)   // create an SVG element and append it
 L.clear(svg)                  // remove all children
 
 // Prepare a chart at its real pixel width. Draws the grid and the axis labels.
@@ -193,51 +218,60 @@ var p = L.plot(svg, {h: 220, x0: 0, x1: 100, y0: 0, y1: 30});
 p.sx(x); p.sy(y);             // data value to pixel
 p.w; p.h; p.m;                // width, height, margins {l, r, t, b}
 
-// Call draw at the start, and again when language or page width changes.
-L.onChange(draw);
+L.onChange(draw);             // calls draw now, and again when the page width or the language changes
 ```
 
-`L.plot` uses the real width of the element, so text in a chart has the same size on a phone and on a desktop. Because of this, a chart must be drawn again when the width changes. `L.onChange` does that.
-
-For a picture with a fixed layout (a diagram, a map), write a normal inline `<svg viewBox="...">` with `max-width` and use the classes above.
+`L.plot` uses the real width of the element, so chart text has the same size on a phone and on a desktop. This is why a chart is redrawn through `L.onChange` when the width changes.
 
 ## Rules for graphics
 
-1. **One graphic, one message.** Write the message into the caption. If you cannot say it in one sentence, make two graphics.
-2. **Useful at rest.** The start position of each control must show the most instructive state.
-3. **Let the reader change one thing.** A slider or a button with a clear effect is better than a static picture. Three controls on one chart are too many.
-4. **Real data.** Calculate the values, or take them from a source and name it. Never draw a curve "that looks about right".
-5. **Honest scales.** Bars start at zero. If two charts are compared, they have the same scale. Say it if an axis is logarithmic.
-6. **Label directly.** Put names at the lines or in a legend above the chart. Give axes their units.
-7. **Colour is never the only signal.** Use a dashed line, a label or a shape too.
-8. **Phone first.** A chart must be readable at a width of 340 px. Sliders must be easy to use with a finger. Nothing depends on hover.
-9. **Motion only on request.** An animation starts with a button, and the button can stop it.
-10. **Both languages.** Each label that the script writes uses `L.t` or `L.fmt`.
-11. **Describe it.** Each chart has `role="img"` and an `aria-label` that says what it shows.
+1. **One graphic, one message.** The caption states it. If it does not fit into one sentence, make two graphics.
+2. **Useful at rest.** The start position of each control shows the most instructive state.
+3. **The reader changes one thing.** One slider or button with a clear effect beats a static picture. Three controls on one chart are too many.
+4. **Real data.** Compute the values, or take them from a source and name it with the date of the data. Never draw a curve that only looks about right.
+5. **Honest scales.** Bars start at zero. Charts that are compared share a scale. Say when an axis is logarithmic.
+6. **Direct labels.** Names at the lines or in a legend above the chart. Axes carry units.
+7. **Colour is never the only signal.** Add a dash pattern, a label or a shape.
+8. **Phone first.** Readable at 340 px. Sliders work with a finger. Nothing depends on hover.
+9. **Motion on request.** An animation starts with a button, and the button stops it.
+10. **Numbers through the helpers:** `L.fmt` or `L.sgn` for every number the script writes.
+11. **Described.** Each chart has `role="img"` and an `aria-label` that says what it shows.
 
-## Two languages
+## Pitfalls
 
-- English text is in the HTML. Each element with text has `data-i18n="key"`. The German text for the key is in `#i18n-de`. Values can contain HTML such as `<strong>` and `&middot;`.
-- An `aria-label` gets `data-i18n-aria="key"`. Its German text is in the same JSON.
-- Put the key on the smallest element that contains only text. Do not put it on an element that contains an `<output>`, a control or a chart, because the switch replaces the full content of the element.
-- The same key on two elements is permitted if the text is the same (for example the word "Passed" in a list).
+Each of these happened on an earlier page.
+
+- **A chart in a hidden element has no width.** Redraw it when it becomes visible, or do not hide it.
+- **A fixed-size picture inside a wide figure does not grow.** Check it at 1440 px.
+- **Sticky parts cover content.** After a jump to a section, the site bar and the section row sit above the text. The theme reserves space with `scroll-padding-top`. If you add a sticky part, test a jump to every section.
+- **Pictures find what `check` cannot:** text that touches, a row that covers a heading, a menu with a transparent background. Look at every picture.
+
+## A second language
+
+An English page has `"languages": ["en"]`, no `data-i18n` attributes and no `#i18n-de`. For German text, on request only:
+
+- Set `"languages": ["en", "de"]`. The site bar then shows the language switch, and the page starts in German in a browser set to German.
+- English stays in the HTML. Every element with text gets `data-i18n="key"`. The German text per key goes into `<script type="application/json" id="i18n-de">{ ... }</script>`, directly before the page script. Values may contain HTML such as `<strong>` and `&middot;`.
+- An `aria-label` gets `data-i18n-aria="key"`, with its German text in the same JSON.
+- Put the key on the smallest element that contains only text. The switch replaces the whole content of the element, so a key on an element that contains an `<output>`, a control or a chart deletes that child.
+- The same key on two elements is fine when the text is the same.
 - Keys are short and follow the page: `s1h`, `s1p1` for section 1, `f1t`, `f1c` for figure 1.
-- The check compares the keys of the HTML with the keys of the JSON. They must be identical.
-- A page in one language has `"languages": ["en"]`, no `data-i18n` keys and no `#i18n-de`.
+- `check` requires identical key sets in HTML and JSON. It cannot see a stale translation, so change both languages in the same commit.
+- Text written by the script needs both languages: `L.t({en: 'tones', de: 'Töne'})`. `L.lang()` returns `"en"` or `"de"`. `L.fmt` and `L.sgn` follow the language (1,234,567 or 1.234.567). This text is the easiest to forget: chart labels, slider results, buttons that change their label.
+- German labels run about 30 % longer. Check buttons, pills, legends and number boxes in German at 390 px.
+- A code block gets no key and is not translated.
 
 ## Review mode
 
-For pictures of a page, add settings to the address. They apply to one page view and are not stored.
+URL settings for screenshots. They apply to one page view and are not stored. Combine them with `&`. `python3 tools/learn.py shots` uses them.
 
 | Setting | Effect |
 |---|---|
 | `?theme=dark` or `?theme=light` | colour mode |
-| `?lang=de` or `?lang=en` | language |
+| `?lang=de` or `?lang=en` | language, on a page with German text |
 | `?only=s03` | show only section 03. `?only=top` shows only the page header |
-| `?review=1` | the page writes the height of its content into `data-review-height` on `<html>` |
-
-Combine them with `&`. `python3 tools/learn.py shots` uses these settings.
+| `?review=1` | the page writes its content height into `data-review-height` on `<html>` |
 
 ## Cover
 
-`cover.svg` has `viewBox="0 0 320 180"`. The home page puts it into the card, so the theme variables work. Use `style="stroke:var(--c1)"` and not fixed colours. Use no text. Keep it simple: the cover is small on a phone.
+`cover.svg` has `viewBox="0 0 320 180"`. The home page inlines it into the card, so theme variables work: write `style="stroke:var(--c1)"`, not fixed colours. No text. Keep it simple, because it is small on a phone and large in `share.png`.
