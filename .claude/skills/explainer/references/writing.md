@@ -2,6 +2,8 @@
 
 Aim: the reader understands each sentence on the first reading and learns something from it.
 
+Contents: The reader · Sentences · Terms and comparisons · Formulas and code · Page structure · Numbers and times · Honesty in the text · German · Final read
+
 ## The reader
 
 Write for this reader unless the user names another:
