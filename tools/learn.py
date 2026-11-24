@@ -276,8 +276,10 @@ class Explainer:
         title = two_lang({l: esc(self.text("title", l)) for l in LANGS})
         summary = two_lang({l: esc(self.text("summary", l)) for l in LANGS})
         date = two_lang({l: fmt_date(meta["updated"], l) for l in LANGS})
-        minutes = two_lang({"en": "%d min" % self.minutes, "de": "%d Min." % self.minutes})
-        langs = " &middot; ".join(l.upper() for l in self.langs())
+        minutes = two_lang({"en": "%d min read" % self.minutes, "de": "%d Min. Lesezeit" % self.minutes})
+        # A page in two languages says so in words. A page in English only says nothing.
+        langs = ('<span>%s</span>' % two_lang({"en": "Also in German", "de": "Auch auf Englisch"})
+                 if len(self.langs()) > 1 else "")
         return (
             '      <a class="card%s" href="%s%s/">\n'
             '        <span class="cover" aria-hidden="true">%s</span>\n'
@@ -285,7 +287,7 @@ class Explainer:
             '          <span class="tags">%s</span>\n'
             '          <%s>%s</%s>\n'
             '          <p>%s</p>\n'
-            '          <span class="meta"><span>%s</span><span>%s</span><span>%s</span></span>\n'
+            '          <span class="meta"><span>%s</span><span>%s</span>%s</span>\n'
             '        </span>\n'
             '      </a>'
         ) % (" feature" if feature else "", root, self.slug, cover, tags, heading, title, heading, summary, date, minutes, langs)
