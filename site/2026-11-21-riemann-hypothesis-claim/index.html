@@ -14,7 +14,7 @@
   "de": "167 Jahre lang konnte niemand das berühmteste Rätsel der Mathematik lösen. Jetzt sagen ein Mathematiker und eine KI, sie hätten es geschafft, und die Fachleute für das Prüfprogramm stimmen zu. Was das Rätsel ist, was die Idee ist und wie sicher das Ergebnis ist."
  },
  "published": "2026-11-21",
- "updated": "2026-11-23",
+ "updated": "2026-11-24",
  "languages": [
   "en",
   "de"
@@ -69,6 +69,7 @@
   <details class="changes">
     <summary><span data-i18n="chg_h">What changed on this page</span></summary>
     <ol>
+      <li><time data-i18n="chg5d">24 Nov 2026</time><span data-i18n="chg5t">New in section 04: what the note says about the method of work, what is not public (model, prompts, computing power), and what other problems can take from it.</span></li>
       <li><time data-i18n="chg4d">23 Nov 2026</time><span data-i18n="chg4t">New in section 05: Lean&rsquo;s own checking program finished its long run, the complete test passed, and a consequence about divisors is checked. New in section 06: the statement of Masullo about the state of his paper, and a project that writes his proof for Lean. Section 07 has the view of a critic.</span></li>
       <li><time data-i18n="chg3d">22 Nov 2026</time><span data-i18n="chg3t">New: the joint statement of the Lean and Mathlib communities, which certifies the proof. The list of checks in section 05 is new. Section 06 names the two concrete objections against the second proof. The page also moved to learn.ankerl.com.</span></li>
       <li><time data-i18n="chg2d">21 Nov 2026, afternoon</time><span data-i18n="chg2t">New section 06 about the second proof by Alessandro Masullo. The list of checks now shows that four checking programs accepted the first proof. German text added.</span></li>
@@ -232,6 +233,49 @@
     <div data-i18n="who2"><strong>Claude</strong> did much of the technical work, mainly at the end. The author writes that the AI was far ahead of him in that phase and that it made important proposals.</div>
     <div data-i18n="who3"><strong>Together</strong> they wrote the proof in a form that a computer can check. The author says openly that he does not yet understand all parts of it.</div>
   </div>
+
+  <h3 data-i18n="s4h2">How they worked</h3>
+  <p data-i18n="s4p2">The note describes the method only in outline. It also says that Alpöge and Claude had worked together on many areas of mathematics in the months before. These are its main points about the method:</p>
+  <ul class="plain">
+    <li data-i18n="m41"><strong>A solved model as a guide.</strong> In the model world of section 03, Alpöge saw two quite different ideas that worked together. One of them was new. He then looked for the matching situation in the usual numbers and led the work there. That was his part.</li>
+    <li data-i18n="m42"><strong>The AI brings the knowledge that the person lacks.</strong> The decisive steps use automorphic forms, an area of mathematics about functions with very many symmetries. Alpöge writes that he knows little about the advanced parts of this area. Claude did. The note says that the length of the chain in section 03 was only one of some tens of such proposals.</li>
+    <li data-i18n="m43"><strong>A computer check instead of a reader.</strong> They wrote the complete proof for Lean, the checking program of section 05, with no unproved assumptions. So anybody can check the result without understanding it. The note does not say whether Claude also used Lean during the search, for example to test single steps.</li>
+    <li data-i18n="m44"><strong>A messy path.</strong> Alpöge writes that the search went through great confusion. He expects that the proof contains strange choices that are not the best ones, and that much shorter proofs will follow. The list of 20 steps is not a record from the work: Claude reconstructed it afterwards. Where Claude is the expert, Alpöge repeats a summary by Claude, and he warns that it may not make sense.</li>
+  </ul>
+
+  <h3 data-i18n="s4h3">What is not public</h3>
+  <div class="worlds">
+    <div class="world done">
+      <span class="tag" data-i18n="w3tag">Public</span>
+      <h3 data-i18n="w3h">What anybody can look at</h3>
+      <ul class="plain">
+        <li data-i18n="pb1">The note of four pages, with the idea and the 20 dated steps.</li>
+        <li data-i18n="pb2">The proof for Lean: 175,187 files in 14 downloads.</li>
+        <li data-i18n="pb3">The results of all checks on Sutherland&rsquo;s list.</li>
+      </ul>
+    </div>
+    <div class="world open">
+      <span class="tag" data-i18n="w4tag">Not published</span>
+      <h3 data-i18n="w4h">What nobody outside knows</h3>
+      <ul class="plain">
+        <li data-i18n="np1">Which Claude model, and which version of it.</li>
+        <li data-i18n="np2">The prompts and the conversations with Claude.</li>
+        <li data-i18n="np3">How much computing power the work used, and how many copies of Claude worked at the same time.</li>
+        <li data-i18n="np4">Whether Lean gave feedback during the search.</li>
+        <li data-i18n="np5">The text of more than 250,000 pages from section 05.</li>
+      </ul>
+    </div>
+  </div>
+  <p data-i18n="s4p3">This page searched the reports from 20 to 24 November 2026. None of the reports it found names the model or shows a prompt. Kingy AI notes that the note names no Claude model. Some reports mention Claude Code, the programming tool of Anthropic. But Sutherland&rsquo;s list says that he used it for his checks. No source says that Alpöge used it for the proof. Alpöge writes that he wants to understand the argument better and then write it up properly.</p>
+
+  <h3 data-i18n="s4h4">What other problems can take from it</h3>
+  <p data-i18n="s4p4">This page draws three lessons from the note. They are inferences of this page. No source states them as lessons.</p>
+  <ul class="plain">
+    <li data-i18n="m45"><strong>Start from a version of the problem that is already solved.</strong> The person chose the direction by analogy with the model world. The AI then worked out the details in the hard version. This needs a person who knows the problem well. Alpöge prepared for it since his student days.</li>
+    <li data-i18n="m46"><strong>Let the AI bring the breadth.</strong> The decisive knowledge came from an area that the person did not master. An AI that knows many areas can connect them where one specialist cannot.</li>
+    <li data-i18n="m47"><strong>Use a strict checker, so that you need not trust the AI.</strong> Lean rejects every step without a reason. So it did not matter that no person could follow the work. In software, a compiler and a test suite play a similar part, but they are weaker: tests show that some cases work, not that all cases work.</li>
+  </ul>
+  <p class="aside" data-i18n="s4p5">The limits of these lessons: nobody can repeat the experiment, because the model, the prompts and the computing power are not public. And Gary Marcus wrote on 22 November that nobody has drawn general lessons yet about how to do mathematics with AI. He adds that methods whose results a program can check have helped mathematics more than other areas.</p>
 </section>
 
 <section>
@@ -353,7 +397,7 @@
   </ul>
 </section>
 
-<p class="page-note" data-i18n="foot">The charts calculate their data in your browser. Sections 03 and 06 simplify very advanced mathematics. Status of the facts: 23 November 2026, afternoon.</p>
+<p class="page-note" data-i18n="foot">The charts calculate their data in your browser. Sections 03 and 06 simplify very advanced mathematics. Status of the facts: 23 November 2026, afternoon. Section 04 about the method: 24 November 2026.</p>
 </main>
 <!-- learn:footer -->
 <script type="application/json" id="i18n-de">
@@ -450,6 +494,32 @@
 "who1": "<strong>Levent Alpöge</strong> ist Mathematiker bei Anthropic, der Firma, die Claude herstellt. Er schreibt, dass er sich seit seiner Studienzeit auf dieses Rätsel vorbereitet hat. Er wählte die Richtung und die Ideen, die zusammenkommen sollten.",
 "who2": "<strong>Claude</strong> machte viel von der technischen Arbeit, vor allem am Ende. Der Autor schreibt, dass die KI ihm in dieser Phase weit voraus war und wichtige Vorschläge machte.",
 "who3": "<strong>Gemeinsam</strong> schrieben sie den Beweis in einer Form, die ein Computer prüfen kann. Der Autor sagt offen, dass er noch nicht alle Teile versteht.",
+"s4h2": "Wie sie gearbeitet haben",
+"s4p2": "Die Notiz beschreibt die Methode nur in groben Zügen. Sie sagt auch, dass Alpöge und Claude schon in den Monaten davor an vielen Gebieten der Mathematik zusammengearbeitet hatten. Das sind ihre wichtigsten Punkte zur Methode:",
+"m41": "<strong>Ein gelöstes Modell als Wegweiser.</strong> In der Modellwelt aus Abschnitt 03 sah Alpöge zwei ganz verschiedene Ideen, die zusammenwirken. Eine davon war neu. Dann suchte er die passende Situation bei den gewöhnlichen Zahlen und lenkte die Arbeit dorthin. Das war sein Teil.",
+"m42": "<strong>Die KI bringt das Wissen, das dem Menschen fehlt.</strong> Die entscheidenden Schritte verwenden automorphe Formen, ein Gebiet der Mathematik über Funktionen mit sehr vielen Symmetrien. Alpöge schreibt, dass er von den fortgeschrittenen Teilen dieses Gebiets wenig versteht. Claude schon. Laut der Notiz war die Länge der Kette aus Abschnitt 03 nur einer von einigen Dutzend solcher Vorschläge.",
+"m43": "<strong>Eine Prüfung durch den Computer statt durch einen Leser.</strong> Sie haben den ganzen Beweis für Lean aufgeschrieben, das Prüfprogramm aus Abschnitt 05, ohne unbewiesene Annahmen. So kann jeder das Ergebnis prüfen, ohne es zu verstehen. Die Notiz sagt nicht, ob Claude Lean auch während der Suche verwendet hat, etwa um einzelne Schritte zu testen.",
+"m44": "<strong>Ein holpriger Weg.</strong> Alpöge schreibt, dass die Suche durch große Verwirrung ging. Er erwartet, dass der Beweis seltsame Entscheidungen enthält, die nicht die besten sind, und dass viel kürzere Beweise folgen werden. Die Liste der 20 Schritte ist keine Aufzeichnung aus der Arbeit: Claude hat sie im Nachhinein rekonstruiert. Wo Claude der Experte ist, gibt Alpöge eine Zusammenfassung von Claude wieder, und er warnt, dass sie vielleicht keinen Sinn ergibt.",
+"s4h3": "Was nicht öffentlich ist",
+"w3tag": "Öffentlich",
+"w3h": "Was jeder ansehen kann",
+"pb1": "Die Notiz mit vier Seiten, mit der Idee und den 20 Schritten mit Datum.",
+"pb2": "Der Beweis für Lean: 175.187 Dateien in 14 Downloads.",
+"pb3": "Die Ergebnisse aller Prüfungen auf Sutherlands Liste.",
+"w4tag": "Nicht veröffentlicht",
+"w4h": "Was niemand außerhalb weiß",
+"np1": "Welches Claude-Modell, und welche Version davon.",
+"np2": "Die Prompts und die Gespräche mit Claude.",
+"np3": "Wie viel Rechenleistung die Arbeit gebraucht hat und wie viele Kopien von Claude gleichzeitig gearbeitet haben.",
+"np4": "Ob Lean während der Suche Rückmeldungen gegeben hat.",
+"np5": "Der Text mit mehr als 250.000 Seiten aus Abschnitt 05.",
+"s4p3": "Diese Seite hat die Berichte vom 20. bis 24. November 2026 durchsucht. Keiner der gefundenen Berichte nennt das Modell oder zeigt einen Prompt. Kingy AI hält fest, dass die Notiz kein Claude-Modell nennt. Manche Berichte erwähnen Claude Code, das Programmierwerkzeug von Anthropic. Aber laut Sutherlands Liste hat er es für seine Prüfungen verwendet. Keine Quelle sagt, dass Alpöge es für den Beweis verwendet hat. Alpöge schreibt, dass er das Argument besser verstehen und es dann ordentlich aufschreiben will.",
+"s4h4": "Was andere Probleme davon lernen können",
+"s4p4": "Diese Seite zieht drei Lehren aus der Notiz. Es sind Schlüsse dieser Seite. Keine Quelle nennt sie als Lehren.",
+"m45": "<strong>Bei einer Version des Problems beginnen, die schon gelöst ist.</strong> Der Mensch wählte die Richtung durch den Vergleich mit der Modellwelt. Die KI arbeitete dann die Einzelheiten in der schweren Version aus. Das braucht einen Menschen, der das Problem gut kennt. Alpöge hat sich seit seiner Studienzeit darauf vorbereitet.",
+"m46": "<strong>Die KI die Breite bringen lassen.</strong> Das entscheidende Wissen kam aus einem Gebiet, das der Mensch nicht beherrschte. Eine KI, die viele Gebiete kennt, kann sie verbinden, wo ein einzelner Spezialist das nicht kann.",
+"m47": "<strong>Einen strengen Prüfer verwenden, damit man der KI nicht vertrauen muss.</strong> Lean weist jeden Schritt ohne Begründung zurück. Darum war es egal, dass kein Mensch der Arbeit folgen konnte. In der Software spielen ein Compiler und eine Testsuite eine ähnliche Rolle, aber sie sind schwächer: Tests zeigen, dass einige Fälle funktionieren, nicht dass alle funktionieren.",
+"s4p5": "Die Grenzen dieser Lehren: Niemand kann das Experiment wiederholen, denn Modell, Prompts und Rechenleistung sind nicht öffentlich. Und Gary Marcus schrieb am 22. November, dass noch niemand allgemeine Lehren gezogen hat, wie man mit KI Mathematik macht. Er fügt hinzu, dass Methoden, deren Ergebnisse ein Programm prüfen kann, der Mathematik mehr geholfen haben als anderen Gebieten.",
 "s5h": "Kann man einem Beweis trauen, den kein Mensch gelesen hat?",
 "s5p1": "Der Beweis ist eine Computerdatei mit 175.187 Teilen und etwa 17 Millionen Zeilen. Ein Prüfprogramm mit dem Namen Lean kontrolliert jeden Schritt. Man kann an einen sehr strengen Buchprüfer denken. Der Buchprüfer versteht das Geschäft nicht. Aber er rechnet jede Zeile nach und akzeptiert nichts ohne Begründung.",
 "s5p2": "So eine Prüfung kann trotzdem auf zwei Arten schiefgehen. Die Datei kann eine andere, leichtere Behauptung beweisen als das echte Rätsel. Oder sie enthält eine versteckte Abkürzung: einen Schritt, den sie annimmt, aber nicht beweist. Darum müssen andere Leute diese Punkte kontrollieren. Andrew Sutherland von der Universität MIT führt eine öffentliche Liste aller Prüfungen.",
@@ -529,7 +599,7 @@
 "src4": "Ravi Vakil: Ankündigung der Arbeit von Alessandro Masullo (englisch)",
 "src6": "Nacionale: die Schritte der Überprüfung und die Clay-Regeln (englisch)",
 "src7": "John Baez: die Arbeit von Masullo und die Einwände dagegen (englisch)",
-"foot": "Die Diagramme berechnen ihre Daten in Ihrem Browser. Die Abschnitte 03 und 06 vereinfachen sehr anspruchsvolle Mathematik. Stand der Fakten: 23. November 2026, nachmittags.",
+"foot": "Die Diagramme berechnen ihre Daten in Ihrem Browser. Die Abschnitte 03 und 06 vereinfachen sehr anspruchsvolle Mathematik. Stand der Fakten: 23. November 2026, nachmittags. Abschnitt 04 zur Methode: 24. November 2026.",
 "chg_h": "Was sich auf dieser Seite geändert hat",
 "chg3d": "22. Nov. 2026",
 "chg3t": "Neu: die gemeinsame Erklärung der Lean- und Mathlib-Gemeinschaften, die den Beweis bestätigt. Die Liste der Prüfungen in Abschnitt 05 ist neu. Abschnitt 06 nennt die zwei konkreten Einwände gegen den zweiten Beweis. Die Seite ist außerdem auf learn.ankerl.com umgezogen.",
@@ -545,6 +615,8 @@
 "l64": "Baez schreibt, dass die Einwände noch reparierbar oder selbst falsch sein können. Er sagt nicht, dass der Beweis funktioniert, und er sagt nicht, dass er gescheitert ist.",
 "src8": "Lean- und Mathlib-Gemeinschaften: gemeinsame Erklärung vom 21. November 2026 (englisch)",
 "src9": "Kingy AI: Überblick über die Prüfungen und die ersten Reaktionen, mit den Worten von Terence Tao (englisch)",
+"chg5d": "24. Nov. 2026",
+"chg5t": "Neu in Abschnitt 04: was die Notiz über die Arbeitsweise sagt, was nicht öffentlich ist (Modell, Prompts, Rechenleistung) und was andere Probleme davon lernen können.",
 "chg4d": "23. Nov. 2026",
 "chg4t": "Neu in Abschnitt 05: Das eigene Prüfprogramm von Lean hat seinen langen Lauf beendet, der Gesamttest ist bestanden, und eine Folgerung über Teiler ist geprüft. Neu in Abschnitt 06: die Erklärung von Masullo zum Stand seiner Arbeit und ein Projekt, das seinen Beweis für Lean aufschreibt. Abschnitt 07 nennt die Sicht eines Kritikers.",
 "k10t": "Das eigene Prüfprogramm von Lean hat seinen langen Lauf beendet.",
