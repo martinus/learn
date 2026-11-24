@@ -48,39 +48,44 @@
   <span class="eyebrow">Cosmology &middot; status of 24 November 2026</span>
   <h1>Is dark energy fading? The final DES result</h1>
   <!-- learn:byline -->
-  <p class="lead">The standard model of cosmology treats dark energy as a constant: every cubic metre of space holds the same amount of it, at all times. In May 2026 the Dark Energy Survey (DES) published the analysis that combines all of its measurements. Together with data from other experiments, a dark energy that changes over time fits better than a constant one, at 3.0σ. This page explains what was measured, how small the effect is, and how much weight 3σ can carry.</p>
+  <p class="lead">Since 1998 astronomers know that the expansion of the universe speeds up, although gravity should slow it down. The unknown cause has the name dark energy. The standard model of cosmology treats it as an energy of empty space that never changes. In May 2026 the Dark Energy Survey (DES) published the analysis of all its measurements. Together with data from other experiments, a dark energy that changes over time fits better than a constant one. The strength of this evidence is 3.0σ (sigma, a measure from statistics), and physics asks for 5σ before it speaks of a discovery. This page explains what was measured, how small the effect is, and how much 3σ is worth.</p>
   <div class="status">
     <b>Status: a hint, no discovery</b>
-    <span>The DES paper is a preprint of 26 May 2026, revised on 2 June 2026 and submitted to the journal Physical Review Letters. On 24 November 2026, arXiv listed no journal publication for it. The convention in physics for a discovery is 5σ. The next larger dataset, the full five-year survey of the DESI experiment, is expected in 2027.</span>
+    <span>The DES paper is a preprint of 26 May 2026, revised on 2 June 2026 and submitted to the journal Physical Review Letters. On 24 November 2026, arXiv listed no journal publication for it. The next larger dataset, the full five-year survey of DESI, a second galaxy survey, is expected in 2027.</span>
   </div>
   <details class="changes">
     <summary><span>What changed on this page</span></summary>
     <ol>
+      <li><time>24 Nov 2026, evening</time><span>After comments from the reader: the first screen says what dark energy is and what the three cards mean. Section 01 shows where the density rule comes from and explains its symbols and names.</span></li>
       <li><time>24 Nov 2026, later</time><span>Formulas are now set as formulas. Section 02 shows the two equations for the distance and no longer a C++ example.</span></li>
       <li><time>24 Nov 2026</time><span>First version.</span></li>
     </ol>
   </details>
   <div class="short">
-    <div><h3>The claim</h3><span>In the best fit, dark energy is thinning out today, and it was denser a few billion years ago. A cosmological constant never changes.</span></div>
-    <div><h3>The size</h3><span>The best fit moves the distances to far galaxies by less than 2&nbsp;%, as computed on this page. Supernova brightness must be calibrated to about 0.01 magnitudes to see that.</span></div>
-    <div><h3>The strength</h3><span>3.0σ with all data, 2.2σ from DES alone. A DES supernova paper translates a similar 3.2σ into odds of about 5 to 1.</span></div>
+    <div><h3>The claim</h3><span>In the standard model, the density of dark energy never changes. In the best fit to the new data, it falls today and was higher a few billion years ago.</span></div>
+    <div><h3>The size</h3><span>Nobody can measure dark energy directly. It shows in the distances to far galaxies and exploding stars. Between the two models, these distances differ by less than 2&nbsp;%, as computed on this page.</span></div>
+    <div><h3>The strength</h3><span>3.0σ means: if dark energy is constant and all errors are known, such a result appears by chance about once in 370 tries. For 5σ it is once in 1.7 million tries.</span></div>
   </div>
 </header>
 
 <section>
   <span class="num">01</span>
-  <h2>What w says about dark energy</h2>
-  <p>In 1998, two teams found from about 50 exploding stars that the expansion of the universe speeds up. The cause got the name dark energy. In the standard model it makes up about 70&nbsp;% of the energy in the universe. The question of this page is whether its density changes while space expands.</p>
+  <h2>What <math><mi>w</mi></math> says about dark energy</h2>
+  <p>The discovery of 1998 came from about 50 exploding stars that two teams had measured. Nobody knows what dark energy is. In the standard model it makes up about 70&nbsp;% of the energy in the universe. The question of this page is narrower: does its density change while space expands?</p>
   <p>Two numbers describe the expansion. The <strong>scale factor</strong> <math><mi>a</mi></math> is the size of the universe relative to today: <math><mi>a</mi><mo>=</mo><mn>0.5</mn></math> means that all distances between far galaxies were half as large. Astronomers measure the <strong>redshift</strong> <math><mi>z</mi></math> instead. Light that left a galaxy at scale factor <math><mi>a</mi></math> arrives with its wavelength stretched by <math><mn>1</mn><mo>+</mo><mi>z</mi><mo>=</mo><mn>1</mn><mo>/</mo><mi>a</mi></math>. A larger <math><mi>z</mi></math> is further away and further in the past.</p>
-  <p>Each ingredient of the universe thins out in its own way while space grows. Physics describes this with one number per ingredient, the <strong>equation of state</strong> <math><mi>w</mi></math>, the ratio of pressure to energy density. The density then follows <math><mi>&rho;</mi><mo>&prop;</mo><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>w</mi><mo stretchy="false">)</mo></mrow></msup></math>.</p>
+  <p>Each ingredient of the universe thins out in its own way while space grows. The rule behind this is energy conservation. Take a volume <math><mi>V</mi></math> that grows with space, so it is proportional to <math><msup><mi>a</mi><mrow><mn>3</mn></mrow></msup></math>. With the energy density <math><mi>&rho;</mi></math>, it holds the energy <math><mi>&rho;</mi><mi>V</mi></math>. If its content has the pressure <math><mi>p</mi></math>, the growing volume does the work <math><mi>p</mi><mspace width="0.15em"></mspace><mi>d</mi><mi>V</mi></math> and loses this energy:</p>
+  <div class="formula"><math display="block"><mi>d</mi><mo stretchy="false">(</mo><mi>&rho;</mi><mi>V</mi><mo stretchy="false">)</mo><mo>=</mo><mo form="prefix">&minus;</mo><mi>p</mi><mspace width="0.15em"></mspace><mi>d</mi><mi>V</mi></math></div>
+  <p>Georges Lema&icirc;tre wrote this equation for the expanding universe in 1927. One number per ingredient then decides the result: the <strong>equation of state</strong> <math><mi>w</mi></math>, the ratio of pressure to energy density, <math><mi>p</mi><mo>=</mo><mi>w</mi><mi>&rho;</mi></math>. For a constant <math><mi>w</mi></math>, the solution of the equation is:</p>
+  <div class="formula"><math display="block"><mi>&rho;</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><mi>&rho;</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>&middot;</mo><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>w</mi><mo stretchy="false">)</mo></mrow></msup></math></div>
+  <p><math><mi>&rho;</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></math> is the density today. Three cases matter here:</p>
   <ul class="plain">
-    <li><strong>Matter:</strong> <math><mi>w</mi><mo>=</mo><mn>0</mn></math>. The density falls with the volume, <math><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn></mrow></msup></math>.</li>
-    <li><strong>Cosmological constant &Lambda;:</strong> <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>. The exponent is zero, so the density never changes. This is the dark energy of the standard model, which is called &Lambda;CDM (&Lambda; plus cold dark matter).</li>
+    <li><strong>Matter:</strong> <math><mi>w</mi><mo>=</mo><mn>0</mn></math>. No pressure and no work, so the density falls only with the volume, as <math><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn></mrow></msup></math>.</li>
+    <li><strong>Cosmological constant:</strong> <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>. The pressure is negative, so the growing volume gains energy. The gain is exactly as large as needed to keep the density the same at all times. The symbol of the constant is &Lambda;, the Greek capital letter lambda. Einstein added it to his equations of gravity in 1917. It is the dark energy of the standard model. The model is called &Lambda;CDM: &Lambda; plus cold dark matter (CDM), which is matter that is invisible and shows only through its gravity.</li>
     <li><strong><math><mi>w</mi><mo>&gt;</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>:</strong> the density falls while space grows. <strong><math><mi>w</mi><mo>&lt;</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>:</strong> the density rises. Physicists call this case &ldquo;phantom&rdquo;.</li>
   </ul>
   <p>To test the constant, the DES paper lets <math><mi>w</mi></math> change with time in the simplest way, a straight line in <math><mi>a</mi></math>:</p>
   <div class="formula"><math display="block"><mi>w</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><mi>a</mi><mo stretchy="false">)</mo></math></div>
-  <p><math><msub><mi>w</mi><mn>0</mn></msub></math> is the value today, at <math><mi>a</mi><mo>=</mo><mn>1</mn></math>. <math><msub><mi>w</mi><mi>a</mi></msub></math> says how much <math><mi>w</mi></math> changes towards the past. The form is called the CPL parametrisation. &Lambda;CDM is the single point <math><mo stretchy="false">(</mo><msub><mi>w</mi><mn>0</mn></msub><mo>,</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mo form="prefix">&minus;</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false">)</mo></math>.</p>
+  <p><math><msub><mi>w</mi><mn>0</mn></msub></math> is the value today, at <math><mi>a</mi><mo>=</mo><mn>1</mn></math>. <math><msub><mi>w</mi><mi>a</mi></msub></math> says how much <math><mi>w</mi></math> changes towards the past. The form is called the CPL parametrisation, after the papers of Chevallier and Polarski (2001) and of Linder (2003). &Lambda;CDM is the single point <math><mo stretchy="false">(</mo><msub><mi>w</mi><mn>0</mn></msub><mo>,</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mo form="prefix">&minus;</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false">)</mo></math>.</p>
   <p>So the test is a comparison of nested models. The larger model has two more parameters, and the standard model is one point inside it. With all data combined, the DES paper finds <math><msub><mi>w</mi><mn>0</mn></msub><mo>=</mo><mo form="prefix">&minus;</mo><mn>0.82</mn><mo>&plusmn;</mo><mn>0.05</mn></math> and <math><msub><mi>w</mi><mi>a</mi></msub><mo>=</mo><mo form="prefix">&minus;</mo><mn>0.63</mn></math> (+0.21, &minus;0.18).</p>
   <p>Integrating the density rule for this <math><mi>w</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></math> gives the density of dark energy relative to today:</p>
   <div class="formula"><math display="block"><mfrac><mrow><msub><mi>&rho;</mi><mi>DE</mi></msub><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mrow><msub><mi>&rho;</mi><mi>DE</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mfrac><mo>=</mo><msup><mi>a</mi><mrow><mo>&minus;</mo><mn>3</mn><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">)</mo></mrow></msup><mo>&middot;</mo><msup><mi>e</mi><mrow><mo>&minus;</mo><mn>3</mn><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><mi>a</mi><mo stretchy="false">)</mo></mrow></msup></math></div>
@@ -89,18 +94,18 @@
   <figure>
     <div class="fig-title">Density of dark energy, relative to today</div>
     <div class="ctl">
-      <label for="wS"><span>A dark energy with constant w</span> <output id="wOut">w = &minus;0.82</output></label>
+      <label for="wS"><span>A dark energy with constant <math><mi>w</mi></math></span> <output id="wOut"><math><mi>w</mi><mo>=</mo><mn>&minus;0.82</mn></math></output></label>
       <input type="range" id="wS" min="-1.25" max="-0.75" step="0.01" value="-0.82">
     </div>
     <div class="legend">
-      <span><i class="sw"></i><span>constant w (slider)</span></span>
-      <span><i class="sw c2"></i><span>&Lambda;CDM, w = &minus;1</span></span>
+      <span><i class="sw"></i><span>constant <math><mi>w</mi></math> (slider)</span></span>
+      <span><i class="sw c2"></i><span>&Lambda;CDM, <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>1</mn></math></span></span>
       <span><i class="sw c3"></i><span>DES fit, all data</span></span>
     </div>
     <svg class="chart" id="cRho" role="img" aria-label="Density of dark energy against redshift. The standard model is a flat line. The DES fit rises to a peak 9 percent above today at redshift 0.4 and falls below today's value further in the past."></svg>
     <div class="stats">
-      <div><small>Constant w: density at z = 1</small><b id="rW1">1.45 &times;</b></div>
-      <div><small>DES fit: density at z = 1</small><b id="rF1">1.01 &times;</b></div>
+      <div><small>Constant <math><mi>w</mi></math>: density at <math><mi>z</mi><mo>=</mo><mn>1</mn></math></small><b id="rW1">1.45 &times;</b></div>
+      <div><small>DES fit: density at <math><mi>z</mi><mo>=</mo><mn>1</mn></math></small><b id="rF1">1.01 &times;</b></div>
       <div><small>DES fit: highest density</small><b id="rFp">1.09 &times;</b></div>
       <div><small>DES fit: highest at redshift</small><b id="rFz">0.40</b></div>
     </div>
@@ -163,7 +168,7 @@
       <span class="tag">Distance</span>
       <h3>BAO</h3>
       <span>Sound waves in the hot early universe left a preferred distance between galaxies: about 147 megaparsecs in today&rsquo;s scale (480 million light years). The angle under which this ruler appears gives the distance. The name is baryon acoustic oscillations.</span>
-      <dl><dt>Data</dt><dd>16 million galaxies, distance to 2.1&nbsp;% at z = 0.85</dd><dt>Weak point</dt><dd>redshift from colours only</dd></dl>
+      <dl><dt>Data</dt><dd>16 million galaxies, distance to 2.1&nbsp;% at <math><mi>z</mi><mo>=</mo><mn>0.85</mn></math></dd><dt>Weak point</dt><dd>redshift from colours only</dd></dl>
     </div>
     <div class="world a">
       <span class="tag">Growth</span>
@@ -187,10 +192,10 @@
     <div class="legend">
       <span><i class="sw sol"></i><span>range of the measurement</span></span>
       <span><i class="sw hol"></i><span>supernovae from older surveys</span></span>
-      <span><i class="sw c3"></i><span>where the fit crosses w = &minus;1</span></span>
+      <span><i class="sw c3"></i><span>where the fit crosses <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>1</mn></math></span></span>
     </div>
     <svg class="chart hb" id="cCov" role="img" aria-label="Horizontal ranges over redshift. Supernovae cover 0.025 to 1.13, DES BAO 0.6 to 1.2, DESI BAO 0.295 to 2.33, galaxy positions 0.2 to 1.2 and galaxy shapes up to about 2. The microwave background lies far outside at redshift 1089."></svg>
-    <figcaption>The supernovae, the DESI BAO data and both 3&times;2pt samples cover redshift 0.40, where the central fit turns from rising to falling. The DES BAO data start at 0.6. Ranges: DES Collaboration, 26 May 2026, and DESI Collaboration, March 2025 (upper end of the supernovae). The lower axis is the light travel time, computed on this page for &Lambda;CDM with a matter share of 0.302 and H0 = 68.3 km/s/Mpc, the DES values of January 2026.</figcaption>
+    <figcaption>The supernovae, the DESI BAO data and both 3&times;2pt samples cover redshift 0.40, where the central fit turns from rising to falling. The DES BAO data start at 0.6. Ranges: DES Collaboration, 26 May 2026, and DESI Collaboration, March 2025 (upper end of the supernovae). The lower axis is the light travel time, computed on this page for &Lambda;CDM with a matter share of 0.302 and <math><msub><mi>H</mi><mn>0</mn></msub><mo>=</mo><mn>68.3</mn></math> km/s/Mpc, the DES values of January 2026.</figcaption>
   </figure>
 </section>
 
@@ -229,7 +234,7 @@
   <h2>How strong is 3σ?</h2>
   <p>The fit produces a probability distribution over the plane of <math><msub><mi>w</mi><mn>0</mn></msub></math> and <math><msub><mi>w</mi><mi>a</mi></msub></math>, from a sampler. The paper draws the contour of equal probability density that runs through the standard model at (&minus;1, 0) and measures which fraction <math><mi>&Delta;</mi></math> of the distribution lies inside. It then reports the number of standard deviations <math><mi>n</mi></math> at which a Gaussian holds the same fraction:</p>
   <div class="formula"><math display="block"><mi>n</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>&middot;</mo><msup><mi>erf</mi><mrow><mo>&minus;</mo><mn>1</mn></mrow></msup><mo stretchy="false">(</mo><mi>&Delta;</mi><mo stretchy="false">)</mo></math></div>
-  <p>A second method, the difference in <math><msup><mi>&chi;</mi><mrow><mn>2</mn></mrow></msup></math> between the best fits of the two models, gives nearly the same numbers.</p>
+  <p>A second method gives nearly the same numbers. It compares how well the best fit of each model matches the data. The measure is <math><msup><mi>&chi;</mi><mrow><mn>2</mn></mrow></msup></math> (chi squared): the sum of the squared differences between data and model, each one scaled by the uncertainty of the data.</p>
 
   <figure>
     <div class="fig-title">Gaussian probability outside &plusmn;nσ</div>
@@ -262,22 +267,22 @@
   <div class="alt">
     <div class="world a">
       <h3>Chance</h3>
-      <dl><dt>For</dt><dd>A 3σ result appears by chance about once in 370 tries. The DESI paper names a statistical fluctuation as the simplest alternative.</dd><dt>Against</dt><dd>Every subset of the data that the DES paper tested points to the same region of w0 and wa.</dd></dl>
+      <dl><dt>For</dt><dd>A 3σ result appears by chance about once in 370 tries. The DESI paper names a statistical fluctuation as the simplest alternative.</dd><dt>Against</dt><dd>Every subset of the data that the DES paper tested points to the same region of <math><msub><mi>w</mi><mn>0</mn></msub></math> and <math><msub><mi>w</mi><mi>a</mi></msub></math>.</dd></dl>
     </div>
     <div class="world a">
       <h3>Supernova calibration</h3>
-      <dl><dt>For</dt><dd>The DESI paper says the supernova evidence rests on the comparison of the nearby ones (z &lt; 0.1) with the rest. The nearby ones come from a mix of older surveys. One recalibration already removed one σ.</dd><dt>Against</dt><dd>Without any supernovae, the DES combination still gives 2.6σ. Two other supernova catalogues, combined with DESI and CMB data, give 3.2σ and 3.4σ after their own new analyses.</dd></dl>
+      <dl><dt>For</dt><dd>The DESI paper says the supernova evidence rests on the comparison of the nearby ones (<math><mi>z</mi><mo>&lt;</mo><mn>0.1</mn></math>) with the rest. The nearby ones come from a mix of older surveys. One recalibration already removed one σ.</dd><dt>Against</dt><dd>Without any supernovae, the DES combination still gives 2.6σ. Two other supernova catalogues, combined with DESI and CMB data, give 3.2σ and 3.4σ after their own new analyses.</dd></dl>
     </div>
     <div class="world a">
       <h3>The early universe</h3>
-      <dl><dt>For</dt><dd>The first stars ionised the gas in the universe, and free electrons scatter some of the CMB light. The optical depth &tau; measures how much. Sailer, Farren, Ferraro and White show that &tau; near 0.09 lowers the preference in DESI and CMB data from about 3σ to about 1.5σ.</dd><dt>Against</dt><dd>The Planck satellite measured &tau; = 0.0544 &plusmn; 0.0073. The authors put the gap at 3 to 5σ and see no sign of an error in the Planck data.</dd></dl>
+      <dl><dt>For</dt><dd>The first stars ionised the gas in the universe, and free electrons scatter some of the CMB light. The optical depth <math><mi>&tau;</mi></math> measures how much. Sailer, Farren, Ferraro and White show that <math><mi>&tau;</mi></math> near 0.09 lowers the preference in DESI and CMB data from about 3σ to about 1.5σ.</dd><dt>Against</dt><dd>The Planck satellite measured <math><mi>&tau;</mi><mo>=</mo><mn>0.0544</mn><mo>&plusmn;</mo><mn>0.0073</mn></math>. The authors put the gap at 3 to 5σ and see no sign of an error in the Planck data.</dd></dl>
     </div>
     <div class="world b">
       <h3>Dark energy changes</h3>
-      <dl><dt>For</dt><dd>It fits all datasets at once, in every subset that the paper tested.</dd><dt>Against</dt><dd>The best fits cross w = &minus;1. The DES paper states that a single ordinary scalar field cannot do this. It would need a coupling between dark energy and dark matter, or a change to gravity.</dd></dl>
+      <dl><dt>For</dt><dd>It fits all datasets at once, in every subset that the paper tested.</dd><dt>Against</dt><dd>The best fits cross <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>. The DES paper states that a single ordinary scalar field cannot do this. It would need a coupling between dark energy and dark matter, or a change to gravity.</dd></dl>
     </div>
   </div>
-  <p>Quanta Magazine reports that some theorists doubt a changing dark energy for a further reason. Physics cannot yet explain why the energy of empty space has its small value. A value that also changes slowly would need a second explanation. Quanta also puts the &tau; idea into time: the gas would have to be ionised about 200 million years earlier than the roughly 700 million years after the Big Bang that the standard model assumes.</p>
+  <p>Quanta Magazine reports that some theorists doubt a changing dark energy for a further reason. Physics cannot yet explain why the energy of empty space has its small value. A value that also changes slowly would need a second explanation. Quanta also puts the idea about <math><mi>&tau;</mi></math> into time: the gas would have to be ionised about 200 million years earlier than the roughly 700 million years after the Big Bang that the standard model assumes.</p>
   <p class="aside">The line <math><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><mi>a</mi><mo stretchy="false">)</mo></math> is a parametrisation and no physical theory. The DES-Dovekie paper notes that it can approximate many physical models. A preference for it says that some change over time fits better than none. It does not say that <math><mi>w</mi></math> follows this line.</p>
 </section>
 
@@ -303,10 +308,11 @@
   <span class="num">08</span>
   <h2>Short glossary</h2>
   <dl class="gloss">
-    <div><dt>Redshift z</dt><dd>The factor by which the expansion stretched the light of an object, minus 1. It serves as a measure of distance and of time into the past.</dd></div>
-    <div><dt>Equation of state w</dt><dd>Pressure divided by energy density. It fixes how the density of an ingredient changes while space expands.</dd></div>
-    <div><dt>&Lambda;CDM</dt><dd>The standard model of cosmology: a cosmological constant &Lambda; with w = &minus;1, plus cold dark matter.</dd></div>
-    <div><dt>CPL parametrisation</dt><dd>w(a) = w0 + wa(1 &minus; a), named after Chevallier, Polarski and Linder. The model with it is written w0waCDM.</dd></div>
+    <div><dt>Dark energy</dt><dd>The unknown cause of the accelerated expansion of the universe. The standard model describes it as an energy of empty space with a constant density.</dd></div>
+    <div><dt>Redshift <math><mi>z</mi></math></dt><dd>The factor by which the expansion stretched the light of an object, minus 1. It serves as a measure of distance and of time into the past.</dd></div>
+    <div><dt>Equation of state <math><mi>w</mi></math></dt><dd>Pressure divided by energy density. It fixes how the density of an ingredient changes while space expands.</dd></div>
+    <div><dt>&Lambda;CDM</dt><dd>The standard model of cosmology: a cosmological constant with <math><mi>w</mi><mo>=</mo><mo form="prefix">&minus;</mo><mn>1</mn></math>, written &Lambda; (the Greek letter lambda), plus cold dark matter (CDM).</dd></div>
+    <div><dt>CPL parametrisation</dt><dd><math><mi>w</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><msub><mi>w</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mn>1</mn><mo>&minus;</mo><mi>a</mi><mo stretchy="false">)</mo></math>, named after the authors Chevallier, Polarski and Linder. Papers write the model with it as w0waCDM.</dd></div>
     <div><dt>Megaparsec (Mpc)</dt><dd>A unit of distance in astronomy: 3.26 million light years.</dd></div>
     <div><dt>Magnitude (mag)</dt><dd>A logarithmic unit of brightness. A difference of 0.01 mag is 0.9&nbsp;% in brightness or 0.46&nbsp;% in distance.</dd></div>
     <div><dt>BAO</dt><dd>Baryon acoustic oscillations: a preferred distance between galaxies of about 147 Mpc, left by sound waves in the early universe.</dd></div>
@@ -321,13 +327,13 @@
   <h2>How sure is this?</h2>
   <ul class="checks">
     <li><span class="pill done">Sourced</span>
-        <span><span>All values of w0 and wa, all σ values, the sizes of the datasets, the method behind the σ values and the leave-one-out results come from the DES preprint of 26 May 2026 (version of 2 June), read in full.</span><span class="d">The survey facts and the constant-w result come from the DES paper of January 2026. The supernova recalibration, the 0.01 mag requirement and the odds of 5 to 1 come from the DES-Dovekie paper. The DESI values come from the DESI paper of 2025, the optical depth from Sailer and others. These four are reviewed papers. This page read the parts that it uses, not every section.</span></span></li>
+        <span><span>All values of <math><msub><mi>w</mi><mn>0</mn></msub></math> and <math><msub><mi>w</mi><mi>a</mi></msub></math>, all σ values, the sizes of the datasets, the method behind the σ values and the leave-one-out results come from the DES preprint of 26 May 2026 (version of 2 June), read in full.</span><span class="d">The survey facts and the constant-w result come from the DES paper of January 2026. The supernova recalibration, the 0.01 mag requirement and the odds of 5 to 1 come from the DES-Dovekie paper. The DESI values come from the DESI paper of 2025, the optical depth from Sailer and others. These four are reviewed papers. This page read the parts that it uses, not every section. The equation of Lema&icirc;tre is in the English translation of his paper of 1927, which Luminet published with a note in 2013. That Einstein introduced the cosmological constant in 1917 comes from the abstract of a history paper by O&rsquo;Raifeartaigh and others.</span></span></li>
     <li><span class="pill done">Sourced</span>
         <span><span>Only reporting, by Quanta Magazine (16 November 2026): the doubts of theorists, the 200 million years of earlier ionisation, and the numbers expected from the Rubin Observatory.</span><span class="d">The DESI schedule comes from a press release of Berkeley Lab, and the start of the Rubin survey from the observatory&rsquo;s own announcement.</span></span></li>
     <li><span class="pill rep">Inferred</span>
-        <span><span>Computed on this page from the central values of the fit: all density curves, the peak of 9&nbsp;% at redshift 0.40, the distance changes of up to 1.64&nbsp;%, and the light travel times. The page ignores the uncertainty of the fit in these numbers.</span><span class="d">Also inferred: the conversions between magnitudes and distance, and the reading of what a rising or falling significance in 2027 would mean. The basics in section 01, the description of two-point functions and the Gaussian conversion in section 05 are textbook knowledge of the model that wrote this page.</span></span></li>
+        <span><span>Computed on this page from the central values of the fit: all density curves, the peak of 9&nbsp;% at redshift 0.40, the distance changes of up to 1.64&nbsp;%, and the light travel times. The page ignores the uncertainty of the fit in these numbers.</span><span class="d">Also inferred: the conversions between magnitudes and distance, and the reading of what a rising or falling significance in 2027 would mean. The basics in section 01, among them the step from the equation of Lema&icirc;tre to the density rule, the description of two-point functions and the Gaussian conversion in section 05 are textbook knowledge of the model that wrote this page.</span></span></li>
     <li><span class="pill prog">Uncertain</span>
-        <span><span>Whether dark energy changes is open. The evidence is 3.0σ, below the 5σ convention, and the DES paper was not yet published in a journal on 24 November 2026.</span><span class="d">The distance chart keeps the matter share and H0 fixed, which a real fit does not. The preprint by Kim, Mota and Tamosiunas was read as an abstract only. The Quanta article was read through an automatic text extraction, so a detail of its wording may be missing here.</span></span></li>
+        <span><span>Whether dark energy changes is open. The evidence is 3.0σ, below the 5σ convention, and the DES paper was not yet published in a journal on 24 November 2026.</span><span class="d">The distance chart keeps the matter share and <math><msub><mi>H</mi><mn>0</mn></msub></math> fixed, which a real fit does not. The preprint by Kim, Mota and Tamosiunas was read as an abstract only. The Quanta article was read through an automatic text extraction, so a detail of its wording may be missing here.</span></span></li>
   </ul>
 </section>
 
@@ -340,6 +346,8 @@
     <li><a href="https://arxiv.org/abs/2511.07517">Popovic and others: The Dark Energy Survey Supernova Program: A Reanalysis of Cosmology Results and Evidence for Evolving Dark Energy with an Updated Type Ia Supernova Calibration</a> &middot; reviewed paper (Monthly Notices of the Royal Astronomical Society, 2026), first posted 10 November 2025</li>
     <li><a href="https://arxiv.org/abs/2503.14738">DESI Collaboration: DESI DR2 Results II: Measurements of Baryon Acoustic Oscillations and Cosmological Constraints</a> &middot; reviewed paper (Physical Review D 112, 083515), first posted 18 March 2025. Data of the first three years</li>
     <li><a href="https://arxiv.org/abs/2504.16932">Sailer, Farren, Ferraro, White: Dispu&tau;able: the high cost of a low optical depth</a> &middot; reviewed paper (Physical Review Letters 136, 081002, 2026), first posted 23 April 2025</li>
+    <li><a href="https://arxiv.org/abs/1305.6470">Luminet: Editorial note to &ldquo;A Homogeneous Universe of Constant Mass and Increasing Radius accounting for the Radial Velocity of Extra-Galactic Nebulae&rdquo; by Georges Lema&icirc;tre (1927)</a> &middot; note with an English translation of the paper of 1927, for the journal General Relativity and Gravitation, 28 May 2013</li>
+    <li><a href="https://arxiv.org/abs/1711.06890">O&rsquo;Raifeartaigh, O&rsquo;Keeffe, Nahm, Mitton: One Hundred Years of the Cosmological Constant: from &lsquo;Superfluous Stunt&rsquo; to Dark Energy</a> &middot; history paper, preprint of 18 November 2017, abstract only</li>
     <li><a href="https://arxiv.org/abs/2607.28918">Kim, Mota, Tamosiunas: An E-value Reanalysis of DESI&rsquo;s Dynamical Dark Energy Signal</a> &middot; preprint, 31 July 2026, version 3 of 22 October 2026, abstract only</li>
     <li><a href="https://newscenter.lbl.gov/2026/04/15/desi-completes-planned-3d-map-of-the-universe-and-continues-exploring/">Berkeley Lab: DESI Completes Planned 3D Map of the Universe and Continues Exploring</a> &middot; press release, 15 April 2026</li>
     <li><a href="https://rubinobservatory.org/news/action-rubin-lsst-begins">Rubin Observatory: Action! NSF&ndash;DOE Vera C. Rubin Observatory Begins Capturing the Greatest Cosmic Movie Ever Made</a> &middot; announcement, 30 June 2026</li>
@@ -386,7 +394,7 @@ function curve(svg,p,f,x0,x1,cls,lo,hi){
 var wS=$('wS');
 function drawRho(){
   var w=+wS.value;
-  $('wOut').textContent='w = '+L.sgn(w,2);
+  $('wOut').innerHTML='<math><mi>w</mi><mo>=</mo><mn>'+L.sgn(w,2)+'</mn></math>';
   var svg=$('cRho'),p=L.plot(svg,{h:240,x0:0,x1:2.5,y0:0.5,y1:2});
   curve(svg,p,function(){return 1;},0,2.5,'l-c2',0.5,2);
   curve(svg,p,function(z){return Math.pow(1+z,3*(1+w));},0,2.5,'l-c1',0.5,2);
