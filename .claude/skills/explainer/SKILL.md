@@ -137,6 +137,18 @@ Only on request. The tool supports `en` and `de`. Any other language first needs
 - If an old statement was wrong, say so in the pull request instead of silently replacing it.
 - Then do steps 8 and 9.
 
+## Comments from the reader
+
+The reader writes comments on a live page (footer button "Comment on this page"). The panel makes one prompt from them, by "Copy prompt" or as a GitHub issue. The prompt names the page, the version date and each comment with its section and quoted text. The reader is the only reviewer of the site, so treat each comment as a review finding.
+
+1. Read the whole page first. The page can be newer than the comment: the prompt gives the version date the reader saw. If a quote is no longer in the page, find the place where it moved, or report that it is gone.
+2. Sort each comment: a question, a correction, or a request (more depth, a graphic, shorter text).
+3. **Question:** answer it in the pull request. If this reader needs the answer to understand the page, also add it to the page.
+4. **Correction:** research it (`references/research.md`) before you change anything. The reader can be wrong. Change the page only if current sources support the correction. If they do not, keep the text and give the sources in the pull request.
+5. **Request:** do it if it fits this skill. If it does not, say why in the pull request.
+6. Then "Update a page": `updated` is today, and a story in progress gets an entry in the change list. Then steps 8 and 9. Branch: `explainer/<slug>-comments`.
+7. The pull request lists each comment (short), what you did, and the sources. If the prompt came from a GitHub issue, write `Closes #<number>`.
+
 ## Change the theme or the tool
 
 - `site/assets/theme.css` and `theme.js` affect every page. Run `python3 tools/learn.py shots` (no slug) and look at all pages.

@@ -32,6 +32,12 @@ This file lists decisions about the site and the reason for each. Read it before
 - **Chrome is an optional tool** for preview pictures (`share.png`) and for review pictures (`shots`). Reason: Python alone cannot draw a web page. GitHub has Chrome, so the live site always gets preview pictures.
 - **Addresses:** a page is `/<date>-<slug>/`. The folder name never changes after publication. `#de` and `#en` set the language. `#s03` opens a section. A link cannot have the two at the same time.
 
+## Comments from the reader
+
+- **The reader can write comments on a page, and the comments stay in the browser** (`localStorage`). There is no server and no account. The panel copies the comments as one prompt for an AI agent, or opens a GitHub issue with the prompt. Reason: the site has no backend, and the reader is the only reviewer, so a short way from a comment to an updated page is useful. The browser keeps the comments until the reader deletes them, so a comment does not get lost before it reaches the agent.
+- **The button is in the footer, and comments are off until the reader presses it.** Reason: most readers do not need it, and the page stays clean for them. A GitHub issue needs a GitHub account and is public, so a visitor who sends one makes a public comment by their own action.
+- **The prompt points to the skill instead of repeating the rules.** The rules for answering comments are in `SKILL.md` ("Comments from the reader"). Reason: the rules can change without a change of the script, and one place holds them.
+
 ## Work on the repository
 
 - **All changes go through a pull request.** A rule on GitHub blocks a direct push to `main`. Merge method: squash.

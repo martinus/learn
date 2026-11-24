@@ -10,12 +10,15 @@
    Review mode, for pictures of a page (tools/learn.py shots uses it). Add to the address:
      ?theme=dark   ?lang=de   ?only=s03 (show one section; "top" is the page header)   ?review=1
    These settings apply to one page view. The page does not store them.
+   Comments: the footer button [data-comments-on] loads comments.js and comments.css from this folder.
+   The browser remembers that comments are on, and loads them again on the next explainer.
    Text of a page: English is in the HTML. German is in <script type="application/json" id="i18n-de">,
    with one entry for each data-i18n and data-i18n-aria key. */
 (function(){
 'use strict';
 var root=document.documentElement;
 var NS='http://www.w3.org/2000/svg';
+var SELF=(document.currentScript&&document.currentScript.src)||'';
 var store={get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
 
 /* ---- review mode: settings from the address ---- */
@@ -61,6 +64,15 @@ function applyLang(l,save){
 }
 function showTheme(){var t=curTheme();[].forEach.call(document.querySelectorAll('[data-set-theme]'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-set-theme')===t);});}
 function fire(){if(!started)return;listeners.forEach(function(f){try{f();}catch(e){if(window.console)console.error(e);}});}
+
+/* ---- comments: a panel that collects the comments of the reader (assets/comments.js) ---- */
+function loadComments(open){
+  if(open)window.LEARN_COMMENTS_OPEN=true;
+  if(window.LearnComments){if(open)window.LearnComments.open();return;}
+  if(document.getElementById('learn-comments-js')||!SELF)return;
+  var css=document.createElement('link');css.rel='stylesheet';css.href=SELF.replace('theme.js','comments.css');document.head.appendChild(css);
+  var js=document.createElement('script');js.id='learn-comments-js';js.src=SELF.replace('theme.js','comments.js');document.head.appendChild(js);
+}
 
 /* ---- section navigation: a row under the site bar, and a rail in the left margin on wide screens ---- */
 var NAV=null;
@@ -141,6 +153,12 @@ function start(){
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fire);
 
   buildNav();
+  if(document.querySelector('main.explainer')&&!Q.review&&!Q.only){
+    [].forEach.call(document.querySelectorAll('[data-comments-on]'),function(b){b.addEventListener('click',function(){store.set('learn-comments','on');loadComments(true);});});
+    if(store.get('learn-comments')==='on')loadComments(false);
+  }else{
+    [].forEach.call(document.querySelectorAll('[data-comments-on]'),function(b){b.hidden=true;});
+  }
   if(Q.only){
     root.classList.add('review-only');
     var mainEl=document.querySelector('main.explainer');
@@ -183,6 +201,7 @@ window.Learn={
   lang:function(){return lang;},
   loc:loc,
   t:function(o){return o[lang]!=null?o[lang]:o.en;},
+  store:store,
   onChange:function(f){listeners.push(f);if(started){try{f();}catch(e){if(window.console)console.error(e);}}},
   mk:mk,plot:plot,ticks:ticks,fmt:fmt,sgn:sgn,short:short,clear:clear
 };
