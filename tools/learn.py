@@ -8,8 +8,8 @@
                                           for example: new 2026-12-01-how-gps-works
   python3 tools/learn.py shots [SLUG]     write pictures of the pages into _shots/, to look at
                                           the result (needs Chrome). Without SLUG: all pages.
-  python3 tools/learn.py texts SLUG       print the English and German text of one explainer,
-                                          key by key, to compare the two languages
+  python3 tools/learn.py texts SLUG       print the text of one explainer, to read it one more time.
+                                          For a page with German text: English and German, key by key
 
 An explainer is a folder site/YYYY-MM-DD-slug/ with index.html and cover.svg.
 The build puts the shared head, site bar, byline and footer into each page
@@ -505,7 +505,7 @@ def cmd_serve(port):
 
 
 SHOTS = ROOT / "_shots"
-VARIANTS = (("390-light-en", 390, "light", "en"), ("390-dark-de", 390, "dark", "de"), ("1440-light-en", 1440, "light", "en"))
+VARIANTS = ((390, "light", "en"), (390, "dark", "de"), (1440, "light", "en"))
 
 
 def chrome_run(chrome, args, url, profile):
@@ -545,14 +545,16 @@ def cmd_shots(slug):
         folder.mkdir(parents=True)
         built = OUT / it.slug / "index.html"
         parts = ["top"] + re.findall(r'<section id="(s\d+)">', built.read_text(encoding="utf-8"))
-        for name, width, theme, lang in VARIANTS:
+        for width, theme, lang in VARIANTS:
             lang = lang if lang in it.langs() else "en"
             for part in parts:
-                jobs.append((built, "only=%s&theme=%s&lang=%s" % (part, theme, lang), width, folder / ("%s-%s.png" % (name, part))))
+                jobs.append((built, "only=%s&theme=%s&lang=%s" % (part, theme, lang), width,
+                             folder / ("%d-%s-%s-%s.png" % (width, theme, lang, part))))
     if not slug:
         (SHOTS / "home").mkdir(parents=True)
-        for name, width, theme, lang in VARIANTS:
-            jobs.append((OUT / "index.html", "theme=%s&lang=%s" % (theme, lang), width, SHOTS / "home" / (name + ".png")))
+        for width, theme, lang in VARIANTS:
+            jobs.append((OUT / "index.html", "theme=%s&lang=%s" % (theme, lang), width,
+                         SHOTS / "home" / ("%d-%s-%s.png" % (width, theme, lang))))
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         done = list(pool.map(lambda job: take_shot(chrome, job), jobs))
     failed = [str(job[3].relative_to(ROOT)) for job, ok in zip(jobs, done) if not ok]
@@ -570,7 +572,9 @@ def cmd_texts(slug):
         return 1
     src = (folder / "index.html").read_text(encoding="utf-8")
     dm = re.search(r'<script type="application/json" id="i18n-de">(.*?)</script>', src, re.S)
-    de = json.loads(dm.group(1)) if dm else {}
+    if not dm:
+        return print_plain_text(src)
+    de = json.loads(dm.group(1))
     seen = set()
     for m in re.finditer(r'<(\w+)\b[^>]*\bdata-i18n="([^"]+)"[^>]*>(.*?)</\1>', src, re.S):
         key = m.group(2)
@@ -581,6 +585,39 @@ def cmd_texts(slug):
                                               " ".join(strip_tags(str(de.get(key, "(missing)"))).split())))
     for m in re.finditer(r'aria-label="([^"]*)"[^>]*data-i18n-aria="([^"]+)"', src):
         print("[%s] (label for screen readers)\n  EN: %s\n  DE: %s\n" % (m.group(2), html.unescape(m.group(1)), de.get(m.group(2), "(missing)")))
+    return 0
+
+
+BLOCK_TAGS = "p|h[1-6]|li|div|section|header|figure|figcaption|dt|dd|tr|summary|ul|ol|dl|table|br"
+
+
+def print_plain_text(src):
+    """A page in one language: print the text of <main>. One line for each block, code blocks as they are."""
+    body = re.search(r'<main class="explainer">(.*?)</main>', src, re.S)
+    if not body:
+        print('<main class="explainer"> is missing', file=sys.stderr)
+        return 1
+    text = body.group(1)
+    code = []
+
+    def keep(m):
+        code.append(strip_tags(re.sub(r"</?code\b[^>]*>", "", m.group(1))).strip("\n"))
+        return "<p>@@code%d@@</p>" % (len(code) - 1)
+    text = re.sub(r"<pre\b[^>]*>(.*?)</pre>", keep, text, flags=re.S | re.I)
+    text = re.sub(r'<svg\b[^>]*?\baria-label="([^"]*)"[^>]*>.*?</svg>', r"<p>(label for screen readers) \1</p>", text, flags=re.S | re.I)
+    text = re.sub(r"<(script|style|svg)\b.*?</\1>", " ", text, flags=re.S | re.I)
+    text = " ".join(text.split())
+    text = re.sub(r'<span class="num">(\d+)</span>\s*<h2\b[^>]*>', r"\n## \1 ", text, flags=re.I)
+    text = re.sub(r"</?(?:%s)\b[^>]*>" % BLOCK_TAGS, "\n", text, flags=re.I)
+    for line in strip_tags(text).split("\n"):
+        line = " ".join(line.split())
+        m = re.fullmatch(r"@@code(\d+)@@", line)
+        if m:
+            print("\n" + code[int(m.group(1))] + "\n")
+        elif line.startswith("## "):
+            print("\n" + line)
+        elif line:
+            print(line)
     return 0
 
 

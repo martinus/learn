@@ -5,11 +5,11 @@
 <title>TODO: title of the explainer</title>
 <script type="application/json" id="explainer-meta">
 {
- "title": {"en": "TODO: title", "de": "TODO: Titel"},
- "summary": {"en": "TODO: two or three sentences for the card on the home page.", "de": "TODO: zwei oder drei Sätze für die Karte auf der Startseite."},
+ "title": {"en": "TODO: title"},
+ "summary": {"en": "TODO: two or three sentences for the card on the home page."},
  "published": "YYYY-MM-DD",
  "updated": "YYYY-MM-DD",
- "languages": ["en", "de"],
+ "languages": ["en"],
  "tags": ["TODO"],
  "model": "TODO: the AI model that makes this page"
 }
@@ -24,66 +24,59 @@
 <main class="explainer">
 
 <header>
-  <span class="eyebrow" data-i18n="ey">TODO: topic or state, for example &ldquo;Physics&rdquo;</span>
-  <h1 data-i18n="h1">TODO: title</h1>
+  <span class="eyebrow">TODO: topic or state, for example &ldquo;Physics&rdquo;</span>
+  <h1>TODO: title</h1>
   <!-- learn:byline -->
-  <p class="lead" data-i18n="lead">TODO: three or four sentences. What is the question? Why does it matter? What does the reader get from this page?</p>
+  <p class="lead">TODO: three or four sentences. What is the question? Why does it matter? What does the reader get from this page?</p>
   <div class="short">
-    <div><h3 data-i18n="c1h">TODO</h3><span data-i18n="c1t">TODO: the first main point in two sentences.</span></div>
-    <div><h3 data-i18n="c2h">TODO</h3><span data-i18n="c2t">TODO: the second main point.</span></div>
-    <div><h3 data-i18n="c3h">TODO</h3><span data-i18n="c3t">TODO: the third main point.</span></div>
+    <div><h3>TODO</h3><span>TODO: the first main point in two sentences.</span></div>
+    <div><h3>TODO</h3><span>TODO: the second main point.</span></div>
+    <div><h3>TODO</h3><span>TODO: the third main point.</span></div>
   </div>
 </header>
 
 <section>
   <span class="num">01</span>
-  <h2 data-i18n="s1h">TODO: heading of the first section</h2>
-  <p data-i18n="s1p1">TODO: text.</p>
+  <h2>TODO: heading of the first section</h2>
+  <p>TODO: text.</p>
 
   <figure>
-    <div class="fig-title" data-i18n="f1t">TODO: title of the chart</div>
+    <div class="fig-title">TODO: title of the chart</div>
     <div class="ctl">
-      <label for="amount"><span data-i18n="f1l">TODO: what the slider changes</span> <output id="amountOut">5</output></label>
+      <label for="amount"><span>TODO: what the slider changes</span> <output id="amountOut">5</output></label>
       <input type="range" id="amount" min="1" max="10" step="1" value="5">
     </div>
-    <div class="legend"><span><i class="sw"></i><span data-i18n="lg1">TODO: name of the line</span></span></div>
-    <svg class="chart" id="chart1" role="img" aria-label="TODO: what the chart shows, in one sentence" data-i18n-aria="a1"></svg>
-    <figcaption data-i18n="f1c">TODO: what the reader must see in the chart.</figcaption>
+    <div class="legend"><span><i class="sw"></i><span>TODO: name of the line</span></span></div>
+    <svg class="chart" id="chart1" role="img" aria-label="TODO: what the chart shows, in one sentence"></svg>
+    <figcaption>TODO: what the reader must see in the chart.</figcaption>
   </figure>
 </section>
 
 <section>
   <span class="num">02</span>
-  <h2 data-i18n="srch">Sources</h2>
-  <ul class="sources">
-    <li><a href="https://example.org/" data-i18n="src1">TODO: source</a></li>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>TODO: the main statements that come from primary sources.</span><span class="d">TODO: which statements come only from reports.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>TODO: each important inference of this page, and what comes from the knowledge of the model without a source.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>TODO: what is disputed, unresolved or weakly sourced.</span><span class="d">TODO: sources that you saw only as a snippet or an abstract.</span></span></li>
   </ul>
 </section>
 
+<section>
+  <span class="num">03</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://example.org/">TODO: who: what</a> &middot; TODO: kind of the source, date</li>
+  </ul>
+</section>
+
+<p class="page-note">TODO: where the page simplifies. Status of the facts: TODO date.</p>
+
 </main>
 <!-- learn:footer -->
-<script type="application/json" id="i18n-de">
-{
-"ey": "TODO",
-"h1": "TODO",
-"lead": "TODO",
-"c1h": "TODO",
-"c1t": "TODO",
-"c2h": "TODO",
-"c2t": "TODO",
-"c3h": "TODO",
-"c3t": "TODO",
-"s1h": "TODO",
-"s1p1": "TODO",
-"f1t": "TODO",
-"f1l": "TODO",
-"lg1": "TODO",
-"a1": "TODO",
-"f1c": "TODO",
-"srch": "Quellen",
-"src1": "TODO"
-}
-</script>
 <script>
 (function(){
 'use strict';

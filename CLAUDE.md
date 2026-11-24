@@ -1,60 +1,44 @@
 # learn.ankerl.com
 
-This repository is the website https://learn.ankerl.com. It contains explainers: single pages that explain one topic in plain language, with interactive graphics. AI models make the pages. Martin Leitner-Ankerl publishes them.
+Source of https://learn.ankerl.com. The site consists of explainers: each is one self-contained page that answers one question, with interactive graphics. AI models write the pages. Martin Leitner-Ankerl publishes them and is their reader: a software engineer in Austria. Pages are in English.
 
-## Use the skill
+## Use the `explainer` skill
 
-For each of these tasks, load the skill `explainer` (`.claude/skills/explainer/SKILL.md`) and follow it:
+Load it for these tasks. It holds the workflow, the source rules and the quality bar.
 
-- make a new explainer
-- update, correct or translate an explainer
-- change the shared theme
-
-## Layout
-
-```
-site/                       the website (source)
-  assets/theme.css          shared styles: colours, type, all shared parts
-  assets/theme.js           bright/dark mode, language switch, chart helpers
-  assets/fonts/             font files with their licences
-  YYYY-MM-DD-slug/          one explainer: index.html and cover.svg
-templates/                  page parts that the build inserts, and the start template
-tools/learn.py              check, build, serve, new, shots, texts (Python standard library only; Chrome is optional, for pictures)
-site.json                   name, address, publisher, contact address, names of the tags
-docs/decisions.md           decisions about the site, with reasons
-docs/ideas.md               things that are not built
-_site/                      build result (not in git)
-_shots/                     pictures from the shots command (not in git)
-```
+- create, update, correct or translate a page under `site/`
+- change `site/assets/theme.css`, `site/assets/theme.js`, `templates/` or `tools/learn.py`
 
 ## Commands
 
 ```
-python3 tools/learn.py check
-python3 tools/learn.py serve
+python3 tools/learn.py check            # validate all pages; the pass/fail gate, also in CI
+python3 tools/learn.py shots [slug]     # build, then screenshots into _shots/ (needs Chrome)
+python3 tools/learn.py texts slug       # page text as plain lines
+python3 tools/learn.py serve            # build into _site/, then http://localhost:8000
 python3 tools/learn.py new YYYY-MM-DD-slug
-python3 tools/learn.py shots [slug]      # pictures of the pages into _shots/, to look at the result (needs Chrome)
-python3 tools/learn.py texts slug        # English and German text of one page, key by key
 ```
 
-## Before you start
+`check` cannot see layout faults. Open the pictures from `shots` for every page your change can affect.
 
-1. Update your copy: `git checkout main && git pull`. Then make a branch.
-2. Read `docs/decisions.md`. It gives the reasons for how the site works.
-3. Look at the open pull requests. Do not change files that an open pull request changes.
+## Workflow
 
-## Before you hand over
-
-1. `python3 tools/learn.py check` shows no errors.
-2. You looked at the pictures from `python3 tools/learn.py shots`.
-3. The pull request says what you changed, which sources you used, what is uncertain and what you did not test.
+- Start from a fresh `main` (`git checkout main && git pull`), then branch. `main` is protected and rejects direct pushes.
+- Look at the open pull requests first and stay out of the files they touch. Two pull requests that both change the theme block each other. One topic per pull request.
+- Read `docs/decisions.md` before you change how the site works (theme, tool, templates, privacy, hosting). It gives the reason behind each rule. If you change a decision, update the file in the same pull request.
+- Hand over as a pull request that says what changed and what you did not test. For page content it also lists the sources and what is sourced, inferred and uncertain.
+- Merge only when the user asks, with squash. A merge to `main` publishes: GitHub Actions deploys in about a minute, and a failing `check` leaves the old site online. After a merge, open the live page to confirm.
 
 ## Rules
 
-- Write all documentation and all page text in plain language: short sentences, active voice, one word for one thing.
-- No frameworks and no packages. Plain HTML, CSS and JavaScript. Python standard library for tools.
-- A page loads nothing from other servers. Visits are counted by Cloudflare Web Analytics, which Cloudflare adds when it delivers the site. Do not add other analytics or trackers.
-- If the site starts to process data in a new way, update `templates/privacy.html` in the same pull request.
-- Work on a branch and open a pull request. Do not push to `main`. Do not merge without a request from the user. Merge method: squash.
-- A merge to `main` deploys the site.
-- Text and graphics have the licence CC BY 4.0. Code has the MIT licence.
+- No frameworks and no packages: plain HTML, CSS and JavaScript, and the Python standard library for the tool. The site should build unchanged in ten years, and an agent should be able to read all of it.
+- A page loads nothing from other servers, for privacy law in Austria and the EU. Cloudflare injects its cookie-free Web Analytics at delivery, so it is not in this repository. Add no other analytics or trackers.
+- If the site starts to process visitor data in a new way, update `templates/privacy.html` in the same pull request.
+- Add no personal data about Martin beyond what `site.json` and the privacy page already contain.
+- Before you write a fact that can change on a page, search for its current state. Your training data is older than the page.
+- Licences: CC BY 4.0 for text and graphics, MIT for code.
+
+## Who reads which file
+
+- `CLAUDE.md` and `.claude/skills/**`: agents only. Keep them short and specific, give each rule its reason, and remove what no longer holds.
+- Page text, `README.md`, `templates/privacy.html` and `docs/`: people. Write them in plain language: short sentences, active voice, one word for one thing.

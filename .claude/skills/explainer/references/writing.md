@@ -1,79 +1,102 @@
-# Rules for the text
+# Page text
 
-The text follows the idea of plain language (ISO 24495) and of Simplified Technical English (ASD-STE100), applied with common sense. The aim is that a reader understands each sentence on the first reading.
+Aim: the reader understands each sentence on the first reading and learns something from it.
 
 ## The reader
 
-- An adult who is interested but has no knowledge of the subject.
-- The reader is frequently on a phone and reads in short periods.
-- The reader is intelligent. Simple language does not mean childish content. Do not leave out the difficult part of a topic. Explain it.
+Write for this reader unless the user names another:
+
+- A software engineer, 45 years old in 2026, with a long career and C++ experience. Lives in Austria.
+- Intelligent, short of time, sceptical. Asks "How do they know that?" and "What does it cost?". Answer both.
+
+This is Martin, the publisher. The page is public and others read it, so do not name or describe the reader on the page, and put no personal data there.
+
+**Knows, so do not explain:** programming, data structures, algorithms and their cost, how a computer works (memory, caches, threads, networks), the usual tools (compiler, Git, shell), and the mathematics and logic an engineer uses. Use the exact terms.
+
+**Does not know, so explain at first use, in one sentence:** terms of other fields (medicine, law, finance, biology, physics beyond school, history). Specialist corners of software outside daily work (database internals, the inside of a machine learning model) also need an explanation, starting from what an engineer knows.
+
+**Depth:**
+
+- Explain the mechanism: how it works, with which numbers, at what cost, within which limits, and how it fails.
+- Say how a result was measured. A number without its method is worth little to this reader.
+- Start where a news article stops. Skip what a headline already says.
+- Keep the difficult part. It is the reason for the page.
+- Delete a section that tells this reader nothing new.
+
+**Focus:**
+
+- Metric units, euro, 24-hour clock.
+- Where a topic differs by country (law, tax, prices, health system, energy, product availability): Austria first, then the EU, then elsewhere. Do not explain what everyone in Austria knows.
+- Where a topic depends on age or life situation (health, money, work), take a person of about 45 in mid-career as the main case.
 
 ## Sentences
 
-- One statement in one sentence. Most sentences have fewer than 20 words.
-- Use the active voice: "The program checks each step", not "Each step is checked".
-- Use the same word for the same thing on the full page. If you call it "zone", do not call it "band" later.
-- Use verbs, not nouns made from verbs: "to check", not "to perform a verification".
-- Use the simple word: "use", not "utilize". "start", not "commence".
-- Do not use idioms, irony or wordplay. They are hard for readers with a different first language, and they do not survive translation.
-- Do not use these patterns: "not X, but Y", a colon before a surprise, rhetorical questions in a series, and filler such as "it is worth noting".
+The page text uses plain language: short, exact sentences are fast to read, also for an expert. Plain sentences do not mean simple content.
 
-## Difficult words
+- One statement per sentence, mostly under 20 words. Active voice.
+- One word for one thing across the page. If it is "zone", it stays "zone".
+- Verbs instead of nouns built from verbs: "check", not "perform a verification". The simple word: "use", not "utilize".
+- No idioms, irony or wordplay. They slow reading and invite misreading.
+- Avoid these patterns: "not X, but Y", a colon before a surprise, rhetorical questions in a series, filler such as "it is worth noting".
+- Section headings say what the section tells: "Why it took 167 years", not "Background". Keep them short, because the navigation shows them.
 
-- Replace a technical term if a simple word says the same.
-- If the term is necessary, because the reader will meet it in the news, explain it where it first occurs. Then use it consistently.
-- Put the most important terms into a short glossary near the end.
+## Terms and comparisons
 
-## Comparisons
+- Software terms need no explanation: "cache miss", "race condition", "amortized O(1)".
+- Keep the exact term. "Latency" is better than "a kind of delay".
+- Three or more terms from outside software: add a short glossary near the end.
+- Use a comparison only where it speeds up a new idea, and prefer an exact one from software (a cache, a queue, a checksum, interface and implementation). Say where it stops holding. One comparison per idea.
 
-- Give each difficult idea one comparison from daily life: sweets for prime numbers, an auditor for a proof checker.
-- A comparison has a limit. If the limit matters, say where the comparison stops.
-- Use one comparison for one idea on the full page. Do not mix pictures.
+## Code
 
-## Structure of a page
+- For an algorithm, a data layout or an interface, show code. This reader reads ten lines of code faster than a paragraph about them.
+- C++ unless the topic has its own language. Name the required standard, for example C++20.
+- At most about 25 lines per example, and only the parts the idea needs.
+- The code must be correct. Compile and run it when a compiler is available. Otherwise say in the pull request that it was not compiled.
 
-1. **Opening:** topic line, title, three or four sentences that say what the question is and why it matters.
-2. **Status box,** only if the topic is a story in progress or has an important limit.
-3. **Three short cards** with the main points. A reader who stops here has the essentials.
-4. **Numbered sections.** Each one answers one smaller question. The heading says what the section tells. Good: "Why it took 167 years". Bad: "Background".
-5. **"What this means for you",** if the topic has an effect on daily life. If it has none, say so.
-6. **Short glossary,** if the page has three or more technical terms.
-7. **Sources.**
-8. **Note at the end:** where the page simplifies, and the date of the facts.
+## Page structure
 
-A page has about 1,500 to 3,000 words in each language. If a topic needs more, make two explainers.
+1. **Opening:** topic line, title, three or four sentences on what the question is and why it matters.
+2. **Status box:** only for a story in progress or one important limit.
+3. **Three summary cards.** A reader who stops here has the essentials.
+4. **Numbered sections,** each answering one sub-question.
+5. **"What this means in practice":** if the topic affects the reader's work or life. If it does not, say so.
+6. **Glossary:** if needed.
+7. **"How sure is this?"** then **"Sources"** (`research.md`).
+8. **Page note:** where the page simplifies, and the date of the facts.
 
-## Numbers
+Length: about 1,500 to 3,000 words. A topic that needs more becomes two pages.
 
-- Give a number a meaning: "one number in thirteen", "as long as a football field".
-- Round numbers if the exact value is not important. Give the exact value if the reader could want to check it.
-- English: 1,000,000 and 30.1. German: 1.000.000 and 30,1.
-- Write units. Do not let the reader guess.
+## Numbers and times
 
-## Honesty
+- Exact value with unit, plus what was measured and when. Round only when the exact value carries no meaning.
+- Give a very large or very small number a relation: a ratio, an order of magnitude, a value the reader knows.
+- Format: 1,000,000 and 30.1.
+- Times with zone, in UTC. Add Austrian time (CET or CEST) when the time of day matters to the reader.
 
-- Separate three things clearly: what is proved or measured, what a person claims, and what nobody knows yet.
-- Name who says something: "Scientific American reports ...", "The author writes ...".
-- Give a date for each state that can change: "status of 21 November 2026".
-- If you simplify, say it. If you could not check something, say it.
-- Do not make the story larger than the facts. Do not write "revolution" if the sources do not.
-- For topics where people disagree, give the positions fairly and do not give your own verdict.
+## Honesty in the text
 
-## Quotes and sources
+- Keep three things apart in the wording: what a source says, what the page infers, what is uncertain (`research.md`).
+- Name who says it: "Scientific American reports ...", "The author writes ...".
+- Date every state that can change: "status of 21 November 2026".
+- Say where you simplify and what you could not check.
+- Keep the story as large as the facts. No "revolution" unless the sources use the word.
+- On contested topics, present the positions fairly and give no verdict of your own.
+- Build the page from the reader's question. Do not follow the structure of a source article.
 
-- Use your own words. Quote at most one short phrase (fewer than 15 words) from each source, in quotation marks, with the name of the source.
-- Do not copy the structure of an article. Build the page from the question of the reader.
-- List each source at the end with a clear name and a link. In the German text, add "(englisch)" for English sources.
+## German (only on a page with German text)
 
-## German
+- Address: "Sie", used rarely.
+- German as written in Austria: "Jänner", "Bankomatkarte".
+- Short main clauses with the verb early. No long noun chains.
+- Use the German term where one is common ("Primzahl"). Keep English terms that German-speaking engineers use ("Cache", "Thread", "Commit") and proper names ("Lean", "GitHub").
+- Quotation marks: „so“. Numbers: 1.000.000 and 30,1. Times in Austrian time with "MEZ" or "MESZ".
+- Mark English sources with "(englisch)" in the source list.
+- Translate the meaning, not the words. Both texts say the same things with the same limits.
 
-- Address the reader with "Sie". Use direct address rarely.
-- Write German that is natural in Austria. Austrian words are welcome where they are common: "Zuckerl", "Bankomatkarte", "Jänner".
-- Use short main clauses. Put the verb early. Avoid long noun chains ("Überprüfungsverfahrensschritt").
-- Use the German term if one is common: "Primzahl", "Nullstelle". Keep the English name of a thing if it is its name: "Lean", "GitHub".
-- Use German quotation marks: „so“.
-- Translate the meaning. A German sentence can have a different structure than the English one. The two texts must say the same things, with the same limits.
+## Final read
 
-## Before you finish
+Read the whole text once as the reader and test every sentence twice:
 
-Read the text one time as the reader, slowly. For each sentence, ask: Does a person without knowledge understand this now? If not, change the sentence, or add the missing step before it.
+- Would a software engineer who is new to this subject understand it now? If not, change it or add the missing step before it.
+- Does it tell this reader something? If not, delete it.
