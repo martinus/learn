@@ -14,12 +14,13 @@ Load it for these tasks. It holds the workflow, the source rules and the quality
 ```
 python3 tools/learn.py check            # validate all pages; the pass/fail gate, also in CI
 python3 tools/learn.py shots [slug]     # build, then screenshots into _shots/ (needs Chrome)
+python3 tools/learn.py try slug         # use every slider and button once, report script errors (needs Chrome)
 python3 tools/learn.py texts slug       # page text as plain lines
 python3 tools/learn.py serve            # build into _site/, then http://localhost:8000
 python3 tools/learn.py new YYYY-MM-DD-slug
 ```
 
-`check` cannot see layout faults. Open the pictures from `shots` for every page your change can affect.
+`check` cannot see layout faults or script errors. Open the pictures from `shots` for every page your change can affect, and run `try` for one of them.
 
 ## Workflow
 
@@ -27,6 +28,7 @@ python3 tools/learn.py new YYYY-MM-DD-slug
 - Look at the open pull requests first and stay out of the files they touch. Two pull requests that both change the theme block each other. One topic per pull request.
 - Read `docs/decisions.md` before you change how the site works (theme, tool, templates, privacy, hosting). It gives the reason behind each rule. If you change a decision, update the file in the same pull request.
 - Hand over as a pull request that says what changed and what you did not test. For page content it also lists the sources and what is sourced, inferred and uncertain.
+- End every task with the reflection of the skill ("Reflect"): it turns what the session showed into a change of these files or of the tool, in its own pull request. Reason: the next session starts without this one.
 - Merge only when the user asks, with squash. A merge to `main` publishes: GitHub Actions deploys in about a minute, and a failing `check` leaves the old site online. After a merge, open the live page to confirm.
 
 ## Rules

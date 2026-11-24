@@ -10,6 +10,8 @@
                                           the result (needs Chrome). Without SLUG: all pages.
   python3 tools/learn.py texts SLUG       print the text of one explainer, to read it one more time.
                                           For a page with German text: English and German, key by key
+  python3 tools/learn.py try SLUG         use every slider and button of one explainer once (needs Chrome)
+                                          and report script errors and a page wider than a phone
 
 An explainer is a folder site/YYYY-MM-DD-slug/ with index.html and cover.svg.
 The build puts the shared head, site bar, byline and footer into each page
@@ -591,6 +593,89 @@ def cmd_shots(slug):
     return 1 if failed else 0
 
 
+TRY = """<!DOCTYPE html><html><body style="margin:0">
+<iframe id="f" width="390" height="800" style="border:0" src="%s"></iframe><pre id="out"></pre>
+<script>
+/* Runs inside a wrapper page. Uses each control of the page in the frame and writes one line for each action. */
+setTimeout(function () {
+  var f = document.getElementById('f'), w = f.contentWindow, d = f.contentDocument, log = [];
+  function state(e) {
+    var fig = e.closest('figure');
+    if (!fig) return '(not in a figure)';
+    var text = [].map.call(fig.querySelectorAll('output, .stats b'), function (x) { return x.textContent.trim(); }).join(' | ');
+    return text + ' [' + fig.querySelectorAll('svg *').length + ' chart parts]';
+  }
+  function name(e) { return (e.id ? '#' + e.id : '') + ' "' + e.textContent.trim().slice(0, 40) + '"'; }
+  try {
+    [].forEach.call(d.querySelectorAll('main input[type=range]'), function (e) {
+      [e.min, e.max, e.getAttribute('value')].forEach(function (v) {
+        e.value = v;
+        e.dispatchEvent(new w.Event('input', {bubbles: true}));
+        e.dispatchEvent(new w.Event('change', {bubbles: true}));
+        log.push('slider #' + e.id + ' = ' + e.value + ': ' + state(e));
+      });
+    });
+    [].forEach.call(d.querySelectorAll('main select'), function (e) {
+      [].forEach.call(e.options, function (o) {
+        e.value = o.value;
+        e.dispatchEvent(new w.Event('change', {bubbles: true}));
+        log.push('select #' + e.id + ' = ' + o.value + ': ' + state(e));
+      });
+    });
+    [].forEach.call(d.querySelectorAll('main figure button, main input[type=checkbox], main details > summary'), function (e) {
+      e.click();
+      log.push((e.tagName === 'SUMMARY' ? 'list' : e.tagName === 'INPUT' ? 'checkbox' : 'button') + name(e) + ': ' + state(e));
+    });
+    var bad = [].filter.call(d.querySelectorAll('main figure'), function (g) { return /NaN|undefined|Infinity/.test(g.textContent); });
+    bad.forEach(function (g) { log.push('ERROR a figure shows NaN, undefined or Infinity: ' + g.textContent.trim().slice(0, 60)); });
+    var wide = d.documentElement.scrollWidth, win = d.documentElement.clientWidth;
+    log.push((wide > win ? 'ERROR the page is wider than the window: ' : 'width: ') + wide + ' px of content in ' + win + ' px');
+  } catch (e) { log.push('ERROR while using the controls: ' + e.message); }
+  document.getElementById('out').textContent = log.join('\\n');
+}, 1500);
+</script></body></html>"""
+
+
+def cmd_try(slug):
+    """Use every control of one built page once, in a frame of 390 px, and print what the page then shows.
+    The pictures from "shots" show the page at rest. This command finds what they cannot show:
+    a script error, a control without effect, a result that is not a number."""
+    chrome = find_chrome()
+    if not chrome:
+        print("Chrome or Chromium is necessary for this command, but it was not found. Set the variable CHROME to its path.", file=sys.stderr)
+        return 1
+    if cmd_build():
+        return 1
+    items = [it for it in load_all() if it.slug == slug]
+    if not items:
+        print("No explainer with the name %s." % slug, file=sys.stderr)
+        return 1
+    built = OUT / slug / "index.html"
+    failed = False
+    for lang in items[0].langs():
+        with tempfile.TemporaryDirectory() as profile, tempfile.TemporaryDirectory() as work:
+            wrap = Path(work) / "try.html"
+            wrap.write_text(TRY % html.escape(built.as_uri() + "?lang=" + lang), encoding="utf-8")
+            # --enable-logging sends the browser console to stderr. A script error of the page appears only there.
+            run = subprocess.run([chrome, "--headless=new", "--no-sandbox", "--disable-gpu", "--virtual-time-budget=8000",
+                                  "--user-data-dir=" + profile, "--allow-file-access-from-files", "--enable-logging=stderr",
+                                  "--window-size=900,900", "--dump-dom", wrap.as_uri()],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120, check=False)
+        m = re.search(r'<pre id="out">(.*?)</pre>', run.stdout.decode("utf-8", "replace"), re.S)
+        lines = html.unescape(m.group(1)).splitlines() if m else []
+        if not lines:
+            lines = ["ERROR the page did not answer. Its script stopped before the controls were ready."]
+        for line in run.stderr.decode("utf-8", "replace").splitlines():
+            c = re.search(r':(INFO|WARNING|ERROR):CONSOLE[^\]]*\] "(.*)", source: (\S*)', line)
+            if c and (c.group(1) == "ERROR" or "Uncaught" in c.group(2)):
+                lines.append("ERROR in the browser console: %s (%s)" % (c.group(2), c.group(3).rsplit("/", 1)[-1]))
+        print("== %s, language %s, window of 390 px ==" % (slug, lang))
+        print("\n".join(lines))
+        failed = failed or any(line.startswith("ERROR") for line in lines)
+    print("Errors found." if failed else "No script error. Read the lines above: each control must change what its figure shows.")
+    return 1 if failed else 0
+
+
 def cmd_texts(slug):
     folder = SITE / slug
     if not (folder / "index.html").is_file():
@@ -677,6 +762,8 @@ def main(argv):
         return cmd_shots(argv[2] if len(argv) > 2 else None)
     if cmd == "texts" and len(argv) == 3:
         return cmd_texts(argv[2])
+    if cmd == "try" and len(argv) == 3:
+        return cmd_try(argv[2])
     print(__doc__)
     return 2
 

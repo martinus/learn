@@ -29,7 +29,7 @@ This file lists decisions about the site and the reason for each. Read it before
 - **The build inserts the shared parts** (head, site bar, byline, section links, "Read next", footer). Reason: a change of the shared parts reaches all pages without an edit of each page.
 - **The home page is not in git.** The build writes it. Reason: two branches with two new explainers do not conflict.
 - **German text, where a page has it, is a dictionary with keys, not a second copy of the HTML.** The check compares the keys. Reason: a missing translation is an error that a program can find.
-- **Chrome is an optional tool** for preview pictures (`share.png`) and for review pictures (`shots`). Reason: Python alone cannot draw a web page. GitHub has Chrome, so the live site always gets preview pictures.
+- **Chrome is an optional tool** for preview pictures (`share.png`), for review pictures (`shots`) and for the test of the controls (`try`). Reason: Python alone cannot draw a web page. GitHub has Chrome, so the live site always gets preview pictures.
 - **Addresses:** a page is `/<date>-<slug>/`. The folder name never changes after publication. `#de` and `#en` set the language. `#s03` opens a section. A link cannot have the two at the same time.
 
 ## Comments from the reader
@@ -43,7 +43,8 @@ This file lists decisions about the site and the reason for each. Read it before
 - **All changes go through a pull request.** A rule on GitHub blocks a direct push to `main`. Merge method: squash.
 - **Martin decides about each merge.** An AI model does not merge without his request. A merge is a decision to publish. It is not a review of the facts.
 - **A merge to `main` deploys the site** with GitHub Actions. If the check fails, the old site stays online.
-- **`CLAUDE.md` and the files of the skill are written for AI agents only.** They are short and specific, each rule has its reason, and the skill loads a reference file only when the work needs it. They follow the guidelines of Anthropic for skills and for `CLAUDE.md`: `SKILL.md` has fewer than 500 lines, `CLAUDE.md` has fewer than 200 lines. Reason: no person reads these files, and an agent follows short and specific instructions better. An agent that finds a new problem adds the rule to the file where it applies. There is no separate list of lessons.
+- **`CLAUDE.md` and the files of the skill are written for AI agents only.** They are short and specific, each rule has its reason, and the skill loads a reference file only when the work needs it. They follow the guidelines of Anthropic for skills and for `CLAUDE.md`: `SKILL.md` has fewer than 500 lines, `CLAUDE.md` has fewer than 200 lines. Reason: no person reads these files, and an agent follows short and specific instructions better. There is no separate list of lessons.
+- **Each task of an agent ends with a reflection.** The agent goes through its session and changes the tool, the theme or the agent files so that the next session needs less work. It prefers a check in the tool to a new rule, and it removes rules that did not help. The changes are a separate pull request. Reason: an agent starts each session without the last one, so these files and the tool are its only memory. A separate pull request lets Martin see what changes the work of all later sessions.
 - **Licences:** MIT for code, CC BY 4.0 for text and graphics, SIL OFL for the fonts.
 
 ## Hosting
