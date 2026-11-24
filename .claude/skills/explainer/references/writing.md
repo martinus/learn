@@ -2,6 +2,8 @@
 
 Aim: the reader understands each sentence on the first reading and learns something from it.
 
+Contents: The reader · Sentences · Terms and comparisons · Formulas and code · Page structure · Numbers and times · Honesty in the text · German · Final read
+
 ## The reader
 
 Write for this reader unless the user names another:
@@ -47,8 +49,10 @@ The page text uses plain language: short, exact sentences are fast to read, also
 - Three or more terms from outside software: add a short glossary near the end.
 - Use a comparison only where it speeds up a new idea, and prefer an exact one from software (a cache, a queue, a checksum, interface and implementation). Say where it stops holding. One comparison per idea.
 
-## Code
+## Formulas and code
 
+- For a mathematical relation, show the formula (markup: "Formula" in `components.md`). Do not write an equation as code: a function that only evaluates a formula says less than the formula and takes longer to read.
+- Use the same notation in the formula and in the text around it, and explain each symbol where it first occurs.
 - For an algorithm, a data layout or an interface, show code. This reader reads ten lines of code faster than a paragraph about them.
 - C++ unless the topic has its own language. Name the required standard, for example C++20.
 - At most about 25 lines per example, and only the parts the idea needs.

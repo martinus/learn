@@ -69,13 +69,35 @@ Give each colour one meaning per page and keep it.
 
 ### Code block
 
-Escape `<`, `>` and `&`. A long line scrolls inside the block, so keep lines under about 60 characters for a phone. There is no syntax colouring. Put a comment where the reader should look.
+Escape `<`, `>` and `&`. A phone shows about 42 characters per line and scrolls a longer line inside the block, so keep lines short. Put a comment where the reader should look.
 
 ```html
-<pre class="code"><code>// C++20
+<pre class="code" data-lang="cpp"><code>// C++20
 std::span&lt;const int&gt; s{v};
 </code></pre>
 ```
+
+`data-lang` switches on syntax colours: `cpp`, `c`, `js`, `py`, `sh` or `rust`. `theme.js` colours comments, strings, numbers and keywords when the page loads. Write plain text inside `<code>`, with no `<span>` of your own. Leave `data-lang` out for output, pseudocode or any other language. A new language needs its keyword list in `KEYWORDS` in `theme.js`.
+
+### Formula
+
+Write mathematics as MathML, which browsers draw without a library. `writing.md` says when a formula is the right form. Inline: `<math>` inside the sentence, also for a single symbol, so that a symbol looks the same in the text and in the formula. On its own line:
+
+```html
+<div class="formula"><math display="block">
+  <mi>D</mi><mo stretchy="false">(</mo><mi>z</mi><mo stretchy="false">)</mo><mo>=</mo>
+  <mfrac><mi>c</mi><msub><mi>H</mi><mn>0</mn></msub></mfrac>
+  <msubsup><mo>&int;</mo><mn>0</mn><mi>z</mi></msubsup>
+  <mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><mi>E</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mfrac>
+</math></div>
+```
+
+- `<mi>` variable or function name, `<mn>` number, `<mo>` operator or bracket. `<msub>`, `<msup>`, `<msubsup>`, `<mfrac>`, `<msqrt>` take their parts as children. Group several elements into one part with `<mrow>`.
+- Put `stretchy="false"` on every bracket around flat content. Without it, a bracket grows to the height of the tallest element in the row, for example a fraction next to it.
+- Write a sign as `<mo form="prefix">&minus;</mo>` when it follows another operator, as in "= −1". Without it the minus gets the wide spacing of a subtraction.
+- Do not write `xmlns` on `<math>`. HTML does not need it.
+- A formula wider than a phone scrolls inside its block. Aim for under about 330 px at 390 px width: name a long term in the text and use the name.
+- The formula uses a math font of the device and loads none. A device without one shows plainer signs, and a tall root or bracket does not grow there. So keep the content of `<msqrt>` and of stretching brackets flat.
 
 ### Status box
 

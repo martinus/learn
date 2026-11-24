@@ -116,6 +116,13 @@ a.num:hover .hash,a.num:focus-visible .hash{opacity:1}
 /* code block: a long line scrolls inside the block, the page does not */
 pre.code{margin:0;padding:.85rem 1rem;background:var(--surface);border:1px solid var(--rule);border-radius:8px;overflow-x:auto;font:400 .84rem/1.55 var(--font-mono);tab-size:2}
 pre.code code{font:inherit;white-space:pre}
+/* syntax colours: theme.js marks the tokens of <pre class="code" data-lang="..."> */
+.tk-k{color:var(--c1)} .tk-s{color:var(--c2)} .tk-n{color:var(--c3)} .tk-c{color:var(--muted);font-style:italic}
+/* formula on its own line, written in MathML. A long formula scrolls inside the block, the page does not. */
+.formula{overflow-x:auto;overflow-y:hidden;padding:.35rem 0}
+/* Local math fonts only: nothing is loaded. Without one of them the formula still shows, with plainer signs. */
+math{font-family:"STIX Two Math","Cambria Math","Latin Modern Math","Noto Sans Math",math,serif;font-size:1.06em}
+.formula math{font-size:1.18em}
 .small{font-size:.9rem;color:var(--muted);line-height:1.5}
 ul.plain,ol.plain{padding-left:1.15rem;display:flex;flex-direction:column;gap:.45rem}
 .aside{border-left:3px solid var(--rule);padding-left:.9rem;color:var(--muted);font-size:.95rem}
