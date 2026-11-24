@@ -520,12 +520,32 @@ def chrome_run(chrome, args, url, profile):
     return subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=120, check=False)
 
 
+MEASURE = """<!DOCTYPE html><html><body style="margin:0">
+<iframe id="f" width="%d" height="200" style="border:0" src="%s"></iframe>
+<script>
+var n = 0, timer = setInterval(function () {
+  try {
+    var h = document.getElementById('f').contentDocument.documentElement.getAttribute('data-review-height');
+    if (h) document.documentElement.setAttribute('data-review-height', h);
+  } catch (e) {}
+  if (++n > 35) clearInterval(timer);
+}, 100);
+</script></body></html>"""
+
+
 def take_shot(chrome, job):
-    """job: (page file, query, width, target png). First measure the height of the content, then make the picture."""
+    """job: (page file, query, width, target png). First measure the height of the content, then make the picture.
+
+    The measurement loads the page in a frame of the exact width. Without the frame, Chrome lays out a window
+    narrower than 500 px at 500 px for --dump-dom, but at the real width for the picture. The height was then
+    too small, and the picture of a long section at 390 px lost its lower end."""
     page, query, width, target = job
     url = page.as_uri() + "?review=1&" + query
-    with tempfile.TemporaryDirectory() as profile:
-        dom = chrome_run(chrome, ["--window-size=%d,200" % width, "--dump-dom"], url, profile).stdout.decode("utf-8", "replace")
+    with tempfile.TemporaryDirectory() as profile, tempfile.TemporaryDirectory() as work:
+        wrap = Path(work) / "measure.html"
+        wrap.write_text(MEASURE % (width, html.escape(url)), encoding="utf-8")
+        dom = chrome_run(chrome, ["--allow-file-access-from-files", "--window-size=%d,400" % max(width, 800), "--dump-dom"],
+                         wrap.as_uri(), profile).stdout.decode("utf-8", "replace")
         m = re.search(r'data-review-height="(\d+)"', dom)
         height = min(max(int(m.group(1)) if m else 1600, 300), 9000)
         chrome_run(chrome, ["--window-size=%d,%d" % (width, height), "--screenshot=" + str(target)], url, profile)
