@@ -248,6 +248,8 @@ class Explainer:
             '<a href="%s"><span class="l-en">Report an error</span><span class="l-de">Fehler melden</span></a>'
             '<a href="%s"><span class="l-en">Source of this page</span><span class="l-de">Quelltext dieser Seite</span></a>'
             '<a href="%sprivacy/"><span class="l-en">Privacy</span><span class="l-de">Datenschutz</span></a>'
+            # theme.js loads assets/comments.js when the reader presses this button.
+            '<button type="button" data-comments-on><span class="l-en">Comment on this page</span><span class="l-de">Diese Seite kommentieren</span></button>'
         ) % (root, issue_url, src_url, root)
         made_en = "An AI model (%s) made the text and graphics of this page. %s published it and is responsible for the content. AI models make mistakes." % (esc(meta["model"]), esc(CFG["publisher"]))
         made_de = "Ein KI-Modell (%s) hat Text und Grafiken dieser Seite erstellt. %s hat sie ver&ouml;ffentlicht und ist f&uuml;r den Inhalt verantwortlich. KI-Modelle machen Fehler." % (esc(meta["model"]), esc(CFG["publisher"]))
@@ -261,6 +263,8 @@ class Explainer:
             "wide": "", "made_en": made_en, "made_de": made_de, "repo": CFG["repo"], "branch": CFG["branch"], "nav": nav,
         }).rstrip("\n"))
         attrs = 'lang="en" data-langs="%s"' % " ".join(langs)
+        # The comment panel (assets/comments.js) writes these values into the prompt for the agent.
+        attrs += ' data-repo="%s" data-src="site/%s/index.html" data-updated="%s"' % (CFG["repo"], self.slug, meta["updated"])
         for lang in langs[1:]:
             attrs += ' data-title-%s="%s"' % (lang, esc(self.text("title", lang)))
         out, n = re.subn(r"<html\b[^>]*>", "<html %s>" % attrs, out, count=1)

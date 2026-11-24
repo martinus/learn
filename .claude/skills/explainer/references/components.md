@@ -272,6 +272,14 @@ URL settings for screenshots. They apply to one page view and are not stored. Co
 | `?only=s03` | show only section 03. `?only=top` shows only the page header |
 | `?review=1` | the page writes its content height into `data-review-height` on `<html>` |
 
+## Comments
+
+`assets/comments.js` and `assets/comments.css` let the reader write comments on an explainer and turn them into a prompt for an agent ("Comments from the reader" in `SKILL.md`). A page needs nothing for this. The build writes `data-repo`, `data-src` and `data-updated` on `<html>` and the footer button `[data-comments-on]`. `theme.js` loads the two files only after the reader presses the button, and in review mode it never loads them.
+
+- A comment finds its text again by the text itself and the number of the occurrence in its section. A change of the text, or the other language, loses the mark but keeps the comment.
+- Elements with the class `cm-ui` belong to the comments. The text search skips them. Do not use the prefix `cm-` in a page.
+- A page script that rewrites text with `innerHTML` removes the marks in that part until the next `Learn.onChange` call.
+
 ## Cover
 
 `cover.svg` has `viewBox="0 0 320 180"`. The home page inlines it into the card, so theme variables work: write `style="stroke:var(--c1)"`, not fixed colours. No text. Keep it simple, because it is small on a phone and large in `share.png`.
