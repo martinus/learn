@@ -16,6 +16,7 @@ python3 tools/learn.py check            # validate all pages; the pass/fail gate
 python3 tools/learn.py shots [slug]     # build, then screenshots into _shots/ (needs Chrome)
 python3 tools/learn.py try slug         # use every slider and button once, report script errors (needs Chrome)
 python3 tools/learn.py texts slug       # page text as plain lines
+python3 tools/learn.py terms slug       # each abbreviation and symbol with the sentence of its first use
 python3 tools/learn.py serve            # build into _site/, then http://localhost:8000
 python3 tools/learn.py new YYYY-MM-DD-slug
 ```

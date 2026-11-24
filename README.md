@@ -41,6 +41,7 @@ python3 tools/learn.py new 2026-12-01-topic  # start a page from the template
 python3 tools/learn.py shots                 # pictures of all pages into _shots/ (needs Chrome)
 python3 tools/learn.py try 2026-12-01-topic  # use every slider and button of a page once (needs Chrome)
 python3 tools/learn.py texts 2026-12-01-topic  # the text of a page, to read it one more time
+python3 tools/learn.py terms 2026-12-01-topic  # abbreviations and symbols of a page, each with its first sentence
 ```
 
 ## How the repository is organized
