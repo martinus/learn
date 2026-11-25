@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Is 9/4 the exact exponent of matrix multiplication?</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "Is 9/4 the exact exponent of matrix multiplication?"},
+ "summary": {"en": "A paper of OpenAI, written by an AI model and dated 24 November 2026, claims that no algorithm multiplies two n × n matrices with fewer than about n^2.25 arithmetic operations. An algorithm that reaches this exponent is known since October. How the proof works, what a proof checker has confirmed, and why nobody outside OpenAI has verified it yet."},
+ "published": "2026-11-25",
+ "updated": "2026-11-25",
+ "languages": ["en"],
+ "tags": ["mathematics", "ai"],
+ "model": "Claude Fable 5.2"
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+.fig-seg{flex-wrap:wrap;border-radius:14px;align-self:flex-start}
+.fig-seg button{padding:.62rem .8rem;font-size:.86rem}
+.l-ref{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:2 3}
+.l-claim{fill:none;stroke:var(--c3);stroke-width:1.8;stroke-dasharray:5 3}
+.l-arm{fill:none;stroke:var(--c1);stroke-width:3;stroke-linecap:round}
+.d-ink{fill:var(--ink)}
+.d-hollow{fill:var(--surface);stroke:var(--c1);stroke-width:1.6}
+.t-ink{fill:var(--ink);font:500 12px var(--font-body)}
+.t-c1{fill:var(--c1);font:500 11px var(--font-body)}
+.sw.ref{border-top:2px dotted var(--muted)}
+.sw.claim{border-top:3px dashed var(--c3)}
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow">Mathematics &middot; status of 25 November 2026</span>
+  <h1>Is 9/4 the exact exponent of matrix multiplication?</h1>
+  <!-- learn:byline -->
+  <p class="lead">The school method multiplies two <math><mi>n</mi><mo>&times;</mo><mi>n</mi></math> matrices with <math><msup><mi>n</mi><mn>3</mn></msup></math> multiplications. Since 1969, algorithms have lowered this exponent, and many researchers hoped that it can come down to 2. The lowest exponent that algorithms can reach has the symbol <a class="term" href="#t-omega"><math><mi>&omega;</mi></math></a> (omega). In October 2026, an AI model of OpenAI proved that algorithms can come arbitrarily close to the exponent 9/4 = 2.25. A new paper of 111 pages from the same source, dated 24 November 2026, claims that no algorithm can do better, so <math><mi>&omega;</mi></math> would be exactly 9/4. This page explains what the exponent measures, how the proof works, and what a computer has checked.</p>
+  <div class="status">
+    <b>Status: a claim of one company, not yet checked by others</b>
+    <span>The <a href="https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf">paper</a> appeared in a public repository of OpenAI on 25 November 2026 between 00:04 and 00:19 UTC, shortly after 01:00 CET. It is a <a class="term" href="#t-preprint">preprint</a>: no journal and no outside expert has reviewed it. OpenAI also published a proof for the proof checker <a class="term" href="#t-lean">Lean</a> that covers the exponent itself. On 25 November, this page found no report of anyone outside OpenAI who had run this check or reviewed the paper. The other half of the claim, the algorithm with exponent 9/4, is in a better state: several researchers have confirmed it since October.</span>
+  </div>
+  <details class="changes">
+    <summary><span>What changed on this page</span></summary>
+    <ol>
+      <li><time>25 Nov 2026</time><span>First version.</span></li>
+    </ol>
+  </details>
+  <div class="short">
+    <div><h3>The question</h3><span>How many arithmetic operations does the product of two <math><mi>n</mi><mo>&times;</mo><mi>n</mi></math> matrices need when <math><mi>n</mi></math> is large? The answer grows like a power of <math><mi>n</mi></math>. Until October 2026, the exponent was only known to lie between 2 and about 2.371.</span></div>
+    <div><h3>The claim</h3><span>The exponent is exactly 9/4. Algorithms that come arbitrarily close to it are known since October 2026. The new paper says that every algorithm needs at least <math><msup><mi>n</mi><mrow><mn>9</mn><mo>/</mo><mn>4</mn></mrow></msup><mo>/</mo><mn>2</mn></math> multiplications or divisions.</span></div>
+    <div><h3>The check</h3><span>No person outside OpenAI has confirmed the new paper. A proof of the same exponent exists as a file for a proof-checking program. The file is public, and no independent run is reported yet.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2>What the exponent <math><mi>&omega;</mi></math> measures</h2>
+  <p>The cost model counts arithmetic operations on matrix entries: additions, subtractions, multiplications and divisions. Each operation costs 1, however large the numbers are. A program of such operations without branches is an <a class="term" href="#t-circuit">arithmetic circuit</a>. The entries come from a <a class="term" href="#t-field">field</a>, for example the rational numbers, the complex numbers, or the integers modulo a prime, which form a finite field.</p>
+  <p>The school method computes each of the <math><msup><mi>n</mi><mn>2</mn></msup></math> output entries as a dot product and needs <math><msup><mi>n</mi><mn>3</mn></msup></math> multiplications. In 1969 Volker Strassen found formulas that multiply two 2 &times; 2 matrices with 7 multiplications instead of 8. The formulas never swap the two factors of a product, so the entries may be matrices themselves. Split a large matrix into four blocks and apply the formulas again inside each block product. A matrix of side <math><msup><mn>2</mn><mi>k</mi></msup></math> then costs <math><msup><mn>7</mn><mi>k</mi></msup></math> multiplications, which is <math><msup><mi>n</mi><mrow><msub><mi>log</mi><mn>2</mn></msub><mn>7</mn></mrow></msup></math>, about <math><msup><mi>n</mi><mn>2.807</mn></msup></math>.</p>
+  <p>The same recursion works for any block scheme. Suppose a scheme multiplies two <math><mi>s</mi><mo>&times;</mo><mi>s</mi></math> matrices with <math><mi>r</mi></math> multiplications, and each multiplication takes a sum of entries of the first matrix times a sum of entries of the second. Such a scheme is a <a class="term" href="#t-bilinear">bilinear algorithm</a>, and the smallest possible <math><mi>r</mi></math> is the <a class="term" href="#t-rank">rank</a> of matrix multiplication for side <math><mi>s</mi></math>. The recursion gives:</p>
+  <div class="formula"><math display="block"><mi data-term="t-omega" tabindex="0">&omega;</mi><mo>&le;</mo><msub><mi>log</mi><mi>s</mi></msub><mi data-term="t-rank" tabindex="0">r</mi></math></div>
+  <p>Additions do not change the exponent, because their number grows more slowly in the recursion than the number of multiplications. <math><mi>&omega;</mi></math> is the infimum, the greatest lower limit, of all exponents that some algorithm reaches. No single algorithm has to reach it, so exact statements read &ldquo;<math><msup><mi>n</mi><mrow><mi>&omega;</mi><mo>+</mo><mi>&epsi;</mi></mrow></msup></math> operations for every <math><mi>&epsi;</mi><mo>&gt;</mo><mn>0</mn></math>&rdquo;.</p>
+  <p>One lower bound is simple: the result has <math><msup><mi>n</mi><mn>2</mn></msup></math> entries, so <math><mi>&omega;</mi><mo>&ge;</mo><mn>2</mn></math>. Until this month, no larger lower bound for <math><mi>&omega;</mi></math> was known, as the authors of the 2024 record <a href="https://arxiv.org/abs/2404.16349">write in their paper</a>. The chart shows what the exponents mean for the amount of work.</p>
+
+  <figure>
+    <div class="fig-title">Operations per output entry</div>
+    <div class="ctl">
+      <label for="nS"><span>Side length of the matrices</span> <output id="nOut"><math><mi>n</mi><mo>=</mo><mn>1,024</mn></math></output></label>
+      <input type="range" id="nS" min="1" max="20" step="1" value="10">
+    </div>
+    <div class="legend">
+      <span><i class="sw ink"></i><span>school method, <math><msup><mi>n</mi><mn>3</mn></msup></math></span></span>
+      <span><i class="sw"></i><span>Strassen 1969, <math><msup><mi>n</mi><mn>2.807</mn></msup></math></span></span>
+      <span><i class="sw c3"></i><span>claimed limit, <math><msup><mi>n</mi><mn>2.25</mn></msup></math></span></span>
+      <span><i class="sw band"></i><span>open until October 2026: exponents 2 to 2.371</span></span>
+    </div>
+    <svg class="chart" id="cCost" role="img" aria-label="Four straight lines on logarithmic axes show the number of operations per output entry against the side length n, for the exponents 3, 2.807, 2.25 and 2. A band between the exponents 2 and 2.371 marks the range that was open until October 2026."></svg>
+    <div class="stats">
+      <div><small>School method, <math><msup><mi>n</mi><mn>3</mn></msup></math></small><b id="rC3">1.07 &times; 10⁹</b></div>
+      <div><small>Strassen, <math><msup><mi>n</mi><mn>2.807</mn></msup></math></small><b id="rCs">2.82 &times; 10⁸</b></div>
+      <div><small>Claimed limit, <math><msup><mi>n</mi><mn>2.25</mn></msup></math></small><b id="rCl">5,931,642</b></div>
+      <div><small>School method &divide; limit</small><b id="rCr">181 &times;</b></div>
+    </div>
+    <figcaption>Each line is <math><msup><mi>n</mi><mi>e</mi></msup></math> divided by the <math><msup><mi>n</mi><mn>2</mn></msup></math> output entries, for one exponent <math><mi>e</mi></math>. Both axes are logarithmic. The lines leave out the constant factors and the <math><mi>&epsi;</mi></math> of real algorithms, so they compare growth and not running times. Computed on this page.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2>How the upper bound fell to 9/4</h2>
+  <p>After Strassen, the record fell fast for two decades. In 1990, Don Coppersmith and Shmuel Winograd reached 2.376 with the <a class="term" href="#t-laser">laser method</a>. This technique does not build an algorithm directly. It finds many independent matrix products inside high powers of a simpler object. Every later record refined this method. In 36 years these refinements lowered the bound by less than 0.005, to 2.371177 on <a href="https://arxiv.org/abs/2608.16884">17 August 2026</a>. The method also has a proven limit: applied to the object that these papers use, it cannot prove an exponent below 2.3078.</p>
+  <p>On 6 October 2026, OpenAI published a <a href="https://github.com/openai/math">collection of more than 700 mathematical manuscripts</a>. Its README says that an unnamed internal model produced them. Among them are three papers on <math><mi>&omega;</mi></math>. One refines the old method and reaches 2.371055 over every field. A second goes below 2.258 over the complex numbers. The third, 13 pages long and dated 2 October, proves <math><mi>&omega;</mi><mo>&le;</mo><mn>9</mn><mo>/</mo><mn>4</mn></math> over the complex numbers. Its proof compares matrix multiplication with the multiplication of polynomials.</p>
+  <p>This upper bound did not stay a claim of OpenAI. Within three weeks, other researchers rewrote the proof in their own terms:</p>
+  <ul class="plain">
+    <li><a href="https://arxiv.org/abs/2610.18914">Houxi L&uuml;</a> (12 October) replaced one construction, so that the proof no longer depends on the complex numbers.</li>
+    <li><a href="https://arxiv.org/abs/2610.28627">Rafael Pass</a> (20 October) gave a self-contained proof that constructs the algorithm, for integer matrices.</li>
+    <li><a href="https://arxiv.org/abs/2610.30054">Alimzhan Amanov, Maxim van den Berg and Jeroen Zuiddam</a> (21 October) proved the bound over every field. They also showed that the ingredients of this proof cannot give an exponent below 9/4.</li>
+    <li><a href="https://eccc.weizmann.ac.il/report/2026/281/">Amir Shpilka</a> (27 October) gave an elementary proof with explicit algorithms.</li>
+  </ul>
+  <p>Two more expositions followed in November. All of these texts are <a class="term" href="#t-preprint">preprints</a> too. They come from different groups, and this page read their abstracts and not their proofs. After the release, the model continued with the opposite direction, a lower bound, as <a href="https://x.com/SebastienBubeck/status/2125402576145572334">S&eacute;bastien Bubeck of OpenAI wrote</a> on 25 November.</p>
+
+  <figure>
+    <div class="fig-title">Best proven bounds for <math><mi>&omega;</mi></math></div>
+    <div class="seg fig-seg" role="group" aria-label="Select the time range" id="histSeg">
+      <button type="button" data-v="0" aria-pressed="true">1969 to 2026</button>
+      <button type="button" data-v="1" aria-pressed="false">August to November 2026</button>
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i><span>upper bound: an algorithm exists</span></span>
+      <span><i class="sw c3"></i><span>lower bound: no algorithm is faster</span></span>
+      <span><i class="sw claim"></i><span>lower bound, claimed</span></span>
+      <span><i class="sw band"></i><span>open range</span></span>
+    </div>
+    <svg class="chart" id="cHist" role="img" aria-label="Step chart of the best upper bound for the exponent of matrix multiplication since 1969. It falls from 2.807 to 2.376 by 1990, stays near 2.37 until 2026 and drops to 2.25 on 6 October 2026. The lower bound stays at 2 until the claim of 2.25 on 25 November 2026."></svg>
+    <figcaption>The upper bound moved by 0.004 between 1990 and August 2026, and by 0.12 on 6 October 2026. With the new claim, the open range closes. Records since 2024: abstracts of the papers. Records before 2024: the table in the Wikipedia article on this topic, read on 25 November 2026. The last step of the upper bound stands at the day of OpenAI&rsquo;s release and holds for the complex numbers. The proof for every field followed on 21 October.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">03</span>
+  <h2>What the new paper claims</h2>
+  <p>The main theorem says that <math><mi>&omega;</mi><mo>=</mo><mn>9</mn><mo>/</mo><mn>4</mn></math> over every <a class="term" href="#t-field">field</a>. The new part is the lower bound, and the paper states it for every size, without hidden constants. For every <math><mi>n</mi><mo>&ge;</mo><mn>2</mn></math>, an <a class="term" href="#t-circuit">arithmetic circuit</a> that multiplies two <math><mi>n</mi><mo>&times;</mo><mi>n</mi></math> matrices contains at least <math><msup><mi>n</mi><mrow><mn>9</mn><mo>/</mo><mn>4</mn></mrow></msup><mo>/</mo><mn>2</mn></math> multiplication or division gates, rounded up. Additions, subtractions and multiplications by constants are free in this count. A <a class="term" href="#t-bilinear">bilinear algorithm</a> needs at least <math><msup><mi>n</mi><mrow><mn>9</mn><mo>/</mo><mn>4</mn></mrow></msup></math> products. The factor 2 between the two bounds has a simple reason: the paper replaces each general multiplication or division gate by at most two products of the bilinear kind.</p>
+  <div class="scroll-x"><table>
+    <thead><tr><th>Side <math><mi>n</mi></math></th><th>Output entries</th><th>Older bound</th><th>New bound</th><th>Strassen</th><th>School</th></tr></thead>
+    <tbody>
+      <tr><td>2</td><td>4</td><td>4</td><td>5</td><td>7</td><td>8</td></tr>
+      <tr><td>4</td><td>16</td><td>28</td><td>23</td><td>49</td><td>64</td></tr>
+      <tr><td>16</td><td>256</td><td>592</td><td>512</td><td>2,401</td><td>4,096</td></tr>
+      <tr><td>64</td><td>4,096</td><td>10,048</td><td>11,586</td><td>117,649</td><td>262,144</td></tr>
+      <tr><td>256</td><td>65,536</td><td>163,072</td><td>262,144</td><td>5,764,801</td><td>16,777,216</td></tr>
+      <tr><td>1,024</td><td>1,048,576</td><td>2,618,368</td><td>5,931,642</td><td>282,475,249</td><td>1,073,741,824</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Number of products in a bilinear algorithm for one <math><mi>n</mi><mo>&times;</mo><mi>n</mi></math> product. The two bound columns say how many products are needed at least. The last two columns say how many products the two algorithms use. Older bound: <math><mn>2.5</mn><msup><mi>n</mi><mn>2</mn></msup><mo>&minus;</mo><mn>3</mn><mi>n</mi></math>, published by Markus Bl&auml;ser in 2000. New bound: <math><msup><mi>n</mi><mrow><mn>9</mn><mo>/</mo><mn>4</mn></mrow></msup></math>, rounded up. All values computed on this page from the formulas.</p>
+  <p>The table shows a limit of the new result. For sides from 3 to 33, the older bound is the higher one, as computed on this page. But the older bounds that the paper lists have the form of a constant times <math><msup><mi>n</mi><mn>2</mn></msup></math>, and a constant factor says nothing about the exponent. The new bound is the first that grows faster than <math><msup><mi>n</mi><mn>2</mn></msup></math>.</p>
+  <p>If the theorem holds, two beliefs fall. The first is the hope for <math><mi>&omega;</mi><mo>=</mo><mn>2</mn></math>, which an <a href="https://arxiv.org/abs/2307.07970">earlier record paper</a> calls the &ldquo;dream bound&rdquo;. The second is a conjecture of Strassen about a class of <a class="term" href="#t-tensor">tensors</a>, which are arrays of numbers with three indices. It predicts the value <math><msup><mi>n</mi><mn>2</mn></msup></math> where the paper proves <math><msup><mi>n</mi><mrow><mn>9</mn><mo>/</mo><mn>4</mn></mrow></msup></math>.</p>
+  <p class="aside">The theorem also contradicts a current preprint. In its first version, <a href="https://arxiv.org/abs/2610.13971">Zhi-Wei Sun</a> claims a proof of <math><mi>&omega;</mi><mo>=</mo><mn>2</mn></math>. The OpenAI paper names the point of conflict: for side 256, Sun&rsquo;s upper bound for a relaxed kind of rank is <math><msup><mn>2</mn><mn>17</mn></msup></math>, and the new lower bound is <math><msup><mn>2</mn><mn>18</mn></msup></math>. At most one of the two papers is right. This page cannot judge which.</p>
+</section>
+
+<section>
+  <span class="num">04</span>
+  <h2>The proof: a fast product would test lists too cheaply</h2>
+  <p>The proof is indirect. It assumes an exponent below 9/4 and derives a contradiction in a different problem. Two objects carry the argument.</p>
+  <p><strong>The machine model</strong> is a <a class="term" href="#t-network">tensor network</a>, a generalization of a Boolean circuit. Each vertex holds a table with one number for each setting of its bits. Here a vertex has at most three bits, so a table has at most 8 numbers. A wire joins two vertices and carries one bit. Bits without a partner are the <a class="term" href="#t-exterior">exterior bits</a>, the inputs. For one setting of the inputs, the network sums over all settings of the inner wires, and each term is the product of all table entries. A Boolean circuit is the special case in which exactly one setting of the inner wires contributes. The size of a network is the number of its vertices and wires.</p>
+  <p><strong>The test problem</strong> is <a class="term" href="#t-distinct">list distinctness</a>. The input is a list of <math><msup><mn>2</mn><mi>w</mi></msup></math> words with <math><mn>2</mn><mi>w</mi></math> bits each. The output is 1 if all words differ and 0 if a word repeats. The obvious solution sorts the list and compares neighbours. A sorting network from 1968 does this with about <math><msup><mi>w</mi><mn>2</mn></msup></math> gates per input bit.</p>
+  <p>The paper then proves two statements that cannot both hold:</p>
+  <ul class="plain">
+    <li><strong>A floor (Theorem 2.2).</strong> A network may test many independent lists at once and share work between them. It still needs more than <math><msup><mi>w</mi><mi>&sigma;</mi></msup></math> vertices and wires per input bit. Here <a class="term" href="#t-sigma"><math><mi>&sigma;</mi></math></a> (sigma) is a fixed positive constant. The statement holds for all large <math><mi>w</mi></math> and for up to <math><msup><mn>2</mn><mi>w</mi></msup></math> lists.</li>
+    <li><strong>A compression (Theorem 2.1).</strong> Assume that <math><mi>&omega;</mi><mo>&lt;</mo><mn>9</mn><mo>/</mo><mn>4</mn></math> over a finite field. Then every network of moderate size can be rebuilt as one network that evaluates several copies of it on separate inputs, at a lower cost per input bit.</li>
+  </ul>
+  <p>The compression has this form. Let <math><mi>x</mi></math> be the cost of a network per exterior bit, its size divided by the number of its exterior bits, and let <math><mi>h</mi></math> be the logarithm of its number of exterior bits, which is about <math><mi>w</mi></math> for the list test. One round of compression gives, with two positive constants <math><mi>&gamma;</mi></math> (gamma) and <math><mi>&eta;</mi></math> (eta):</p>
+  <div class="formula"><math display="block"><msub><mi data-term="t-x" tabindex="0">x</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>&le;</mo><msup><mi data-term="t-h" tabindex="0">h</mi><mrow><mo>&minus;</mo><mi data-term="t-gamma" tabindex="0">&gamma;</mi></mrow></msup><mspace width="0.15em"></mspace><msub><mi>x</mi><mi>j</mi></msub><mo>+</mo><msup><mi>h</mi><mi data-term="t-eta" tabindex="0">&eta;</mi></msup></math></div>
+  <p>The first term shrinks the network by a power <math><mi>&gamma;</mi></math> of the logarithm. The second term is a fee per exterior bit. The paper may choose its power <math><mi>&eta;</mi></math> as small as it likes, and <math><mi>&gamma;</mi><mo>&gt;</mo><mn>0</mn></math> then depends on <math><mi>&eta;</mi></math>. The result is again a network on separate bits, so the round can repeat. Start with the sorting network at <math><msub><mi>x</mi><mn>0</mn></msub><mo>&asymp;</mo><msup><mi>w</mi><mn>2</mn></msup></math> and choose <math><mi>&eta;</mi><mo>&lt;</mo><mi>&sigma;</mi></math>. After more than <math><mn>2</mn><mo>/</mo><mi>&gamma;</mi></math> rounds, the cost per input bit is about <math><msup><mi>w</mi><mi>&eta;</mi></msup></math>. This is below the floor <math><msup><mi>w</mi><mi>&sigma;</mi></msup></math>, a contradiction. So <math><mi>&omega;</mi><mo>&ge;</mo><mn>9</mn><mo>/</mo><mn>4</mn></math> over every finite field.</p>
+
+  <figure>
+    <div class="fig-title">Repeated compression falls through the floor</div>
+    <div class="ctl">
+      <label for="gS"><span>Saving per round, the power <math><mi>&gamma;</mi></math></span> <output id="gOut"><math><mi>&gamma;</mi><mo>=</mo><mn>0.50</mn></math></output></label>
+      <input type="range" id="gS" min="0.1" max="1" step="0.05" value="0.5">
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i><span>cost per input bit after each round</span></span>
+      <span><i class="sw c3"></i><span>floor of Theorem 2.2</span></span>
+    </div>
+    <svg class="chart" id="cRec" role="img" aria-label="The cost per input bit on a logarithmic axis against the number of compression rounds. The curve starts at about one million, falls by a constant factor per round and drops below the horizontal floor line at 16 after a few rounds."></svg>
+    <div class="stats">
+      <div><small>Start: sorting network, <math><msup><mi>w</mi><mn>2</mn></msup></math></small><b id="rR0">1,048,576</b></div>
+      <div><small>Floor, <math><msup><mi>w</mi><mi>&sigma;</mi></msup></math></small><b id="rRf">16</b></div>
+      <div><small>First round below the floor</small><b id="rRj">4</b></div>
+      <div><small>Rounds in the paper, more than <math><mn>2</mn><mo>/</mo><mi>&gamma;</mi></math></small><b id="rRp">4</b></div>
+    </div>
+    <figcaption>However small the saving per round is, repetition brings the cost below the floor. The chart iterates the formula above with equality. Its numbers are examples chosen on this page: <math><mi>w</mi><mo>=</mo><mi>h</mi><mo>=</mo><mn>1,024</mn></math>, <math><mi>&sigma;</mi><mo>=</mo><mn>0.4</mn></math>, <math><mi>&eta;</mi><mo>=</mo><mn>0.2</mn></math>, and all hidden constants set to 1. The paper proves only that suitable constants exist. The vertical axis is logarithmic.</figcaption>
+  </figure>
+
+  <p>One step leads from finite fields to all fields. An algorithm that beats 9/4 over any field can be turned into one fixed <a class="term" href="#t-bilinear">bilinear algorithm</a> with finitely many coefficients. The paper shows that these coefficients can be mapped into a finite field, and the algorithm stays correct there.</p>
+  <p>The two theorems carry very different weight. The proof of the compression fills about 90 of the 111 pages, and this page does not explain it. One of its building blocks is a sorting result. Under the assumption <math><mi>&omega;</mi><mo>&lt;</mo><mn>9</mn><mo>/</mo><mn>4</mn></math>, a network sorts <math><msup><mn>2</mn><mi>u</mi></msup></math> records of about <math><mi>u</mi></math> bits at a cost of <math><msup><mi>u</mi><mi>p</mi></msup></math> per record, with a power <math><mi>p</mi></math> below 2. Sorting is the tool that evaluates many copies of one table at once. The proof of the floor takes three pages, because it rests on two other papers of the same release. One of them, on <a href="https://github.com/openai/math/blob/main/preprints/Circuit-lower-bounds-for-Hamiltonian-cycle-and-the-permanent-November-24-2026/paper.pdf">lower bounds for arithmetic circuits</a>, makes claims of at least the same size. So the paper is only as strong as these companions.</p>
+</section>
+
+<section>
+  <span class="num">05</span>
+  <h2>Where the number 9/4 comes from</h2>
+  <p>The proof measures algorithms with <a class="term" href="#t-price">prices</a>. First, matrix multiplication becomes one object, a <a class="term" href="#t-tensor">tensor</a>. It has three <a class="term" href="#t-site">sites</a>: <math><mi>A</mi></math> and <math><mi>B</mi></math> for the two inputs and <math><mi>C</mi></math> for the output. The input entry <math><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math>, the input entry <math><msub><mi>b</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></math> and the output entry <math><msub><mi>c</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> belong together. So each of the three indices is shared by exactly two sites: <math><mi>j</mi></math> by <math><mi>A</mi></math> and <math><mi>B</mi></math>, <math><mi>k</mi></math> by <math><mi>B</mi></math> and <math><mi>C</mi></math>, <math><mi>i</mi></math> by <math><mi>C</mi></math> and <math><mi>A</mi></math>.</p>
+  <p>A price is a function that gives each tensor a real number and obeys three rules. Combining two independent tensors adds their prices. A choice among <math><mi>q</mi></math> alternatives that all sites know costs a fixed rate times <math><mi>log</mi><mspace width="0.15em"></mspace><mi>q</mi></math>. And the price never rises when each site transforms only its own part with a linear map. Strassen introduced such functions in 1988. They fit the problem, because an algorithm with <math><mi>r</mi></math> products is exactly such a transformation. It starts from one label with <math><mi>r</mi></math> values that all three sites see, the number of the product, and each site applies its own linear map.</p>
+  <p>Each price function defines a geometry. An index with <math><mi>q</mi></math> values that two sites share is a <a class="term" href="#t-wire">wire</a>. Its price is <math><mi>d</mi><mo>&middot;</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>q</mi></math>, and the factor <math><mi>d</mi></math> behaves like a distance between the two sites. A label that all three sites share costs <math><mi>D</mi><mo>&middot;</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>r</mi></math>, with the <a class="term" href="#t-rate">shared-label rate</a> <math><mi>D</mi></math>. Matrix multiplication is three wires of <math><mi>n</mi></math> values each, and the algorithm builds it from the shared label. The third rule gives:</p>
+  <div class="formula"><math display="block"><mo stretchy="false">(</mo><msub><mi data-term="t-wire" tabindex="0">d</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>+</mo><msub><mi>d</mi><mrow><mi>B</mi><mi>C</mi></mrow></msub><mo>+</mo><msub><mi>d</mi><mrow><mi>C</mi><mi>A</mi></mrow></msub><mo stretchy="false">)</mo><mo>&middot;</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>n</mi><mo>&le;</mo><mi data-term="t-rate" tabindex="0">D</mi><mo>&middot;</mo><mi>log</mi><mspace width="0.15em"></mspace><mi data-term="t-rank" tabindex="0">r</mi></math></div>
+  <p>Solved for <math><mi>r</mi></math>, every algorithm needs at least <math><msup><mi>n</mi><mrow><mi>P</mi><mo>/</mo><mi>D</mi></mrow></msup></math> products, where <math><mi>P</mi></math> is the perimeter of the triangle <math><mi>A</mi><mi>B</mi><mi>C</mi></math>. Each price function therefore proves <math><mi>&omega;</mi><mo>&ge;</mo><mi>P</mi><mo>/</mo><mi>D</mi></math>. The question is which geometries exist.</p>
+  <p>A <a href="https://github.com/openai/math/blob/main/preprints/Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026/paper.pdf">companion paper</a> constructs prices in which the sites are points of ordinary Euclidean space. There, the rate <math><mi>D</mi></math> of three sites is half the perimeter of their triangle. The ratio is 2, which gives only the old bound <math><mi>&omega;</mi><mo>&ge;</mo><mn>2</mn></math>. The value 9/4 needs a space that branches, a <a class="term" href="#t-tripod">tripod</a>: three arms that meet in one centre, with the sites at the tips. The way from one tip to another leads through the centre. For arms of the lengths <math><msub><mi>a</mi><mn>1</mn></msub></math>, <math><msub><mi>a</mi><mn>2</mn></msub></math>, <math><msub><mi>a</mi><mn>3</mn></msub></math>, the paper proves (Proposition 8.1) that the rate is at least <math><msup><mi>D</mi><mo>*</mo></msup></math>. Here <math><mi>S</mi></math> is the sum of the arm lengths, and <math><mi>R</mi><mo>=</mo><mn>1</mn><mo>/</mo><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><mn>1</mn><mo>/</mo><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><mn>1</mn><mo>/</mo><msub><mi>a</mi><mn>3</mn></msub></math> is the sum of their reciprocals:</p>
+  <div class="formula"><math display="block"><msup><mi data-term="t-rate" tabindex="0">D</mi><mo>*</mo></msup><mo>=</mo><mi>S</mi><mo>&minus;</mo><mfrac><mn>1</mn><mi>R</mi></mfrac><mo>,</mo><mspace width="0.9em"></mspace><mi>S</mi><mo>=</mo><msub><mi data-term="t-tripod" tabindex="0">a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><msub><mi>a</mi><mn>3</mn></msub></math></div>
+  <p>With three arms of length 1, any two tips are 2 apart, so the perimeter is 6. The formula gives <math><msup><mi>D</mi><mo>*</mo></msup><mo>=</mo><mn>3</mn><mo>&minus;</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>=</mo><mn>8</mn><mo>/</mo><mn>3</mn></math>. If a price function has such a tripod with a rate of exactly 8/3, it proves <math><mi>&omega;</mi><mo>&ge;</mo><mn>6</mn><mo>/</mo><mo stretchy="false">(</mo><mn>8</mn><mo>/</mo><mn>3</mn><mo stretchy="false">)</mo><mo>=</mo><mn>9</mn><mo>/</mo><mn>4</mn></math>.</p>
+
+  <figure>
+    <div class="fig-title">The bound that a tripod gives</div>
+    <div class="ctl">
+      <label for="tS"><span>Length of the third arm</span> <output id="tOut"><math><msub><mi>a</mi><mn>3</mn></msub><mo>=</mo><mn>1.0</mn></math></output></label>
+      <input type="range" id="tS" min="0.2" max="3" step="0.1" value="1">
+    </div>
+    <svg class="chart" id="cTri" role="img" aria-label="A tripod: three arms meet in one centre. The sites A, B and C sit at the three tips. Two arms have the length 1, and the slider sets the length of the third arm."></svg>
+    <div class="stats">
+      <div><small>Perimeter <math><mi>P</mi></math></small><b id="rTp">6.00</b></div>
+      <div><small>Shared-label rate <math><msup><mi>D</mi><mo>*</mo></msup></math></small><b id="rTd">2.667</b></div>
+      <div><small>Bound for <math><mi>&omega;</mi></math>: <math><mi>P</mi><mo>/</mo><msup><mi>D</mi><mo>*</mo></msup></math></small><b id="rTr">2.2500</b></div>
+      <div><small>Algorithm of October 2026</small><b>2.2500</b></div>
+    </div>
+    <figcaption>Three equal arms give the highest bound, 9/4, and it meets the exponent of the known algorithm. Any other length of the third arm gives less. The arms <math><mi>A</mi></math> and <math><mi>B</mi></math> have the length 1. Computed on this page from the formula of Proposition 8.1, under the condition that the rate equals <math><msup><mi>D</mi><mo>*</mo></msup></math>. The paper itself uses only the case of equal arms.</figcaption>
+  </figure>
+
+  <p>The paper does not simply exhibit this tripod. It argues by two cases. If a price function with the tripod exists, the bound 9/4 follows as shown. If none exists, a whole family of tensors becomes rigid: the cheapest placement of its sites cannot move when the parameters of the family change. The paper turns this rigidity into the sorting result and the compression of section 04, and these contradict the floor for list distinctness. Both cases end at <math><mi>&omega;</mi><mo>&ge;</mo><mn>9</mn><mo>/</mo><mn>4</mn></math>.</p>
+</section>
+
+<section>
+  <span class="num">06</span>
+  <h2>What a computer has checked</h2>
+  <p>A proof of 111 pages by an AI model, resting on two more such papers, is hard to trust on reading alone. OpenAI therefore published a second object: a proof in <a href="https://lean-lang.org/">Lean</a>, a programming language in which a proof is a program. A small core of Lean, the kernel, checks every step. The statement to be proved stands in a separate file of 136 lines that needs only <a class="term" href="#t-mathlib">Mathlib</a>, the standard mathematics library of Lean. Shortened, it reads:</p>
+<pre class="code"><code>-- abridged from MatrixExponent.lean
+inductive Gate (F Input Register) where
+  | constant : F → Gate ..      -- cost 0
+  | input : Input → Gate ..     -- cost 0
+  | add : Register → Register → Gate ..
+  | sub : Register → Register → Gate ..
+  | mul : Register → Register → Gate ..
+                                -- cost 1 each
+
+-- every output is the polynomial of
+-- the matrix product
+def FormalCorrect (P) : Prop :=
+  ∀ i k, registerPolynomial P.program
+      (P.output i k)
+    = ∑ j, X (inl (i, j))
+           * X (inr (j, k))
+
+-- infimum of the exponents τ with
+-- cost ≤ C · N^(τ+ε) for all sizes N
+def formalOmega (F) (w12 w23 w31 : ℝ) :=
+  sInf {τ | FormalAdmissibleExponent
+              F w12 w23 w31 τ}
+
+theorem square_exponent
+    (F : Type*) [Field F] :
+    formalOmega F 1 1 1 = (9 : ℝ) / 4
+</code></pre>
+  <p>The theorem is an equation, so it contains both directions: algorithms with exponent 9/4 exist, and none is better. The tool <a class="term" href="#t-comparator">Comparator</a> of the Lean project is made for this situation, in which the reader does not trust the author of a proof. It confirms three things: the proof file proves exactly the statement of the short file, the Lean kernel accepts it, and it uses no axioms beyond three standard ones. A reader who runs it has to trust the kernel, the definitions of Mathlib, the 136 lines and their own computer, and no longer the 111 pages.</p>
+  <ul class="checks">
+    <li><span class="pill done">In Lean</span>
+        <span><span>The exponent 9/4 over every field, as upper and lower bound, for programs with additions, subtractions and multiplications.</span><span class="d">OpenAI&rsquo;s scope document adds that Lean also proves that divisions do not change this exponent. This addition is not among the three statements that Comparator checks.</span></span></li>
+    <li><span class="pill no">Not in Lean</span>
+        <span><span>The bound for each single size, at least <math><msup><mi>n</mi><mrow><mn>9</mn><mo>/</mo><mn>4</mn></mrow></msup><mo>/</mo><mn>2</mn></math> multiplication or division gates. The scope document lists it as not formalized.</span></span></li>
+    <li><span class="pill prog">Open</span>
+        <span><span>An independent run. On 25 November 2026, this page found no report that anyone outside OpenAI had compiled the proof and run Comparator on it.</span><span class="d">This page did not run it either.</span></span></li>
+  </ul>
+  <p>The Lean proof is large. The folder with the final theorem and the folder for the matrix exponent hold 1,395 files with 347,203 lines, and they import code from further folders. This page counted them in the repository state of 25 November 2026, 00:18 UTC. A text search found neither <span class="mono">sorry</span>, the Lean keyword for a missing proof, nor an added axiom in these files. Such a search is no check.</p>
+  <p>The Lean proof and the paper are two separate objects. A valid Lean proof does not show that each step of the paper is right, and OpenAI does not say that the Lean proof follows the paper. The two also differ in one place. For products of an <math><mi>n</mi><mo>&times;</mo><msup><mi>n</mi><mi>&beta;</mi></msup></math> matrix with an <math><msup><mi>n</mi><mi>&beta;</mi></msup><mo>&times;</mo><mi>n</mi></math> matrix, the paper asks up to which power <math><mi>&beta;</mi></math> (beta) the exponent 2 can be reached. It proves that this limit lies between 1/2 and 2/3. The Lean scope document states the exact value 1/2.</p>
+  <p>The history of the collection is a reason for care. Its README calls the manuscripts &ldquo;raw research data&rdquo; and says that results without a Lean proof may contain errors. On 7 October 2026, one day after the first release, OpenAI withdrew three manuscripts because of a sign error and revised 14 others. According to the README, about 42&nbsp;% of the main results have a Lean proof.</p>
+  <p>First reactions exist, and they are no reviews. The computer scientist Scott Aaronson <a href="https://scottaaronson.blog/?p=10362#comment-2044478">answered with astonishment</a> when readers posted the result in his blog on 24 November, and he announced a longer text.</p>
+</section>
+
+<section>
+  <span class="num">07</span>
+  <h2>What changes in practice</h2>
+  <p>For code, nothing changes. Numerical libraries multiply matrices with the cubic method, tuned for caches and vector instructions. Strassen&rsquo;s formulas pay off only for large matrices. These two statements come from the general knowledge of the model that wrote this page, and no source of this page covers them. The algorithms with exponent 9/4 are far from use. The October paper says that its proof &ldquo;does not specify a competitive finite matrix size&rdquo;. In Shpilka&rsquo;s explicit version, an algorithm with exponent <math><mn>9</mn><mo>/</mo><mn>4</mn><mo>+</mo><mi>&epsi;</mi></math> starts from a base matrix whose side can be as large as <math><msup><mn>2</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mi>&epsi;</mi><msup><mo stretchy="false">)</mo><mi>c</mi></msup></mrow></msup></math>, with a constant <math><mi>c</mi></math> that the abstract does not give.</p>
+  <p>The lower bound also covers less than a headline suggests:</p>
+  <ul class="plain">
+    <li>It counts arithmetic operations. It says nothing about the running time on real hardware.</li>
+    <li>It holds for <a class="term" href="#t-circuit">arithmetic circuits</a> that are correct as formulas, for all inputs at once. An algorithm that looks at the bits of the numbers, or one that may return an approximate result, is outside this model. This page infers this from the definition of the model. The paper does not discuss it.</li>
+    <li>For the matrix sizes of real programs, the bound itself is weak. At <math><mi>n</mi><mo>=</mo><mn>1,024</mn></math> it demands 5.9 million products, and Strassen&rsquo;s recursion uses 282 million.</li>
+  </ul>
+  <p>The change is in theory. Many algorithms for graphs and linear algebra have running times that contain <math><mi>&omega;</mi></math>, because their main step is a matrix product. One example from the follow-up papers: with the new upper bounds, <a href="https://arxiv.org/abs/2610.10494">Przemys&#322;aw Uzna&#324;ski</a> gets <math><msup><mi>n</mi><mn>2.5</mn></msup></math> for shortest paths between all pairs of vertices in a directed graph without weights. If the lower bound holds, a running time of <math><msup><mi>n</mi><mi>&omega;</mi></msup></math> cannot improve through a faster matrix product. This last sentence is an inference of this page.</p>
+  <p>Four things will decide the claim: an independent Comparator run of the Lean proof, a review of the paper by specialists, the fate of the two companion papers, and the conflict with Sun&rsquo;s preprint.</p>
+</section>
+
+<section>
+  <span class="num">08</span>
+  <h2>Terms</h2>
+  <dl class="gloss">
+    <div id="t-omega"><dt><math><mi>&omega;</mi></math> (omega, the exponent of matrix multiplication)</dt><dd>The smallest number such that two <math><mi>n</mi><mo>&times;</mo><mi>n</mi></math> matrices can be multiplied with <math><msup><mi>n</mi><mrow><mi>&omega;</mi><mo>+</mo><mi>&epsi;</mi></mrow></msup></math> arithmetic operations, for every <math><mi>&epsi;</mi><mo>&gt;</mo><mn>0</mn></math>. It lies between 2 and 3. <a href="https://en.wikipedia.org/wiki/Computational_complexity_of_matrix_multiplication">Wikipedia: Computational complexity of matrix multiplication</a></dd></div>
+    <div id="t-field"><dt>Field</dt><dd>A set of numbers with addition, subtraction, multiplication and division by everything except zero. Examples are the rational, real and complex numbers, and the integers modulo a prime. The last kind is a finite field.</dd></div>
+    <div id="t-circuit"><dt>Arithmetic circuit</dt><dd>A program without branches and loops. Each step adds, subtracts, multiplies or divides two earlier values, inputs or constants. Its cost is the number of steps. It must be correct as a formula in the input variables, for all inputs at once.</dd></div>
+    <div id="t-bilinear"><dt>Bilinear algorithm</dt><dd>A scheme for a matrix product in which each multiplication takes a sum of entries of the first matrix times a sum of entries of the second. The outputs are sums of these products. Strassen&rsquo;s seven formulas are one.</dd></div>
+    <div id="t-rank"><dt>Rank <math><mi>r</mi></math> of matrix multiplication</dt><dd>The smallest number of products in a bilinear algorithm for matrices of a given side. For side 2 it is 7. The exponent follows from the ranks: <math><mi>&omega;</mi></math> is the infimum of <math><msub><mi>log</mi><mi>s</mi></msub><mi>r</mi></math> over all sides <math><mi>s</mi></math>.</dd></div>
+    <div id="t-tensor"><dt>Tensor</dt><dd>An array of numbers with three or more indices. The matrix multiplication tensor has an entry 1 for each triple of an entry of the first input, an entry of the second input and the output entry that their product feeds. All other entries are 0. <a href="https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm">Wikipedia: Matrix multiplication algorithm</a></dd></div>
+    <div id="t-laser"><dt>Laser method</dt><dd>A technique of Strassen from 1986. It does not search for a matrix multiplication algorithm directly. It takes a tensor that is cheap to compute and shows that high powers of it contain many independent matrix products.</dd></div>
+    <div id="t-preprint"><dt>Preprint</dt><dd>A scientific paper that its authors publish themselves, before any journal has had it reviewed by independent experts.</dd></div>
+    <div id="t-network"><dt>Tensor network</dt><dd>A graph in which each vertex holds a small table of numbers and each wire carries a bit shared by two vertices. Its value for given inputs is the sum, over all settings of the inner wires, of the product of the selected table entries. A Boolean circuit is a special case.</dd></div>
+    <div id="t-exterior"><dt>Exterior bit</dt><dd>A bit of a tensor network that belongs to only one vertex. The exterior bits are the inputs of the network.</dd></div>
+    <div id="t-distinct"><dt>List distinctness</dt><dd>The test problem of the proof. Given <math><msup><mn>2</mn><mi>w</mi></msup></math> words of <math><mn>2</mn><mi>w</mi></math> bits each, return 1 if all words differ and 0 otherwise.</dd></div>
+    <div id="t-x"><dt><math><msub><mi>x</mi><mi>j</mi></msub></math> (size per exterior bit)</dt><dd>The number of vertices and wires of a tensor network, divided by the number of its exterior bits, after <math><mi>j</mi></math> rounds of compression.</dd></div>
+    <div id="t-h"><dt><math><mi>h</mi></math></dt><dd>The logarithm to base 2 of the number of exterior bits of a network, rounded up. For the list test it is about <math><mi>w</mi></math>, half the length of a word.</dd></div>
+    <div id="t-gamma"><dt><math><mi>&gamma;</mi></math> (gamma)</dt><dd>The power of <math><mi>h</mi></math> by which one round of compression shrinks a network. The paper proves that a positive value exists if <math><mi>&omega;</mi><mo>&lt;</mo><mn>9</mn><mo>/</mo><mn>4</mn></math>, and gives no number.</dd></div>
+    <div id="t-eta"><dt><math><mi>&eta;</mi></math> (eta)</dt><dd>The power of <math><mi>h</mi></math> that one round of compression charges per exterior bit. It can be chosen as small as needed, and must be positive.</dd></div>
+    <div id="t-sigma"><dt><math><mi>&sigma;</mi></math> (sigma)</dt><dd>The power of <math><mi>w</mi></math> in the floor for list distinctness. It is a fixed positive constant that depends only on the field. In one of the two cases of the proof, every value below 1/2 works.</dd></div>
+    <div id="t-price"><dt>Price</dt><dd>A number that a fixed rule gives to each tensor. Prices add when independent tensors are combined, and they never rise when each site applies a linear map to its own part. The paper uses the logarithm of what the literature calls a spectral point.</dd></div>
+    <div id="t-site"><dt>Site</dt><dd>One of the parties that a tensor connects. Matrix multiplication has three sites: the first input, the second input and the output.</dd></div>
+    <div id="t-wire"><dt>Wire and distance <math><mi>d</mi></math></dt><dd>A wire is an index that exactly two sites share. A price function charges <math><mi>d</mi><mo>&middot;</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>q</mi></math> for a wire with <math><mi>q</mi></math> values. The factor <math><mi>d</mi></math> obeys the triangle inequality, so it is a distance between the two sites.</dd></div>
+    <div id="t-rate"><dt>Shared-label rate <math><mi>D</mi></math></dt><dd>The price factor of a label that all three sites see. Such a label with <math><mi>r</mi></math> values costs <math><mi>D</mi><mo>&middot;</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>r</mi></math>. <math><msup><mi>D</mi><mo>*</mo></msup></math> is the lowest value that the paper allows on a tripod.</dd></div>
+    <div id="t-tripod"><dt>Tripod with arms <math><msub><mi>a</mi><mn>1</mn></msub></math>, <math><msub><mi>a</mi><mn>2</mn></msub></math>, <math><msub><mi>a</mi><mn>3</mn></msub></math></dt><dd>A space made of three line segments that meet in one centre. The distance between two tips is the sum of their two arm lengths, because every path leads through the centre.</dd></div>
+    <div id="t-lean"><dt>Lean</dt><dd>A programming language and proof checker. A proof is a program, and a small kernel checks that each step follows from the definitions and the earlier steps. <a href="https://lean-lang.org/">lean-lang.org</a></dd></div>
+    <div id="t-mathlib"><dt>Mathlib</dt><dd>The community library of mathematics for Lean. It defines fields, polynomials, real numbers and the infimum that the statement uses. <a href="https://github.com/leanprover-community/mathlib4">Mathlib on GitHub</a></dd></div>
+    <div id="t-comparator"><dt>Comparator</dt><dd>A tool of the Lean project for proofs from an author whom the reader does not trust. It checks in a sandbox that a proof file proves the same statement as a short challenge file, that the kernel accepts it, and that it uses only the permitted axioms. <a href="https://github.com/leanprover/comparator">Comparator on GitHub</a></dd></div>
+  </dl>
+</section>
+
+<section>
+  <span class="num">09</span>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>What the paper claims, the outline of its proof and its dependence on two companion papers come from the paper itself. This page read its sections 1 to 4, 8, 16 and 27 in full and the rest in parts. What Lean covers comes from OpenAI&rsquo;s scope document and the challenge file. The records for the upper bound since 2024 come from the papers.</span><span class="d">The confirmations of the upper bound by other researchers rest on the abstracts of their papers. This page did not read their proofs.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>Computed on this page: the table in section 03 and the range of sides in which the older bound is higher, all charts, and the count of Lean files and lines. The chart in section 04 uses example constants. The chart in section 05 applies a formula of the paper to arm lengths that the paper does not discuss. The summary of the proof in sections 04 and 05 is this page&rsquo;s reading of the paper, in its own words.</span><span class="d">From the model&rsquo;s own knowledge: how numerical libraries multiply matrices, the block recursion of section 01, and that bit-level and approximate algorithms are outside the circuit model. The statement that nobody has checked the proof rests on searches of 25 November that found no such report.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>Whether the lower bound is true. The paper is one day old, an AI model wrote it, no outside expert has reviewed it, and it rests on two papers of the same kind. A preprint by Zhi-Wei Sun claims the opposite. This page did not run the Lean proof and knows of nobody outside OpenAI who did.</span><span class="d">The records before 2024 come from a Wikipedia table, a weak source. Of Bubeck&rsquo;s post, this page could read only the first sentences. OpenAI does not say how much computing time this result took.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">10</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf">OpenAI: The matrix multiplication exponent is nine fourths</a> &middot; preprint written by an AI model, dated 24 November 2026</li>
+    <li><a href="https://github.com/openai/math/blob/main/lean/docs/379.md">OpenAI: scope of the Lean formalization, family 379</a> &middot; documentation, read on 25 November 2026</li>
+    <li><a href="https://github.com/openai/math/blob/main/lean/ComparatorChallenges/MatrixExponent.lean">OpenAI: MatrixExponent.lean, the challenge file for Comparator</a> &middot; source code, read on 25 November 2026</li>
+    <li><a href="https://github.com/openai/math/blob/main/README.md">OpenAI: README of the repository openai/math</a> &middot; documentation, read on 25 November 2026</li>
+    <li><a href="https://github.com/openai/math/blob/main/history.md">OpenAI: history of the repository</a> &middot; release notes, entries of 7 October and 24 November 2026</li>
+    <li><a href="https://github.com/openai/math/blob/main/preprints/Matrix-Multiplication-Nine-Fourths-October-2-2026/paper.pdf">OpenAI: An Upper Bound of 9/4 for the Matrix Multiplication Exponent</a> &middot; preprint written by an AI model, dated 2 October 2026, first three pages</li>
+    <li><a href="https://github.com/openai/math/blob/main/preprints/Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026/README.md">OpenAI: Euclidean geometry in the asymptotic spectrum of tensors</a> &middot; summary of the companion preprint, 24 November 2026</li>
+    <li><a href="https://github.com/leanprover/comparator">Lean project: Comparator</a> &middot; documentation, read on 25 November 2026</li>
+    <li><a href="https://arxiv.org/abs/2610.30054">Amanov, van den Berg, Zuiddam: Multiplying matrices via polynomials: exposition and barriers</a> &middot; preprint, 21 October 2026, abstract only</li>
+    <li><a href="https://arxiv.org/abs/2610.28627">Pass: Matrix Multiplication from Polynomial Packings</a> &middot; preprint, 20 October 2026, revised 30 October, abstract only</li>
+    <li><a href="https://arxiv.org/abs/2610.18914">L&uuml;: Polynomial Separation of a Shared Tensor Leg and Matrix Multiplication in Arbitrary Characteristic</a> &middot; preprint, 12 October 2026, abstract only</li>
+    <li><a href="https://eccc.weizmann.ac.il/report/2026/281/">Shpilka: Exposition of OpenAI&rsquo;s Matrix Multiplication in Exponent 9/4 (and an explicit algorithm)</a> &middot; preprint, 27 October 2026, abstract only</li>
+    <li><a href="https://arxiv.org/abs/2611.04175">Li: Semidirect sums of tensors and the matrix multiplication exponent</a> &middot; preprint, 3 November 2026, abstract only</li>
+    <li><a href="https://arxiv.org/abs/2611.09716">Do&#287;an, Lysikov, Sakabe, Walter: Tensor value and the 9/4 bound for matrix multiplication</a> &middot; preprint, 6 November 2026, abstract only</li>
+    <li><a href="https://arxiv.org/abs/2610.10494">Uzna&#324;ski: Rectangular matrix multiplication from polynomial products</a> &middot; preprint, 7 October 2026, revised 11 October, abstract only</li>
+    <li><a href="https://arxiv.org/abs/2610.13971">Sun: Tensor Degenerations for Matrix Multiplication</a> &middot; preprint, arXiv gives 14 September 2026 as the day of submission, abstract only</li>
+    <li><a href="https://arxiv.org/abs/2608.16884">Dupont et al.: Improving the matrix multiplication exponent with modern optimization and AlphaEvolve</a> &middot; preprint, 17 August 2026</li>
+    <li><a href="https://arxiv.org/abs/2404.16349">Alman, Duan, Vassilevska Williams, Xu, Xu, Zhou: More Asymmetry Yields Faster Matrix Multiplication</a> &middot; conference paper of 2025, version of 19 August 2026</li>
+    <li><a href="https://arxiv.org/abs/2307.07970">Vassilevska Williams, Xu, Xu, Zhou: New Bounds for Matrix Multiplication: from Alpha to Omega</a> &middot; conference paper of 2024</li>
+    <li><a href="https://x.com/SebastienBubeck/status/2125402576145572334">S&eacute;bastien Bubeck on X</a> &middot; post of 25 November 2026, 01:33 UTC, first sentences only</li>
+    <li><a href="https://scottaaronson.blog/?p=10362#comment-2044478">Scott Aaronson: comment 13 under a post in his blog</a> &middot; comment by an expert, 24 November 2026</li>
+    <li><a href="https://en.wikipedia.org/wiki/Computational_complexity_of_matrix_multiplication">Wikipedia: Computational complexity of matrix multiplication</a> &middot; encyclopedia, a weak source, used for the records from 1969 to 2022, read on 25 November 2026</li>
+  </ul>
+</section>
+
+<p class="page-note">This page simplifies. It explains the top level of the proof and one of its geometric ideas, and it leaves out the roughly 90 pages that derive the compression. It treats prices only for three sites, and it does not describe how the proof of October reaches the upper bound. An AI model wrote this page, and no person has checked it. Status of the facts: 25 November 2026.</p>
+
+</main>
+<!-- learn:footer -->
+<script>
+(function(){
+'use strict';
+var L=window.Learn,mk=L.mk;
+function $(id){return document.getElementById(id);}
+function frame(svg,h){var w=Math.max(260,svg.getBoundingClientRect().width||640);svg.setAttribute('viewBox','0 0 '+w+' '+h);svg.setAttribute('height',h);L.clear(svg);return w;}
+function press(group,btn){[].forEach.call(group.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',b===btn?'true':'false');});}
+function txt(svg,x,y,s,cls,anchor){var t=mk('text',{x:x,y:y,'class':cls||'lbl'},svg);if(anchor)t.setAttribute('text-anchor',anchor);t.textContent=s;return t;}
+var SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+/* a count as text: all digits below ten million, then mantissa and power of ten */
+function big(v){
+  if(v<1e7)return L.fmt(Math.round(v));
+  var e=Math.floor(Math.log(v)/Math.LN10),m=v/Math.pow(10,e);
+  if(m>=9.995){m=1;e++;}
+  return L.sgn(m,2)+' × 10'+String(e).split('').map(function(c){return SUP[+c];}).join('');
+}
+function pow10(e){return e===0?'1':e===1?'10':e===2?'100':'10'+String(e).split('').map(function(c){return SUP[+c];}).join('');}
+
+/* ---------- figure 1: operations per output entry, n^(e-2) ---------- */
+var E_STRASSEN=Math.log(7)/Math.LN2,E_LIMIT=2.25,E_OLD=2.371177;
+var nS=$('nS');
+function drawCost(){
+  var k=+nS.value,n=Math.pow(2,k);
+  $('nOut').innerHTML='<math><mi>n</mi><mo>=</mo><mn>'+L.fmt(n)+'</mn></math>';
+  var svg=$('cCost'),h=262,w=frame(svg,h),m={l:40,r:12,t:26,b:26};
+  var K=20,Y=6; /* x: log2 n from 1 to 20, y: log10 from 0 to 6 */
+  function sx(kk){return m.l+(kk-1)/(K-1)*(w-m.l-m.r);}
+  function sy(v){return h-m.b-v/Y*(h-m.t-m.b);}
+  function ly(e,kk){return Math.min(Y,(e-2)*kk*Math.LN2/Math.LN10);}
+  var g=mk('g',{'class':'ax'},svg);
+  for(var e=0;e<=Y;e+=(w<430?2:1)){mk('line',{x1:m.l,x2:w-m.r,y1:sy(e),y2:sy(e)},g);mk('text',{x:m.l-6,y:sy(e)+4,'text-anchor':'end'},g).textContent=pow10(e);}
+  (w<430?[1,10,20]:[1,5,10,15,20]).forEach(function(kk){mk('text',{x:sx(kk),y:h-7,'text-anchor':kk===1?'start':kk===K?'end':'middle'},g).textContent='n = '+L.fmt(Math.pow(2,kk));});
+  /* band: exponents 2 to 2.371177 */
+  mk('path',{d:'M'+sx(1)+' '+sy(ly(2,1))+'L'+sx(K)+' '+sy(ly(2,K))+'L'+sx(K)+' '+sy(ly(E_OLD,K))+'L'+sx(1)+' '+sy(ly(E_OLD,1))+'Z','class':'f-band'},svg);
+  function line(e,cls){
+    var kEnd=Math.min(K,Y*Math.LN10/((e-2)*Math.LN2||1e-9));
+    mk('path',{d:'M'+sx(1).toFixed(1)+' '+sy(ly(e,1)).toFixed(1)+'L'+sx(kEnd).toFixed(1)+' '+sy(ly(e,kEnd)).toFixed(1),'class':cls},svg);
+  }
+  line(3,'l-ink');line(E_STRASSEN,'l-c1');line(E_LIMIT,'l-c3');
+  mk('line',{x1:sx(k),x2:sx(k),y1:m.t,y2:h-m.b,'class':'l-ref'},svg);
+  [[3,'d-ink'],[E_STRASSEN,'d-c1'],[E_LIMIT,'d-c3']].forEach(function(a){mk('circle',{cx:sx(k),cy:sy(ly(a[0],k)),r:4,'class':a[1]},svg);});
+  txt(svg,m.l,13,'operations per output entry');
+  txt(svg,w-m.r-4,sy(ly(E_LIMIT,K))-7,'2.25','t-c3','end');
+  $('rC3').textContent=big(Math.pow(n,3));
+  $('rCs').textContent=big(Math.pow(7,k));
+  $('rCl').textContent=big(Math.ceil(Math.pow(n,E_LIMIT)-1e-6));
+  $('rCr').textContent=big(Math.pow(n,0.75))+' ×';
+}
+nS.addEventListener('input',drawCost);
+
+/* ---------- figure 2: history of the bounds ---------- */
+/* Upper bounds. Before 2024: table in Wikipedia, "Computational complexity of matrix multiplication".
+   2.371552 and 2.371339 (2024): abstracts of arXiv:2404.16349 and arXiv:2608.16884. 2026-08-17: arXiv:2608.16884.
+   2026-10-06: day of OpenAI's release with the paper dated 2 October 2026 (9/4 over the complex numbers). */
+function yr(y,mo,d){return y+((mo||7)-1)/12+((d||1)-1)/365;}
+var UP=[[yr(1969),Math.log(7)/Math.LN2],[yr(1978),2.796],[yr(1979),2.780],[yr(1981),2.522],[yr(1981),2.517],[yr(1981),2.496],[yr(1986),2.479],[yr(1990),2.3755],[yr(2010),2.3737],[yr(2012),2.3729],[yr(2014),2.3728639],[yr(2020),2.3728596],[yr(2022),2.371866],[yr(2024,1),2.371552],[yr(2024,4,25),2.371339],[yr(2026,8,17),2.371177],[yr(2026,10,6),2.25]];
+var LOW_T=yr(2026,11,25);
+var histView=0,histSeg=$('histSeg');
+[].forEach.call(histSeg.querySelectorAll('button'),function(b){b.addEventListener('click',function(){histView=+b.getAttribute('data-v');press(histSeg,b);drawHist();});});
+function drawHist(){
+  var svg=$('cHist'),h=258,w=frame(svg,h),m={l:40,r:12,t:20,b:26};
+  var t0=histView?yr(2026,8,1):1965,t1=histView?yr(2026,12,1):2028,y0=1.9,y1=2.9;
+  function sx(t){return m.l+(Math.max(t0,Math.min(t1,t))-t0)/(t1-t0)*(w-m.l-m.r);}
+  function sy(v){return h-m.b-(v-y0)/(y1-y0)*(h-m.t-m.b);}
+  var g=mk('g',{'class':'ax'},svg);
+  [2,2.25,2.5,2.75].forEach(function(v){mk('line',{x1:m.l,x2:w-m.r,y1:sy(v),y2:sy(v)},g);mk('text',{x:m.l-6,y:sy(v)+4,'text-anchor':'end'},g).textContent=L.sgn(v,2);});
+  if(histView){[[8,'1 Aug'],[9,'1 Sep'],[10,'1 Oct'],[11,'1 Nov'],[12,'1 Dec']].forEach(function(a){mk('text',{x:sx(yr(2026,a[0],1)),y:h-7,'text-anchor':a[0]===8?'start':a[0]===12?'end':'middle'},g).textContent=a[1];});}
+  else{(w<430?[1970,1990,2010,2026]:[1970,1980,1990,2000,2010,2020,2026]).forEach(function(v){mk('text',{x:sx(v),y:h-7,'text-anchor':'middle'},g).textContent=String(v);});}
+  /* upper bound as steps, from the first record inside the view */
+  var pts=[],cur=3;
+  UP.forEach(function(p){if(p[0]<t0){cur=p[1];return;}if(!pts.length)pts.push([t0,cur]);pts.push([p[0],cur]);pts.push([p[0],p[1]]);cur=p[1];});
+  if(!histView)pts=pts.slice(2); /* no bound drawn before Strassen */
+  pts.push([t1,cur]);
+  /* open range between the lower bound and the upper bound */
+  var d='';pts.forEach(function(p,i){var t=Math.min(p[0],LOW_T);d+=(i?'L':'M')+sx(t).toFixed(1)+' '+sy(Math.min(y1,p[1])).toFixed(1);});
+  d+='L'+sx(LOW_T).toFixed(1)+' '+sy(2).toFixed(1)+'L'+sx(pts[0][0]).toFixed(1)+' '+sy(2).toFixed(1)+'Z';
+  mk('path',{d:d,'class':'f-band'},svg);
+  d='';pts.forEach(function(p,i){d+=(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1);});
+  mk('path',{d:d,'class':'l-c1'},svg);
+  UP.forEach(function(p){if(p[0]>=t0)mk('circle',{cx:sx(p[0]),cy:sy(p[1]),r:2.6,'class':'d-c1'},svg);});
+  /* lower bound: 2 until the claim, then 2.25 */
+  mk('path',{d:'M'+sx(pts[0][0])+' '+sy(2)+'L'+sx(LOW_T)+' '+sy(2),'class':'l-c3'},svg);
+  mk('path',{d:'M'+sx(LOW_T)+' '+sy(2)+'L'+sx(LOW_T)+' '+(sy(2.25)+2.5)+'L'+sx(t1)+' '+(sy(2.25)+2.5),'class':'l-claim'},svg);
+  mk('circle',{cx:sx(LOW_T),cy:sy(2.25)+2.5,r:4,'class':'d-c3'},svg);
+  if(histView){
+    txt(svg,sx(yr(2026,8,17))+6,sy(2.371177)-8,'17 Aug: 2.371177','t-c1');
+    txt(svg,sx(yr(2026,10,6))-6,sy(2.25)-8,'6 Oct: 2.25','t-c1','end');
+    txt(svg,sx(LOW_T)-8,sy(2.125)+4,'25 Nov: claim','t-c3','end');
+    txt(svg,sx(yr(2026,8,6)),sy(2)-7,'lower bound 2','t-c3');
+  }else{
+    txt(svg,sx(1969.5),sy(2.807)-7,'1969: 2.807','t-c1');
+    txt(svg,sx(1990.5)+4,sy(2.3755)-8,'1990: 2.376','t-c1');
+    txt(svg,sx(yr(2026,10,6))-7,sy(2.25)+4,'Oct 2026: 2.25','t-c1','end');
+    txt(svg,sx(1970),sy(2)-7,'lower bound 2','t-c3');
+  }
+  txt(svg,w-m.r-2,12,'bound for the exponent ω','lbl','end');
+}
+
+/* ---------- figure 3: the recurrence x(j+1) = h^(-gamma) x(j) + h^eta ---------- */
+/* Example values of this page. The paper proves only that such constants exist. */
+var W=1024,SIGMA=0.4,ETA=0.2,JMAX=20;
+var gS=$('gS');
+function drawRec(){
+  var gam=+gS.value,x=[W*W],floor=Math.pow(W,SIGMA),first=-1;
+  for(var j=1;j<=JMAX;j++)x.push(x[j-1]/Math.pow(W,gam)+Math.pow(W,ETA));
+  for(j=0;j<=JMAX;j++){if(x[j]<floor){first=j;break;}}
+  $('gOut').innerHTML='<math><mi>γ</mi><mo>=</mo><mn>'+L.sgn(gam,2)+'</mn></math>';
+  var svg=$('cRec'),h=250,w=frame(svg,h),m={l:40,r:12,t:12,b:26},Y=6.4;
+  function sx(jj){return m.l+jj/JMAX*(w-m.l-m.r);}
+  function sy(v){return h-m.b-(Math.log(v)/Math.LN10)/Y*(h-m.t-m.b);}
+  var g=mk('g',{'class':'ax'},svg);
+  for(var e=0;e<=6;e+=(w<430?2:1)){mk('line',{x1:m.l,x2:w-m.r,y1:sy(Math.pow(10,e)),y2:sy(Math.pow(10,e))},g);mk('text',{x:m.l-6,y:sy(Math.pow(10,e))+4,'text-anchor':'end'},g).textContent=pow10(e);}
+  [0,5,10,15,20].forEach(function(jj){mk('text',{x:sx(jj),y:h-7,'text-anchor':jj===0?'start':jj===JMAX?'end':'middle'},g).textContent=jj===0?'round 0':String(jj);});
+  mk('line',{x1:m.l,x2:w-m.r,y1:sy(floor),y2:sy(floor),'class':'l-c3'},svg);
+  txt(svg,w-m.r-4,sy(floor)-7,'floor: more than '+L.fmt(Math.round(floor))+' per bit','t-c3','end');
+  var d='';x.forEach(function(v,jj){d+=(jj?'L':'M')+sx(jj).toFixed(1)+' '+sy(v).toFixed(1);});
+  mk('path',{d:d,'class':'l-c1'},svg);
+  x.forEach(function(v,jj){mk('circle',{cx:sx(jj),cy:sy(v),r:jj===first?4.5:2.6,'class':jj===first?'d-c3':'d-c1'},svg);});
+  txt(svg,w-m.r-2,m.t+10,'cost per input bit','lbl','end');
+  $('rR0').textContent=L.fmt(x[0]);
+  $('rRf').textContent=L.fmt(Math.round(floor));
+  $('rRj').textContent=first<0?'after round '+JMAX:L.fmt(first);
+  $('rRp').textContent=L.sgn(2/gam,1);
+}
+gS.addEventListener('input',drawRec);
+
+/* ---------- figure 4: the tripod ---------- */
+/* D* = S - 1/R with S = a1 + a2 + a3 and R = 1/a1 + 1/a2 + 1/a3: Proposition 8.1 of the paper. */
+var tS=$('tS');
+function drawTri(){
+  var t=+tS.value,S=2+t,D=S-1/(2+1/t),P=2*S;
+  $('tOut').innerHTML='<math><msub><mi>a</mi><mn>3</mn></msub><mo>=</mo><mn>'+L.sgn(t,1)+'</mn></math>';
+  var svg=$('cTri'),w0=Math.max(260,svg.getBoundingClientRect().width||640),u=Math.min(110,(w0-70)/3.6),h=Math.round(2*0.866*u+56),w=frame(svg,h);
+  var cx=Math.max(34+0.5*u,(w-3.6*u)/2+0.5*u),cy=h/2;
+  var A=[cx-0.5*u,cy-0.866*u],B=[cx-0.5*u,cy+0.866*u],C=[cx+t*u,cy];
+  mk('path',{d:'M'+cx+' '+cy+'L'+A[0]+' '+A[1]+'M'+cx+' '+cy+'L'+B[0]+' '+B[1],'class':'l-arm'},svg);
+  mk('path',{d:'M'+cx+' '+cy+'L'+C[0]+' '+C[1],'class':'l-arm'},svg);
+  mk('circle',{cx:cx,cy:cy,r:4,'class':'d-ink'},svg);
+  [[A,'A',-12,-8,'end'],[B,'B',-12,16,'end'],[C,'C',10,4,'start']].forEach(function(p){
+    mk('circle',{cx:p[0][0],cy:p[0][1],r:6,'class':'d-hollow'},svg);
+    txt(svg,p[0][0]+p[2],p[0][1]+p[3],p[1],'t-ink',p[4]);
+  });
+  txt(svg,cx-0.25*u+8,cy-0.433*u+2,'1','t-c1');
+  txt(svg,cx-0.25*u+8,cy+0.433*u+8,'1','t-c1');
+  txt(svg,cx+t*u/2,cy-9,L.sgn(t,1),'t-c1','middle');
+  txt(svg,cx-8,cy+4,'centre','lbl','end');
+  $('rTp').textContent=L.sgn(P,2);
+  $('rTd').textContent=L.sgn(D,3);
+  $('rTr').textContent=L.sgn(P/D,4);
+}
+tS.addEventListener('input',drawTri);
+
+L.onChange(function(){drawCost();drawHist();drawRec();drawTri();});
+})();
+</script>
+</body>
+</html>
