@@ -114,11 +114,15 @@ A term in the text shows its glossary entry in a small box: on hover with a mous
 </dl>
 ```
 
+- The glossary is the section with the heading "Terms", before "How sure is this?". `terms` skips a section with this heading, because it defines the terms.
 - The id of an entry starts with `t-`. `check` rejects a term without an entry and a link to a missing id.
 - A symbol in a formula: `<mi data-term="t-w" tabindex="0">w</mi>`. The `tabindex` lets the keyboard reach it, and `check` requires it. Put it on the `<mi>` itself, not on `<msub>`.
-- Mark the first use of a term on the first screen, in each section, and in each display formula. The reader then finds the tip in the part being read. More marks make the text restless.
+- Mark the first use of a term on the first screen, in each section, and in each display formula. The reader then finds the tip in the part being read. More marks make the text restless: at most about three marks and one link per paragraph. Drop the marks of the most familiar terms first.
+- A mark may hold the word and its symbol together: `<a class="term" href="#t-tau">optical depth <math><mi>τ</mi></math></a>`.
+- No link and mark on the same word. A project with an abbreviation: the mark goes on the abbreviation, and its entry ends with the link to the project site.
+- Symbols that an engineer knows (∫, ≥, Σ) need no mark. Neither does a term in a heading: the navigation copies the `<h2>`, and a card heading has the term in its text.
 - The `<dt>` is the term as the reader sees it, with its full name: `CMB (cosmic microwave background)`. The `<dd>` has one to three sentences and may end with one link to read more. A term inside a `<dd>` stays plain text in the box, so do not mark terms there.
-- On a page with German text, the German value of a key holds the same `<a class="term">` as the English. `check` tests the links in both.
+- On a page with German text, the German value of a key holds the same `<a class="term">` as the English. Where German uses another word (MEZ for UTC), the mark goes on that word and the German entry explains both. `check` tests the links in both languages.
 - `python3 tools/learn.py terms <slug>` shows `tip` for each abbreviation and symbol that has one. `try` opens and closes every tip once.
 
 ### Link to another site

@@ -46,7 +46,7 @@ The page text uses plain language: short, exact sentences are fast to read, also
 
 - Software terms need no explanation: "cache miss", "race condition", "amortized O(1)".
 - Keep the exact term. "Latency" is better than "a kind of delay".
-- Every term from outside software, every abbreviation and every symbol gets a glossary entry and a term tip ("Term tip" in `components.md`). The reader is new to the field and hovers over a term that the text explained three sections earlier. This includes an advanced term of the field that the text uses without a definition, for example "optical depth", and each symbol of a formula.
+- Every term from outside software, every abbreviation and every symbol of the field gets a glossary entry and a term tip ("Term tip" in `components.md`). The reader is new to the field and hovers over a term that the text explained three sections earlier. This includes an advanced term of the field that the text uses without a definition, for example "optical depth", and each symbol of a formula.
 
 ## Links
 

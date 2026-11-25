@@ -822,12 +822,13 @@ def cmd_terms(slug):
     # An abbreviation has two or more capitals or digits (DES, DR2, ΛCDM). A symbol is a Greek letter or a
     # mathematical sign. The minus sign and the multiplication dot are in every text, so they are left out.
     token = re.compile(r"(?<![A-Za-z\u0370-\u03ff])[A-Z\u0391-\u03a9][A-Z0-9\u0391-\u03a9]+(?![a-z])|[\u0370-\u03ff]|[\u2200-\u2211\u2213-\u22c4\u22c6-\u22ff]")
+    tipped_terms = {m.group(0) for m in token.finditer(tipped)}  # whole terms: "DES" does not cover "DE"
     seen, section = {}, "first screen"
     for line in out.getvalue().split("\n"):
         if line.startswith("## "):
-            section = "section " + line[3:5] if line[6:] != "Sources" else None
+            section = "section " + line[3:5] if line[6:] not in ("Sources", "Terms") else None
             line = line[6:]
-        if section is None:  # the titles of the sources are not text of the page
+        if section is None:  # the titles of the sources are not text of the page, and the glossary defines the terms
             continue
         if line.startswith("(label for screen readers)"):
             continue
@@ -841,7 +842,7 @@ def cmd_terms(slug):
             seen[m.group(0)] = (section, sentence if len(sentence) <= 170 else sentence[:167] + "...")
     untipped = 0
     for term, (where, sentence) in seen.items():
-        tip = "tip" if term in tipped else "-"
+        tip = "tip" if term in tipped_terms else "-"
         untipped += tip == "-"
         print("%-8s %-4s %-13s %s" % (term, tip, where, sentence))
     print("\n%d terms, %d without a tip. For each one, this sentence or the sentence before it must say what the term means. "
