@@ -7,8 +7,10 @@
      Learn.t({en:..,de:..})  select the text for the current language
      Learn.onChange(fn)      call fn at start, and again when language or page width changes
      Learn.mk, Learn.plot, Learn.ticks, Learn.fmt, Learn.sgn, Learn.short   chart helpers
+     Learn.frame, Learn.label, Learn.press                                  helpers for a chart without Learn.plot
    Review mode, for pictures of a page (tools/learn.py shots uses it). Add to the address:
      ?theme=dark   ?lang=de   ?only=s03 (show one section; "top" is the page header)   ?review=1
+     ?set=id:value,id:value (move controls: a value for a slider or a select, the number of the button for a group)
    These settings apply to one page view. The page does not store them.
    Term tips: <a class="term" href="#t-x"> shows the glossary entry with id t-x in a small box (see initTips).
    Comments: the footer button [data-comments-on] loads comments.js and comments.css from this folder.
@@ -280,6 +282,15 @@ function start(){
   }
   started=true;
   applyLang(lang,false);
+  if(Q.set){
+    /* Review mode: a picture of a figure in a position that the reader can reach, but that the page does not start in. */
+    Q.set.split(',').forEach(function(kv){
+      var i=kv.indexOf(':'),e=i>0?document.getElementById(kv.slice(0,i)):null,v=kv.slice(i+1);
+      if(!e)return;
+      if(e.tagName==='INPUT'||e.tagName==='SELECT'){e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}
+      else{var b=e.tagName==='BUTTON'?e:e.querySelectorAll('button')[+v];if(b)b.click();}
+    });
+  }
   if(Q.review||Q.only){
     /* The tool reads this value to make a picture with the exact height of the content. */
     var measure=function(){root.setAttribute('data-review-height',Math.ceil(document.documentElement.scrollHeight));};
@@ -296,6 +307,12 @@ function sgn(v,d){var s=Math.abs(v).toLocaleString(loc(),{maximumFractionDigits:
 function short(v){var a=Math.abs(v),s;if(a>=1e6)s=(a/1e6).toLocaleString(loc())+'M';else if(a>=1e3)s=(a/1e3).toLocaleString(loc())+'k';else s=a.toLocaleString(loc());return (v<0?'−':'')+s;}
 function ticks(lo,hi,n){var raw=(hi-lo)/n,p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p,step=(m<1.5?1:m<3.5?2:m<7.5?5:10)*p,out=[];for(var v=Math.ceil(lo/step-1e-9)*step;v<=hi+step*1e-6;v+=step)out.push(+v.toPrecision(10));return out;}
 function clear(svg){while(svg.firstChild)svg.removeChild(svg.firstChild);}
+/* For a chart that does not use plot: empty the <svg>, give it the height h at its real pixel width, return the width. */
+function frame(svg,h){var w=Math.max(260,svg.getBoundingClientRect().width||640);svg.setAttribute('viewBox','0 0 '+w+' '+h);svg.setAttribute('height',h);clear(svg);return w;}
+/* A text in a chart. cls is "lbl" if left out, anchor is "start", "middle" or "end". */
+function label(svg,x,y,s,cls,anchor){var t=mk('text',{x:x,y:y,'class':cls||'lbl'},svg);if(anchor)t.setAttribute('text-anchor',anchor);t.textContent=s;return t;}
+/* Mark one button of a group (<div class="seg">) as pressed. */
+function press(group,btn){[].forEach.call(group.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',b===btn?'true':'false');});}
 /* Prepare an <svg class="chart"> at the real pixel width, draw grid and axis labels,
    and return the scale functions. o = {h, x0, x1, y0, y1}. Text keeps its real size on a phone. */
 function plot(svg,o){
@@ -316,6 +333,6 @@ window.Learn={
   t:function(o){return o[lang]!=null?o[lang]:o.en;},
   store:store,
   onChange:function(f){listeners.push(f);if(started){try{f();}catch(e){if(window.console)console.error(e);}}},
-  mk:mk,plot:plot,ticks:ticks,fmt:fmt,sgn:sgn,short:short,clear:clear
+  mk:mk,plot:plot,ticks:ticks,fmt:fmt,sgn:sgn,short:short,clear:clear,frame:frame,label:label,press:press
 };
 })();

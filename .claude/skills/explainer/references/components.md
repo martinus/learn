@@ -99,6 +99,7 @@ Write mathematics as MathML, which browsers draw without a library. `writing.md`
 - Write a sign as `<mo form="prefix">&minus;</mo>` when it follows another operator, as in "= −1". Without it the minus gets the wide spacing of a subtraction.
 - Set a symbol as `<math>` in every HTML text: headings, labels, legends, number boxes, cards and the glossary. For a value that the script writes, set `innerHTML` with `<math>`. Text inside an SVG chart stays plain, because MathML does not work there.
 - Do not write `xmlns` on `<math>`. HTML does not need it.
+- A power of ten in the text is a formula too: `<math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>`. `check` rejects `<sup>` and `<sub>`, because they lift the line. A line can break between a formula and its unit, so keep them together: `<span class="nw">1.7 &times; <math>...</math>&nbsp;m</span>`. Text in an SVG chart uses the Unicode signs (10⁻¹⁵).
 - A formula wider than a phone scrolls inside its block, and `try` reports it. Aim for under about 330 px at 390 px width: name a long term in the text and use the name.
 - The formula uses a math font of the device and loads none. A device without one shows plainer signs, and a tall root or bracket does not grow there. So keep the content of `<msqrt>` and of stretching brackets flat.
 
@@ -265,6 +266,11 @@ L.short(250000)               // "250k": short axis label
 L.mk('path', {d: d, 'class': 'l-c1'}, svg)   // create an SVG element and append it
 L.clear(svg)                  // remove all children
 
+// For a drawing without axes: empty the svg, set its height, return its real width.
+var w = L.frame(svg, 240);
+L.label(svg, x, y, 'text', 't-c3', 'end')   // chart text; class "lbl" and anchor "start" if left out
+L.press(group, button)        // mark one button of a <div class="seg"> as pressed
+
 // Prepare a chart at its real pixel width. Draws the grid and the axis labels.
 var p = L.plot(svg, {h: 220, x0: 0, x1: 100, y0: 0, y1: 30});
 p.sx(x); p.sy(y);             // data value to pixel
@@ -296,7 +302,7 @@ Each of these happened on an earlier page.
 - **A chart in a hidden element has no width.** Redraw it when it becomes visible, or do not hide it.
 - **A fixed-size picture inside a wide figure does not grow.** Check it at 1440 px.
 - **Sticky parts cover content.** After a jump to a section, the site bar and the section row sit above the text. The theme reserves space with `scroll-padding-top`. If you add a sticky part, test a jump to every section.
-- **Pictures find what `check` cannot:** text that touches, a row that covers a heading, a menu with a transparent background. Look at every picture.
+- **Pictures find what `check` cannot:** text that touches, a row that covers a heading, a menu with a transparent background. A fault can exist in one position of a control only: at the end of a slider, the line of the selected value crossed a label. Look at every picture, also those of the end positions (`shots <slug> "id:value"`).
 
 ## A second language
 
@@ -323,6 +329,7 @@ URL settings for screenshots. They apply to one page view and are not stored. Co
 | `?lang=de` or `?lang=en` | language, on a page with German text |
 | `?only=s03` | show only section 03. `?only=top` shows only the page header |
 | `?review=1` | the page writes its content height into `data-review-height` on `<html>` |
+| `?set=year:1950,orbitals:4` | move controls before the picture: the id of a slider or a select with its value, or the id of a button group with the number of the button, counted from 0 |
 
 ## Comments
 

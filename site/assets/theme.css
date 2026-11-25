@@ -206,6 +206,7 @@ th,td{text-align:right;padding:.4rem .5rem;border-bottom:1px solid var(--rule);f
 th{font:500 .74rem var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 th:first-child,td:first-child{text-align:left}
 .scroll-x{overflow-x:auto}
+.nw{white-space:nowrap}
 
 .steps{list-style:none;padding:0;display:flex;flex-direction:column;gap:.85rem}
 .steps li{display:grid;grid-template-columns:5.2rem 1fr;gap:.7rem;font-size:.96rem}

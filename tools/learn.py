@@ -8,6 +8,9 @@
                                           for example: new 2026-12-01-how-gps-works
   python3 tools/learn.py shots [SLUG]     write pictures of the pages into _shots/, to look at
                                           the result (needs Chrome). Without SLUG: all pages.
+  python3 tools/learn.py shots SLUG SET   add pictures with controls in another position. SET is a list
+                                          such as year:1950,orbitals:4 with the id of a slider and its
+                                          value, or the id of a button group and the number of the button
   python3 tools/learn.py texts SLUG       print the text of one explainer, to read it one more time.
                                           For a page with German text: English and German, key by key
   python3 tools/learn.py terms SLUG       list each abbreviation and each Greek or mathematical symbol of one
@@ -41,6 +44,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -197,6 +201,10 @@ class Explainer:
             if re.search(r"font-mono|monospace", style):
                 self.err('the <style> of the page uses a fixed-width font. It is for code only: '
                          'use <pre class="code"> for a block and class="mono" for a code word, and the text font for all other text')
+        # <sup> lifts its line, and a line can break between it and a unit. A formula in MathML does neither.
+        if re.search(r"<su[pb]\b", src):
+            self.err('the page uses <sup> or <sub>. Write a power or an index as a formula, for example '
+                     '<math><msup><mn>10</mn><mn>6</mn></msup></math>, and keep it on one line with its unit: <span class="nw">')
         for bad in ("lorem ipsum", "TODO", "FIXME"):
             if bad.lower() in src.lower():
                 self.err('placeholder text found: "%s"' % bad)
@@ -617,7 +625,9 @@ def take_shot(chrome, job):
     return target if target.is_file() else None
 
 
-def cmd_shots(slug):
+def cmd_shots(slug, settings=None):
+    """settings: "id:value,id:value". Then the pictures show these controls in the given position, only for the
+    sections that contain one of them, and the pictures at rest stay in the folder."""
     chrome = find_chrome()
     if not chrome:
         print("Chrome or Chromium is necessary for pictures, but it was not found. Set the variable CHROME to its path.", file=sys.stderr)
@@ -628,19 +638,31 @@ def cmd_shots(slug):
     if slug and not items:
         print("No explainer with the name %s." % slug, file=sys.stderr)
         return 1
-    if SHOTS.exists():
+    if SHOTS.exists() and not settings:
         shutil.rmtree(SHOTS)
     jobs = []
     for it in items:
         folder = SHOTS / it.slug
-        folder.mkdir(parents=True)
+        folder.mkdir(parents=True, exist_ok=True)
         built = OUT / it.slug / "index.html"
-        parts = ["top"] + re.findall(r'<section id="(s\d+)">', built.read_text(encoding="utf-8"))
+        text = built.read_text(encoding="utf-8")
+        parts = ["top"] + re.findall(r'<section id="(s\d+)">', text)
+        extra, mark = "", ""
+        if settings:
+            ids = [kv.split(":")[0] for kv in settings.split(",")]
+            missing = [i for i in ids if 'id="%s"' % i not in text]
+            if missing:
+                print("No element with the id %s in %s." % (", ".join(missing), it.slug), file=sys.stderr)
+                return 1
+            # Only the sections that contain one of the controls.
+            bodies = re.split(r'<section id="(s\d+)">', text)
+            parts = [bodies[k] for k in range(1, len(bodies), 2) if any('id="%s"' % i in bodies[k + 1] for i in ids)]
+            extra, mark = "&set=" + urllib.parse.quote(settings, safe=":,"), "-set"
         for width, theme, lang in VARIANTS:
             lang = lang if lang in it.langs() else "en"
             for part in parts:
-                jobs.append((built, "only=%s&theme=%s&lang=%s" % (part, theme, lang), width,
-                             folder / ("%d-%s-%s-%s.png" % (width, theme, lang, part))))
+                jobs.append((built, "only=%s&theme=%s&lang=%s%s" % (part, theme, lang, extra), width,
+                             folder / ("%d-%s-%s-%s%s.png" % (width, theme, lang, part, mark))))
     if not slug:
         (SHOTS / "home").mkdir(parents=True)
         for width, theme, lang in VARIANTS:
@@ -652,7 +674,10 @@ def cmd_shots(slug):
     for f in failed:
         print("ERROR  no picture: " + f, file=sys.stderr)
     print("Wrote %d picture(s) into %s/. One file for each section: width, colour mode, language, section." % (len(jobs) - len(failed), SHOTS.relative_to(ROOT)))
-    print("These pictures show the page at rest. They do not show what a slider or a button does.")
+    if settings:
+        print("These pictures end with -set and show the controls at: " + settings)
+    else:
+        print('These pictures show the page at rest. For another position of a control: shots SLUG "id:value,id:value".')
     return 1 if failed else 0
 
 
@@ -840,9 +865,9 @@ def cmd_terms(slug):
     # The text of every term with a tip (<a class="term">, data-term in a formula).
     tipped = " ".join(strip_tags(m) for m in re.findall(r'<a\b[^>]*class="term"[^>]*>(.*?)</a>', src, re.S)) + " " + \
         " ".join(strip_tags(m) for m in re.findall(r'<(\w+)\b[^>]*data-term="[^"]*"[^>]*>(.*?)</\1>', src, re.S) for m in [m[1]])
-    # An abbreviation has two or more capitals or digits (DES, DR2, ΛCDM). A symbol is a Greek letter or a
+    # An abbreviation has two or more capitals or digits (DES, DR2, ΛCDM), also with a plural s (LEDs). A symbol is a Greek letter or a
     # mathematical sign. The minus sign and the multiplication dot are in every text, so they are left out.
-    token = re.compile(r"(?<![A-Za-z\u0370-\u03ff])[A-Z\u0391-\u03a9][A-Z0-9\u0391-\u03a9]+(?![a-z])|[\u0370-\u03ff]|[\u2200-\u2211\u2213-\u22c4\u22c6-\u22ff]")
+    token = re.compile(r"(?<![A-Za-z\u0370-\u03ff])[A-Z\u0391-\u03a9][A-Z0-9\u0391-\u03a9]+(?=s?(?![A-Za-z]))|[\u0370-\u03ff]|[\u2200-\u2211\u2213-\u22c4\u22c6-\u22ff]")
     tipped_terms = {m.group(0) for m in token.finditer(tipped)}  # whole terms: "DES" does not cover "DE"
     seen, section = {}, "first screen"
     for line in out.getvalue().split("\n"):
@@ -898,7 +923,7 @@ def main(argv):
     if cmd == "new" and len(argv) == 3:
         return cmd_new(argv[2])
     if cmd == "shots":
-        return cmd_shots(argv[2] if len(argv) > 2 else None)
+        return cmd_shots(argv[2] if len(argv) > 2 else None, argv[3] if len(argv) > 3 else None)
     if cmd == "texts" and len(argv) == 3:
         return cmd_texts(argv[2])
     if cmd == "terms" and len(argv) == 3:
