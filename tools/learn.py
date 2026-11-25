@@ -433,6 +433,15 @@ def load_all():
     for folder in sorted(SITE.iterdir()):
         if folder.is_dir() and folder.name != "assets":
             items.append(Explainer(folder))
+    # The home page inlines every cover into one document, so an id in two covers takes the wrong gradient.
+    owner = {}
+    for it in items:
+        cover = it.folder / "cover.svg"
+        if cover.is_file():
+            for i in set(re.findall(r'\bid="([^"]+)"', cover.read_text(encoding="utf-8"))):
+                if i in owner:
+                    it.err('cover.svg uses the id "%s", and the cover of %s uses it too. Start each id with a prefix for the page.' % (i, owner[i]))
+                owner.setdefault(i, it.slug)
     return items
 
 

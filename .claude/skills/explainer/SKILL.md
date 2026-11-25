@@ -99,7 +99,7 @@ In `<script type="application/json" id="explainer-meta">`:
 - `tags`: one to three, from `site.json`. A new tag needs an English and a German name there, because the home page is bilingual.
 - `model`: your own model name, as exactly as you know it. Do not copy it from another page.
 
-`cover.svg`: `viewBox="0 0 320 180"`, one simple picture of the main idea, theme colour variables, no text.
+`cover.svg`: an illustration of the main idea, not a chart from the page. Rules: "Cover" in `references/components.md`.
 
 ### 8. Verify
 
