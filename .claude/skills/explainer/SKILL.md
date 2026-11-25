@@ -45,7 +45,7 @@ python3 tools/learn.py new YYYY-MM-DD-slug   # copy the template into site/
 python3 tools/learn.py check                 # validate all pages, change nothing
 python3 tools/learn.py shots [slug]          # build, then screenshots into _shots/ (needs Chrome)
 python3 tools/learn.py try slug              # use every slider and button once, report script errors (needs Chrome)
-python3 tools/learn.py texts slug            # page text as plain lines, for the final read
+python3 tools/learn.py texts slug            # page text as plain lines and its word count, for the final read
 python3 tools/learn.py terms slug            # each abbreviation and symbol with the sentence of its first use
 python3 tools/learn.py serve                 # build, then http://localhost:8000
 ```
@@ -76,7 +76,7 @@ Decide before you write HTML:
 
 ### 4. Scaffold
 
-`python3 tools/learn.py new YYYY-MM-DD-slug` with today's date. Slug: lowercase letters, digits, hyphens, short. The folder name is the permanent URL. The template is full of `TODO`, and `check` fails until every one is replaced. This is intended.
+`python3 tools/learn.py new YYYY-MM-DD-slug` with today's date. Slug: lowercase letters, digits, hyphens, short. The folder name is the permanent URL. The page and the cover of the template are full of `TODO`, and `check` fails until every one is replaced. This is intended.
 
 ### 5. Write
 
@@ -108,12 +108,12 @@ In `<script type="application/json" id="explainer-meta">`:
 Repeat until a full pass finds nothing: run, look, fix.
 
 1. `python3 tools/learn.py check` reports no errors.
-2. `python3 tools/learn.py shots <slug>`, then open every picture in `_shots/<slug>/`. Files are `<width>-<mode>-<lang>-<part>.png`: 390 px light, 390 px dark, 1440 px light, for `top` and each section. Every earlier page had a layout fault that `check` did not catch and the pictures showed. Your image tool scales down a picture that is taller than about 2,000 px, and small faults then disappear. Cut such a picture into parts first, for example `magick in.png -crop 390x1250 +repage part-%d.png`.
+2. `python3 tools/learn.py shots <slug>`, then open every picture in `_shots/<slug>/`. Files are `<width>-<mode>-<lang>-<part>.png`: 390 px light, 390 px dark, 1440 px light, for `top` and each section. Every earlier page had a layout fault that `check` did not catch and the pictures showed. Your image tool scales down a picture that is taller than about 2,000 px, and small faults then disappear. Cut such a picture into parts first, for example `magick in.png -crop 390x1250 +repage part-%d.png`. Then join the parts side by side, so that one look covers a whole section: `magick part-*.png -background gray +smush 12 sheet.png`.
 3. Open `_site/<slug>/share.png` if the build wrote it. The title fits and the cover is clear.
-4. The pictures show the page at rest. `python3 tools/learn.py try <slug>` uses every slider and button once at 390 px. It reports script errors, a result that is not a number, a term tip that does not open, and a page that is wider than the window. Read its lines: each control must change what its figure shows. With a browser tool, also run `serve`, scroll at 390 px and open the section list under the site bar. Without one, say in the pull request that nobody scrolled the page by hand.
+4. The pictures show the page at rest. `python3 tools/learn.py try <slug>` uses every slider and button once at 390 px. It reports script errors, a result that is not a number, a term tip that does not open, a formula that is wider than its block, and a page that is wider than the window. Read its lines: each control must change what its figure shows. With a browser tool, also run `serve`, scroll at 390 px and open the section list under the site bar. Without one, say in the pull request that nobody scrolled the page by hand.
 5. Second fact check. Re-open every source and compare every fact, number, name and date on the page with it. Include summary cards, captions, glossary entries and `aria-label` texts, and compare what a caption says about a chart with the data in the page script. Remove what you cannot confirm. Search once more for news that is newer than your sources.
 6. Find every statement without a source. It is marked as an inference, or it is stable textbook knowledge. Otherwise find a source or delete it.
-7. `python3 tools/learn.py texts <slug>` and read the whole text as the reader. Each sentence is clear without the sentences after it. Each section tells this reader something new. Then `python3 tools/learn.py terms <slug>`: for each abbreviation and symbol in its list, the sentence shown or the one before it says what the term means, and the term has `tip`. Then look for terms that the list cannot find, such as "optical depth", and give them a tip too. Read the opening and the cards once more alone: they need no knowledge from a section.
+7. `python3 tools/learn.py texts <slug>` and read the whole text as the reader. Each sentence is clear without the sentences after it. Each section tells this reader something new. The last line gives the number of words. If it is far above the length in `references/writing.md`, shorten the page or say in the pull request why it is longer. Then `python3 tools/learn.py terms <slug>`: for each abbreviation and symbol in its list, the sentence shown or the one before it says what the term means, and the term has `tip`. Then look for terms that the list cannot find, such as "optical depth", and give them a tip too. Read the opening and the cards once more alone: they need no knowledge from a section.
 8. Compile and run every code example if a compiler is available.
 
 Then go through "Done when".

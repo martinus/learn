@@ -35,7 +35,7 @@ Use the highest level that you can read.
 ## Read the source itself
 
 - Read the full text. A search snippet, an abstract or a press release is not the source, because it shows a sentence without its context.
-- A summary from a fetch tool or a subagent is not the source either. It rewords the text and can change a number: in one session a table value of 6 came back as 66. Use the summary to find the passage. Then load the raw page (`curl`), search it for each number that goes on the page, and read the lines around it. For a paper on arXiv, the full text is at `https://arxiv.org/html/<id>`.
+- A summary from a fetch tool or a subagent is not the source either. It rewords the text and can change a number: in one session a table value of 6 came back as 66. Use the summary to find the passage. Then load the raw page (`curl`), search it for each number that goes on the page, and read the lines around it. For a paper on arXiv, the full text is at `https://arxiv.org/html/<id>`. For a PDF, `pdftotext -layout` gives text that `grep` can search. For a post on X, `https://cdn.syndication.twimg.com/tweet-result?id=<id>&token=a` returns the text as JSON, and of a long post only the first 280 characters.
 - If you saw only a snippet or an abstract (paywall), record that in the fact list and show it in the source entry on the page.
 - Read each number in context: unit, year, region, and what exactly was counted.
 - Numbers from two sources may be combined only when they measure the same thing. A combined number is an inference.
