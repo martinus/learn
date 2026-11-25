@@ -139,9 +139,11 @@ Only on request. The tool supports `en` and `de`. Any other language first needs
 - **Small correction:** fix the text and set `updated` to today.
 - **New state of a story:** research first (step 2). Then revise every place that repeats the state: status box, summary cards, lists, body text, `summary` in the metadata, "How sure is this?" and the page note. They must agree, so re-read the whole page instead of appending a paragraph. Update every "status of ..." date, add an entry at the top of the change list (`details.changes`; add the list if the page has none), and set `updated` to today.
 - **A page that has German text keeps it.** Change the German value of a key in the same commit as the English text. `check` finds a missing key but not a stale translation. Remove German only on request.
+- **A new section in the middle** shifts the numbers of all later sections. Search the page for `section 0`, and with German text for `Abschnitt 0`, and correct every reference, also in the old entries of the change list. `check` cannot see a reference to the wrong section.
+- **Keep the reader of the page.** The two older pages address a lay reader. New text on them keeps that level and uses their pictures and terms, because two levels on one page serve neither reader.
 - The folder name never changes, because it is the URL.
 - If an old statement was wrong, say so in the pull request instead of silently replacing it.
-- Then do steps 8 to 10.
+- Then do steps 8 to 10. In step 8, the second fact check covers every fact that the change adds or edits and every state with a date. Say in the pull request which older facts you did not open again.
 
 ## Comments from the reader
 
