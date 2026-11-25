@@ -39,7 +39,7 @@ Use the highest level that you can read.
 - If you saw only a snippet or an abstract (paywall), record that in the fact list and show it in the source entry on the page.
 - Read each number in context: unit, year, region, and what exactly was counted.
 - Numbers from two sources may be combined only when they measure the same thing. A combined number is an inference.
-- Link the exact page, not the home page of a site. Open every link once more before the hand-over.
+- Link the exact page, not the home page of a site. Open every link once more before the hand-over, also the links in the text and in the glossary: `curl -sIL -o /dev/null -w '%{http_code} %{url_effective}\n' <url>` shows the status and where a redirect ends.
 
 ## Contested topics
 

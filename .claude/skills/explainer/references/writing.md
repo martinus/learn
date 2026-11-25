@@ -2,7 +2,7 @@
 
 Aim: the reader understands each sentence on the first reading and learns something from it.
 
-Contents: The reader · Sentences · Terms and comparisons · Formulas and code · Page structure · Numbers and times · Honesty in the text · German · Final read
+Contents: The reader · Sentences · Terms and comparisons · Links · Formulas and code · Page structure · Numbers and times · Honesty in the text · German · Final read
 
 ## The reader
 
@@ -15,7 +15,7 @@ This is Martin, the publisher. The page is public and others read it, so do not 
 
 **Knows, so do not explain:** programming, data structures, algorithms and their cost, how a computer works (memory, caches, threads, networks), the usual tools (compiler, Git, shell), and the mathematics and logic an engineer uses. Use the exact terms.
 
-**Does not know, so explain at first use, in one sentence:** terms of other fields (medicine, law, finance, biology, physics beyond school, history). An abbreviation and a symbol are terms too: say in words what CPL, Λ or σ stands for, and write "is proportional to" instead of ∝. The first use is where the reader meets the term, also in the opening or in a card. An entry in the glossary does not replace it. Specialist corners of software outside daily work (database internals, the inside of a machine learning model) also need an explanation, starting from what an engineer knows.
+**Does not know, so explain at first use, in one sentence:** terms of other fields (medicine, law, finance, biology, physics beyond school, history). An abbreviation and a symbol are terms too: say in words what CPL, Λ or σ stands for, and write "is proportional to" instead of ∝. The first use is where the reader meets the term, also in the opening or in a card. The term tip does not replace it: the sentence must be clear without a hover, because a phone has none. Specialist corners of software outside daily work (database internals, the inside of a machine learning model) also need an explanation, starting from what an engineer knows.
 
 **Depth:**
 
@@ -46,7 +46,14 @@ The page text uses plain language: short, exact sentences are fast to read, also
 
 - Software terms need no explanation: "cache miss", "race condition", "amortized O(1)".
 - Keep the exact term. "Latency" is better than "a kind of delay".
-- Three or more terms from outside software: add a short glossary near the end.
+- Every term from outside software, every abbreviation and every symbol of the field gets a glossary entry and a term tip ("Term tip" in `components.md`). The reader is new to the field and hovers over a term that the text explained three sections earlier. This includes an advanced term of the field that the text uses without a definition, for example "optical depth", and each symbol of a formula.
+
+## Links
+
+- Link the first mention of a project, an organisation, an instrument, a dataset, a paper, a law or a software to its own page. The reader can then go one step deeper without a search.
+- A glossary entry may end with one link to a page that explains the concept further, for a reader new to the field. An encyclopedia article (Wikipedia) is acceptable there, because it is reading help and not a source.
+- A link is not a source. A fact on the page still needs its entry in "Sources".
+- Write the link on the name itself: "the [Planck satellite]", not "see [here]". At most about one link per paragraph, so the text stays readable.
 - Use a comparison only where it speeds up a new idea, and prefer an exact one from software (a cache, a queue, a checksum, interface and implementation). Say where it stops holding. One comparison per idea.
 
 ## Formulas and code
@@ -66,7 +73,7 @@ The page text uses plain language: short, exact sentences are fast to read, also
 3. **Three summary cards.** A reader who stops here has the essentials. The reader sees them before any section, so they use only terms that the opening explained.
 4. **Numbered sections,** each answering one sub-question.
 5. **"What this means in practice":** if the topic affects the reader's work or life. If it does not, say so.
-6. **Glossary:** if needed.
+6. **Terms:** the glossary that the term tips show.
 7. **"How sure is this?"** then **"Sources"** (`research.md`).
 8. **Page note:** where the page simplifies, and the date of the facts.
 

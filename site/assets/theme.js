@@ -10,6 +10,7 @@
    Review mode, for pictures of a page (tools/learn.py shots uses it). Add to the address:
      ?theme=dark   ?lang=de   ?only=s03 (show one section; "top" is the page header)   ?review=1
    These settings apply to one page view. The page does not store them.
+   Term tips: <a class="term" href="#t-x"> shows the glossary entry with id t-x in a small box (see initTips).
    Comments: the footer button [data-comments-on] loads comments.js and comments.css from this folder.
    The browser remembers that comments are on, and loads them again on the next explainer.
    Text of a page: English is in the HTML. German is in <script type="application/json" id="i18n-de">,
@@ -50,6 +51,7 @@ var DICT={},EN={},EN_ARIA={},EN_TITLE='',i18nEls=[],ariaEls=[],listeners=[],star
 var LOC={en:'en-US',de:'de-DE'};
 
 function applyLang(l,save){
+  tipHide();
   if(langs.indexOf(l)<0)l=langs[0];
   lang=l;root.setAttribute('lang',l);
   if(save)store.set('learn-lang',l);
@@ -127,6 +129,83 @@ function markNav(){
   else{NAV.menu.hidden=true;NAV.btn.setAttribute('aria-expanded','false');}
 }
 
+/* ---- term tips: a term in the text shows its glossary entry in a small box ----
+   <a class="term" href="#t-cmb">CMB</a> in a sentence, or <mi data-term="t-w" tabindex="0">w</mi> in a formula,
+   points to <div id="t-cmb"><dt>..</dt><dd>..</dd></div> in <dl class="gloss">.
+   Mouse: the box opens on hover. Touch and click: a tap opens or closes it. Keyboard: it opens on focus, Escape closes it.
+   Without this script, the link jumps to the glossary entry. */
+var TIP=null;
+function tipEntry(el){
+  var id=el.getAttribute('data-term')||(el.getAttribute('href')||'').replace(/^#/,'');
+  var g=id&&document.getElementById(id);
+  return g&&g.querySelector('dt')&&g.querySelector('dd')?g:null;
+}
+function tipFind(t){return t&&t.closest?t.closest('a.term,[data-term]'):null;}
+function tipShow(el,pin){
+  clearTimeout(TIP.t);
+  var g=tipEntry(el);if(!g)return;
+  if(TIP.el&&TIP.el!==el)TIP.el.removeAttribute('aria-describedby');
+  TIP.el=el;TIP.pin=pin;
+  var b=TIP.box;
+  b.innerHTML='<b class="tip-t"></b><span class="tip-d"></span>';
+  b.firstChild.innerHTML=g.querySelector('dt').innerHTML;
+  b.lastChild.innerHTML=g.querySelector('dd').innerHTML;
+  /* a term inside the box stays plain text: one box at a time */
+  [].forEach.call(b.querySelectorAll('[data-term]'),function(e){e.removeAttribute('data-term');e.removeAttribute('tabindex');});
+  [].forEach.call(b.querySelectorAll('a.term'),function(a){var s=document.createElement('span');s.innerHTML=a.innerHTML;a.parentNode.replaceChild(s,a);});
+  [].forEach.call(b.querySelectorAll('[id]'),function(e){e.removeAttribute('id');});
+  el.setAttribute('aria-describedby','tip-pop');
+  b.hidden=false;tipPlace();
+}
+function tipHide(){
+  if(!TIP||!TIP.el)return;
+  clearTimeout(TIP.t);TIP.el.removeAttribute('aria-describedby');TIP.el=null;TIP.pin=false;TIP.box.hidden=true;
+}
+function tipPlace(){
+  var el=TIP.el,b=TIP.box;if(!el)return;
+  var rs=el.getClientRects(),r=rs.length?rs[0]:el.getBoundingClientRect(),m=8,vw=root.clientWidth,vh=window.innerHeight;
+  /* the site bar and the section row are sticky: the box must not go under them */
+  var top=m;[].forEach.call(document.querySelectorAll('.site-bar,.sec-now.on'),function(e){top=Math.max(top,e.getBoundingClientRect().bottom+m);});
+  /* 100vw in CSS counts the scroll bar, so the width limit comes from here */
+  b.style.left='0px';b.style.top='0px';b.style.maxWidth=Math.min(368,vw-2*m)+'px';
+  var w=b.offsetWidth,h=b.offsetHeight;
+  var x=Math.max(m,Math.min(r.left+r.width/2-w/2,vw-w-m));
+  var y=r.bottom+6;
+  if(y+h>vh-m&&r.top-6-h>=top)y=r.top-6-h;
+  b.style.left=Math.round(x+window.pageXOffset)+'px';b.style.top=Math.round(y+window.pageYOffset)+'px';
+}
+function initTips(){
+  if(!document.querySelector('a.term,[data-term]'))return;
+  var box=document.createElement('div');box.className='tip-pop';box.id='tip-pop';box.setAttribute('role','tooltip');box.hidden=true;
+  document.body.appendChild(box);
+  TIP={box:box,el:null,pin:false,t:0};
+  document.addEventListener('mouseover',function(e){
+    if(box.contains(e.target)){clearTimeout(TIP.t);return;}
+    var el=tipFind(e.target);if(!el)return;
+    clearTimeout(TIP.t);
+    if(el!==TIP.el)TIP.t=setTimeout(function(){tipShow(el,false);},120);
+  });
+  document.addEventListener('mouseout',function(e){
+    var from=box.contains(e.target)?box:tipFind(e.target);if(!from)return;
+    var to=e.relatedTarget;
+    if(to&&(from.contains(to)||box.contains(to)||(TIP.el&&TIP.el.contains(to))))return;
+    clearTimeout(TIP.t);
+    if(!TIP.pin)TIP.t=setTimeout(tipHide,250);
+  });
+  document.addEventListener('click',function(e){
+    var el=tipFind(e.target);
+    if(el&&!box.contains(el)){e.preventDefault();if(TIP.el===el&&TIP.pin)tipHide();else tipShow(el,true);return;}
+    if(!box.contains(e.target))tipHide();
+  });
+  document.addEventListener('focusin',function(e){
+    var el=tipFind(e.target);
+    if(el&&!box.contains(el)){if(el!==TIP.el)tipShow(el,false);}
+    else if(!box.contains(e.target))tipHide();
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&TIP.el){var el=TIP.el;tipHide();if(el.focus)el.focus();}});
+  window.addEventListener('resize',function(){if(TIP.el)tipPlace();});
+}
+
 /* ---- syntax colours for <pre class="code" data-lang="cpp"> ----
    Marks comments, strings, numbers and keywords. A block without data-lang stays plain.
    The site uses no packages, so this is a small scanner and no full parser. */
@@ -185,6 +264,7 @@ function start(){
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fire);
 
   buildNav();
+  initTips();
   [].forEach.call(document.querySelectorAll('pre.code[data-lang] > code'),colourCode);
   if(document.querySelector('main.explainer')&&!Q.review&&!Q.only){
     [].forEach.call(document.querySelectorAll('[data-comments-on]'),function(b){b.addEventListener('click',function(){store.set('learn-comments','on');loadComments(true);});});
