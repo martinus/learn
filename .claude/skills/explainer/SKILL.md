@@ -72,6 +72,7 @@ Decide before you write HTML:
 - One graphic per main section: what it shows at rest, and the one thing the reader can change.
 - Where a formula or code explains faster than prose: a formula for a mathematical relation, code for an algorithm, a data layout or an interface.
 - Where the page simplifies, and what is uncertain.
+- The terms that get a tip, and the pages that the text links to (`writing.md`, "Terms and comparisons" and "Links").
 
 ### 4. Scaffold
 
@@ -82,7 +83,8 @@ Decide before you write HTML:
 - Text: `references/writing.md`. Parts: `references/components.md`. Reuse existing theme parts instead of styling new ones.
 - No `data-i18n` attributes. They belong to pages with German text, and `check` rejects them on an English page.
 - Mark every inference and every uncertain statement in its own sentence.
-- The last two sections are "How sure is this?" and "Sources" (`<ul class="sources">`), followed by `<p class="page-note">`.
+- Mark each term from outside software as a term tip, with its entry in the "Terms" section. Link the first mention of a project, organisation, paper or tool to its own page.
+- The last three sections are "Terms", "How sure is this?" and "Sources" (`<ul class="sources">`), followed by `<p class="page-note">`.
 
 ### 6. Graphics
 
@@ -108,10 +110,10 @@ Repeat until a full pass finds nothing: run, look, fix.
 1. `python3 tools/learn.py check` reports no errors.
 2. `python3 tools/learn.py shots <slug>`, then open every picture in `_shots/<slug>/`. Files are `<width>-<mode>-<lang>-<part>.png`: 390 px light, 390 px dark, 1440 px light, for `top` and each section. Every earlier page had a layout fault that `check` did not catch and the pictures showed. Your image tool scales down a picture that is taller than about 2,000 px, and small faults then disappear. Cut such a picture into parts first, for example `magick in.png -crop 390x1250 +repage part-%d.png`.
 3. Open `_site/<slug>/share.png` if the build wrote it. The title fits and the cover is clear.
-4. The pictures show the page at rest. `python3 tools/learn.py try <slug>` uses every slider and button once at 390 px. It reports script errors, a result that is not a number, and a page that is wider than the window. Read its lines: each control must change what its figure shows. With a browser tool, also run `serve`, scroll at 390 px and open the section list under the site bar. Without one, say in the pull request that nobody scrolled the page by hand.
-5. Second fact check. Re-open every source and compare every fact, number, name and date on the page with it. Include summary cards, captions and `aria-label` texts, and compare what a caption says about a chart with the data in the page script. Remove what you cannot confirm. Search once more for news that is newer than your sources.
+4. The pictures show the page at rest. `python3 tools/learn.py try <slug>` uses every slider and button once at 390 px. It reports script errors, a result that is not a number, a term tip that does not open, and a page that is wider than the window. Read its lines: each control must change what its figure shows. With a browser tool, also run `serve`, scroll at 390 px and open the section list under the site bar. Without one, say in the pull request that nobody scrolled the page by hand.
+5. Second fact check. Re-open every source and compare every fact, number, name and date on the page with it. Include summary cards, captions, glossary entries and `aria-label` texts, and compare what a caption says about a chart with the data in the page script. Remove what you cannot confirm. Search once more for news that is newer than your sources.
 6. Find every statement without a source. It is marked as an inference, or it is stable textbook knowledge. Otherwise find a source or delete it.
-7. `python3 tools/learn.py texts <slug>` and read the whole text as the reader. Each sentence is clear without the sentences after it. Each section tells this reader something new. Then `python3 tools/learn.py terms <slug>`: for each abbreviation and symbol in its list, the sentence shown or the one before it says what the term means. Read the opening and the cards once more alone: they need no knowledge from a section.
+7. `python3 tools/learn.py texts <slug>` and read the whole text as the reader. Each sentence is clear without the sentences after it. Each section tells this reader something new. Then `python3 tools/learn.py terms <slug>`: for each abbreviation and symbol in its list, the sentence shown or the one before it says what the term means, and the term has `tip`. Then look for terms that the list cannot find, such as "optical depth", and give them a tip too. Read the opening and the cards once more alone: they need no knowledge from a section.
 8. Compile and run every code example if a compiler is available.
 
 Then go through "Done when".
@@ -197,7 +199,8 @@ Keep no list of lessons and no log of sessions: a lesson that is not a rule or a
 - [ ] Every inference and every uncertain statement is marked in its sentence, and "How sure is this?" is complete and true.
 - [ ] Every source entry has its kind and date, and its link opens the exact page.
 - [ ] Every code example is correct, and was compiled or is reported as not compiled.
-- [ ] Every term, abbreviation and symbol from outside software is explained where the reader first meets it (`terms`).
+- [ ] Every term, abbreviation and symbol from outside software is explained where the reader first meets it, and has a term tip (`terms`).
+- [ ] Every link in the text and in the glossary opens the exact page it names.
 - [ ] Section headings are short enough for the navigation.
 - [ ] The page note says where the page simplifies and gives the date of the facts.
 - [ ] `updated` is today.

@@ -224,7 +224,26 @@ th:first-child,td:first-child{text-align:left}
 
 dl.gloss{display:grid;grid-template-columns:1fr;gap:.7rem;font-size:.94rem}
 dl.gloss dt{font-weight:600} dl.gloss dd{margin:0;color:var(--muted)}
+dl.gloss > div{scroll-margin-top:6rem;border-radius:6px}
+dl.gloss > div:target{background:var(--tint);outline:6px solid var(--tint)}
 .sources{font-size:.9rem;padding-left:1.15rem;display:flex;flex-direction:column;gap:.35rem}
+
+/* A link to another site in the text carries a small arrow. The source list has no arrows: every entry there leaves the site. */
+main.explainer a[href^="http"]:not(.sources a)::after{content:"";display:inline-block;width:.6em;height:.6em;margin-left:.18em;vertical-align:.02em;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 1.5h6v6M10.5 1.5 3 9M1.5 4v6.5H8'/%3E%3C/svg%3E") no-repeat center/contain;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 1.5h6v6M10.5 1.5 3 9M1.5 4v6.5H8'/%3E%3C/svg%3E") no-repeat center/contain}
+
+/* term tip: a term in the text that shows its glossary entry in a box (theme.js, initTips).
+   The dotted line says "explained on hover or tap". It is not a link colour, because the term does not leave the page. */
+a.term{color:inherit;text-decoration:underline dotted;text-decoration-color:var(--muted);text-decoration-thickness:1.5px;text-underline-offset:.22em;cursor:help}
+a.term:hover,a.term[aria-describedby]{text-decoration-color:var(--c1);text-decoration-style:solid}
+math [data-term]{cursor:help;border-bottom:1.5px dotted var(--muted)}
+math [data-term]:hover,math [data-term][aria-describedby]{border-bottom-color:var(--c1);border-bottom-style:solid}
+math [data-term]:focus-visible{outline:2px solid var(--c1);outline-offset:2px;border-radius:2px}
+.tip-pop{position:absolute;z-index:30;left:0;top:0;width:max-content;max-width:min(23rem,calc(100vw - 16px));background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:.6rem .8rem .7rem;font-size:.9rem;line-height:1.45}
+.tip-pop[hidden]{display:none}
+.tip-pop .tip-t{display:block;font-weight:600;margin-bottom:.15rem}
+.tip-pop .tip-d{display:block}
 
 /* ---------- site footer ---------- */
 .site-foot{border-top:1px solid var(--rule);margin-top:1rem}
@@ -289,4 +308,4 @@ main.home{max-width:68rem;margin:0 auto;padding:2.6rem var(--gutter) 3rem;displa
   .brand span{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}.card{transition:none}}
-@media print{.site-bar,.site-foot nav,.seg,.rail,.next{display:none}body{background:#fff}main.explainer > section > figure{margin-inline:0}}
+@media print{.site-bar,.site-foot nav,.seg,.rail,.next,.tip-pop{display:none}body{background:#fff}main.explainer > section > figure{margin-inline:0}}

@@ -2,7 +2,7 @@
 
 All parts live in `site/assets/theme.css` and `site/assets/theme.js`. Use them as they are. `site/2026-11-21-riemann-hypothesis-claim/index.html` shows every part in use. That page has German text, so its elements carry `data-i18n` keys. An English page has none.
 
-Contents: Page frame · What the build adds · Colours · Text parts · Figures · Chart helpers · Rules for graphics · Pitfalls · A second language · Review mode · Cover
+Contents: Page frame · What the build adds · Colours · Text parts (with term tips and links) · Figures · Chart helpers · Rules for graphics · Pitfalls · A second language · Review mode · Cover
 
 ## Page frame
 
@@ -102,6 +102,29 @@ Write mathematics as MathML, which browsers draw without a library. `writing.md`
 - A formula wider than a phone scrolls inside its block. Aim for under about 330 px at 390 px width: name a long term in the text and use the name.
 - The formula uses a math font of the device and loads none. A device without one shows plainer signs, and a tall root or bracket does not grow there. So keep the content of `<msqrt>` and of stretching brackets flat.
 
+### Term tip
+
+A term in the text shows its glossary entry in a small box: on hover with a mouse, on a tap, and on keyboard focus. Without script, the term is a link to the entry. The text of the box lives only in the glossary, so the page explains each term once, and the glossary is the version for print and for screen readers.
+
+```html
+<p>... the <a class="term" href="#t-cmb">CMB</a> fixes the far end ...</p>
+
+<dl class="gloss">
+  <div id="t-cmb"><dt>CMB</dt><dd>Cosmic microwave background: ... <a href="https://...">ESA: Planck and the CMB</a></dd></div>
+</dl>
+```
+
+- The id of an entry starts with `t-`. `check` rejects a term without an entry and a link to a missing id.
+- A symbol in a formula: `<mi data-term="t-w" tabindex="0">w</mi>`. The `tabindex` lets the keyboard reach it, and `check` requires it. Put it on the `<mi>` itself, not on `<msub>`.
+- Mark the first use of a term on the first screen, in each section, and in each display formula. The reader then finds the tip in the part being read. More marks make the text restless.
+- The `<dt>` is the term as the reader sees it, with its full name: `CMB (cosmic microwave background)`. The `<dd>` has one to three sentences and may end with one link to read more. A term inside a `<dd>` stays plain text in the box, so do not mark terms there.
+- On a page with German text, the German value of a key holds the same `<a class="term">` as the English. `check` tests the links in both.
+- `python3 tools/learn.py terms <slug>` shows `tip` for each abbreviation and symbol that has one. `try` opens and closes every tip once.
+
+### Link to another site
+
+A normal `<a href="https://...">` in the text. The theme adds a small arrow, so the reader sees that the link leaves the page. The source list has no arrows. `check` rejects `http://`.
+
 ### Status box
 
 For a story in progress or one important limit. At most one per page, directly under the lead.
@@ -192,7 +215,7 @@ The section directly before "Sources". It uses the check list with three fixed p
 ```html
 <ol class="steps"><li><time>6 Oct</time><span>What occurred.</span></li></ol>
 
-<dl class="gloss"><div><dt>Term</dt><dd>One sentence.</dd></div></dl>
+<dl class="gloss"><div id="t-term"><dt>Term</dt><dd>One sentence.</dd></div></dl>   <!-- see "Term tip" -->
 
 <ul class="sources"><li><a href="https://...">Who: what</a> &middot; kind of source, date</li></ul>
 

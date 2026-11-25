@@ -199,6 +199,8 @@ class Explainer:
             if bad.lower() in src.lower():
                 self.err('placeholder text found: "%s"' % bad)
 
+        self.check_links(src, nums)
+
         keys = set(re.findall(r'data-i18n="([^"]+)"', src)) | set(re.findall(r'data-i18n-aria="([^"]+)"', src))
         dm = re.search(r'<script type="application/json" id="i18n-de">(.*?)</script>', src, re.S)
         if "de" in langs:
@@ -226,6 +228,47 @@ class Explainer:
         body = re.search(r'<main class="explainer">(.*?)</main>', src, re.S)
         words = len(strip_tags(body.group(1)).split()) if body else 0
         self.minutes = max(1, math.ceil(words / WORDS_PER_MINUTE))
+
+    def check_links(self, src, nums):
+        """Term tips and links inside the page. theme.js shows the glossary entry of a term in a box, so every
+        term must point to an entry. A link to a missing id does nothing, and nobody notices it on the page."""
+        body = re.search(r'<main class="explainer">(.*?)</main>', src, re.S)
+        if not body:
+            return
+        main = body.group(1)
+        # The German text holds the same links, so it is checked too.
+        dm = re.search(r'<script type="application/json" id="i18n-de">(.*?)</script>', src, re.S)
+        text = main
+        if dm:
+            try:
+                text += " ".join(str(v) for v in json.loads(dm.group(1)).values())
+            except ValueError:
+                pass  # the check of the German text reports it
+        ids = re.findall(r'\bid="([^"]+)"', main)
+        for i in sorted({i for i in ids if ids.count(i) > 1}):
+            self.err('the id "%s" is used more than one time' % i)
+        entries = set()
+        for gl in re.findall(r'<dl class="gloss">(.*?)</dl>', main, re.S):
+            for i in re.findall(r'<div id="([^"]+)"', gl):
+                if not i.startswith("t-"):
+                    self.err('the glossary entry id "%s" must start with "t-"' % i)
+                entries.add(i)
+        for tag in re.findall(r'<a\b[^>]*\bclass="term"[^>]*>', text):
+            h = re.search(r'href="#([^"]*)"', tag)
+            if not h or h.group(1) not in entries:
+                self.err('the term link %s points to no glossary entry. Write <a class="term" href="#t-x"> '
+                         'and give the entry <div id="t-x"> inside <dl class="gloss">' % tag)
+        for tag in re.findall(r'<[a-z]+\b[^>]*\bdata-term="[^"]*"[^>]*>', text):
+            if re.search(r'data-term="([^"]*)"', tag).group(1) not in entries:
+                self.err("the formula term %s points to no glossary entry" % tag)
+            if 'tabindex="0"' not in tag:
+                self.err('the formula term %s needs tabindex="0", so that the keyboard reaches it' % tag)
+        sections = {"s" + n for n in nums}
+        for target in set(re.findall(r'href="#([^"]*)"', text)):
+            if target not in ids and target not in sections and target not in LANGS:
+                self.err('a link points to "#%s", but the page has no element with this id' % target)
+        for url in set(re.findall(r'href="(http://[^"]*)"', text)):
+            self.err("the link %s uses http. Use https, or leave the link out if the site has no https" % url)
 
     # ----- output -----
     def langs(self):
@@ -644,6 +687,17 @@ setTimeout(function () {
       e.click();
       log.push((e.tagName === 'SUMMARY' ? 'list' : e.tagName === 'INPUT' ? 'checkbox' : 'button') + name(e) + ': ' + state(e));
     });
+    var terms = d.querySelectorAll('main a.term, main [data-term]'), tipBad = 0;
+    function tap(e) { e.dispatchEvent(new w.MouseEvent('click', {bubbles: true, cancelable: true})); }
+    [].forEach.call(terms, function (e) {
+      tap(e);
+      var b = d.getElementById('tip-pop');
+      if (!b || b.hidden || !b.textContent.trim()) { tipBad++; log.push('ERROR the term tip does not open: ' + name(e)); }
+      else { var r = b.getBoundingClientRect(); if (r.left < 0 || r.right > d.documentElement.clientWidth) { tipBad++; log.push('ERROR the term tip is wider than the window: ' + name(e)); } }
+      tap(e);
+      if (b && !b.hidden) { tipBad++; log.push('ERROR a second tap does not close the term tip: ' + name(e)); }
+    });
+    if (terms.length) log.push('term tips: ' + terms.length + ' used, ' + (terms.length - tipBad) + ' opened and closed');
     var bad = [].filter.call(d.querySelectorAll('main figure'), function (g) { return /NaN|undefined|Infinity/.test(g.textContent); });
     bad.forEach(function (g) { log.push('ERROR a figure shows NaN, undefined or Infinity: ' + g.textContent.trim().slice(0, 60)); });
     var wide = d.documentElement.scrollWidth, win = d.documentElement.clientWidth;
@@ -758,9 +812,13 @@ def cmd_terms(slug):
     if not page.is_file():
         print("No explainer with the name %s." % slug, file=sys.stderr)
         return 1
+    src = page.read_text(encoding="utf-8")
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
-        print_plain_text(page.read_text(encoding="utf-8"))
+        print_plain_text(src)
+    # The text of every term with a tip (<a class="term">, data-term in a formula).
+    tipped = " ".join(strip_tags(m) for m in re.findall(r'<a\b[^>]*class="term"[^>]*>(.*?)</a>', src, re.S)) + " " + \
+        " ".join(strip_tags(m) for m in re.findall(r'<(\w+)\b[^>]*data-term="[^"]*"[^>]*>(.*?)</\1>', src, re.S) for m in [m[1]])
     # An abbreviation has two or more capitals or digits (DES, DR2, ΛCDM). A symbol is a Greek letter or a
     # mathematical sign. The minus sign and the multiplication dot are in every text, so they are left out.
     token = re.compile(r"(?<![A-Za-z\u0370-\u03ff])[A-Z\u0391-\u03a9][A-Z0-9\u0391-\u03a9]+(?![a-z])|[\u0370-\u03ff]|[\u2200-\u2211\u2213-\u22c4\u22c6-\u22ff]")
@@ -781,9 +839,13 @@ def cmd_terms(slug):
             end = line.find(". ", m.end())
             sentence = line[start:end + 1 if end >= 0 else len(line)].strip()
             seen[m.group(0)] = (section, sentence if len(sentence) <= 170 else sentence[:167] + "...")
+    untipped = 0
     for term, (where, sentence) in seen.items():
-        print("%-8s %-13s %s" % (term, where, sentence))
-    print("\n%d terms. For each one, this sentence or the sentence before it must say what the term means." % len(seen))
+        tip = "tip" if term in tipped else "-"
+        untipped += tip == "-"
+        print("%-8s %-4s %-13s %s" % (term, tip, where, sentence))
+    print("\n%d terms, %d without a tip. For each one, this sentence or the sentence before it must say what the term means. "
+          "A term from outside software also gets a tip: <a class=\"term\"> to its glossary entry." % (len(seen), untipped))
     return 0
 
 
