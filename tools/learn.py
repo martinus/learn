@@ -177,6 +177,8 @@ class Explainer:
             self.err("<title> is missing")
         if not (self.folder / "cover.svg").is_file():
             self.err("cover.svg is missing")
+        elif "TODO" in (self.folder / "cover.svg").read_text(encoding="utf-8"):
+            self.err("cover.svg is still the picture of the template: draw the cover of this page and describe it in aria-label")
         if not re.search(r'class="sources"[^>]*>.*?<a\s[^>]*href="https?://', src, re.S):
             self.err('a list of sources is missing: <ul class="sources"> with one link or more')
 
@@ -700,6 +702,9 @@ setTimeout(function () {
     if (terms.length) log.push('term tips: ' + terms.length + ' used, ' + (terms.length - tipBad) + ' opened and closed');
     var bad = [].filter.call(d.querySelectorAll('main figure'), function (g) { return /NaN|undefined|Infinity/.test(g.textContent); });
     bad.forEach(function (g) { log.push('ERROR a figure shows NaN, undefined or Infinity: ' + g.textContent.trim().slice(0, 60)); });
+    [].forEach.call(d.querySelectorAll('main .formula'), function (e) {
+      if (e.scrollWidth > e.clientWidth + 1) log.push('WARNING a formula is ' + e.scrollWidth + ' px wide in a block of ' + e.clientWidth + ' px, so the reader must scroll it: ' + e.textContent.trim().slice(0, 40));
+    });
     var wide = d.documentElement.scrollWidth, win = d.documentElement.clientWidth;
     log.push((wide > win ? 'ERROR the page is wider than the window: ' : 'width: ') + wide + ' px of content in ' + win + ' px');
   } catch (e) { log.push('ERROR while using the controls: ' + e.message); }
@@ -711,7 +716,7 @@ setTimeout(function () {
 def cmd_try(slug):
     """Use every control of one built page once, in a frame of 390 px, and print what the page then shows.
     The pictures from "shots" show the page at rest. This command finds what they cannot show:
-    a script error, a control without effect, a result that is not a number."""
+    a script error, a control without effect, a result that is not a number, a formula that is too wide."""
     chrome = find_chrome()
     if not chrome:
         print("Chrome or Chromium is necessary for this command, but it was not found. Set the variable CHROME to its path.", file=sys.stderr)
@@ -756,7 +761,7 @@ def cmd_texts(slug):
     src = (folder / "index.html").read_text(encoding="utf-8")
     dm = re.search(r'<script type="application/json" id="i18n-de">(.*?)</script>', src, re.S)
     if not dm:
-        return print_plain_text(src)
+        return print_plain_text(src) or print_length(src)
     de = json.loads(dm.group(1))
     seen = set()
     for m in re.finditer(r'<(\w+)\b[^>]*\bdata-i18n="([^"]+)"[^>]*>(.*?)</\1>', src, re.S):
@@ -768,6 +773,22 @@ def cmd_texts(slug):
                                               " ".join(strip_tags(str(de.get(key, "(missing)"))).split())))
     for m in re.finditer(r'aria-label="([^"]*)"[^>]*data-i18n-aria="([^"]+)"', src):
         print("[%s] (label for screen readers)\n  EN: %s\n  DE: %s\n" % (m.group(2), html.unescape(m.group(1)), de.get(m.group(2), "(missing)")))
+    return print_length(src)
+
+
+def print_length(src):
+    """Print the number of English words from the title to the section "Terms", so that the length rule can be checked.
+    Captions, tables and code count. The labels of charts for screen readers do not."""
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        print_plain_text(src)
+    words = 0
+    for line in out.getvalue().split("\n"):
+        if re.match(r"## \d+ (Terms|How sure is this\?|Sources)$", line):
+            break
+        if not line.startswith("(label for screen readers)"):
+            words += len(line.split())
+    print('\n%s words from the title to the section "Terms". The aim is 1,500 to 3,000 (writing.md, "Page structure").' % f"{words:,}")
     return 0
 
 

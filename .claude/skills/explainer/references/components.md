@@ -99,7 +99,7 @@ Write mathematics as MathML, which browsers draw without a library. `writing.md`
 - Write a sign as `<mo form="prefix">&minus;</mo>` when it follows another operator, as in "= −1". Without it the minus gets the wide spacing of a subtraction.
 - Set a symbol as `<math>` in every HTML text: headings, labels, legends, number boxes, cards and the glossary. For a value that the script writes, set `innerHTML` with `<math>`. Text inside an SVG chart stays plain, because MathML does not work there.
 - Do not write `xmlns` on `<math>`. HTML does not need it.
-- A formula wider than a phone scrolls inside its block. Aim for under about 330 px at 390 px width: name a long term in the text and use the name.
+- A formula wider than a phone scrolls inside its block, and `try` reports it. Aim for under about 330 px at 390 px width: name a long term in the text and use the name.
 - The formula uses a math font of the device and loads none. A device without one shows plainer signs, and a tall root or bracket does not grow there. So keep the content of `<msqrt>` and of stretching brackets flat.
 
 ### Term tip
