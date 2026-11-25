@@ -8,7 +8,7 @@
  "title": {"en": "How AI agents copied Photoshop and Office", "de": "Wie KI-Agenten Photoshop und Office nachbauten"},
  "summary": {"en": "In autumn 2026, one developer let AI agents write free copies of Photoshop, Word, Excel and PowerPoint. How the agents were set up, how the project works now, and what measurements say about the structure of the code.", "de": "Im Herbst 2026 ließ ein Entwickler KI-Agenten freie Nachbauten von Photoshop, Word, Excel und PowerPoint schreiben. Wie die Agenten eingerichtet waren, wie das Projekt heute arbeitet und was Messungen über die Struktur des Codes sagen."},
  "published": "2026-11-22",
- "updated": "2026-11-22",
+ "updated": "2026-11-25",
  "languages": ["en", "de"],
  "tags": ["software", "ai"],
  "model": "Claude Opus 5.5"
@@ -62,20 +62,21 @@
   <span class="eyebrow" data-i18n="ey">Software &middot; status of 22 November 2026</span>
   <h1 data-i18n="h1">How AI agents copied Photoshop and Office</h1>
   <!-- learn:byline -->
-  <p class="lead" data-i18n="lead">In autumn 2026, the developer Brandon Thomas let AI programs write copies of Photoshop, and then of Word, Excel and PowerPoint. The first large version of the Photoshop copy came three hours after the start. This page shows how he set up the AI agents, how the project works now, what measurements say about the structure of the code, and what you can learn from it. You need no knowledge of programming.</p>
+  <p class="lead" data-i18n="lead">In autumn 2026, the developer Brandon Thomas let AI programs write copies of Photoshop, and then of Word, Excel and PowerPoint. The first large version of the Photoshop copy came three hours after the start. This page shows how he set up the <a class="term" href="#t-agent">AI agents</a>, how the project works now, what measurements say about the structure of the code, and what you can learn from it. You need no knowledge of programming.</p>
   <div class="status">
     <b data-i18n="st_b">Status: early test versions, much work in progress</b>
-    <span data-i18n="st_t">The copies are free and open source. The project calls them &ldquo;early alpha&rdquo;. It says itself that the Photoshop copy cannot replace Photoshop for daily professional work yet. All counts on this page are from 22 November 2026. They change every day.</span>
+    <span data-i18n="st_t">The copies are free and <a class="term" href="#t-opensource">open source</a>. The project calls them &ldquo;early <a class="term" href="#t-alpha">alpha</a>&rdquo;. It says itself that the Photoshop copy cannot replace Photoshop for daily professional work yet. All counts on this page are from 22 November 2026. They change every day.</span>
   </div>
   <details class="changes">
     <summary><span data-i18n="chg_h">What changed on this page</span></summary>
     <ol>
-      <li><time data-i18n="chg2d">22 Nov 2026, evening</time><span data-i18n="chg2t">Second check of all facts. Times are now in UTC. Corrected: the second drop of the file size on 17 November was a move to a shared framework, not a split. Smaller corrections of dates, of the weekly counts and of the text about the tests by users.</span></li>
+      <li><time data-i18n="chg3d">25 Nov 2026</time><span data-i18n="chg3t">Terms now show a short explanation when you point at them or tap them. The list at the end is now called &ldquo;Terms&rdquo;. The text links to the projects, tools and articles.</span></li>
+      <li><time data-i18n="chg2d">22 Nov 2026, evening</time><span data-i18n="chg2t">Second check of all facts. Times are now in <a class="term" href="#t-utc">UTC</a>. Corrected: the second drop of the file size on 17 November was a move to a shared framework, not a split. Smaller corrections of dates, of the weekly counts and of the text about the tests by users.</span></li>
       <li><time data-i18n="chg1d">22 Nov 2026, afternoon</time><span data-i18n="chg1t">First version.</span></li>
     </ol>
   </details>
   <div class="short">
-    <div><h3 data-i18n="c1h">The method</h3><span data-i18n="c1t">First a plan, a rule file and a checklist of all menu items. Then many AI agents worked at the same time, and automatic checks stopped bad changes.</span></div>
+    <div><h3 data-i18n="c1h">The method</h3><span data-i18n="c1t">First a plan, a <a class="term" href="#t-rulefile">rule file</a> and a checklist of all menu items. Then many AI agents worked at the same time, and automatic checks stopped bad changes.</span></div>
     <div><h3 data-i18n="c2h">The quality</h3><span data-i18n="c2t">Many functions exist, and real files open. But an independent measurement rates the inner structure of the code far below average.</span></div>
     <div><h3 data-i18n="c3h">The lesson</h3><span data-i18n="c3t">Rules that a program checks hold. Rules that are only text get lost. Fast-growing code needs regular tidying, also when an AI writes it.</span></div>
   </div>
@@ -84,12 +85,12 @@
 <section>
   <span class="num">01</span>
   <h2 data-i18n="s1h">What exists today</h2>
-  <p data-i18n="s1p1">Brandon Thomas leads the project ArtCraft. Its apps are copies of well-known programs, which the news calls clones: PhotoCraft (Photoshop), WordCraft (Word), GridCraft (Excel) and DeckCraft (PowerPoint). All are written in the programming language Rust. Anybody can read and use the code.</p>
-  <p data-i18n="s1p2">The history of the code is public. Each saved change is a <strong>commit</strong>, with a time and an author. From this history you can follow the project step by step:</p>
+  <p data-i18n="s1p1">Brandon Thomas leads the project <a href="https://github.com/storytold">ArtCraft</a>. Its apps are copies of well-known programs, which the news calls clones: PhotoCraft (Photoshop), WordCraft (Word), GridCraft (Excel) and DeckCraft (PowerPoint). All are written in the programming language <a class="term" href="#t-rust">Rust</a>. Anybody can read and use the code.</p>
+  <p data-i18n="s1p2">The history of the code is public. Each saved change is a <strong><a class="term" href="#t-commit">commit</a></strong>, with a time and an author. From this history you can follow the project step by step:</p>
   <ol class="steps">
-    <li><time data-i18n="t1d">30 Sep, 06:12 UTC</time><span data-i18n="t1t">Thomas starts the empty project PhotoCraft.</span></li>
+    <li><time data-i18n="t1d">30 Sep, 06:12 <a class="term" href="#t-utc">UTC</a></time><span data-i18n="t1t">Thomas starts the empty project <a href="https://github.com/storytold/photocraft">PhotoCraft</a>.</span></li>
     <li><time data-i18n="t2d">30 Sep, 09:02 UTC</time><span data-i18n="t2t">A commit with the name &ldquo;one-shot&rdquo; adds 241 files with 42,241 lines of code.</span></li>
-    <li><time data-i18n="t3d">1 Oct</time><span data-i18n="t3t">On the forum Hacker News, Thomas writes: &ldquo;I just one-shotted Photoshop.&rdquo; This means: in one attempt.</span></li>
+    <li><time data-i18n="t3d">1 Oct</time><span data-i18n="t3t">On the forum <a href="https://news.ycombinator.com/item?id=49928088">Hacker News</a>, Thomas writes: &ldquo;I just one-shotted Photoshop.&rdquo; This means: in one attempt.</span></li>
     <li><time data-i18n="t4d">6 Oct</time><span data-i18n="t4t">Start of WordCraft, GridCraft and DeckCraft, and of a shared library for all apps.</span></li>
     <li><time data-i18n="t5d">15 Oct</time><span data-i18n="t5t">Start of a shared project for rules and decisions.</span></li>
     <li><time data-i18n="t6d">22 Nov</time><span data-i18n="t6t">PhotoCraft has 15,533 commits by 659 authors and about 870,000 lines of Rust.</span></li>
@@ -98,24 +99,24 @@
   <ul class="checks">
     <li><span class="pill done" data-i18n="plM">Measured</span><span><span data-i18n="k1t">Each of the 664 menu items of Photoshop starts a function in PhotoCraft.</span><span class="d" data-i18n="k1d">Project count. The project itself writes that this measures the connection, not if the function works like the original.</span></span></li>
     <li><span class="pill done" data-i18n="plM">Measured</span><span><span data-i18n="k2t">PhotoCraft opens and saves 307 of 309 test files in the Photoshop format with the same picture.</span><span class="d" data-i18n="k2d">Project test with a public set of test files.</span></span></li>
-    <li><span class="pill done" data-i18n="plM">Measured</span><span><span data-i18n="k3t">22 of 25 speed targets are missed.</span><span class="d" data-i18n="k3d">Roadmap of the project, last update 22 October.</span></span></li>
+    <li><span class="pill done" data-i18n="plM">Measured</span><span><span data-i18n="k3t">22 of 25 speed targets are missed.</span><span class="d" data-i18n="k3d"><a class="term" href="#t-roadmap">Roadmap</a> of the project, last update 22 October.</span></span></li>
     <li><span class="pill prog" data-i18n="plE">Estimate</span><span><span data-i18n="k4t">PhotoCraft is about 45 % ready for real work.</span><span class="d" data-i18n="k4d">Estimate of the project, with weights that the project selected.</span></span></li>
-    <li><span class="pill rep" data-i18n="plC">Claim</span><span><span data-i18n="k5t">1.7 million downloads each day and about 60 % of the functions of the originals.</span><span class="d" data-i18n="k5d">Thomas in an interview with the AI Engineer podcast, as BigGo reports on 16 November. Nobody has checked this independently.</span></span></li>
+    <li><span class="pill rep" data-i18n="plC">Claim</span><span><span data-i18n="k5t">1.7 million downloads each day and about 60 % of the functions of the originals.</span><span class="d" data-i18n="k5d">Thomas in an interview with the AI Engineer podcast, as <a href="https://finance.biggo.com/news/af709a80c17523a0">BigGo reports</a> on 16 November. Nobody has checked this independently.</span></span></li>
   </ul>
 </section>
 
 <section>
   <span class="num">02</span>
   <h2 data-i18n="s2h">A plan before the code</h2>
-  <p data-i18n="s2p1">An <strong>AI agent</strong> is a program that uses an AI model to do a task in many steps. It reads files, writes code, runs tests, reads the errors and corrects them. Thomas used Claude Code, an agent by the company Anthropic, without special additions. He wrote on Hacker News: &ldquo;We're using vanilla Claude Code&rdquo;. Of the commits that name an AI model as co-author, most name Claude Opus 5.5.</p>
-  <p data-i18n="s2p2">The prompts are not public. The plans are in a folder that the project keeps private. Thomas says, as BigGo reports, that the first working state came after about 24 hours, from one large and structured prompt. The first commit shows the result of the planning: three things that tell each agent how to work.</p>
+  <p data-i18n="s2p1">An <strong><a class="term" href="#t-agent">AI agent</a></strong> is a program that uses an <a class="term" href="#t-model">AI model</a> to do a task in many steps. It reads files, writes code, runs tests, reads the errors and corrects them. Thomas used <a href="https://claude.com/product/claude-code">Claude Code</a>, an agent by the company Anthropic, without special additions. He wrote on Hacker News: &ldquo;We're using vanilla Claude Code&rdquo;. Of the commits that name an AI model as co-author, most name Claude Opus 5.5.</p>
+  <p data-i18n="s2p2">The <a class="term" href="#t-prompt">prompts</a> are not public. The plans are in a folder that the project keeps private. Thomas says, as BigGo reports, that the first working state came after about 24 hours, from one large and structured prompt. The first <a class="term" href="#t-commit">commit</a> shows the result of the planning: three things that tell each agent how to work.</p>
   <ul class="plain">
-    <li data-i18n="s2l1"><strong>A rule file for agents</strong> (AGENTS.md). It says what to read first, seven &ldquo;golden rules&rdquo;, and which checks must pass before a task is finished.</li>
-    <li data-i18n="s2l2"><strong>An architecture plan.</strong> It divides the program into parts in seven layers. It also names lessons from the free image editor GIMP: GIMP needed many years to change basic assumptions, for example about colour depth. PhotoCraft treats such properties as data from the start.</li>
-    <li data-i18n="s2l3"><strong>A checklist.</strong> On the first day, the full menu tree of Photoshop came into the code as a list. Each entry has a fixed name, and a small program counts how many entries already work. The news site Declic reports how the team got the list: it installed Photoshop and listed the contents of the package without starting the program, for example shortcuts, plug-ins and texts from the program file. The first plan also used the menu tree of a different image editor, Photon Studio, with 720 items, as the list of work.</li>
+    <li data-i18n="s2l1"><strong>A rule file for agents</strong> (<a class="term" href="#t-rulefile">AGENTS.md</a>). It says what to read first, seven &ldquo;golden rules&rdquo;, and which checks must pass before a task is finished.</li>
+    <li data-i18n="s2l2"><strong>An <a class="term" href="#t-architecture">architecture</a> plan.</strong> It divides the program into parts in seven <a class="term" href="#t-layer">layers</a>. It also names lessons from the free image editor <a href="https://www.gimp.org/">GIMP</a>: GIMP needed many years to change basic assumptions, for example about colour depth. PhotoCraft treats such properties as data from the start.</li>
+    <li data-i18n="s2l3"><strong>A checklist.</strong> On the first day, the full menu tree of Photoshop came into the code as a list. Each entry has a fixed name, and a small program counts how many entries already work. The news site <a href="https://www.declic.media/en/news/artcraft-adobe-clean-room/">Declic</a> reports how the team got the list: it installed Photoshop and listed the contents of the package without starting the program, for example shortcuts, plug-ins and texts from the program file. The first plan also used the menu tree of a different image editor, Photon Studio, with 720 items, as the list of work.</li>
   </ul>
   <p class="aside" data-i18n="s2p3">A comparison: a large kitchen with many cooks. The checklist is the menu card. The architecture is the plan of the stations. The rule file hangs on the wall. The tests taste each plate before it goes out. The comparison has a limit: cooks talk to each other. Agents know only what is in the files.</p>
-  <p data-i18n="s2p4">The most important rule of the architecture is the direction of the layers. A part may use only parts in lower layers. The user interface may use the engine, but the engine may not use the user interface. A program checks this at each change. Select a layer:</p>
+  <p data-i18n="s2p4">The most important rule of the architecture is the direction of the layers. A part may use only parts in lower layers. The user interface may use the <a class="term" href="#t-engine">engine</a>, but the engine may not use the user interface. A program checks this at each change. Select a layer:</p>
 
   <figure>
     <div class="fig-title" data-i18n="f1t">The seven layers of PhotoCraft</div>
@@ -133,15 +134,15 @@
     <figcaption data-i18n="f1c">The layers come from the architecture plan and the program that checks them (xtask/src/layers.rs). The check runs at each change. A change that breaks the direction cannot go into the main version.</figcaption>
   </figure>
 
-  <p data-i18n="s2p5">A second rule is just as important: <strong>everything is a command.</strong> Each action has a fixed name, for example <span class="mono">filter.blur.gaussian</span>. The menu, the keyboard, the tests and other AI agents all start the same command. The agents use a standard connection with the name MCP. So an agent can test each function without a screen. It can also start the app, click, take a screenshot and look at it.</p>
+  <p data-i18n="s2p5">A second rule is just as important: <strong>everything is a <a class="term" href="#t-command">command</a>.</strong> Each action has a fixed name, for example <span class="mono">filter.blur.gaussian</span>. The menu, the keyboard, the tests and other AI agents all start the same command. The agents use a standard connection with the name <a class="term" href="#t-mcp">MCP</a>. So an agent can test each function without a screen. It can also start the app, click, take a screenshot and look at it.</p>
 </section>
 
 <section>
   <span class="num">03</span>
   <h2 data-i18n="s3h">Many agents at once</h2>
-  <p data-i18n="s3p1">On 2 October an agent wrote an estimate into the project. It says that one session finished about 70 menu items and large parts &ldquo;using 8 parallel agents&rdquo;. Eight agents worked at the same time. For this, the rule file had a special rule. Each agent builds in its own folder, so that the agents do not block each other. And each agent changes only the parts that are its own.</p>
-  <p data-i18n="s3p2">The Office copies used the same pattern. WordCraft started on 6 October at 00:23 UTC. In the next three and a half hours, commits named after the steps of a plan (&ldquo;M0.1&rdquo; to &ldquo;M1&rdquo;) added a document model, more than 200 commands, a user interface with all ribbon tabs, an MCP connection, and reading and writing of Word files.</p>
-  <p data-i18n="s3p3"><strong>Why was this so fast?</strong> Copying a known program is an unusual task. The goal is fully known. You can split it into hundreds of small tasks, and you can count the progress. Each small task has a clear test: does it do the same as the original? This is the situation in which AI agents are strongest.</p>
+  <p data-i18n="s3p1">On 2 October an <a class="term" href="#t-agent">agent</a> wrote an estimate into the project. It says that one session finished about 70 menu items and large parts &ldquo;using 8 parallel agents&rdquo;. Eight agents worked at the same time. For this, the <a class="term" href="#t-rulefile">rule file</a> had a special rule. Each agent <a class="term" href="#t-build">builds</a> in its own folder, so that the agents do not block each other. And each agent changes only the parts that are its own.</p>
+  <p data-i18n="s3p2">The Office copies used the same pattern. <a href="https://github.com/storytold/wordcraft">WordCraft</a> started on 6 October at 00:23 <a class="term" href="#t-utc">UTC</a>. In the next three and a half hours, <a class="term" href="#t-commit">commits</a> named after the steps of a plan (&ldquo;M0.1&rdquo; to &ldquo;M1&rdquo;) added a document model, more than 200 commands, a user interface with all ribbon tabs, an <a class="term" href="#t-mcp">MCP</a> connection, and reading and writing of Word files.</p>
+  <p data-i18n="s3p3"><strong>Why was this so fast?</strong> Copying a known program is an unusual task. The goal is fully known. You can split it into hundreds of small tasks, and you can count the progress. Each small task has a clear <a class="term" href="#t-test">test</a>: does it do the same as the original? This is the situation in which AI agents are strongest.</p>
   <p class="aside" data-i18n="s3p4">A comparison: to build a copy of an existing house is faster than to design a new one. You can measure each room of the original. You do not have to decide what the house is for.</p>
   <p data-i18n="s3p5">The work flow changed after the first weeks. Compare the two states:</p>
 
@@ -155,13 +156,13 @@
     <figcaption data-i18n="f2c">Sources: the first rule file (30 September), and the shared rules and the settings of the project (status of 22 November). Steps with the mark &ldquo;new&rdquo; did not exist in September.</figcaption>
   </figure>
 
-  <p data-i18n="s3p6">One step needs an explanation: the <strong>clean room</strong>. This is a method to copy a product without copying protected work. One team studies the original and writes only a description of its behaviour. A second team writes the code from this description and never sees the original. Critics on Hacker News said that it is not a clean room if the same AI uses Photoshop and writes the code. Since 18 November, a project rule forbids this. It also forbids reading anything inside the installed package of the original. The legal questions are open. This page does not judge them.</p>
+  <p data-i18n="s3p6">One step needs an explanation: the <strong><a class="term" href="#t-cleanroom">clean room</a></strong>. This is a method to copy a product without copying protected work. One team studies the original and writes only a description of its behaviour. A second team writes the code from this description and never sees the original. Critics on Hacker News said that it is not a clean room if the same AI uses Photoshop and writes the code. Since 18 November, a project rule forbids this. It also forbids reading anything inside the installed package of the original. The legal questions are open. This page does not judge them.</p>
 </section>
 
 <section>
   <span class="num">04</span>
   <h2 data-i18n="s4h">From one person to a community</h2>
-  <p data-i18n="s4p1">After the first week, Thomas looked for help. On 5 October he wrote that he needed a community for bug reports and code changes. Many people came. A proposal of the project says that much of their work comes from coding agents. The chart shows the commits per week. Select an app:</p>
+  <p data-i18n="s4p1">After the first week, Thomas looked for help. On 5 October he wrote that he needed a community for bug reports and code changes. Many people came. A proposal of the project says that much of their work comes from <a class="term" href="#t-agent">coding agents</a>. The chart shows the <a class="term" href="#t-commit">commits</a> per week. Select an app:</p>
 
   <figure>
     <div class="fig-title" data-i18n="f3t">Commits per week: Thomas and all other authors</div>
@@ -179,26 +180,26 @@
       <div><small data-i18n="stC3">Share of Thomas</small><b id="rC3">2 %</b></div>
       <div><small data-i18n="stC4">Copy of</small><b id="rC4">Photoshop</b></div>
     </div>
-    <figcaption data-i18n="f3c">Counted from the public history until the afternoon of 22 November 2026, with merge commits. A week starts on Monday at 00:00 UTC. Commits that Thomas made with agents count for Thomas.</figcaption>
+    <figcaption data-i18n="f3c">Counted from the public history until the afternoon of 22 November 2026, with <a class="term" href="#t-merge">merge commits</a>. A week starts on Monday at 00:00 <a class="term" href="#t-utc">UTC</a>. Commits that Thomas made with agents count for Thomas.</figcaption>
   </figure>
 
   <p data-i18n="s4p2">In PhotoCraft, Thomas made only 6 of the commits since 1 November. On 2 November he wrote of &ldquo;about 50 core developers&rdquo;, with one responsible person for each area. The history shows a new role for him: direction, community and decisions, and less own code.</p>
   <p data-i18n="s4p3">Around the apps, the project built a structure that a large software company would also have:</p>
   <ul class="plain">
-    <li data-i18n="s4l1"><strong>A project for rules (craft-contrib).</strong> Changes to the rules need a written proposal and a decision, as in large open-source projects. Before, the same rule had up to 20 different wordings in 28 public repositories. In November the project decided on one shared rule file for agents. PhotoCraft uses it since 20 November.</li>
-    <li data-i18n="s4l2"><strong>A shared library (craft-libs).</strong> Parts that all apps need, for example readers for file formats, are in one place.</li>
-    <li data-i18n="s4l3"><strong>Review by programs.</strong> The service CodeRabbit comments on each proposed change. The service SonarCloud scans the code for errors.</li>
+    <li data-i18n="s4l1"><strong>A project for rules (<a href="https://github.com/storytold/craft-contrib">craft-contrib</a>).</strong> Changes to the rules need a written proposal and a decision, as in large open-source projects. Before, the same rule had up to 20 different wordings in 28 public <a class="term" href="#t-repo">repositories</a>. In November the project decided on one shared <a class="term" href="#t-rulefile">rule file</a> for agents. PhotoCraft uses it since 20 November.</li>
+    <li data-i18n="s4l2"><strong>A shared <a class="term" href="#t-library">library</a> (<a href="https://github.com/storytold/craft-libs">craft-libs</a>).</strong> Parts that all apps need, for example readers for file formats, are in one place.</li>
+    <li data-i18n="s4l3"><strong>Review by programs.</strong> The service <a href="https://www.coderabbit.ai/">CodeRabbit</a> comments on each proposed change. The service <a href="https://www.sonarsource.com/products/sonarqube/cloud/">SonarCloud</a> scans the code for errors.</li>
   </ul>
   <p data-i18n="s4p4">The proposals for the rules show what went wrong. An agent follows its instructions literally, so a gap in them becomes the same error many times: two agents fix the same bug, or an agent uses functions that do not exist. The answers are simple rules: claim a task first, open each definition before you use it, keep each change small, and read your own change before you send it.</p>
-  <p data-i18n="s4p5">The models also change. About 6,000 commits in PhotoCraft name Claude Opus 5.5 as co-author, some name other models. The real share of AI is not known, because not every author names the model. For some weeks in November, a project rule even said that a pull request must not say that an agent wrote it. On 1 November Thomas wrote that he now plans with Claude and lets the open model Kimi write the code.</p>
+  <p data-i18n="s4p5">The <a class="term" href="#t-model">models</a> also change. About 6,000 commits in PhotoCraft name Claude Opus 5.5 as co-author, some name other models. The real share of AI is not known, because not every author names the model. For some weeks in November, a project rule even said that a <a class="term" href="#t-pr">pull request</a> must not say that an agent wrote it. On 1 November Thomas wrote that he now plans with Claude and lets the <a class="term" href="#t-openmodel">open model</a> Kimi write the code.</p>
 </section>
 
 <section>
   <span class="num">05</span>
   <h2 data-i18n="s5h">How good is the code?</h2>
   <p data-i18n="s5p1">Quality has two sides. The first: does the program work for the user? The second: is the code inside built so that people can change it safely? A program can be good on one side and bad on the other.</p>
-  <p data-i18n="s5p2"><strong>For the user,</strong> the project gives an honest picture itself. In mid-October it had 953 open reports about bugs and missing functions. Its roadmap of October says that it missed most speed targets, and that Photoshop did not reliably accept the files that PhotoCraft wrote. In early October, testers on Hacker News reported slow controls, broken text editing and shortcuts that did nothing. Another tester built the app and found it mostly in order.</p>
-  <p data-i18n="s5p3"><strong>For the inside,</strong> there is one independent measurement. The Dutch company Software Improvement Group (SIG) examined the seven Adobe copies, in the state of 12 October. SIG gives stars from 0.5 to 5.5. Three stars is the average of the market. Four stars is the target that SIG recommends for new software. Select a measure:</p>
+  <p data-i18n="s5p2"><strong>For the user,</strong> the project gives an honest picture itself. In mid-October it had 953 open reports about bugs and missing functions. Its <a class="term" href="#t-roadmap">roadmap</a> of October says that it missed most speed targets, and that Photoshop did not reliably accept the files that PhotoCraft wrote. In early October, testers on Hacker News reported slow controls, broken text editing and shortcuts that did nothing. Another tester built the app and found it mostly in order.</p>
+  <p data-i18n="s5p3"><strong>For the inside,</strong> there is one independent measurement. The Dutch company <a href="https://www.softwareimprovementgroup.com/">Software Improvement Group</a> (<a class="term" href="#t-sig">SIG</a>) examined the seven Adobe copies, in the state of 12 October. SIG gives stars from 0.5 to 5.5. Three stars is the average of the market. Four stars is the target that SIG recommends for new software. Select a measure:</p>
 
   <figure>
     <div class="fig-title" data-i18n="f4t">Ratings of the code by SIG (state of 12 October)</div>
@@ -213,7 +214,7 @@
     <figcaption data-i18n="f4c">Data: SIG, article of 4 November 2026. SIG sells this kind of analysis. The measurement is from before the large changes of 26 October and 17 November (section 06). The text of the article gives 5.5 as the highest security value, its table gives 5. The chart uses the table.</figcaption>
   </figure>
 
-  <p data-i18n="s5p4">Security is good, also because the language Rust prevents many typical errors. Maintainability and architecture are weak. Single functions are weak too, but SIG finds the largest problem in the connections between the parts. In PhotoCraft, the value for modularity is 0.7 stars. SIG calls the picture of the architecture &ldquo;spaghetti-code&rdquo;: too many parts depend on too many other parts. A change in one place can break something in a different place.</p>
+  <p data-i18n="s5p4">Security is good, also because the language <a class="term" href="#t-rust">Rust</a> prevents many typical errors. <a class="term" href="#t-maintain">Maintainability</a> and architecture are weak. Single functions are weak too, but SIG finds the largest problem in the connections between the parts. In PhotoCraft, the value for <a class="term" href="#t-modularity">modularity</a> is 0.7 stars. SIG calls the picture of the architecture &ldquo;spaghetti-code&rdquo;: too many parts depend on too many other parts. A change in one place can break something in a different place.</p>
   <p data-i18n="s5p5">Thomas does not see this as a big problem. On 2 November he compared code with DNA, which is not designed cleanly either: &ldquo;Evolve it, don't intelligently design it&rdquo;. Tests remove bad behaviour. SIG answers that such code makes each later change slower and more expensive, also for agents, because they must read more of the code. This page does not decide between the two positions.</p>
 </section>
 
@@ -221,7 +222,7 @@
   <span class="num">06</span>
   <h2 data-i18n="s6h">Where the structure bends</h2>
   <p data-i18n="s6p1">For this page, the code of PhotoCraft was counted on 22 November. The result shows both: what the plan protects, and what it does not protect.</p>
-  <p data-i18n="s6p2">The direction of the layers holds, because a program checks it. But this check does not look at the size of the layers. Look where the lines of code are:</p>
+  <p data-i18n="s6p2">The direction of the <a class="term" href="#t-layer">layers</a> holds, because a program checks it. But this check does not look at the size of the layers. Look where the lines of code are:</p>
 
   <figure>
     <div class="fig-title" data-i18n="f5t">Lines of Rust code in each layer of PhotoCraft</div>
@@ -233,7 +234,7 @@
     <figcaption data-i18n="f5c">Counted on 22 November 2026 (commit 65fc546). Test files are files with &ldquo;test&rdquo; in the name or in a test folder. Tests inside other files count as code. Layer L2 contains one data table with 14,532 lines. Code in the shared library is not counted.</figcaption>
   </figure>
 
-  <p data-i18n="s6p3">The two top layers, the engine and the user interface, contain 547,000 of 873,000 lines: almost two thirds. The base layers are small. There is a reason for this. The checklist counts menu items. Each menu item becomes a command in the engine, and often a dialog or a panel in the user interface. So most new work lands at the top, whatever the plan says about the layers.</p>
+  <p data-i18n="s6p3">The two top layers, the <a class="term" href="#t-engine">engine</a> and the user interface, contain 547,000 of 873,000 lines: almost two thirds. The base layers are small. There is a reason for this. The checklist counts menu items. Each menu item becomes a <a class="term" href="#t-command">command</a> in the engine, and often a dialog or a panel in the user interface. So most new work lands at the top, whatever the plan says about the layers.</p>
   <p data-i18n="s6p4">The same happens inside single files. Some files are central: almost each change touches them. The chart shows two of them. Move the date:</p>
 
   <figure>
@@ -253,9 +254,9 @@
     <figcaption data-i18n="f6c">Lines of each file, counted every two days from the public history. On 26 October, a contributor split the file into a folder of smaller files. On 17 November, the user interface moved onto a shared framework in the shared library.</figcaption>
   </figure>
 
-  <p data-i18n="s6p5">The file for the drawing surface grew from 1,240 to more than 10,000 lines in less than four weeks. On 26 October, a contributor reorganised the user interface. The file grew again. On 17 November it became small again for a different reason: PhotoCraft moved large parts of its user interface into a shared framework in the shared library. The code moved. It did not disappear.</p>
+  <p data-i18n="s6p5">The file for the drawing surface grew from 1,240 to more than 10,000 lines in less than four weeks. On 26 October, a contributor reorganised the user interface. The file grew again. On 17 November it became small again for a different reason: PhotoCraft moved large parts of its user interface into a shared <a class="term" href="#t-framework">framework</a> in the shared <a class="term" href="#t-library">library</a>. The code moved. It did not disappear.</p>
   <p class="aside" data-i18n="s6p6">A comparison: a drawer in a kitchen. Each new thing goes into the drawer that is already open. For some time this works well. Then you can find nothing, and somebody must empty the drawer and sort it. The agents put each new function where the code that they had just read was.</p>
-  <p data-i18n="s6p7">This is not special to AI. In 1980 the computer scientist Meir Lehman described it as a law: a program that people change becomes more complex, unless somebody works to reduce the complexity. Agents only make it happen faster. Also, to divide a file does not reduce the connections between the parts, which SIG measured.</p>
+  <p data-i18n="s6p7">This is not special to AI. In 1980 the computer scientist Meir Lehman described it as a <a href="https://en.wikipedia.org/wiki/Lehman%27s_laws_of_software_evolution">law</a>: a program that people change becomes more complex, unless somebody works to reduce the complexity. Agents only make it happen faster. Also, to divide a file does not reduce the connections between the parts, which SIG measured.</p>
 </section>
 
 <section>
@@ -263,15 +264,15 @@
   <h2 data-i18n="s7h">How the structure can stay good</h2>
   <p data-i18n="s7p1">The project already protects its structure in several ways. This list shows what the published code contains on 22 November, and what is missing:</p>
   <ul class="checks">
-    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g1t">A check for the direction of the layers.</span><span class="d" data-i18n="g1d">Since the first large commit on 30 September. It runs at each change.</span></span></li>
-    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g2t">Each action is a command, and panels may change data only through commands.</span><span class="d" data-i18n="g2d">A check finds panels that go around the commands.</span></span></li>
-    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g3t">A limit for the complexity of one function.</span><span class="d" data-i18n="g3d">The Rust tool Clippy stops functions that are too complex.</span></span></li>
-    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g4t">Tests are necessary, and nobody may delete or weaken a test to make a check pass.</span><span class="d" data-i18n="g4d">Rule in the shared rule file.</span></span></li>
-    <li><span class="pill prog" data-i18n="plP">Partly</span><span><span data-i18n="g5t">Shared parts come from the shared library, not from copies in each app.</span><span class="d" data-i18n="g5d">A rule since 17 November. Copies from the first weeks must still move.</span></span></li>
+    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g1t">A check for the direction of the <a class="term" href="#t-layer">layers</a>.</span><span class="d" data-i18n="g1d">Since the first large commit on 30 September. It runs at each change.</span></span></li>
+    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g2t">Each action is a <a class="term" href="#t-command">command</a>, and panels may change data only through commands.</span><span class="d" data-i18n="g2d">A check finds panels that go around the commands.</span></span></li>
+    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g3t">A limit for the complexity of one function.</span><span class="d" data-i18n="g3d">The Rust tool <a href="https://doc.rust-lang.org/clippy/">Clippy</a> stops functions that are too complex.</span></span></li>
+    <li><span class="pill done" data-i18n="plI">In place</span><span><span data-i18n="g4t"><a class="term" href="#t-test">Tests</a> are necessary, and nobody may delete or weaken a test to make a check pass.</span><span class="d" data-i18n="g4d">Rule in the shared rule file.</span></span></li>
+    <li><span class="pill prog" data-i18n="plP">Partly</span><span><span data-i18n="g5t">Shared parts come from the shared <a class="term" href="#t-library">library</a>, not from copies in each app.</span><span class="d" data-i18n="g5d">A rule since 17 November. Copies from the first weeks must still move.</span></span></li>
     <li><span class="pill no" data-i18n="plN">Not found</span><span><span data-i18n="g6t">A limit for the size of files, parts and layers.</span><span class="d" data-i18n="g6d">I found no such check. The data of section 06 shows why it would help.</span></span></li>
     <li><span class="pill no" data-i18n="plN">Not found</span><span><span data-i18n="g7t">A limit for the connections between parts.</span><span class="d" data-i18n="g7d">SonarCloud scans the code, but I found no check that stops a change when the parts become more tangled.</span></span></li>
   </ul>
-  <p data-i18n="s7p2">Software architects call such automatic checks <strong>fitness functions</strong>: each goal for the structure becomes a test that runs at each change. The rule of the layers is a good example. From the facts on this page, these ideas follow. They are suggestions of this page, not plans of the project:</p>
+  <p data-i18n="s7p2">Software architects call such automatic checks <strong><a class="term" href="#t-fitness">fitness functions</a></strong>: each goal for the structure becomes a test that runs at each change. The rule of the layers is a good example. From the facts on this page, these ideas follow. They are suggestions of this page, not plans of the project:</p>
   <ol class="plain">
     <li data-i18n="i1"><strong>Make each structure goal a check.</strong> For example: no file larger than 2,000 lines, a maximum share for each layer, a limit for the connections of each part. Text rules get lost when many agents work. Checks do not.</li>
     <li data-i18n="i2"><strong>Tidy up on a schedule, not in an emergency.</strong> The central files were divided only at more than 10,000 lines. A weekly agent that divides the files with the most changes is cheap.</li>
@@ -291,13 +292,13 @@
 <section>
   <span class="num">08</span>
   <h2 data-i18n="s8h">What you can learn for your work</h2>
-  <p data-i18n="s8p0">If you use Claude Code or a similar agent, you can use the same pattern in a smaller size:</p>
+  <p data-i18n="s8p0">If you use Claude Code or a similar <a class="term" href="#t-agent">agent</a>, you can use the same pattern in a smaller size:</p>
   <ul class="plain">
-    <li data-i18n="m1"><strong>Write the plan and the rules first:</strong> a rule file (CLAUDE.md or AGENTS.md) with the structure, the test commands and what is forbidden.</li>
+    <li data-i18n="m1"><strong>Write the plan and the rules first:</strong> a rule file (<a class="term" href="#t-rulefile">CLAUDE.md</a> or AGENTS.md) with the structure, the test commands and what is forbidden.</li>
     <li data-i18n="m2"><strong>Give the agent a list that it can count.</strong> A checklist makes progress measurable.</li>
-    <li data-i18n="m3"><strong>Let programs enforce the rules:</strong> tests, lint tools and a check of the structure, at each change.</li>
+    <li data-i18n="m3"><strong>Let programs enforce the rules:</strong> <a class="term" href="#t-test">tests</a>, <a class="term" href="#t-lint">lint tools</a> and a check of the structure, at each change.</li>
     <li data-i18n="m4"><strong>Make each function a command,</strong> so that the agent can test it without a screen.</li>
-    <li data-i18n="m5"><strong>Run agents in parallel only on separate parts,</strong> each with its own build folder.</li>
+    <li data-i18n="m5"><strong>Run agents in parallel only on separate parts,</strong> each with its own <a class="term" href="#t-build">build</a> folder.</li>
     <li data-i18n="m6"><strong>Keep the human work for direction, review and tidying.</strong></li>
     <li data-i18n="m7"><strong>Know the limit of the example.</strong> A copy has a known goal and a natural checklist. A new product has neither, so it needs much more planning.</li>
   </ul>
@@ -305,16 +306,37 @@
 
 <section>
   <span class="num">09</span>
-  <h2 data-i18n="s9h">Short glossary</h2>
+  <h2 data-i18n="s9h">Terms</h2>
   <dl class="gloss">
-    <div><dt data-i18n="w1t">AI agent</dt><dd data-i18n="w1d">A program that uses an AI model to do a task in many steps: read, write, test, correct.</dd></div>
-    <div><dt data-i18n="w2t">Commit</dt><dd data-i18n="w2d">One saved change in the history of the code, with a time and an author.</dd></div>
-    <div><dt data-i18n="w3t">Layer</dt><dd data-i18n="w3d">A group of parts of a program. A part may use only parts in lower layers.</dd></div>
-    <div><dt data-i18n="w4t">Command</dt><dd data-i18n="w4d">One action of the program with a fixed name. Menu, keyboard, tests and agents all start the same command.</dd></div>
-    <div><dt data-i18n="w5t">MCP</dt><dd data-i18n="w5d">Model Context Protocol: a standard connection through which an AI agent can operate a program.</dd></div>
-    <div><dt data-i18n="w6t">Clean room</dt><dd data-i18n="w6d">A method to copy a product: one team describes the behaviour, a second team writes new code only from this description.</dd></div>
-    <div><dt data-i18n="w7t">Architecture</dt><dd data-i18n="w7d">The division of a program into parts, and the rules for how these parts connect.</dd></div>
-    <div><dt data-i18n="w8t">Fitness function</dt><dd data-i18n="w8d">An automatic check for a goal of the architecture. It runs at each change.</dd></div>
+    <div id="t-agent"><dt data-i18n="w1t">AI agent</dt><dd data-i18n="w1d">A program that uses an AI model to do a task in many steps: read, write, test, correct.</dd></div>
+    <div id="t-opensource"><dt data-i18n="w9t">Open source</dt><dd data-i18n="w9d">Code that is public. Anybody may read, change and pass it on, under the terms of its licence. <a href="https://opensource.org/osd">Open Source Initiative: the definition</a></dd></div>
+    <div id="t-alpha"><dt data-i18n="w10t">Alpha version</dt><dd data-i18n="w10d">An early test version of a program. It is not complete and has known errors.</dd></div>
+    <div id="t-utc"><dt data-i18n="w11t">UTC (Coordinated Universal Time)</dt><dd data-i18n="w11d">The time standard of the world. Austria uses Central European Time (CET), which is UTC plus one hour, and in summer Central European Summer Time (CEST), UTC plus two hours.</dd></div>
+    <div id="t-rulefile"><dt data-i18n="w12t">Rule file (AGENTS.md, CLAUDE.md)</dt><dd data-i18n="w12d">A text file in a project that an AI agent reads before it starts: the structure of the code, the commands for the tests, and what is forbidden. AGENTS.md and CLAUDE.md are common names for it. <a href="https://agents.md/">AGENTS.md: the format</a></dd></div>
+    <div id="t-rust"><dt data-i18n="w13t">Rust</dt><dd data-i18n="w13d">A programming language for fast programs. Its rules prevent many typical errors with memory before the program runs. <a href="https://rust-lang.org/">The Rust website</a></dd></div>
+    <div id="t-commit"><dt data-i18n="w2t">Commit</dt><dd data-i18n="w2d">One saved change in the history of the code, with a time and an author.</dd></div>
+    <div id="t-roadmap"><dt data-i18n="w14t">Roadmap</dt><dd data-i18n="w14d">A plan of a project: its goals, and how far the project is with each goal.</dd></div>
+    <div id="t-model"><dt data-i18n="w15t">AI model</dt><dd data-i18n="w15d">A program that learned from very large amounts of text and code. It answers an instruction with text or code. Claude Opus 5.5 and Kimi are AI models. <a href="https://en.wikipedia.org/wiki/Large_language_model">Wikipedia: Large language model</a></dd></div>
+    <div id="t-prompt"><dt data-i18n="w16t">Prompt</dt><dd data-i18n="w16d">The text instruction that a person gives to an AI model.</dd></div>
+    <div id="t-architecture"><dt data-i18n="w7t">Architecture</dt><dd data-i18n="w7d">The division of a program into parts, and the rules for how these parts connect.</dd></div>
+    <div id="t-layer"><dt data-i18n="w3t">Layer</dt><dd data-i18n="w3d">A group of parts of a program. A part may use only parts in lower layers.</dd></div>
+    <div id="t-engine"><dt data-i18n="w17t">Engine</dt><dd data-i18n="w17d">The core of a program that does the work, without the user interface. In PhotoCraft, it holds the open documents and the list of all commands.</dd></div>
+    <div id="t-command"><dt data-i18n="w4t">Command</dt><dd data-i18n="w4d">One action of the program with a fixed name. Menu, keyboard, tests and agents all start the same command.</dd></div>
+    <div id="t-mcp"><dt data-i18n="w5t">MCP</dt><dd data-i18n="w5d">Model Context Protocol: a standard connection through which an AI agent can operate a program. <a href="https://modelcontextprotocol.io/">The MCP website</a></dd></div>
+    <div id="t-build"><dt data-i18n="w18t">Build</dt><dd data-i18n="w18d">The step that turns the code into a program that a computer can run. The build writes many files into a folder.</dd></div>
+    <div id="t-test"><dt data-i18n="w19t">Test</dt><dd data-i18n="w19d">A small program that checks automatically that a part of the code does what it should. A project runs its tests at each change.</dd></div>
+    <div id="t-cleanroom"><dt data-i18n="w6t">Clean room</dt><dd data-i18n="w6d">A method to copy a product: one team describes the behaviour, a second team writes new code only from this description. <a href="https://en.wikipedia.org/wiki/Clean-room_design">Wikipedia: Clean-room design</a></dd></div>
+    <div id="t-merge"><dt data-i18n="w20t">Merge commit</dt><dd data-i18n="w20d">A commit that joins two lines of work, for example a proposed change and the main version.</dd></div>
+    <div id="t-repo"><dt data-i18n="w21t">Repository</dt><dd data-i18n="w21d">A folder of code together with the full history of its changes. Projects often keep it on a website such as GitHub.</dd></div>
+    <div id="t-library"><dt data-i18n="w22t">Library</dt><dd data-i18n="w22d">Code that several programs share. A program uses its parts instead of writing them again.</dd></div>
+    <div id="t-pr"><dt data-i18n="w23t">Pull request</dt><dd data-i18n="w23d">A proposed change to the code. People or programs review it before it goes into the main version.</dd></div>
+    <div id="t-openmodel"><dt data-i18n="w24t">Open model</dt><dd data-i18n="w24d">An AI model that anybody may download and run on their own computers.</dd></div>
+    <div id="t-sig"><dt data-i18n="w25t">SIG (Software Improvement Group)</dt><dd data-i18n="w25d">A Dutch company that measures the quality of code and sells such analyses. It rates code with stars from 0.5 to 5.5.</dd></div>
+    <div id="t-maintain"><dt data-i18n="w26t">Maintainability</dt><dd data-i18n="w26d">How easily and safely people can change the code.</dd></div>
+    <div id="t-modularity"><dt data-i18n="w27t">Modularity</dt><dd data-i18n="w27d">How well a program is divided into parts with few connections between them. With good modularity, a change in one part does not break a different part.</dd></div>
+    <div id="t-framework"><dt data-i18n="w28t">Framework</dt><dd data-i18n="w28d">A library that gives a program its frame. The program fills in its own parts.</dd></div>
+    <div id="t-fitness"><dt data-i18n="w8t">Fitness function</dt><dd data-i18n="w8d">An automatic check for a goal of the architecture. It runs at each change.</dd></div>
+    <div id="t-lint"><dt data-i18n="w29t">Lint tool</dt><dd data-i18n="w29d">A program that reads code and warns about suspicious patterns before the code runs. Clippy is the lint tool of Rust.</dd></div>
   </dl>
   <h3 data-i18n="srch">Sources</h3>
   <ul class="sources">
@@ -348,27 +370,27 @@
 {
 "ey": "Software &middot; Stand 22. November 2026",
 "h1": "Wie KI-Agenten Photoshop und Office nachbauten",
-"lead": "Im Herbst 2026 ließ der Entwickler Brandon Thomas KI-Programme Nachbauten von Photoshop schreiben, danach von Word, Excel und PowerPoint. Die erste große Version des Photoshop-Nachbaus entstand drei Stunden nach dem Start. Diese Seite zeigt, wie er die KI-Agenten eingerichtet hat, wie das Projekt heute arbeitet, was Messungen über die Struktur des Codes sagen und was man daraus lernen kann. Programmierkenntnisse brauchen Sie nicht.",
+"lead": "Im Herbst 2026 ließ der Entwickler Brandon Thomas KI-Programme Nachbauten von Photoshop schreiben, danach von Word, Excel und PowerPoint. Die erste große Version des Photoshop-Nachbaus entstand drei Stunden nach dem Start. Diese Seite zeigt, wie er die <a class=\"term\" href=\"#t-agent\">KI-Agenten</a> eingerichtet hat, wie das Projekt heute arbeitet, was Messungen über die Struktur des Codes sagen und was man daraus lernen kann. Programmierkenntnisse brauchen Sie nicht.",
 "st_b": "Stand: frühe Testversionen, viel Arbeit offen",
-"st_t": "Die Nachbauten sind frei und quelloffen. Das Projekt nennt sie „early alpha“, also sehr frühe Testversionen. Es sagt selbst, dass der Photoshop-Nachbau Photoshop für die tägliche Profiarbeit noch nicht ersetzen kann. Alle Zahlen auf dieser Seite stammen vom 22. November 2026. Sie ändern sich täglich.",
+"st_t": "Die Nachbauten sind frei und <a class=\"term\" href=\"#t-opensource\">quelloffen</a>. Das Projekt nennt sie „early <a class=\"term\" href=\"#t-alpha\">alpha</a>“, also sehr frühe Testversionen. Es sagt selbst, dass der Photoshop-Nachbau Photoshop für die tägliche Profiarbeit noch nicht ersetzen kann. Alle Zahlen auf dieser Seite stammen vom 22. November 2026. Sie ändern sich täglich.",
 "chg_h": "Was sich auf dieser Seite geändert hat",
 "chg1d": "22. Nov. 2026, Nachmittag",
 "chg1t": "Erste Version.",
 "c1h": "Die Methode",
-"c1t": "Zuerst ein Plan, eine Regeldatei und eine Checkliste aller Menüpunkte. Dann arbeiteten viele KI-Agenten gleichzeitig, und automatische Prüfungen stoppten schlechte Änderungen.",
+"c1t": "Zuerst ein Plan, eine <a class=\"term\" href=\"#t-rulefile\">Regeldatei</a> und eine Checkliste aller Menüpunkte. Dann arbeiteten viele KI-Agenten gleichzeitig, und automatische Prüfungen stoppten schlechte Änderungen.",
 "c2h": "Die Qualität",
 "c2t": "Viele Funktionen sind da, und echte Dateien lassen sich öffnen. Aber eine unabhängige Messung bewertet die innere Struktur des Codes weit unter dem Durchschnitt.",
 "c3h": "Die Lehre",
 "c3t": "Regeln, die ein Programm prüft, halten. Regeln, die nur als Text dastehen, gehen verloren. Schnell wachsender Code muss regelmäßig aufgeräumt werden, auch wenn eine KI ihn schreibt.",
 "s1h": "Was es heute gibt",
-"s1p1": "Brandon Thomas leitet das Projekt ArtCraft. Seine Apps sind Nachbauten bekannter Programme, in den Nachrichten Klone genannt: PhotoCraft (Photoshop), WordCraft (Word), GridCraft (Excel) und DeckCraft (PowerPoint). Alle sind in der Programmiersprache Rust geschrieben. Jede und jeder kann den Code lesen und verwenden.",
-"s1p2": "Die Geschichte des Codes ist öffentlich. Jede gespeicherte Änderung ist ein <strong>Commit</strong>, mit Zeit und Autor. Aus dieser Geschichte lässt sich das Projekt Schritt für Schritt verfolgen:",
-"t1d": "30. Sep., 08:12 MESZ",
-"t1t": "Thomas legt das leere Projekt PhotoCraft an.",
+"s1p1": "Brandon Thomas leitet das Projekt <a href=\"https://github.com/storytold\">ArtCraft</a>. Seine Apps sind Nachbauten bekannter Programme, in den Nachrichten Klone genannt: PhotoCraft (Photoshop), WordCraft (Word), GridCraft (Excel) und DeckCraft (PowerPoint). Alle sind in der Programmiersprache <a class=\"term\" href=\"#t-rust\">Rust</a> geschrieben. Jede und jeder kann den Code lesen und verwenden.",
+"s1p2": "Die Geschichte des Codes ist öffentlich. Jede gespeicherte Änderung ist ein <strong><a class=\"term\" href=\"#t-commit\">Commit</a></strong>, mit Zeit und Autor. Aus dieser Geschichte lässt sich das Projekt Schritt für Schritt verfolgen:",
+"t1d": "30. Sep., 08:12 <a class=\"term\" href=\"#t-utc\">MESZ</a>",
+"t1t": "Thomas legt das leere Projekt <a href=\"https://github.com/storytold/photocraft\">PhotoCraft</a> an.",
 "t2d": "30. Sep., 11:02 MESZ",
 "t2t": "Ein Commit mit dem Namen „one-shot“ fügt 241 Dateien mit 42.241 Zeilen Code hinzu.",
 "t3d": "2. Okt.",
-"t3t": "Im Forum Hacker News schreibt Thomas: „I just one-shotted Photoshop.“ Das heißt: Photoshop in einem einzigen Anlauf.",
+"t3t": "Im Forum <a href=\"https://news.ycombinator.com/item?id=49928088\">Hacker News</a> schreibt Thomas: „I just one-shotted Photoshop.“ Das heißt: Photoshop in einem einzigen Anlauf.",
 "t4d": "6. Okt.",
 "t4t": "Start von WordCraft, GridCraft und DeckCraft und einer gemeinsamen Bibliothek für alle Apps.",
 "t5d": "15. Okt.",
@@ -382,21 +404,21 @@
 "k2t": "PhotoCraft öffnet und speichert 307 von 309 Testdateien im Photoshop-Format mit demselben Bild.",
 "k2d": "Test des Projekts mit einer öffentlichen Sammlung von Testdateien.",
 "k3t": "22 von 25 Ziele für die Geschwindigkeit werden verfehlt.",
-"k3d": "Roadmap des Projekts, zuletzt aktualisiert am 22. Oktober.",
+"k3d": "<a class=\"term\" href=\"#t-roadmap\">Roadmap</a> des Projekts, zuletzt aktualisiert am 22. Oktober.",
 "plE": "Schätzung",
 "k4t": "PhotoCraft ist zu etwa 45 % bereit für echte Arbeit.",
 "k4d": "Schätzung des Projekts, mit Gewichten, die das Projekt selbst gewählt hat.",
 "plC": "Behauptung",
 "k5t": "1,7 Millionen Downloads pro Tag und etwa 60 % der Funktionen der Originale.",
-"k5d": "Thomas in einem Interview mit dem Podcast AI Engineer, laut BigGo vom 16. November. Niemand hat das unabhängig geprüft.",
+"k5d": "Thomas in einem Interview mit dem Podcast AI Engineer, laut <a href=\"https://finance.biggo.com/news/af709a80c17523a0\">BigGo</a> vom 16. November. Niemand hat das unabhängig geprüft.",
 "s2h": "Ein Plan vor dem Code",
-"s2p1": "Ein <strong>KI-Agent</strong> ist ein Programm, das mit einem KI-Modell eine Aufgabe in vielen Schritten erledigt. Er liest Dateien, schreibt Code, führt Tests aus, liest die Fehler und korrigiert sie. Thomas verwendete Claude Code, einen Agenten der Firma Anthropic, ohne besondere Zusätze. Auf Hacker News schrieb er: „We're using vanilla Claude Code“. Von den Commits, die ein KI-Modell als Mitautor nennen, nennen die meisten Claude Opus 5.5.",
-"s2p2": "Die Prompts sind nicht öffentlich. Die Pläne liegen in einem Ordner, den das Projekt privat hält. Laut BigGo sagt Thomas, der erste lauffähige Stand sei nach etwa 24 Stunden entstanden, aus einem einzigen großen, gegliederten Prompt. Der erste Commit zeigt das Ergebnis der Planung: drei Dinge, die jedem Agenten sagen, wie er arbeiten soll.",
-"s2l1": "<strong>Eine Regeldatei für Agenten</strong> (AGENTS.md). Sie sagt, was zuerst zu lesen ist, nennt sieben „goldene Regeln“ und die Prüfungen, die vor dem Ende einer Aufgabe bestehen müssen.",
-"s2l2": "<strong>Einen Architekturplan.</strong> Er teilt das Programm in Teile auf sieben Schichten. Er nennt auch Lehren aus dem freien Bildprogramm GIMP: GIMP brauchte viele Jahre, um Grundannahmen zu ändern, zum Beispiel über die Farbtiefe. PhotoCraft behandelt solche Eigenschaften von Anfang an als Daten.",
-"s2l3": "<strong>Eine Checkliste.</strong> Am ersten Tag kam der ganze Menübaum von Photoshop als Liste in den Code. Jeder Eintrag hat einen festen Namen, und ein kleines Programm zählt, wie viele Einträge schon funktionieren. Die Nachrichtenseite Declic berichtet, wie das Team zu der Liste kam: Es installierte Photoshop und listete den Inhalt des Pakets auf, ohne das Programm zu starten, zum Beispiel Tastenkürzel, Plug-ins und Texte aus der Programmdatei. Der erste Plan verwendete auch den Menübaum eines anderen Bildprogramms, Photon Studio, mit 720 Punkten als Liste der Arbeit.",
+"s2p1": "Ein <strong><a class=\"term\" href=\"#t-agent\">KI-Agent</a></strong> ist ein Programm, das mit einem <a class=\"term\" href=\"#t-model\">KI-Modell</a> eine Aufgabe in vielen Schritten erledigt. Er liest Dateien, schreibt Code, führt Tests aus, liest die Fehler und korrigiert sie. Thomas verwendete <a href=\"https://claude.com/product/claude-code\">Claude Code</a>, einen Agenten der Firma Anthropic, ohne besondere Zusätze. Auf Hacker News schrieb er: „We're using vanilla Claude Code“. Von den Commits, die ein KI-Modell als Mitautor nennen, nennen die meisten Claude Opus 5.5.",
+"s2p2": "Die <a class=\"term\" href=\"#t-prompt\">Prompts</a> sind nicht öffentlich. Die Pläne liegen in einem Ordner, den das Projekt privat hält. Laut BigGo sagt Thomas, der erste lauffähige Stand sei nach etwa 24 Stunden entstanden, aus einem einzigen großen, gegliederten Prompt. Der erste <a class=\"term\" href=\"#t-commit\">Commit</a> zeigt das Ergebnis der Planung: drei Dinge, die jedem Agenten sagen, wie er arbeiten soll.",
+"s2l1": "<strong>Eine Regeldatei für Agenten</strong> (<a class=\"term\" href=\"#t-rulefile\">AGENTS.md</a>). Sie sagt, was zuerst zu lesen ist, nennt sieben „goldene Regeln“ und die Prüfungen, die vor dem Ende einer Aufgabe bestehen müssen.",
+"s2l2": "<strong>Einen <a class=\"term\" href=\"#t-architecture\">Architekturplan</a>.</strong> Er teilt das Programm in Teile auf sieben <a class=\"term\" href=\"#t-layer\">Schichten</a>. Er nennt auch Lehren aus dem freien Bildprogramm <a href=\"https://www.gimp.org/\">GIMP</a>: GIMP brauchte viele Jahre, um Grundannahmen zu ändern, zum Beispiel über die Farbtiefe. PhotoCraft behandelt solche Eigenschaften von Anfang an als Daten.",
+"s2l3": "<strong>Eine Checkliste.</strong> Am ersten Tag kam der ganze Menübaum von Photoshop als Liste in den Code. Jeder Eintrag hat einen festen Namen, und ein kleines Programm zählt, wie viele Einträge schon funktionieren. Die Nachrichtenseite <a href=\"https://www.declic.media/en/news/artcraft-adobe-clean-room/\">Declic</a> berichtet, wie das Team zu der Liste kam: Es installierte Photoshop und listete den Inhalt des Pakets auf, ohne das Programm zu starten, zum Beispiel Tastenkürzel, Plug-ins und Texte aus der Programmdatei. Der erste Plan verwendete auch den Menübaum eines anderen Bildprogramms, Photon Studio, mit 720 Punkten als Liste der Arbeit.",
 "s2p3": "Ein Vergleich: eine große Küche mit vielen Köchinnen und Köchen. Die Checkliste ist die Speisekarte. Die Architektur ist der Plan der Stationen. Die Regeldatei hängt an der Wand. Die Tests kosten jeden Teller, bevor er hinausgeht. Der Vergleich hat eine Grenze: Menschen in der Küche reden miteinander. Agenten wissen nur, was in den Dateien steht.",
-"s2p4": "Die wichtigste Regel der Architektur ist die Richtung der Schichten. Ein Teil darf nur Teile in tieferen Schichten verwenden. Die Bedienoberfläche darf die Engine verwenden, aber die Engine darf die Bedienoberfläche nicht verwenden. Ein Programm prüft das bei jeder Änderung. Wählen Sie eine Schicht:",
+"s2p4": "Die wichtigste Regel der Architektur ist die Richtung der Schichten. Ein Teil darf nur Teile in tieferen Schichten verwenden. Die Bedienoberfläche darf die <a class=\"term\" href=\"#t-engine\">Engine</a> verwenden, aber die Engine darf die Bedienoberfläche nicht verwenden. Ein Programm prüft das bei jeder Änderung. Wählen Sie eine Schicht:",
 "f1t": "Die sieben Schichten von PhotoCraft",
 "ly6": "Bedienoberfläche und Automatisierung",
 "ly5": "Engine: offene Dokumente, Liste aller Befehle",
@@ -409,20 +431,20 @@
 "lg1b": "darf sie verwenden",
 "lg1c": "für sie verboten",
 "f1c": "Die Schichten stammen aus dem Architekturplan und aus dem Programm, das sie prüft (xtask/src/layers.rs). Die Prüfung läuft bei jeder Änderung. Eine Änderung, die die Richtung verletzt, kommt nicht in die Hauptversion.",
-"s2p5": "Eine zweite Regel ist ebenso wichtig: <strong>Alles ist ein Befehl.</strong> Jede Handlung hat einen festen Namen, zum Beispiel <span class=\"mono\">filter.blur.gaussian</span>. Menü, Tastatur, Tests und andere KI-Agenten starten alle denselben Befehl. Die Agenten verwenden dafür eine Standardverbindung mit dem Namen MCP. So kann ein Agent jede Funktion ohne Bildschirm testen. Er kann auch die App starten, klicken, ein Bildschirmfoto machen und es ansehen.",
+"s2p5": "Eine zweite Regel ist ebenso wichtig: <strong>Alles ist ein <a class=\"term\" href=\"#t-command\">Befehl</a>.</strong> Jede Handlung hat einen festen Namen, zum Beispiel <span class=\"mono\">filter.blur.gaussian</span>. Menü, Tastatur, Tests und andere KI-Agenten starten alle denselben Befehl. Die Agenten verwenden dafür eine Standardverbindung mit dem Namen <a class=\"term\" href=\"#t-mcp\">MCP</a>. So kann ein Agent jede Funktion ohne Bildschirm testen. Er kann auch die App starten, klicken, ein Bildschirmfoto machen und es ansehen.",
 "s3h": "Viele Agenten zugleich",
-"s3p1": "Am 2. Oktober schrieb ein Agent eine Schätzung in das Projekt. Sie sagt, dass eine Sitzung etwa 70 Menüpunkte und große Teile fertigstellte, „using 8 parallel agents“, also mit acht Agenten gleichzeitig. Dafür hatte die Regeldatei eine eigene Regel. Jeder Agent baut in einem eigenen Ordner, damit sich die Agenten nicht gegenseitig blockieren. Und jeder Agent ändert nur die Teile, die ihm gehören.",
-"s3p2": "Die Office-Nachbauten folgten demselben Muster. WordCraft begann am 6. Oktober um 02:23 Uhr MESZ. In den nächsten dreieinhalb Stunden fügten Commits, benannt nach den Schritten eines Plans („M0.1“ bis „M1“), ein Dokumentmodell hinzu, mehr als 200 Befehle, eine Bedienoberfläche mit allen Menüband-Registerkarten, eine MCP-Verbindung sowie Lesen und Schreiben von Word-Dateien.",
-"s3p3": "<strong>Warum ging das so schnell?</strong> Ein bekanntes Programm nachzubauen ist eine ungewöhnliche Aufgabe. Das Ziel ist vollständig bekannt. Man kann es in hunderte kleine Aufgaben teilen und den Fortschritt zählen. Jede kleine Aufgabe hat einen klaren Test: Macht sie dasselbe wie das Original? In genau dieser Lage sind KI-Agenten am stärksten.",
+"s3p1": "Am 2. Oktober schrieb ein <a class=\"term\" href=\"#t-agent\">Agent</a> eine Schätzung in das Projekt. Sie sagt, dass eine Sitzung etwa 70 Menüpunkte und große Teile fertigstellte, „using 8 parallel agents“, also mit acht Agenten gleichzeitig. Dafür hatte die <a class=\"term\" href=\"#t-rulefile\">Regeldatei</a> eine eigene Regel. Jeder Agent <a class=\"term\" href=\"#t-build\">baut</a> in einem eigenen Ordner, damit sich die Agenten nicht gegenseitig blockieren. Und jeder Agent ändert nur die Teile, die ihm gehören.",
+"s3p2": "Die Office-Nachbauten folgten demselben Muster. <a href=\"https://github.com/storytold/wordcraft\">WordCraft</a> begann am 6. Oktober um 02:23 Uhr <a class=\"term\" href=\"#t-utc\">MESZ</a>. In den nächsten dreieinhalb Stunden fügten <a class=\"term\" href=\"#t-commit\">Commits</a>, benannt nach den Schritten eines Plans („M0.1“ bis „M1“), ein Dokumentmodell hinzu, mehr als 200 Befehle, eine Bedienoberfläche mit allen Menüband-Registerkarten, eine <a class=\"term\" href=\"#t-mcp\">MCP</a>-Verbindung sowie Lesen und Schreiben von Word-Dateien.",
+"s3p3": "<strong>Warum ging das so schnell?</strong> Ein bekanntes Programm nachzubauen ist eine ungewöhnliche Aufgabe. Das Ziel ist vollständig bekannt. Man kann es in hunderte kleine Aufgaben teilen und den Fortschritt zählen. Jede kleine Aufgabe hat einen klaren <a class=\"term\" href=\"#t-test\">Test</a>: Macht sie dasselbe wie das Original? In genau dieser Lage sind KI-Agenten am stärksten.",
 "s3p4": "Ein Vergleich: Ein bestehendes Haus nachzubauen geht schneller, als ein neues zu entwerfen. Man kann jeden Raum des Originals ausmessen. Man muss nicht entscheiden, wofür das Haus da ist.",
 "s3p5": "Nach den ersten Wochen änderte sich der Ablauf. Vergleichen Sie die beiden Stände:",
 "f2t": "Wie eine Änderung in PhotoCraft kommt",
 "f2b1": "30. September: eine Person",
 "f2b2": "November: eine Gemeinschaft",
 "f2c": "Quellen: die erste Regeldatei (30. September) sowie die gemeinsamen Regeln und die Einstellungen des Projekts (Stand 22. November). Schritte mit der Marke „neu“ gab es im September noch nicht.",
-"s3p6": "Ein Schritt braucht eine Erklärung: der <strong>Reinraum</strong> (englisch „clean room“). Das ist eine Methode, ein Produkt nachzubauen, ohne geschützte Werke zu kopieren. Ein Team untersucht das Original und schreibt nur eine Beschreibung seines Verhaltens. Ein zweites Team schreibt den Code aus dieser Beschreibung und sieht das Original nie. Kritiker auf Hacker News sagten: Es ist kein Reinraum, wenn dieselbe KI Photoshop bedient und den Code schreibt. Seit 18. November verbietet eine Regel des Projekts das. Sie verbietet auch, irgendetwas im installierten Paket des Originals zu lesen. Die rechtlichen Fragen sind offen. Diese Seite beurteilt sie nicht.",
+"s3p6": "Ein Schritt braucht eine Erklärung: der <strong><a class=\"term\" href=\"#t-cleanroom\">Reinraum</a></strong> (englisch „clean room“). Das ist eine Methode, ein Produkt nachzubauen, ohne geschützte Werke zu kopieren. Ein Team untersucht das Original und schreibt nur eine Beschreibung seines Verhaltens. Ein zweites Team schreibt den Code aus dieser Beschreibung und sieht das Original nie. Kritiker auf Hacker News sagten: Es ist kein Reinraum, wenn dieselbe KI Photoshop bedient und den Code schreibt. Seit 18. November verbietet eine Regel des Projekts das. Sie verbietet auch, irgendetwas im installierten Paket des Originals zu lesen. Die rechtlichen Fragen sind offen. Diese Seite beurteilt sie nicht.",
 "s4h": "Von einer Person zur Gemeinschaft",
-"s4p1": "Nach der ersten Woche suchte Thomas Hilfe. Am 5. Oktober schrieb er, er brauche eine Gemeinschaft für Fehlerberichte und Code-Änderungen. Viele Menschen kamen. Ein Vorschlag des Projekts sagt, dass viel von ihrer Arbeit von Coding-Agenten kommt. Die Grafik zeigt die Commits pro Woche. Wählen Sie eine App:",
+"s4p1": "Nach der ersten Woche suchte Thomas Hilfe. Am 5. Oktober schrieb er, er brauche eine Gemeinschaft für Fehlerberichte und Code-Änderungen. Viele Menschen kamen. Ein Vorschlag des Projekts sagt, dass viel von ihrer Arbeit von <a class=\"term\" href=\"#t-agent\">Coding-Agenten</a> kommt. Die Grafik zeigt die <a class=\"term\" href=\"#t-commit\">Commits</a> pro Woche. Wählen Sie eine App:",
 "f3t": "Commits pro Woche: Thomas und alle anderen",
 "lg3a": "alle anderen Autorinnen und Autoren",
 "lg3b": "Brandon Thomas (leerer Kasten)",
@@ -430,18 +452,18 @@
 "stC2": "Autorinnen und Autoren",
 "stC3": "Anteil von Thomas",
 "stC4": "Nachbau von",
-"f3c": "Gezählt aus der öffentlichen Geschichte bis zum Nachmittag des 22. November 2026, mit Merge-Commits. Eine Woche beginnt am Montag um 00:00 UTC. Commits, die Thomas mit Agenten gemacht hat, zählen für Thomas.",
+"f3c": "Gezählt aus der öffentlichen Geschichte bis zum Nachmittag des 22. November 2026, mit <a class=\"term\" href=\"#t-merge\">Merge-Commits</a>. Eine Woche beginnt am Montag um 00:00 <a class=\"term\" href=\"#t-utc\">UTC</a>. Commits, die Thomas mit Agenten gemacht hat, zählen für Thomas.",
 "s4p2": "In PhotoCraft kamen seit 1. November nur 6 Commits von Thomas. Am 2. November schrieb er von „about 50 core developers“, also etwa 50 Kernentwicklerinnen und -entwicklern, mit einer verantwortlichen Person für jeden Bereich. Die Geschichte zeigt eine neue Rolle für ihn: Richtung, Gemeinschaft und Entscheidungen, weniger eigener Code.",
 "s4p3": "Rund um die Apps baute das Projekt eine Struktur, wie sie auch eine große Softwarefirma hätte:",
-"s4l1": "<strong>Ein Projekt für Regeln (craft-contrib).</strong> Änderungen an den Regeln brauchen einen schriftlichen Vorschlag und eine Entscheidung, wie in großen Open-Source-Projekten. Vorher hatte dieselbe Regel in 28 öffentlichen Repositorys bis zu 20 verschiedene Formulierungen. Im November entschied das Projekt für eine gemeinsame Regeldatei für Agenten. PhotoCraft verwendet sie seit 20. November.",
-"s4l2": "<strong>Eine gemeinsame Bibliothek (craft-libs).</strong> Teile, die alle Apps brauchen, zum Beispiel Leser für Dateiformate, liegen an einem Ort.",
-"s4l3": "<strong>Prüfung durch Programme.</strong> Der Dienst CodeRabbit kommentiert jede vorgeschlagene Änderung. Der Dienst SonarCloud durchsucht den Code nach Fehlern.",
+"s4l1": "<strong>Ein Projekt für Regeln (<a href=\"https://github.com/storytold/craft-contrib\">craft-contrib</a>).</strong> Änderungen an den Regeln brauchen einen schriftlichen Vorschlag und eine Entscheidung, wie in großen Open-Source-Projekten. Vorher hatte dieselbe Regel in 28 öffentlichen <a class=\"term\" href=\"#t-repo\">Repositorys</a> bis zu 20 verschiedene Formulierungen. Im November entschied das Projekt für eine gemeinsame <a class=\"term\" href=\"#t-rulefile\">Regeldatei</a> für Agenten. PhotoCraft verwendet sie seit 20. November.",
+"s4l2": "<strong>Eine gemeinsame <a class=\"term\" href=\"#t-library\">Bibliothek</a> (<a href=\"https://github.com/storytold/craft-libs\">craft-libs</a>).</strong> Teile, die alle Apps brauchen, zum Beispiel Leser für Dateiformate, liegen an einem Ort.",
+"s4l3": "<strong>Prüfung durch Programme.</strong> Der Dienst <a href=\"https://www.coderabbit.ai/\">CodeRabbit</a> kommentiert jede vorgeschlagene Änderung. Der Dienst <a href=\"https://www.sonarsource.com/products/sonarqube/cloud/\">SonarCloud</a> durchsucht den Code nach Fehlern.",
 "s4p4": "Die Vorschläge für die Regeln zeigen, was schiefging. Ein Agent befolgt seine Anweisungen wörtlich, also wird eine Lücke darin zum selben Fehler, viele Male: Zwei Agenten beheben denselben Fehler, oder ein Agent verwendet Funktionen, die es nicht gibt. Die Antworten sind einfache Regeln: zuerst die Aufgabe übernehmen, jede Definition öffnen, bevor man sie verwendet, jede Änderung klein halten und die eigene Änderung lesen, bevor man sie abschickt.",
-"s4p5": "Auch die Modelle wechseln. Etwa 6.000 Commits in PhotoCraft nennen Claude Opus 5.5 als Mitautor, manche nennen andere Modelle. Der echte Anteil der KI ist nicht bekannt, denn nicht alle Autorinnen und Autoren nennen das Modell. Einige Wochen im November sagte eine Regel des Projekts sogar, dass ein Pull Request nicht sagen darf, dass ein Agent ihn geschrieben hat. Am 1. November schrieb Thomas, dass er jetzt mit Claude plant und das offene Modell Kimi den Code schreiben lässt.",
+"s4p5": "Auch die <a class=\"term\" href=\"#t-model\">Modelle</a> wechseln. Etwa 6.000 Commits in PhotoCraft nennen Claude Opus 5.5 als Mitautor, manche nennen andere Modelle. Der echte Anteil der KI ist nicht bekannt, denn nicht alle Autorinnen und Autoren nennen das Modell. Einige Wochen im November sagte eine Regel des Projekts sogar, dass ein <a class=\"term\" href=\"#t-pr\">Pull Request</a> nicht sagen darf, dass ein Agent ihn geschrieben hat. Am 1. November schrieb Thomas, dass er jetzt mit Claude plant und das <a class=\"term\" href=\"#t-openmodel\">offene Modell</a> Kimi den Code schreiben lässt.",
 "s5h": "Wie gut ist der Code?",
 "s5p1": "Qualität hat zwei Seiten. Die erste: Funktioniert das Programm für die Benutzer? Die zweite: Ist der Code innen so gebaut, dass Menschen ihn sicher ändern können? Ein Programm kann auf der einen Seite gut und auf der anderen schlecht sein.",
-"s5p2": "<strong>Für die Benutzer</strong> gibt das Projekt selbst ein ehrliches Bild. Mitte Oktober hatte es 953 offene Meldungen über Fehler und fehlende Funktionen. Laut seiner Roadmap vom Oktober verfehlte es die meisten Ziele für die Geschwindigkeit, und Photoshop nahm die Dateien, die PhotoCraft schrieb, nicht zuverlässig an. Anfang Oktober berichteten Tester auf Hacker News von langsamer Bedienung, kaputter Textbearbeitung und Tastenkürzeln, die nichts taten. Ein anderer Tester baute die App selbst und fand sie größtenteils in Ordnung.",
-"s5p3": "<strong>Für das Innere</strong> gibt es eine unabhängige Messung. Die niederländische Firma Software Improvement Group (SIG) untersuchte die sieben Adobe-Nachbauten im Stand vom 12. Oktober. SIG vergibt Sterne von 0,5 bis 5,5. Drei Sterne sind der Durchschnitt des Markts. Vier Sterne sind das Ziel, das SIG für neue Software empfiehlt. Wählen Sie ein Maß:",
+"s5p2": "<strong>Für die Benutzer</strong> gibt das Projekt selbst ein ehrliches Bild. Mitte Oktober hatte es 953 offene Meldungen über Fehler und fehlende Funktionen. Laut seiner <a class=\"term\" href=\"#t-roadmap\">Roadmap</a> vom Oktober verfehlte es die meisten Ziele für die Geschwindigkeit, und Photoshop nahm die Dateien, die PhotoCraft schrieb, nicht zuverlässig an. Anfang Oktober berichteten Tester auf Hacker News von langsamer Bedienung, kaputter Textbearbeitung und Tastenkürzeln, die nichts taten. Ein anderer Tester baute die App selbst und fand sie größtenteils in Ordnung.",
+"s5p3": "<strong>Für das Innere</strong> gibt es eine unabhängige Messung. Die niederländische Firma <a href=\"https://www.softwareimprovementgroup.com/\">Software Improvement Group</a> (<a class=\"term\" href=\"#t-sig\">SIG</a>) untersuchte die sieben Adobe-Nachbauten im Stand vom 12. Oktober. SIG vergibt Sterne von 0,5 bis 5,5. Drei Sterne sind der Durchschnitt des Markts. Vier Sterne sind das Ziel, das SIG für neue Software empfiehlt. Wählen Sie ein Maß:",
 "f4t": "Bewertung des Codes durch SIG (Stand 12. Oktober)",
 "f4b1": "Wartbarkeit",
 "f4b2": "Architektur",
@@ -450,16 +472,16 @@
 "lg4b": "Marktdurchschnitt (3)",
 "lg4c": "empfohlenes Ziel (4)",
 "f4c": "Daten: SIG, Artikel vom 4. November 2026. SIG verkauft solche Analysen. Die Messung stammt aus der Zeit vor den großen Änderungen vom 26. Oktober und 17. November (Abschnitt 06). Der Text des Artikels nennt 5,5 als höchsten Wert für Sicherheit, seine Tabelle 5. Die Grafik verwendet die Tabelle.",
-"s5p4": "Die Sicherheit ist gut, auch weil die Sprache Rust viele typische Fehler verhindert. Wartbarkeit und Architektur sind schwach. Auch einzelne Funktionen sind schwach, aber das größte Problem sieht SIG in den Verbindungen zwischen den Teilen. Bei PhotoCraft hat die Modularität 0,7 Sterne. SIG nennt das Bild der Architektur „spaghetti-code“: Zu viele Teile hängen von zu vielen anderen Teilen ab. Eine Änderung an einer Stelle kann an einer anderen Stelle etwas kaputt machen.",
+"s5p4": "Die Sicherheit ist gut, auch weil die Sprache <a class=\"term\" href=\"#t-rust\">Rust</a> viele typische Fehler verhindert. <a class=\"term\" href=\"#t-maintain\">Wartbarkeit</a> und Architektur sind schwach. Auch einzelne Funktionen sind schwach, aber das größte Problem sieht SIG in den Verbindungen zwischen den Teilen. Bei PhotoCraft hat die <a class=\"term\" href=\"#t-modularity\">Modularität</a> 0,7 Sterne. SIG nennt das Bild der Architektur „spaghetti-code“: Zu viele Teile hängen von zu vielen anderen Teilen ab. Eine Änderung an einer Stelle kann an einer anderen Stelle etwas kaputt machen.",
 "s5p5": "Thomas sieht darin kein großes Problem. In der Nacht auf den 3. November verglich er Code mit DNA, die auch nicht sauber entworfen ist: „Evolve it, don't intelligently design it“, also: entwickeln lassen statt planvoll entwerfen. Tests entfernen schlechtes Verhalten. SIG antwortet, dass solcher Code jede spätere Änderung langsamer und teurer macht, auch für Agenten, weil sie mehr vom Code lesen müssen. Diese Seite entscheidet nicht zwischen den beiden Positionen.",
 "s6h": "Wo die Struktur nachgibt",
 "s6p1": "Für diese Seite wurde der Code von PhotoCraft am 22. November gezählt. Das Ergebnis zeigt beides: was der Plan schützt und was er nicht schützt.",
-"s6p2": "Die Richtung der Schichten hält, weil ein Programm sie prüft. Aber diese Prüfung achtet nicht auf die Größe der Schichten. Sehen Sie, wo die Codezeilen liegen:",
+"s6p2": "Die Richtung der <a class=\"term\" href=\"#t-layer\">Schichten</a> hält, weil ein Programm sie prüft. Aber diese Prüfung achtet nicht auf die Größe der Schichten. Sehen Sie, wo die Codezeilen liegen:",
 "f5t": "Zeilen Rust-Code in jeder Schicht von PhotoCraft",
 "f5b1": "Alle Dateien",
 "f5b2": "Ohne Testdateien",
 "f5c": "Gezählt am 22. November 2026 (Commit 65fc546). Testdateien sind Dateien mit „test“ im Namen oder in einem Testordner. Tests innerhalb anderer Dateien zählen als Code. Schicht L2 enthält eine Datentabelle mit 14.532 Zeilen. Code in der gemeinsamen Bibliothek ist nicht mitgezählt.",
-"s6p3": "Die zwei obersten Schichten, Engine und Bedienoberfläche, enthalten 547.000 von 873.000 Zeilen: fast zwei Drittel. Die unteren Schichten sind klein. Das hat einen Grund. Die Checkliste zählt Menüpunkte. Jeder Menüpunkt wird ein Befehl in der Engine und oft ein Dialog oder ein Panel in der Bedienoberfläche. So landet die meiste neue Arbeit oben, egal was der Plan über die Schichten sagt.",
+"s6p3": "Die zwei obersten Schichten, <a class=\"term\" href=\"#t-engine\">Engine</a> und Bedienoberfläche, enthalten 547.000 von 873.000 Zeilen: fast zwei Drittel. Die unteren Schichten sind klein. Das hat einen Grund. Die Checkliste zählt Menüpunkte. Jeder Menüpunkt wird ein <a class=\"term\" href=\"#t-command\">Befehl</a> in der Engine und oft ein Dialog oder ein Panel in der Bedienoberfläche. So landet die meiste neue Arbeit oben, egal was der Plan über die Schichten sagt.",
 "s6p4": "Dasselbe passiert in einzelnen Dateien. Manche Dateien sind zentral: Fast jede Änderung berührt sie. Die Grafik zeigt zwei davon. Verschieben Sie das Datum:",
 "f6t": "Größe von zwei zentralen Dateien der Bedienoberfläche",
 "f6l": "Datum",
@@ -468,29 +490,29 @@
 "stF3": "Commits, die canvas.rs geändert haben, insgesamt",
 "stF4": "Commits, die lib.rs geändert haben, insgesamt",
 "f6c": "Zeilen jeder Datei, alle zwei Tage aus der öffentlichen Geschichte gezählt. Am 26. Oktober teilte ein Mitwirkender die Datei in einen Ordner mit kleineren Dateien. Am 17. November zog die Bedienoberfläche auf ein gemeinsames Framework in der gemeinsamen Bibliothek um.",
-"s6p5": "Die Datei für die Zeichenfläche wuchs in weniger als vier Wochen von 1.240 auf mehr als 10.000 Zeilen. Am 26. Oktober baute ein Mitglied der Gemeinschaft die Bedienoberfläche um. Die Datei wuchs wieder. Am 17. November wurde sie aus einem anderen Grund wieder klein: PhotoCraft verlegte große Teile seiner Bedienoberfläche in ein gemeinsames Framework in der gemeinsamen Bibliothek. Der Code ist umgezogen. Er ist nicht verschwunden.",
+"s6p5": "Die Datei für die Zeichenfläche wuchs in weniger als vier Wochen von 1.240 auf mehr als 10.000 Zeilen. Am 26. Oktober baute ein Mitglied der Gemeinschaft die Bedienoberfläche um. Die Datei wuchs wieder. Am 17. November wurde sie aus einem anderen Grund wieder klein: PhotoCraft verlegte große Teile seiner Bedienoberfläche in ein gemeinsames <a class=\"term\" href=\"#t-framework\">Framework</a> in der gemeinsamen <a class=\"term\" href=\"#t-library\">Bibliothek</a>. Der Code ist umgezogen. Er ist nicht verschwunden.",
 "s6p6": "Ein Vergleich: eine Küchenlade. Jedes neue Ding kommt in die Lade, die schon offen ist. Eine Zeit lang geht das gut. Dann findet man nichts mehr, und jemand muss die Lade ausräumen und ordnen. Die Agenten legten jede neue Funktion dorthin, wo der Code war, den sie gerade gelesen hatten.",
-"s6p7": "Das ist nicht typisch für KI. 1980 beschrieb der Informatiker Meir Lehman es als Gesetz: Ein Programm, das Menschen ändern, wird komplexer, außer jemand arbeitet daran, die Komplexität zu verringern. Agenten lassen das nur schneller geschehen. Und eine Datei zu teilen verringert nicht die Verbindungen zwischen den Teilen, die SIG gemessen hat.",
+"s6p7": "Das ist nicht typisch für KI. 1980 beschrieb der Informatiker Meir Lehman es als <a href=\"https://en.wikipedia.org/wiki/Lehman%27s_laws_of_software_evolution\">Gesetz</a>: Ein Programm, das Menschen ändern, wird komplexer, außer jemand arbeitet daran, die Komplexität zu verringern. Agenten lassen das nur schneller geschehen. Und eine Datei zu teilen verringert nicht die Verbindungen zwischen den Teilen, die SIG gemessen hat.",
 "s7h": "Wie die Struktur gut bleibt",
 "s7p1": "Das Projekt schützt seine Struktur schon auf mehrere Arten. Diese Liste zeigt, was der veröffentlichte Code am 22. November enthält und was fehlt:",
 "plI": "Vorhanden",
-"g1t": "Eine Prüfung der Richtung der Schichten.",
+"g1t": "Eine Prüfung der Richtung der <a class=\"term\" href=\"#t-layer\">Schichten</a>.",
 "g1d": "Seit dem ersten großen Commit am 30. September. Sie läuft bei jeder Änderung.",
-"g2t": "Jede Handlung ist ein Befehl, und Panels dürfen Daten nur über Befehle ändern.",
+"g2t": "Jede Handlung ist ein <a class=\"term\" href=\"#t-command\">Befehl</a>, und Panels dürfen Daten nur über Befehle ändern.",
 "g2d": "Eine Prüfung findet Panels, die die Befehle umgehen.",
 "g3t": "Eine Grenze für die Komplexität einer einzelnen Funktion.",
-"g3d": "Das Rust-Werkzeug Clippy stoppt zu komplexe Funktionen.",
-"g4t": "Tests sind Pflicht, und niemand darf einen Test löschen oder abschwächen, damit eine Prüfung besteht.",
+"g3d": "Das Rust-Werkzeug <a href=\"https://doc.rust-lang.org/clippy/\">Clippy</a> stoppt zu komplexe Funktionen.",
+"g4t": "<a class=\"term\" href=\"#t-test\">Tests</a> sind Pflicht, und niemand darf einen Test löschen oder abschwächen, damit eine Prüfung besteht.",
 "g4d": "Regel in der gemeinsamen Regeldatei.",
 "plP": "Teilweise",
-"g5t": "Gemeinsame Teile kommen aus der gemeinsamen Bibliothek, nicht aus Kopien in jeder App.",
+"g5t": "Gemeinsame Teile kommen aus der gemeinsamen <a class=\"term\" href=\"#t-library\">Bibliothek</a>, nicht aus Kopien in jeder App.",
 "g5d": "Eine Regel seit 17. November. Kopien aus den ersten Wochen müssen erst umziehen.",
 "plN": "Nicht gefunden",
 "g6t": "Eine Grenze für die Größe von Dateien, Teilen und Schichten.",
 "g6d": "Ich habe keine solche Prüfung gefunden. Die Daten aus Abschnitt 06 zeigen, warum sie helfen würde.",
 "g7t": "Eine Grenze für die Verbindungen zwischen Teilen.",
 "g7d": "SonarCloud durchsucht den Code, aber ich habe keine Prüfung gefunden, die eine Änderung stoppt, wenn die Teile stärker verflochten werden.",
-"s7p2": "Software-Architekten nennen solche automatischen Prüfungen <strong>Fitness-Funktionen</strong>: Jedes Ziel für die Struktur wird ein Test, der bei jeder Änderung läuft. Die Regel der Schichten ist ein gutes Beispiel. Aus den Fakten auf dieser Seite folgen diese Ideen. Sie sind Vorschläge dieser Seite, keine Pläne des Projekts:",
+"s7p2": "Software-Architekten nennen solche automatischen Prüfungen <strong><a class=\"term\" href=\"#t-fitness\">Fitness-Funktionen</a></strong>: Jedes Ziel für die Struktur wird ein Test, der bei jeder Änderung läuft. Die Regel der Schichten ist ein gutes Beispiel. Aus den Fakten auf dieser Seite folgen diese Ideen. Sie sind Vorschläge dieser Seite, keine Pläne des Projekts:",
 "i1": "<strong>Jedes Ziel für die Struktur zur Prüfung machen.</strong> Zum Beispiel: keine Datei größer als 2.000 Zeilen, ein Höchstanteil für jede Schicht, eine Grenze für die Verbindungen jedes Teils. Regeln als Text gehen verloren, wenn viele Agenten arbeiten. Prüfungen nicht.",
 "i2": "<strong>Nach Plan aufräumen, nicht im Notfall.</strong> Die zentralen Dateien wurden erst bei mehr als 10.000 Zeilen geteilt. Ein wöchentlicher Agent, der die Dateien mit den meisten Änderungen teilt, kostet wenig.",
 "i3": "<strong>Der Struktur eine Besitzerin geben:</strong> einen Agenten oder eine Person, die jede Änderung nur auf die Struktur hin liest und Nein sagen darf.",
@@ -500,15 +522,15 @@
 "f7t": "Die Dateien von PhotoCraft mit den meisten Änderungen",
 "f7c": "Zahl der Commits, die jede Datei geändert haben, vom 30. September bis 22. November 2026. Solche Dateien sind die ersten Kandidaten zum Aufräumen: Sie zeigen, wo der Druck auf die Struktur am größten ist.",
 "s8h": "Was Sie für Ihre Arbeit lernen können",
-"s8p0": "Wer Claude Code oder einen ähnlichen Agenten verwendet, kann dasselbe Muster im Kleinen nutzen:",
-"m1": "<strong>Zuerst den Plan und die Regeln schreiben:</strong> eine Regeldatei (CLAUDE.md oder AGENTS.md) mit der Struktur, den Testbefehlen und dem, was verboten ist.",
+"s8p0": "Wer Claude Code oder einen ähnlichen <a class=\"term\" href=\"#t-agent\">Agenten</a> verwendet, kann dasselbe Muster im Kleinen nutzen:",
+"m1": "<strong>Zuerst den Plan und die Regeln schreiben:</strong> eine Regeldatei (<a class=\"term\" href=\"#t-rulefile\">CLAUDE.md</a> oder AGENTS.md) mit der Struktur, den Testbefehlen und dem, was verboten ist.",
 "m2": "<strong>Dem Agenten eine Liste geben, die er abzählen kann.</strong> Eine Checkliste macht den Fortschritt messbar.",
-"m3": "<strong>Programme die Regeln durchsetzen lassen:</strong> Tests, Lint-Werkzeuge und eine Prüfung der Struktur, bei jeder Änderung.",
+"m3": "<strong>Programme die Regeln durchsetzen lassen:</strong> <a class=\"term\" href=\"#t-test\">Tests</a>, <a class=\"term\" href=\"#t-lint\">Lint-Werkzeuge</a> und eine Prüfung der Struktur, bei jeder Änderung.",
 "m4": "<strong>Jede Funktion zu einem Befehl machen,</strong> damit der Agent sie ohne Bildschirm testen kann.",
-"m5": "<strong>Agenten nur an getrennten Teilen gleichzeitig arbeiten lassen,</strong> jeden mit seinem eigenen Build-Ordner.",
+"m5": "<strong>Agenten nur an getrennten Teilen gleichzeitig arbeiten lassen,</strong> jeden mit seinem eigenen <a class=\"term\" href=\"#t-build\">Build</a>-Ordner.",
 "m6": "<strong>Die menschliche Arbeit für Richtung, Prüfung und Aufräumen behalten.</strong>",
 "m7": "<strong>Die Grenze des Beispiels kennen.</strong> Ein Nachbau hat ein bekanntes Ziel und eine natürliche Checkliste. Ein neues Produkt hat beides nicht und braucht darum viel mehr Planung.",
-"s9h": "Kurzes Glossar",
+"s9h": "Begriffe",
 "w1t": "KI-Agent",
 "w1d": "Ein Programm, das mit einem KI-Modell eine Aufgabe in vielen Schritten erledigt: lesen, schreiben, testen, korrigieren.",
 "w2t": "Commit",
@@ -518,9 +540,9 @@
 "w4t": "Befehl",
 "w4d": "Eine Handlung des Programms mit festem Namen. Menü, Tastatur, Tests und Agenten starten alle denselben Befehl.",
 "w5t": "MCP",
-"w5d": "Model Context Protocol: eine Standardverbindung, über die ein KI-Agent ein Programm bedienen kann.",
+"w5d": "Model Context Protocol: eine Standardverbindung, über die ein KI-Agent ein Programm bedienen kann. <a href=\"https://modelcontextprotocol.io/\">Die Website von MCP (englisch)</a>",
 "w6t": "Reinraum",
-"w6d": "Eine Methode, ein Produkt nachzubauen: Ein Team beschreibt das Verhalten, ein zweites Team schreibt neuen Code nur aus dieser Beschreibung.",
+"w6d": "Eine Methode, ein Produkt nachzubauen: Ein Team beschreibt das Verhalten, ein zweites Team schreibt neuen Code nur aus dieser Beschreibung. <a href=\"https://en.wikipedia.org/wiki/Clean-room_design\">Wikipedia: Clean-room design (englisch)</a>",
 "w7t": "Architektur",
 "w7d": "Die Aufteilung eines Programms in Teile und die Regeln, wie diese Teile zusammenhängen.",
 "w8t": "Fitness-Funktion",
@@ -557,7 +579,51 @@
 "aFc": "Zeilen von zwei Dateien über die Zeit. Sie wachsen schnell, fallen am 26. Oktober stark, wachsen wieder, und eine fällt am 17. November noch einmal.",
 "aHc": "Balken für die acht Dateien, die Commits am häufigsten geändert haben. Die Hauptdatei und die Zeichenflächen-Datei der Bedienoberfläche führen mit je mehr als 600 Commits.",
 "chg2d": "22. Nov. 2026, Abend",
-"chg2t": "Zweite Prüfung aller Fakten. Zeiten jetzt in österreichischer Zeit. Korrigiert: Der zweite Einbruch der Dateigröße am 17. November war ein Umzug in ein gemeinsames Framework, keine Teilung. Kleinere Korrekturen bei Daten, bei den Wochenzahlen und beim Text über die Tests durch Benutzer."
+"chg2t": "Zweite Prüfung aller Fakten. Zeiten jetzt in österreichischer Zeit. Korrigiert: Der zweite Einbruch der Dateigröße am 17. November war ein Umzug in ein gemeinsames Framework, keine Teilung. Kleinere Korrekturen bei Daten, bei den Wochenzahlen und beim Text über die Tests durch Benutzer.",
+"w9t": "Open Source (quelloffen)",
+"w9d": "Code, der öffentlich ist. Jede und jeder darf ihn lesen, ändern und weitergeben, nach den Bedingungen seiner Lizenz. <a href=\"https://opensource.org/osd\">Open Source Initiative: die Definition (englisch)</a>",
+"w10t": "Alpha-Version",
+"w10d": "Eine frühe Testversion eines Programms. Sie ist nicht vollständig und hat bekannte Fehler.",
+"w11t": "UTC, MEZ und MESZ",
+"w11d": "UTC ist die koordinierte Weltzeit. Österreich verwendet die Mitteleuropäische Zeit (MEZ), also UTC plus eine Stunde, und im Sommer die Mitteleuropäische Sommerzeit (MESZ), UTC plus zwei Stunden.",
+"w12t": "Regeldatei (AGENTS.md, CLAUDE.md)",
+"w12d": "Eine Textdatei in einem Projekt, die ein KI-Agent liest, bevor er beginnt: die Struktur des Codes, die Befehle für die Tests und was verboten ist. AGENTS.md und CLAUDE.md sind übliche Namen dafür. <a href=\"https://agents.md/\">AGENTS.md: das Format (englisch)</a>",
+"w13t": "Rust",
+"w13d": "Eine Programmiersprache für schnelle Programme. Ihre Regeln verhindern viele typische Fehler mit dem Speicher, bevor das Programm läuft. <a href=\"https://rust-lang.org/\">Die Website von Rust (englisch)</a>",
+"w14t": "Roadmap",
+"w14d": "Ein Plan eines Projekts: seine Ziele und wie weit das Projekt bei jedem Ziel ist.",
+"w15t": "KI-Modell",
+"w15d": "Ein Programm, das aus sehr großen Mengen von Text und Code gelernt hat. Es beantwortet eine Anweisung mit Text oder Code. Claude Opus 5.5 und Kimi sind KI-Modelle. <a href=\"https://en.wikipedia.org/wiki/Large_language_model\">Wikipedia: Large language model (englisch)</a>",
+"w16t": "Prompt",
+"w16d": "Die Anweisung in Textform, die ein Mensch einem KI-Modell gibt.",
+"w17t": "Engine",
+"w17d": "Der Kern eines Programms, der die Arbeit macht, ohne die Bedienoberfläche. In PhotoCraft enthält die Engine die offenen Dokumente und die Liste aller Befehle.",
+"w18t": "Build",
+"w18d": "Der Schritt, der aus dem Code ein Programm macht, das ein Computer ausführen kann. Der Build schreibt viele Dateien in einen Ordner.",
+"w19t": "Test",
+"w19d": "Ein kleines Programm, das automatisch prüft, ob ein Teil des Codes tut, was er soll. Ein Projekt führt seine Tests bei jeder Änderung aus.",
+"w20t": "Merge-Commit",
+"w20d": "Ein Commit, der zwei Arbeitsstränge zusammenführt, zum Beispiel eine vorgeschlagene Änderung und die Hauptversion.",
+"w21t": "Repository",
+"w21d": "Ein Ordner mit Code samt der ganzen Geschichte seiner Änderungen. Projekte legen ihn oft auf einer Website wie GitHub ab.",
+"w22t": "Bibliothek",
+"w22d": "Code, den mehrere Programme gemeinsam verwenden. Ein Programm nutzt ihre Teile, statt sie neu zu schreiben.",
+"w23t": "Pull Request",
+"w23d": "Eine vorgeschlagene Änderung am Code. Menschen oder Programme prüfen sie, bevor sie in die Hauptversion kommt.",
+"w24t": "Offenes Modell",
+"w24d": "Ein KI-Modell, das jede und jeder herunterladen und auf eigenen Computern betreiben darf.",
+"w25t": "SIG (Software Improvement Group)",
+"w25d": "Eine niederländische Firma, die die Qualität von Code misst und solche Analysen verkauft. Sie bewertet Code mit Sternen von 0,5 bis 5,5.",
+"w26t": "Wartbarkeit",
+"w26d": "Wie leicht und sicher Menschen den Code ändern können.",
+"w27t": "Modularität",
+"w27d": "Wie gut ein Programm in Teile mit wenigen Verbindungen untereinander geteilt ist. Bei guter Modularität macht eine Änderung in einem Teil keinen anderen Teil kaputt.",
+"w28t": "Framework",
+"w28d": "Eine Bibliothek, die einem Programm den Rahmen gibt. Das Programm füllt seine eigenen Teile ein.",
+"w29t": "Lint-Werkzeug",
+"w29d": "Ein Programm, das Code liest und vor verdächtigen Mustern warnt, bevor der Code läuft. Clippy ist das Lint-Werkzeug von Rust.",
+"chg3d": "25. Nov. 2026",
+"chg3t": "Begriffe zeigen jetzt eine kurze Erklärung, wenn Sie darauf zeigen oder tippen. Die Liste am Ende heißt jetzt „Begriffe“. Der Text verlinkt die Projekte, Werkzeuge und Artikel."
 }
 </script>
 <script>
