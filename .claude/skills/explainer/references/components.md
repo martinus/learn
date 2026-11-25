@@ -307,4 +307,12 @@ URL settings for screenshots. They apply to one page view and are not stored. Co
 
 ## Cover
 
-`cover.svg` has `viewBox="0 0 320 180"`. The home page inlines it into the card, so theme variables work: write `style="stroke:var(--c1)"`, not fixed colours. No text. Keep it simple, because it is small on a phone and large in `share.png`.
+`cover.svg` is the picture on the home page card and in `share.png`. It is an illustration of the main idea, not a chart: no axes, no bars, no text. A real object of the topic drawn with care works best, for example the true path of ζ(½+it) for the Riemann page or the expanding universe for the dark energy page. Look at the three existing covers before you draw one.
+
+- Root: `<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="...">`. The card of the newest page is not 16:9, and `slice` fills it without bands.
+- First element: a background rect larger than the view, `<rect x="-60" y="-40" width="440" height="260">`, filled with a radial gradient of a theme colour at low opacity. It shows on the card tint and on white in `share.png`.
+- Colours only from theme variables, also in gradients: `<stop style="stop-color:var(--c1);stop-opacity:.2"/>`. Then dark mode works without a second file.
+- Depth: gradient strokes across `--c1`, `--c2` and `--c3`, and a glow from a wide, blurred copy of the main line (`<feGaussianBlur stdDeviation="3"/>`) under the sharp line.
+- Every `id` starts with a prefix of two letters for the page, for example `rz` for Riemann. The home page inlines all covers into one document, and two equal ids take each other's gradients.
+- Compute a mathematical curve with a short script and paste the path. Keep the file under about 25 kB: round to one decimal and leave out points.
+- Check at card size at 390 px, in both modes, and in `share.png`.
