@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What is an atom made of, down to the smallest parts?</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "What is an atom made of, down to the smallest parts?"},
+ "summary": {"en": "An atom is a small, heavy nucleus in a cloud of electrons. The nucleus consists of protons and neutrons, and these consist of quarks and gluons. This page goes through the four layers with interactive graphics: what holds each one together, where the mass comes from, the 17 particles of the Standard Model, and how and when each layer was found."},
+ "published": "2026-11-25",
+ "updated": "2026-11-25",
+ "languages": ["en"],
+ "tags": ["science"],
+ "model": "Claude Fable 5.2"
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+.fig-seg{flex-wrap:wrap;border-radius:14px;align-self:flex-start}
+.fig-seg button{padding:.62rem .8rem;font-size:.86rem}
+.nw{white-space:nowrap}
+.layers th,.layers td{text-align:left;vertical-align:top}
+.pn{fill:var(--tint)}
+.t-ink{fill:var(--ink);font:500 12px var(--font-body)}
+.t-c1{fill:var(--c1);font:500 11px var(--font-body)}
+.np{fill:var(--c3);stroke:var(--surface);stroke-width:1}
+.nn{fill:var(--surface);stroke:var(--ink);stroke-width:1.2}
+.qk{fill:var(--c1)}
+.qt{fill:var(--surface);font:600 11px var(--font-body)}
+.od{fill:var(--c1);opacity:.5}
+.ring{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:3 4}
+.bar-c1{fill:var(--c1)}
+.bar-c3{fill:var(--c3)}
+.pc{fill:var(--surface);stroke:var(--muted);stroke-width:1}
+.pc.atom{stroke:var(--c3);stroke-width:2.6}
+.pc.off{fill:none;stroke:var(--rule);stroke-dasharray:3 3}
+.ps{fill:var(--ink);font:600 17px var(--font-body)}
+.pm{fill:var(--muted);font:10px var(--font-body)}
+.py{fill:var(--ink);font:500 10.5px var(--font-body)}
+.faint{opacity:.38}
+.l-res{fill:none;stroke:var(--c3);stroke-width:2}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block;box-sizing:border-box}
+.dot.p{background:var(--c3)}
+.dot.n{background:var(--surface);border:1.5px solid var(--ink)}
+.dot.q{background:var(--c1)}
+.box{width:15px;height:12px;border-radius:3px;display:inline-block;box-sizing:border-box;border:1px solid var(--muted);background:var(--surface)}
+.box.atom{border:2.6px solid var(--c3)}
+.box.off{border:1px dashed var(--muted);background:transparent}
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow">Physics &middot; status of 25 November 2026</span>
+  <h1>What is an atom made of, down to the smallest parts?</h1>
+  <!-- learn:byline -->
+  <p class="lead">Everything you can touch consists of atoms. An atom is a tiny, heavy <a class="term" href="#t-nucleus">nucleus</a> inside a cloud of <a class="term" href="#t-electron">electrons</a>. The nucleus consists of protons and neutrons, and each of these consists of three smaller particles called <a class="term" href="#t-quark">quarks</a>. Inside quarks and electrons, experiments have found nothing so far. This page goes down through the four layers, shows what holds each one together, and says how and when each layer was found.</p>
+  <div class="short">
+    <div><h3>The structure</h3><span>An atom has four layers: the atom, its nucleus, the protons and neutrons, and the quarks. The atom is up to 100,000 times wider than its nucleus. The nucleus still holds more than 99.9&nbsp;% of the mass.</span></div>
+    <div><h3>The parts</h3><span>Three kinds of particles build every atom: electrons and two kinds of quarks, named up and down. Two more kinds of particles carry the forces that hold them together.</span></div>
+    <div><h3>The limit</h3><span>A measurement published in 2026 sees no structure inside quarks down to about <span class="nw"><math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>20</mn></mrow></msup></math>&nbsp;m</span>. A proton is more than 100,000 times wider than that.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2>Four layers, each far smaller</h2>
+  <p>An atom is about <span class="nw"><math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>10</mn></mrow></msup></math>&nbsp;m</span> wide, a tenth of a nanometre. Its centre is the <a class="term" href="#t-nucleus">nucleus</a>, which is 10,000 to 100,000 times smaller. If an atom were as wide as a football field, its nucleus would be about 1&nbsp;mm wide. The nucleus still carries more than 99.9&nbsp;% of the mass.</p>
+  <p>The nucleus is a cluster of <a class="term" href="#t-proton">protons</a> and <a class="term" href="#t-neutron">neutrons</a>. A proton is <span class="nw">1.7 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>&nbsp;m</span> wide. Each proton and each neutron contains three <a class="term" href="#t-quark">quarks</a>. Quarks and electrons have no measured size: every experiment so far sees them as points.</p>
+  <p>A different force holds each layer together, and the binding gets stronger with depth. Physicists count the energies in <a class="term" href="#t-ev">electronvolts (eV)</a>: 1&nbsp;eV is the energy that one electron gains across a voltage of 1&nbsp;volt. Pulling the electron off a hydrogen atom costs 13.6&nbsp;eV. Pulling a proton or a neutron out of a nucleus costs several million eV (MeV). A quark cannot be pulled out at all, as section 04 explains.</p>
+
+  <figure>
+    <div class="fig-title">The four layers of an atom</div>
+    <div class="legend">
+      <span><i class="dot p"></i><span>proton</span></span>
+      <span><i class="dot n"></i><span>neutron</span></span>
+      <span><i class="dot q"></i><span>quark</span></span>
+      <span><i class="sw c2"></i><span>gluons, which bind the quarks</span></span>
+    </div>
+    <svg class="chart" id="cLayers" role="img" aria-label="Four pictures in a row. First an atom: a soft cloud of electrons with a tiny nucleus in the centre. Second a nucleus: a cluster of six protons and six neutrons. Third a proton: two up quarks and one down quark, joined by gluons. Fourth a single quark, drawn as a point with no inner structure."></svg>
+    <figcaption>Each picture enlarges the centre of the one before it. They are not to scale: at the scale of the first picture, the nucleus would be far smaller than one pixel. Widths: Particle Data Group 2026, and <a class="term" href="#t-cern">CERN</a>, April 2026.</figcaption>
+  </figure>
+
+  <div class="scroll-x"><table class="layers">
+    <thead><tr><th>Layer</th><th>Width</th><th>Held together by</th><th>Found</th></tr></thead>
+    <tbody>
+      <tr><td>Atom</td><td>about <span class="nw"><math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>10</mn></mrow></msup></math>&nbsp;m</span></td><td>electric force between nucleus and electrons</td><td>proven real in 1908</td></tr>
+      <tr><td>Nucleus</td><td>1.7 to <span class="nw">15 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>&nbsp;m</span></td><td>strong force between protons and neutrons</td><td>1911</td></tr>
+      <tr><td>Proton, neutron</td><td><span class="nw">1.7 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>&nbsp;m</span></td><td>strong force between quarks, carried by gluons</td><td>1919 and 1932</td></tr>
+      <tr><td>Quark, electron</td><td>quark: below <span class="nw"><math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>20</mn></mrow></msup></math>&nbsp;m</span></td><td>no inner parts known</td><td>electron 1897, quarks 1968</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Widths of nuclei: a textbook rule of thumb, from hydrogen to uranium (section 03).</p>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2>The electron is a standing wave</h2>
+  <p>The nucleus is positive and the <a class="term" href="#t-electron">electrons</a> are negative, so they attract each other. The first model of 1911 let the electrons circle the nucleus like planets. It could not be right: a circling charge radiates energy, so the electron would spiral into the nucleus.</p>
+  <p>Niels Bohr proposed in 1913 that only certain orbits are allowed. In 1926, Erwin Schr&ouml;dinger found the equation behind this rule, and it treats the electron as a wave. A wave that is tied to a nucleus can take only certain shapes, like a guitar string that sounds only certain tones. Each shape is an <a class="term" href="#t-orbital">orbital</a> with a fixed energy. A measurement finds the electron more often where the wave is strong.</p>
+  <p>The lowest orbital is a ball around the nucleus. The electron cannot sink below it, because a wave that is squeezed into less space needs more energy of motion. This sets the size of the atom. For hydrogen, the energies of the orbitals follow a short rule:</p>
+  <div class="formula"><math display="block"><msub><mi data-term="t-en" tabindex="0">E</mi><mi data-term="t-n" tabindex="0">n</mi></msub><mo>=</mo><mo form="prefix">&minus;</mo><mfrac><mrow><mn>13.6</mn><mspace width="0.3em"></mspace><mtext>eV</mtext></mrow><msup><mi>n</mi><mn>2</mn></msup></mfrac></math></div>
+  <p>The number <math><mi>n</mi></math> = 1, 2, 3 and so on counts the <a class="term" href="#t-shell">shells</a>, which are groups of orbitals with similar energy. The energy is negative because the electron is bound. When an electron drops to a lower orbital, the atom emits a <a class="term" href="#t-photon">photon</a>, a particle of light, with exactly the energy difference. Each element therefore glows in its own sharp colours, and these spectral lines were the first test of the theory.</p>
+  <p>Atoms with several electrons need a second rule, which Wolfgang Pauli stated in 1925: no two electrons of an atom can be in the same state. One orbital holds two electrons, one for each value of a property called <a class="term" href="#t-spin">spin</a>. The electrons fill the orbitals from the lowest energy upwards: 2 in shell 1, 8 in shell 2, 18 in shell 3. Only the outermost electrons form chemical bonds. Elements with the same number of outer electrons behave alike, and this is the pattern of the periodic table.</p>
+
+  <figure>
+    <div class="fig-title">Where the electron of a hydrogen atom is found</div>
+    <div class="seg fig-seg" role="group" aria-label="Select the orbital" id="orbSeg">
+      <button type="button" data-v="0" aria-pressed="true">1s</button>
+      <button type="button" data-v="1" aria-pressed="false">2s</button>
+      <button type="button" data-v="2" aria-pressed="false">2p</button>
+      <button type="button" data-v="3" aria-pressed="false">3s</button>
+      <button type="button" data-v="4" aria-pressed="false">3p</button>
+      <button type="button" data-v="5" aria-pressed="false">3d</button>
+    </div>
+    <svg class="chart" id="cOrb" role="img" aria-label="A cloud of dots around the nucleus of a hydrogen atom. The dots are dense where the electron is likely to be found. The buttons select one of six orbitals, which differ in size and shape."></svg>
+    <div class="stats">
+      <div><small>Shell <math><mi>n</mi></math></small><b id="rOn">1</b></div>
+      <div><small>Energy of the orbital</small><b id="rOe">&minus;13.61 eV</b></div>
+      <div><small>Mean distance from the nucleus</small><b id="rOr">0.079 nm</b></div>
+      <div><small>Electrons that fit into the shell</small><b id="rOc">2</b></div>
+    </div>
+    <figcaption>Each dot is one place where a measurement could find the electron, in a flat slice through the nucleus. Higher orbitals are larger, bind the electron less, and have gaps where it is never found. In the names, the digit is the shell, and s, p and d are three kinds of shape. Computed on this page from the textbook solutions for hydrogen, with 2,200 random draws per picture.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">03</span>
+  <h2>The nucleus holds the mass</h2>
+  <p>The nucleus contains two kinds of particles with almost the same mass. A <a class="term" href="#t-proton">proton</a> has one positive unit of charge, and a <a class="term" href="#t-neutron">neutron</a> has none. The number of protons decides the element: 1 for hydrogen, 6 for carbon, 79 for gold. A neutral atom has as many electrons as protons. Atoms of one element with different numbers of neutrons are its <a class="term" href="#t-isotope">isotopes</a>.</p>
+  <p>Particle masses are given as energies, through Einstein&rsquo;s relation <math><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></math> between energy, mass and the speed of light. A proton has 938.27&nbsp;MeV, a neutron 939.57&nbsp;MeV and an electron 0.511&nbsp;MeV, in the 2026 values of the <a href="https://pdg.lbl.gov/">Particle Data Group</a>. A proton is 1,836 times as heavy as an electron.</p>
+  <p>Protons repel each other electrically. A stronger force holds the nucleus together, the <a class="term" href="#t-strong">strong force</a>. It reaches only about as far as a proton is wide, and it attracts protons and neutrons alike. Neutrons therefore add binding without repulsion, and heavy nuclei contain more neutrons than protons.</p>
+  <p>The binding shows up as missing mass. A carbon-12 atom weighs 92.2&nbsp;MeV less than its 6 protons, 6 neutrons and 6 electrons weigh separately, as computed on this page from the 2026 values. This is 7.7&nbsp;MeV for each particle in the nucleus, about 560,000 times the 13.6&nbsp;eV of the electron in hydrogen.</p>
+  <p>A neutron outside a nucleus is not stable. After 878 seconds on average, it turns into a proton, an electron and an <a class="term" href="#t-antiparticle">antineutrino</a>. Inside a stable nucleus it stays, because the decay would cost energy there.</p>
+
+  <figure>
+    <div class="fig-title">What one atom contains</div>
+    <div class="seg fig-seg" role="group" aria-label="Select the atom" id="nucSeg">
+      <button type="button" data-v="0" aria-pressed="false">Hydrogen-1</button>
+      <button type="button" data-v="1" aria-pressed="false">Helium-4</button>
+      <button type="button" data-v="2" aria-pressed="true">Carbon-12</button>
+      <button type="button" data-v="3" aria-pressed="false">Iron-56</button>
+      <button type="button" data-v="4" aria-pressed="false">Gold-197</button>
+      <button type="button" data-v="5" aria-pressed="false">Uranium-238</button>
+    </div>
+    <div class="legend">
+      <span><i class="dot p"></i><span>proton</span></span>
+      <span><i class="dot n"></i><span>neutron</span></span>
+    </div>
+    <svg class="chart" id="cNuc" role="img" aria-label="The nucleus of the selected atom, drawn as a ball of protons and neutrons, with a scale bar of 5 times 10 to the minus 15 metres. All six nuclei are drawn at the same scale."></svg>
+    <div class="stats">
+      <div><small>Protons</small><b id="rNp">6</b></div>
+      <div><small>Neutrons</small><b id="rNn">6</b></div>
+      <div><small>Electrons</small><b id="rNe">6</b></div>
+      <div><small>Width of the nucleus</small><b id="rNw">5.5 &times; 10⁻¹⁵ m</b></div>
+      <div><small>Up quarks</small><b id="rNu">18</b></div>
+      <div><small>Down quarks</small><b id="rNd">18</b></div>
+      <div><small>Quarks in total</small><b id="rNq">36</b></div>
+      <div><small>Share of the electrons in the mass</small><b id="rNm">0.03 %</b></div>
+    </div>
+    <figcaption>Every atom reduces to three counts: up quarks, down quarks and electrons. The number in the name counts protons and neutrons together. All nuclei have the same scale, and the positions of the particles are for illustration only. Width: a textbook rule of thumb, <span class="nw">2.4 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>&nbsp;m</span> times the cube root of that count, and for hydrogen the measured proton radius. Share of the electrons: computed on this page with 931.494&nbsp;MeV for each proton or neutron.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">04</span>
+  <h2>A proton is mostly energy</h2>
+  <p>Protons and neutrons consist of two kinds of <a class="term" href="#t-quark">quarks</a>. An up quark has the charge +2/3 and a down quark has &minus;1/3, in units of the proton charge. A proton is two up quarks and one down quark, which gives +1. A neutron is one up quark and two down quarks, which gives 0.</p>
+  <p>Quarks carry a second kind of charge. It has the name <a class="term" href="#t-colour">colour</a>, although it has nothing to do with visible colours. The <a class="term" href="#t-strong">strong force</a> acts between colour charges, and its carriers are the <a class="term" href="#t-gluon">gluons</a>. Photons carry the electric force and have no electric charge themselves. Gluons do carry colour, so they pull on each other. The field between two quarks therefore forms a narrow tube, and its pull does not fade with distance.</p>
+  <p>The result is <a class="term" href="#t-confinement">confinement</a>: nobody has observed a single free quark. When a collision knocks a quark out of a proton, the energy in the stretching tube turns into new quarks and <a class="term" href="#t-antiparticle">antiquarks</a>. A narrow spray of ordinary particles leaves the collision, a <a class="term" href="#t-jet">jet</a>. The force that binds a nucleus is the remainder of the strong force outside the protons and neutrons.</p>
+  <p>The masses of the quarks explain almost nothing of the proton mass. An up quark has about 2.2&nbsp;MeV and a down quark about 4.7&nbsp;MeV. The three quarks of a proton sum to 9&nbsp;MeV, which is 1&nbsp;% of its 938&nbsp;MeV. The rest is energy: the motion of the quarks and the energy of the gluon field count as mass through <math><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></math>. A calculation of 2018 on supercomputers, with a method called <a class="term" href="#t-lattice">lattice QCD</a>, splits the proton mass into four parts.</p>
+
+  <figure>
+    <div class="fig-title">Where the mass of a proton comes from</div>
+    <svg class="chart" id="cMass" role="img" aria-label="Four horizontal bars give the shares of the proton mass in one calculation: motion of the quarks 32 percent, energy of the gluon field 36 percent, a quantum effect of the strong force 23 percent, and the masses of the quarks 9 percent."></svg>
+    <figcaption>In this calculation, 91&nbsp;% of the proton mass is energy of motion and of the gluon field. The masses of the quarks give 9&nbsp;%. This is more than the 1&nbsp;% above, because the gluon field keeps creating short-lived pairs of quarks and antiquarks, and their masses count too. Three quarks in a proton are therefore a simplification. Source: Yang and others, Physical Review Letters, November 2018. The two largest shares are uncertain by several percentage points.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">05</span>
+  <h2>The full list has 17 particles</h2>
+  <p>The theory of these particles and forces is the <a class="term" href="#t-sm">Standard Model</a>, which took its form in the early 1970s. It lists 17 kinds of elementary particles: 6 quarks, 6 <a class="term" href="#t-lepton">leptons</a>, 4 carriers of forces and the Higgs boson.</p>
+  <p>Atoms use only the first column of the chart: the up quark, the down quark and the electron. Its fourth member, the <a class="term" href="#t-neutrino">neutrino</a>, appears in radioactive decays. Nature repeats this set of four twice with higher masses. The particles of these second and third <a class="term" href="#t-generation">generations</a> decay within a fraction of a second. The muon, a heavier copy of the electron, lives 2.2 microseconds on average. Why there are three generations is an open question.</p>
+  <p>Three forces act between the particles, each through a carrier: the photon for the electromagnetic force, the gluon for the strong force, and the W and Z bosons for the <a class="term" href="#t-weak">weak force</a>. The weak force is the only one that turns one kind of particle into another. In the decay of the neutron, it turns a down quark into an up quark. Gravity is not part of the Standard Model.</p>
+  <p>The last entry is the <a class="term" href="#t-higgs">Higgs boson</a>, found in 2012. It belongs to a field that fills all space and gives the elementary particles their mass. The masses differ widely. An electron has 0.511&nbsp;MeV. A top quark has 172,600&nbsp;MeV, about as much as a whole atom of tungsten.</p>
+
+  <figure>
+    <div class="fig-title">The elementary particles, and the year each was found</div>
+    <div class="ctl">
+      <label for="yS"><span>Show what was known in the year</span> <output id="yOut">2026</output></label>
+      <input type="range" id="yS" min="1890" max="2026" step="1" value="2026">
+    </div>
+    <div class="legend">
+      <span><i class="box atom"></i><span>part of every atom</span></span>
+      <span><i class="box"></i><span>other particle, found</span></span>
+      <span><i class="box off"></i><span>not yet found in this year</span></span>
+    </div>
+    <svg class="chart" id="cSM" role="img" aria-label="A grid of the 17 elementary particles. Three columns hold the three generations of quarks and leptons, a fourth column the carriers of forces, and the Higgs boson stands alone. Each box gives the year in which the particle was found, and the slider hides the particles that were not yet known in the selected year."></svg>
+    <div class="stats">
+      <div><small>Known particles</small><b id="rSk">17 of 17</b></div>
+      <div><small>Newest</small><b id="rSn">Higgs, 2012</b></div>
+      <div><small>Known parts of an atom</small><b id="rSa">5 of 5</b></div>
+      <div><small>Not yet found</small><b id="rSy">0</b></div>
+    </div>
+    <figcaption>Five of the 17 particles build all atoms, and they were complete in 1979. Columns I to III are the three generations. The year is that of the experiment or of its publication. The three lightest quarks have 1968, when scattering first showed quarks inside the proton. The photon has 1922, when an experiment confirmed Einstein&rsquo;s proposal of 1905. Protons and neutrons are not elementary, so they are missing.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">06</span>
+  <h2>How each layer was found</h2>
+  <p>Nobody can look at these layers. Every step down used the same method, <a class="term" href="#t-scattering">scattering</a>: shoot fast particles at a target and count how many fly off at which angle. A soft, spread-out target deflects them a little. A small, hard centre sometimes throws one far off its path.</p>
+  <p>In 1909, Hans Geiger and Ernest Marsden shot <a class="term" href="#t-alpha">alpha particles</a> at a thin gold foil, and about one in a few thousand bounced back. Ernest Rutherford concluded in 1911 that the positive charge of an atom sits in a tiny centre. From 1967 on, a team at the Stanford Linear Accelerator Center in California repeated the idea one layer deeper, with electrons of 4 to 21&nbsp;GeV. Protons threw more electrons to large angles than a soft ball could, so they contain hard grains.</p>
+  <p>The depth that a probe reaches depends on its energy. A particle is also a wave, and a wave cannot show details that are much smaller than its wavelength. The wavelength shrinks as the momentum grows, a relation that Louis de Broglie proposed in the 1920s. For a particle near the speed of light, the smallest detail that it resolves is about:</p>
+  <div class="formula"><math display="block"><mi data-term="t-d" tabindex="0">d</mi><mo>&asymp;</mo><mfrac><mrow><mi data-term="t-hbar" tabindex="0">&#x210F;</mi><mi data-term="t-c" tabindex="0">c</mi></mrow><mi data-term="t-e" tabindex="0">E</mi></mfrac></math></div>
+  <p>Here <math><mi>E</mi></math> is the energy of the particle, and <math><mi>&#x210F;</mi><mi>c</mi></math>, a product of two constants of nature, is 197&nbsp;MeV &times; <span class="nw"><math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>&nbsp;m</span>. Each factor of ten in depth costs a factor of ten in energy. This is the reason for ever larger accelerators. The <a class="term" href="#t-lhc">LHC</a> at <a href="https://home.cern/">CERN</a> near Geneva is a ring of 27&nbsp;km, and it collided protons at 13.6&nbsp;TeV.</p>
+
+  <figure>
+    <div class="fig-title">How deep a probe can see</div>
+    <div class="ctl">
+      <label for="eS"><span>Energy of the probe</span> <output id="eOut">21 GeV</output></label>
+      <input type="range" id="eS" min="0" max="13.13" step="0.01" value="10.32">
+    </div>
+    <div class="legend">
+      <span><i class="sw c3"></i><span>smallest detail that this probe resolves</span></span>
+      <span><i class="sw band"></i><span>range it can resolve</span></span>
+    </div>
+    <svg class="chart" id="cRes" role="img" aria-label="A vertical logarithmic scale of lengths from one micrometre at the top down to 10 to the minus 21 metres at the bottom. Marks show the atom, the nucleus, the proton, and the limits for the size of a quark. A horizontal line shows the smallest detail that a probe of the selected energy resolves."></svg>
+    <div class="stats">
+      <div><small>Energy of the probe</small><b id="rEe">21 GeV</b></div>
+      <div><small>Smallest detail</small><b id="rEd">9.4 &times; 10⁻¹⁸ m</b></div>
+      <div><small>Deepest layer in reach</small><b id="rEl">quarks in the proton</b></div>
+      <div><small>Detail, compared with a proton</small><b id="rEp">1/180</b></div>
+    </div>
+    <figcaption>A probe of 21&nbsp;GeV, the highest energy of the Stanford experiments, resolves less than a hundredth of a proton. The line is the formula above and gives the order of magnitude only. The scale is logarithmic. Bold labels are things, and grey labels are probes at the depth they reach. Energies of the probes: Nobel Prize press release of 1990, and CERN Courier, July 2026.</figcaption>
+  </figure>
+
+  <ol class="steps">
+    <li><time>1897</time><span>J. J. Thomson shows that cathode rays consist of electrons, and that electrons are parts of atoms.</span></li>
+    <li><time>1908</time><span>Jean Perrin&rsquo;s experiments show that atoms really exist. Chemists had used them as an idea since the early 19th century.</span></li>
+    <li><time>1911</time><span>Rutherford explains the gold foil result with a nucleus.</span></li>
+    <li><time>1913 to 1926</time><span>Bohr, Pauli and Schr&ouml;dinger explain the electron cloud.</span></li>
+    <li><time>1919</time><span>Rutherford publishes that the nucleus of hydrogen is a part of other nuclei. In 1920 he names it the proton.</span></li>
+    <li><time>1932</time><span>James Chadwick proves that the neutron exists.</span></li>
+    <li><time>1964</time><span>Murray Gell-Mann and George Zweig propose quarks, independently of each other.</span></li>
+    <li><time>1968</time><span>Electron scattering at Stanford shows hard grains inside the proton.</span></li>
+    <li><time>1974 to 2000</time><span>The heavier quarks and leptons follow, from the charm quark (1974) to the tau neutrino (2000).</span></li>
+    <li><time>1979 to 1983</time><span>The carriers of the strong and the weak force: the gluon at <a class="term" href="#t-desy">DESY</a> in Hamburg (1979), the W and Z bosons at CERN (1983).</span></li>
+    <li><time>2012</time><span>Two experiments at the LHC find the Higgs boson.</span></li>
+    <li><time>2026</time><span>No structure inside quarks down to about <span class="nw"><math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>20</mn></mrow></msup></math>&nbsp;m</span> (section 07).</span></li>
+  </ol>
+</section>
+
+<section>
+  <span class="num">07</span>
+  <h2>What is below, and what is missing</h2>
+  <p>Nobody knows whether quarks and electrons are the last layer. No experiment has found anything inside them. In 2016, the ZEUS group <a href="https://arxiv.org/abs/1604.01280">published an upper limit</a> for the radius of a quark, from data of the collider <a class="term" href="#t-hera">HERA</a> in Hamburg: <span class="nw">0.43 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>18</mn></mrow></msup></math>&nbsp;m</span>. In April 2026, CERN <a href="https://home.cern/news/news/physics/cms-looks-deep-inside-quarks">reported a result</a> of <a class="term" href="#t-cms">CMS</a>, one of the experiments at the LHC. CMS compared the angles between pairs of <a class="term" href="#t-jet">jets</a> with the prediction for point-like quarks. It found no significant difference, down to about <span class="nw"><math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>20</mn></mrow></msup></math>&nbsp;m</span>. Searches for common inner parts of electrons and quarks found none either.</p>
+  <p class="aside">&ldquo;Point-like&rdquo; means smaller than the resolution of the best experiment. A size of zero is not proven.</p>
+  <p>Ideas for a deeper layer exist, for example string theory, which replaces the points with tiny vibrating strings. No experiment has confirmed one. This paragraph rests on the general knowledge of the model that wrote this page.</p>
+  <p>The list of particles is incomplete in other ways. The <a class="term" href="#t-sm">Standard Model</a> does not describe gravity. It treats neutrinos as massless, and measurements show that they have a small mass. And atoms are not all the matter that exists. In 2013, the Royal Swedish Academy of Sciences wrote that visible matter is only one fifth of all matter in the cosmos. The rest is called dark matter, and none of the 17 particles fits it.</p>
+  <p>The next step in depth will take time. The LHC stopped on 27 June 2026 for an upgrade of four years, which aims at about ten times more collision data.</p>
+</section>
+
+<section>
+  <span class="num">08</span>
+  <h2>What this means in practice</h2>
+  <p>For daily work, nothing changes: no software and no device depends on what is inside a quark. The upper layers matter. Chemistry is the outer electrons of section 02, which rearrange at a few eV. Transistors, LEDs and flash memory are built on the same wave behaviour of electrons. Nuclear energy comes from one layer deeper, where the binding is about 560,000 times stronger. This is why a nuclear fuel stores far more energy per kilogram than a chemical one. This section is an inference of this page and rests on the general knowledge of the model.</p>
+</section>
+
+<section>
+  <span class="num">09</span>
+  <h2>Terms</h2>
+  <dl class="gloss">
+    <div id="t-nucleus"><dt>Nucleus</dt><dd>The centre of an atom. It consists of protons and neutrons, has a positive electric charge and holds more than 99.9&nbsp;% of the mass of the atom.</dd></div>
+    <div id="t-electron"><dt>Electron</dt><dd>A light elementary particle with one negative unit of electric charge. The electrons of an atom form a cloud around the nucleus and make its chemical bonds.</dd></div>
+    <div id="t-proton"><dt>Proton</dt><dd>A particle of the nucleus with one positive unit of electric charge. It consists of two up quarks and one down quark. The number of protons decides which element an atom is.</dd></div>
+    <div id="t-neutron"><dt>Neutron</dt><dd>A particle of the nucleus without electric charge, slightly heavier than a proton. It consists of one up quark and two down quarks.</dd></div>
+    <div id="t-quark"><dt>Quark</dt><dd>An elementary particle that feels the strong force. Six kinds exist: up, down, charm, strange, top and bottom. Quarks occur only in groups, for example three in a proton. <a href="https://en.wikipedia.org/wiki/Quark">Wikipedia: Quark</a></dd></div>
+    <div id="t-gluon"><dt>Gluon</dt><dd>The carrier particle of the strong force. Gluons bind the quarks inside protons and neutrons. They have no mass.</dd></div>
+    <div id="t-photon"><dt>Photon</dt><dd>The particle of light, and the carrier particle of the electromagnetic force. It has no mass and no electric charge.</dd></div>
+    <div id="t-ev"><dt>eV (electronvolt), keV, MeV, GeV, TeV</dt><dd>A unit of energy: the energy that one electron gains when it crosses a voltage of 1 volt, 1.6 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>19</mn></mrow></msup></math> joule. The prefixes mean a thousand (keV), a million (MeV), a billion (GeV) and a million million (TeV) electronvolts. Particle masses are also given in these units.</dd></div>
+    <div id="t-orbital"><dt>Orbital</dt><dd>One of the allowed wave shapes of an electron in an atom. It says where the electron is likely to be found, and it has a fixed energy. An orbital holds at most two electrons. <a href="https://en.wikipedia.org/wiki/Atomic_orbital">Wikipedia: Atomic orbital</a></dd></div>
+    <div id="t-shell"><dt>Shell</dt><dd>A group of orbitals with the same number <math><mi>n</mi></math> and similar energy. Shell 1 holds 2 electrons, shell 2 holds 8 and shell 3 holds 18.</dd></div>
+    <div id="t-n"><dt><math><mi>n</mi></math> (shell number)</dt><dd>A whole number from 1 upwards that counts the shells of an atom. Physicists call it the principal quantum number. A larger <math><mi>n</mi></math> means a larger orbital and a weaker binding.</dd></div>
+    <div id="t-en"><dt><math><msub><mi>E</mi><mi>n</mi></msub></math> (energy of an orbital)</dt><dd>The energy of the electron of a hydrogen atom in shell <math><mi>n</mi></math>. Zero means a free electron at rest, so a bound electron has a negative energy.</dd></div>
+    <div id="t-spin"><dt>Spin</dt><dd>A property of a particle that behaves like a rotation of fixed size. For an electron it has two possible values, often called up and down.</dd></div>
+    <div id="t-isotope"><dt>Isotope</dt><dd>Atoms of one element with the same number of protons and different numbers of neutrons. Carbon-12 has 6 neutrons and carbon-14 has 8.</dd></div>
+    <div id="t-strong"><dt>Strong force</dt><dd>The force between particles that carry colour charge: quarks and gluons. It binds quarks into protons and neutrons, and its remainder outside these particles binds them into nuclei.</dd></div>
+    <div id="t-weak"><dt>Weak force</dt><dd>A force with a very short range, carried by the W and Z bosons. It can turn one kind of quark or lepton into another, and it causes one kind of radioactive decay.</dd></div>
+    <div id="t-colour"><dt>Colour (colour charge)</dt><dd>The charge of the strong force. It exists in three variants. The name is a label and has nothing to do with light.</dd></div>
+    <div id="t-confinement"><dt>Confinement</dt><dd>The fact that quarks and gluons never occur alone. They are always bound in particles such as protons, because the strong force does not get weaker with distance.</dd></div>
+    <div id="t-jet"><dt>Jet</dt><dd>A narrow spray of particles that leaves a collision in one direction. It forms when a quark or a gluon is knocked out with high energy, and it shows the direction and the energy of that quark or gluon.</dd></div>
+    <div id="t-lattice"><dt>Lattice QCD</dt><dd>A method that computes the strong force numerically on a grid of points in space and time. QCD stands for quantum chromodynamics, the theory of the strong force. The calculations run on supercomputers.</dd></div>
+    <div id="t-sm"><dt>Standard Model</dt><dd>The theory of the known elementary particles and of three forces between them: the electromagnetic, the strong and the weak force. <a href="https://home.cern/science/physics/standard-model">CERN: The Standard Model</a></dd></div>
+    <div id="t-lepton"><dt>Lepton</dt><dd>An elementary particle of matter that does not feel the strong force. The six leptons are the electron, the muon, the tau and one neutrino for each of them.</dd></div>
+    <div id="t-neutrino"><dt>Neutrino</dt><dd>A lepton without electric charge and with a very small mass, below 0.45&nbsp;eV according to the Particle Data Group 2026. It feels only the weak force and gravity, so it passes through matter almost without effect.</dd></div>
+    <div id="t-generation"><dt>Generation</dt><dd>One of three sets of four matter particles: two quarks, one charged lepton and one neutrino. The sets differ in mass. The first generation is the up quark, the down quark, the electron and the electron neutrino.</dd></div>
+    <div id="t-higgs"><dt>Higgs boson</dt><dd>The particle of the Higgs field, a field that fills all space and gives the elementary particles their mass. It was found at CERN in 2012 and has a mass of 125&nbsp;GeV. Boson is the name of a class of particles that includes all carriers of forces.</dd></div>
+    <div id="t-antiparticle"><dt>Antiparticle</dt><dd>The partner of a matter particle, with the same mass and the opposite charge. Every quark and every lepton has one: the antiquark, the antineutrino, and for the electron the positron.</dd></div>
+    <div id="t-scattering"><dt>Scattering</dt><dd>An experiment in which particles are shot at a target. The number of particles that leave at each angle shows how the charge or the matter in the target is distributed.</dd></div>
+    <div id="t-alpha"><dt>Alpha particle</dt><dd>The nucleus of a helium atom: two protons and two neutrons. Some radioactive elements emit alpha particles at high speed.</dd></div>
+    <div id="t-d"><dt><math><mi>d</mi></math> (smallest detail)</dt><dd>The smallest length that a probe of a given energy can resolve, as an order of magnitude.</dd></div>
+    <div id="t-hbar"><dt><math><mi>&#x210F;</mi></math> (reduced Planck constant)</dt><dd>The constant of nature that links the energy of a wave to its frequency, and the momentum of a particle to its wavelength. It is the Planck constant divided by 2&pi;.</dd></div>
+    <div id="t-c"><dt><math><mi>c</mi></math> (speed of light)</dt><dd>299,792,458 metres per second.</dd></div>
+    <div id="t-e"><dt><math><mi>E</mi></math> (energy of the probe)</dt><dd>The energy of the particle that an experiment shoots at its target. The formula holds for particles near the speed of light.</dd></div>
+    <div id="t-cern"><dt>CERN</dt><dd>The European laboratory for particle physics, near Geneva. It runs the LHC. <a href="https://home.cern/">home.cern</a></dd></div>
+    <div id="t-desy"><dt>DESY (Deutsches Elektronen-Synchrotron)</dt><dd>A German research centre for accelerators in Hamburg. Its colliders PETRA and HERA found the gluon and measured the inside of the proton. <a href="https://www.desy.de/index_eng.html">desy.de</a></dd></div>
+    <div id="t-hera"><dt>HERA and ZEUS</dt><dd>HERA was a collider at DESY in Hamburg that shot electrons at protons. ZEUS was one of its detectors, run by a group of the same name.</dd></div>
+    <div id="t-lhc"><dt>LHC (Large Hadron Collider)</dt><dd>The accelerator of CERN near Geneva, a ring of 27&nbsp;km. From 2022 to 2026 it collided protons with a total energy of 13.6&nbsp;TeV. <a href="https://home.cern/science/accelerators/large-hadron-collider">CERN: The Large Hadron Collider</a></dd></div>
+    <div id="t-cms"><dt>CMS (Compact Muon Solenoid)</dt><dd>One of the two large general detectors at the LHC, run by a collaboration of several thousand scientists. <a href="https://cms.cern/">cms.cern</a></dd></div>
+  </dl>
+</section>
+
+<section>
+  <span class="num">10</span>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>The masses, charges, lifetimes and the proton radius come from the 2026 tables of the Particle Data Group. The limits for the size of a quark come from the abstract of the HERA paper and from CERN&rsquo;s report on the CMS result. The shares of the proton mass come from the abstract of the 2018 paper. The years come from the Nobel Prize pages and from the laboratories that made the discoveries.</span><span class="d">The years for the nucleus, the proton and the quark proposal rest on reporting by the American Physical Society and the CERN Courier. This page did not read the original papers of 1911, 1919 and 1964.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>Computed on this page: the binding energy of carbon-12 and the factor of 560,000, the 1&nbsp;% share of the three quark masses, the share of the electrons in the mass, all counts in the figure of section 03, the dot pictures of the orbitals, and the line in the figure of section 06. The count of 17 particles follows from CERN&rsquo;s list. The ratio of 10,000 to 100,000 between atom and nucleus follows from the widths in the table. The comparison of the top quark with a tungsten atom and the link between binding energies and nuclear fuel are inferences of this page.</span><span class="d">From the model&rsquo;s own knowledge, as textbook physics without a source here: how orbitals, shells and spectral lines work, de Broglie&rsquo;s relation, the short range of the strong force, colour and confinement, the products of neutron decay, the rule of thumb for the width of a nucleus, the paragraph on string theory, and section 08.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>Whether quarks and electrons have inner parts. The experiments give limits, and a limit is not a proof. The split of the proton mass is the result of one calculation, with uncertainties of several percentage points, and the split depends on conventions of the theory. The year of a discovery is often a choice among several steps, for example 1964 or 1968 for quarks.</span><span class="d">Read as abstract only: the HERA paper, the CMS paper and the paper on the proton mass. Of the 1937 paper on the muon, this page read only the title page.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">11</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://pdg.lbl.gov/2026/tables/rpp2026-sum-quarks.pdf">Particle Data Group: Review of Particle Physics 2026, summary table of quarks</a> &middot; reference data, edition of 2026</li>
+    <li><a href="https://pdg.lbl.gov/2026/tables/rpp2026-sum-leptons.pdf">Particle Data Group: summary table of leptons</a> &middot; reference data, edition of 2026</li>
+    <li><a href="https://pdg.lbl.gov/2026/tables/rpp2026-sum-gauge-higgs-bosons.pdf">Particle Data Group: summary table of gauge and Higgs bosons</a> &middot; reference data, edition of 2026</li>
+    <li><a href="https://pdg.lbl.gov/2026/tables/rpp2026-sum-baryons.pdf">Particle Data Group: summary table of baryons, with proton and neutron</a> &middot; reference data, edition of 2026</li>
+    <li><a href="https://pdg.lbl.gov/2026/reviews/rpp2026-rev-phys-constants.pdf">Particle Data Group: physical constants</a> &middot; reference data, edition of 2026</li>
+    <li><a href="https://pdg.lbl.gov/2026/reviews/rpp2026-rev-searches-quark-lep-compositeness.pdf">Particle Data Group: Searches for quark and lepton compositeness</a> &middot; review, revised in August 2025</li>
+    <li><a href="https://arxiv.org/abs/2603.25458">CMS Collaboration: Measurement of dijet angular distributions at 13 TeV</a> &middot; reviewed paper, submitted on 26 March 2026, abstract only</li>
+    <li><a href="https://home.cern/news/news/physics/cms-looks-deep-inside-quarks">CERN: CMS looks deep inside quarks</a> &middot; report of the laboratory, 16 April 2026</li>
+    <li><a href="https://arxiv.org/abs/1604.01280">ZEUS Collaboration: Limits on the effective quark radius from inclusive ep scattering at HERA</a> &middot; reviewed paper, April 2016, abstract only</li>
+    <li><a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.121.212001">Yang and others: Proton Mass Decomposition from the QCD Energy Momentum Tensor</a> &middot; reviewed paper, November 2018, abstract only</li>
+    <li><a href="https://journals.aps.org/pr/abstract/10.1103/PhysRev.51.884">Neddermeyer and Anderson: Note on the Nature of Cosmic-Ray Particles</a> &middot; paper of 15 May 1937, title page only</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1906/thomson/facts/">Nobel Prize: J. J. Thomson, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1921/einstein/facts/">Nobel Prize: Albert Einstein, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1922/bohr/facts/">Nobel Prize: Niels Bohr, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1926/perrin/facts/">Nobel Prize: Jean Perrin, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1927/compton/facts/">Nobel Prize: Arthur Compton, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1933/schrodinger/facts/">Nobel Prize: Erwin Schr&ouml;dinger, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1935/chadwick/facts/">Nobel Prize: James Chadwick, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1945/pauli/facts/">Nobel Prize: Wolfgang Pauli, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1976/richter/facts/">Nobel Prize: Burton Richter, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1984/rubbia/facts/">Nobel Prize: Carlo Rubbia, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1988/lederman/facts/">Nobel Prize: Leon Lederman, facts</a> &middot; page of the Nobel Foundation, read on 25 November 2026</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1990/press-release/">Royal Swedish Academy of Sciences: press release on the Nobel Prize in Physics 1990</a> &middot; press release, October 1990</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/1995/press-release/">Royal Swedish Academy of Sciences: press release on the Nobel Prize in Physics 1995</a> &middot; press release, October 1995</li>
+    <li><a href="https://www.nobelprize.org/prizes/physics/2013/press-release/">Royal Swedish Academy of Sciences: press release on the Nobel Prize in Physics 2013</a> &middot; press release, October 2013</li>
+    <li><a href="https://home.cern/science/physics/standard-model">CERN: The Standard Model</a> &middot; page of the laboratory, read on 25 November 2026</li>
+    <li><a href="https://www.desy.de/news/backgrounders/40_years_of_gluon/index_eng.html">DESY: The discovery of the gluon</a> &middot; page of the laboratory, read on 25 November 2026</li>
+    <li><a href="https://news.fnal.gov/1995/03/physicists-discover-top-quark/">Fermilab: Physicists discover top quark</a> &middot; press release, 2 March 1995</li>
+    <li><a href="https://news.fnal.gov/2000/07/physicists-find-first-direct-evidence-tau-neutrino-fermilab/">Fermilab: Physicists find first direct evidence for tau neutrino</a> &middot; press release, 20 July 2000</li>
+    <li><a href="https://www.aps.org/apsnews/2006/05/rutherford-discovery-atomic-nucleus">American Physical Society: May 1911, Rutherford and the discovery of the atomic nucleus</a> &middot; reporting, 1 May 2006</li>
+    <li><a href="https://cerncourier.com/a/rutherford-transmutation-and-the-proton/">CERN Courier: Rutherford, transmutation and the proton</a> &middot; reporting, 8 May 2019</li>
+    <li><a href="https://cerncourier.com/a/nineteen-sixty-four/">CERN Courier: Nineteen sixty-four</a> &middot; reporting, 9 September 2025</li>
+    <li><a href="https://cerncourier.com/a/the-lhc-completes-its-third-run/">CERN Courier: The LHC completes its third run</a> &middot; reporting, 23 July 2026</li>
+    <li><a href="https://www.sciencehistory.org/education/scientific-biographies/john-dalton/">Science History Institute: John Dalton</a> &middot; biography, read on 25 November 2026</li>
+  </ul>
+</section>
+
+<p class="page-note">This page simplifies. It draws particles as balls and dots, although they are waves and fields. It shows orbitals only for hydrogen and leaves out how electrons in larger atoms influence each other. It describes the proton as three quarks and a gluon field, and it gives each discovery one year, although most took several steps. An AI model wrote this page, and no person has checked it. Status of the facts: 25 November 2026.</p>
+
+</main>
+<!-- learn:footer -->
+<script>
+(function(){
+'use strict';
+var L=window.Learn,mk=L.mk;
+function $(id){return document.getElementById(id);}
+function frame(svg,h){var w=Math.max(260,svg.getBoundingClientRect().width||640);svg.setAttribute('viewBox','0 0 '+w+' '+h);svg.setAttribute('height',h);L.clear(svg);return w;}
+function press(group,btn){[].forEach.call(group.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',b===btn?'true':'false');});}
+function txt(svg,x,y,s,cls,anchor){var t=mk('text',{x:x,y:y,'class':cls||'lbl'},svg);if(anchor)t.setAttribute('text-anchor',anchor);t.textContent=s;return t;}
+var SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+function pow10(e){return '10'+(e<0?'⁻':'')+String(Math.abs(e)).split('').map(function(c){return SUP[+c];}).join('');}
+/* a length in metres as mantissa and power of ten */
+function len(v){
+  var e=Math.floor(Math.log(v)/Math.LN10+1e-9),m=v/Math.pow(10,e);
+  if(m>=9.95){m=1;e++;}
+  return (Math.abs(m-1)<0.05?'':L.sgn(m,1)+' × ')+pow10(e)+' m';
+}
+/* a number with two significant digits */
+function two(x){
+  if(x<9.95)return L.sgn(x,1);
+  var e=Math.pow(10,Math.floor(Math.log(x)/Math.LN10+1e-9)-1);
+  return L.fmt(Math.round(x/e)*e);
+}
+/* a random number generator with a fixed seed, so that a picture is the same on every visit */
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
+function wave(x1,y1,x2,y2,n,amp){
+  var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy),ux=dx/len,uy=dy/len,d='';
+  for(var i=0;i<=n*8;i++){var s=i/(n*8),o=Math.sin(s*n*2*Math.PI)*amp;d+=(i?'L':'M')+(x1+dx*s-uy*o).toFixed(1)+' '+(y1+dy*s+ux*o).toFixed(1);}
+  return d;
+}
+
+/* constants: Particle Data Group, Review of Particle Physics 2026 */
+var A0_NM=0.0529177210544;   /* Bohr radius in nm */
+var RYD=13.605693123;        /* Rydberg energy in eV */
+var HBARC=197.3269804;       /* MeV times 10^-15 m */
+var ME=0.51099895069,U=931.49410372; /* electron mass and atomic mass unit in MeV */
+var RP=0.84075;              /* charge radius of the proton in 10^-15 m */
+
+/* ---------- figure 1: the four layers ---------- */
+/* positions of the 12 particles of the carbon-12 picture, in units of the cluster radius */
+var C12=[];
+(function(){var i,a;for(i=0;i<9;i++){a=2*Math.PI*i/9;C12.push([0.86*Math.sin(a),-0.86*Math.cos(a),i%2]);}for(i=0;i<3;i++){a=2*Math.PI*(i+0.5)/3;C12.push([0.33*Math.sin(a),-0.33*Math.cos(a),i===1?0:1]);}})();
+function drawLayers(){
+  var svg=$('cLayers'),w0=Math.max(260,svg.getBoundingClientRect().width||640);
+  var cols=w0>=560?4:2,gap=10,pw=(w0-gap*(cols-1))/cols,dh=Math.min(pw,170),ph=dh+62,rows=4/cols;
+  var w=frame(svg,rows*ph+(rows-1)*gap);
+  var defs=mk('defs',{},svg),gr=mk('radialGradient',{id:'iaCloud'},defs);
+  mk('stop',{offset:'0',style:'stop-color:var(--c1);stop-opacity:.55'},gr);
+  mk('stop',{offset:'.55',style:'stop-color:var(--c1);stop-opacity:.22'},gr);
+  mk('stop',{offset:'1',style:'stop-color:var(--c1);stop-opacity:0'},gr);
+  var names=['1  Atom','2  Nucleus','3  Proton','4  Quark'];
+  var sizes=['about '+pow10(-10)+' m','carbon-12: 5.5 × '+pow10(-15)+' m','1.7 × '+pow10(-15)+' m','below '+pow10(-20)+' m'];
+  var notes=['electron cloud, nucleus in the centre','6 protons, 6 neutrons','2 up quarks, 1 down quark','no inner parts found'];
+  for(var i=0;i<4;i++){
+    var x=(i%cols)*(pw+gap),y=Math.floor(i/cols)*(ph+gap),cx=x+pw/2,cy=y+26+dh/2,R=dh/2-10;
+    mk('rect',{x:x,y:y,width:pw,height:ph,rx:8,'class':'pn'},svg);
+    txt(svg,x+10,y+18,names[i],'t-ink');
+    if(i===0){
+      mk('circle',{cx:cx,cy:cy,r:R,fill:'url(#iaCloud)'},svg);
+      mk('circle',{cx:cx,cy:cy,r:2.2,'class':'d-c3'},svg);
+    }else if(i===1){
+      var rn=R*0.25;
+      C12.forEach(function(p){mk('circle',{cx:cx+p[0]*R*0.72,cy:cy+p[1]*R*0.72,r:rn,'class':p[2]?'np':'nn'},svg);});
+    }else if(i===2){
+      mk('circle',{cx:cx,cy:cy,r:R*0.92,'class':'ring'},svg);
+      var q=[[0,-0.5,'u'],[-0.45,0.34,'u'],[0.45,0.34,'d']],pts=q.map(function(p){return [cx+p[0]*R,cy+p[1]*R];});
+      [[0,1],[1,2],[2,0]].forEach(function(e){mk('path',{d:wave(pts[e[0]][0],pts[e[0]][1],pts[e[1]][0],pts[e[1]][1],5,3.2),'class':'l-c2'},svg);});
+      q.forEach(function(p,k){mk('circle',{cx:pts[k][0],cy:pts[k][1],r:10,'class':'qk'},svg);txt(svg,pts[k][0],pts[k][1]+4,p[2],'qt','middle');});
+    }else{
+      mk('circle',{cx:cx,cy:cy,r:R*0.7,'class':'ring'},svg);
+      mk('circle',{cx:cx,cy:cy,r:10,'class':'qk'},svg);
+      txt(svg,cx,cy+4,'u','qt','middle');
+    }
+    txt(svg,cx,y+ph-24,sizes[i],'t-ink','middle');
+    txt(svg,cx,y+ph-9,notes[i],'lbl','middle');
+  }
+}
+
+/* ---------- figure 2: orbitals of hydrogen ---------- */
+/* Radial parts of the hydrogen wave functions without their constant factors, r in Bohr radii.
+   The angular part is 1 for s, cos(theta) for p and 3cos²(theta)-1 for d (the orbitals with m = 0). */
+var ORB=[
+  {name:'1s',n:1,l:0,R:function(r){return Math.exp(-r);}},
+  {name:'2s',n:2,l:0,R:function(r){return (2-r)*Math.exp(-r/2);}},
+  {name:'2p',n:2,l:1,R:function(r){return r*Math.exp(-r/2);}},
+  {name:'3s',n:3,l:0,R:function(r){return (27-18*r+2*r*r)*Math.exp(-r/3);}},
+  {name:'3p',n:3,l:1,R:function(r){return (6-r)*r*Math.exp(-r/3);}},
+  {name:'3d',n:3,l:2,R:function(r){return r*r*Math.exp(-r/3);}}
+];
+var ORB_W=[0,5,15,30],ORB_N=2200,orbSel=0,orbCache={};
+function orbDens(o,r,c){var a=o.l===0?1:o.l===1?c:3*c*c-1,v=o.R(r)*a;return v*v;}
+/* draws from the density in the plane: uniform in r and angle, weighted with the density times r */
+function orbDots(k){
+  if(orbCache[k])return orbCache[k];
+  var o=ORB[k],W=ORB_W[o.n],rnd=rng(1000+k),gmax=0,i,j,r,c,g,out=[];
+  for(i=1;i<=400;i++){r=W*i/400;for(j=0;j<=45;j++){c=Math.cos(Math.PI*j/90);g=orbDens(o,r,c)*r;if(g>gmax)gmax=g;}}
+  for(i=0;out.length<ORB_N&&i<2000000;i++){
+    r=W*rnd();var ph=2*Math.PI*rnd();c=Math.cos(ph);
+    if(rnd()*gmax<orbDens(o,r,c)*r)out.push([r*Math.sin(ph)/W,-r*c/W]);
+  }
+  orbCache[k]=out;return out;
+}
+var orbSeg=$('orbSeg');
+[].forEach.call(orbSeg.querySelectorAll('button'),function(b){b.addEventListener('click',function(){orbSel=+b.getAttribute('data-v');press(orbSeg,b);drawOrb();});});
+function drawOrb(){
+  var o=ORB[orbSel],W=ORB_W[o.n],svg=$('cOrb'),w0=Math.max(260,svg.getBoundingClientRect().width||640);
+  var S=Math.min(w0,340),w=frame(svg,S),cx=w/2,cy=S/2,half=S/2-6,x0=cx-S/2;
+  mk('rect',{x:x0,y:0,width:S,height:S,rx:8,'class':'pn'},svg);
+  var g=mk('g',{},svg);
+  orbDots(orbSel).forEach(function(p){mk('circle',{cx:(cx+p[0]*half).toFixed(1),cy:(cy+p[1]*half).toFixed(1),r:1.15,'class':'od'},g);});
+  mk('circle',{cx:cx,cy:cy,r:2.6,'class':'d-c3'},svg);
+  var bar=0.2/A0_NM/W*half;
+  mk('path',{d:'M'+(x0+12)+' '+(S-14)+'h'+bar.toFixed(1)+'M'+(x0+12)+' '+(S-18)+'v8M'+(x0+12+bar).toFixed(1)+' '+(S-18)+'v8','class':'l-ink'},svg);
+  txt(svg,x0+12,S-24,'0.2 nm','t-ink');
+  txt(svg,x0+S-10,18,o.name,'t-ink','end');
+  $('rOn').textContent=L.fmt(o.n);
+  $('rOe').textContent=L.sgn(-RYD/(o.n*o.n),2)+' eV';
+  $('rOr').textContent=L.sgn((3*o.n*o.n-o.l*(o.l+1))/2*A0_NM,3)+' nm';
+  $('rOc').textContent=L.fmt(2*o.n*o.n);
+}
+
+/* ---------- figure 3: what one atom contains ---------- */
+/* name, protons Z, protons and neutrons together A */
+var NUC=[['Hydrogen-1',1,1],['Helium-4',2,4],['Carbon-12',6,12],['Iron-56',26,56],['Gold-197',79,197],['Uranium-238',92,238]];
+var R0=1.2,nucSel=2,nucSeg=$('nucSeg');
+[].forEach.call(nucSeg.querySelectorAll('button'),function(b){b.addEventListener('click',function(){nucSel=+b.getAttribute('data-v');press(nucSeg,b);drawNuc();});});
+function drawNuc(){
+  var e=NUC[nucSel],Z=e[1],A=e[2],N=A-Z,svg=$('cNuc'),h=236,w=frame(svg,h),s=12,cx=w/2,cy=h/2;
+  mk('rect',{x:0,y:0,width:w,height:h,rx:8,'class':'pn'},svg);
+  var Rb=A===1?0:R0*Math.pow(A,1/3),pts=[],i,rnd=rng(77+A),dmin=1.62,tries=0;
+  /* random places in the ball that keep a minimum distance, for illustration only */
+  while(pts.length<A){
+    var x=(2*rnd()-1)*Rb,y=(2*rnd()-1)*Rb,z=(2*rnd()-1)*Rb,ok=x*x+y*y+z*z<=Rb*Rb;
+    for(i=0;ok&&i<pts.length;i++){var dx=pts[i].x-x,dy=pts[i].y-y,dz=pts[i].z-z;if(dx*dx+dy*dy+dz*dz<dmin*dmin)ok=false;}
+    if(ok){pts.push({x:x,y:y,z:z,p:false});tries=0;}else if(++tries>4000){dmin*=0.97;tries=0;}
+  }
+  /* centre the cluster, then choose the protons at random */
+  var mx=0,my=0;pts.forEach(function(p){mx+=p.x/A;my+=p.y/A;});pts.forEach(function(p){p.x-=mx;p.y-=my;});
+  var left=Z;for(i=0;i<A;i++){if(rnd()<left/(A-i)){pts[i].p=true;left--;}}
+  pts.sort(function(a,b){return a.z-b.z;});
+  pts.forEach(function(p){mk('circle',{cx:(cx+p.x*s).toFixed(1),cy:(cy+p.y*s).toFixed(1),r:RP*s,'class':p.p?'np':'nn'},svg);});
+  mk('path',{d:'M12 '+(h-12)+'h'+5*s+'M12 '+(h-16)+'v8M'+(12+5*s)+' '+(h-16)+'v8','class':'l-ink'},svg);
+  txt(svg,12,h-22,'5 × '+pow10(-15)+' m','t-ink');
+  var width=A===1?2*RP:2*R0*Math.pow(A,1/3);
+  $('rNp').textContent=L.fmt(Z);$('rNn').textContent=L.fmt(N);$('rNe').textContent=L.fmt(Z);
+  $('rNw').textContent=L.sgn(width,1)+' × '+pow10(-15)+' m';
+  $('rNu').textContent=L.fmt(2*Z+N);$('rNd').textContent=L.fmt(Z+2*N);$('rNq').textContent=L.fmt(3*A);
+  $('rNm').textContent=L.sgn(100*Z*ME/(A*U),2)+' %';
+}
+
+/* ---------- figure 4: shares of the proton mass ---------- */
+/* Yang et al., Phys. Rev. Lett. 121, 212001 (2018), abstract: 32(4)(4), 36(5)(4), 23(1)(1), 9(2)(1) percent */
+var MASS=[['Motion of the quarks',32,'bar-c1'],['Energy of the gluon field',36,'bar-c1'],['Quantum effect of the strong force (trace anomaly)',23,'bar-c1'],['Masses of the quarks',9,'bar-c3']];
+function drawMass(){
+  var svg=$('cMass'),row=46,h=MASS.length*row+4,w=frame(svg,h),full=w-52;
+  MASS.forEach(function(m,i){
+    var y=i*row;
+    txt(svg,0,y+14,m[0],'t-ink');
+    mk('rect',{x:0,y:y+21,width:(m[1]/40*full).toFixed(1),height:14,rx:3,'class':m[2]},svg);
+    txt(svg,m[1]/40*full+7,y+33,L.fmt(m[1])+' %','t-ink');
+  });
+}
+
+/* ---------- figure 5: the 17 elementary particles ---------- */
+/* symbol, index, name, year found, column, row, part of every atom. Years: see the source list. */
+var SM=[
+  ['u','','up',1968,0,0,1],['d','','down',1968,0,1,1],['e','','electron',1897,0,2,1],['ν','e','e neutrino',1956,0,3,0],
+  ['c','','charm',1974,1,0,0],['s','','strange',1968,1,1,0],['μ','','muon',1937,1,2,0],['ν','μ','μ neutrino',1962,1,3,0],
+  ['t','','top',1995,2,0,0],['b','','bottom',1977,2,1,0],['τ','','tau',1975,2,2,0],['ν','τ','τ neutrino',2000,2,3,0],
+  ['g','','gluon',1979,3,0,1],['γ','','photon',1922,3,1,1],['Z','','Z boson',1983,3,2,0],['W','','W boson',1983,3,3,0],
+  ['H','','Higgs',2012,4,1.5,0]
+];
+var yS=$('yS');
+function drawSM(){
+  var yr=+yS.value;$('yOut').textContent=String(yr);
+  var svg=$('cSM'),w0=Math.max(260,svg.getBoundingClientRect().width||640),gl=18,gap=5,ch=58,top=18;
+  var gw=Math.min(w0,600),cw=(gw-gl-gap*4)/5,w=frame(svg,top+4*(ch+gap)),x0=(w-gw)/2+gl;
+  ['I','II','III','forces','mass'].forEach(function(s,i){txt(svg,x0+i*(cw+gap)+cw/2,11,s,'lbl','middle');});
+  [['quarks',0],['leptons',2]].forEach(function(a){
+    var yy=top+a[1]*(ch+gap)+ch+gap/2,t=txt(svg,0,0,a[0],'lbl','middle');
+    t.setAttribute('transform','translate('+(x0-gl+11)+' '+yy+') rotate(-90)');
+  });
+  var known=0,newest=null,atoms=0;
+  SM.forEach(function(p){
+    var on=p[3]<=yr,x=x0+p[4]*(cw+gap),y=top+p[5]*(ch+gap),cx=x+cw/2;
+    if(on){known++;if(p[6])atoms++;if(!newest||p[3]>=newest[3])newest=p;}
+    mk('rect',{x:x+1.5,y:y+1.5,width:cw-3,height:ch-3,rx:6,'class':'pc'+(on?(p[6]?' atom':''):' off')},svg);
+    var t=mk('text',{x:cx,y:y+24,'class':'ps'+(on?'':' faint'),'text-anchor':'middle'},svg);
+    t.textContent=p[0];
+    if(p[1]){var ts=mk('tspan',{dy:4,'font-size':11},t);ts.textContent=p[1];}
+    txt(svg,cx,y+38,p[2],'pm'+(on?'':' faint'),'middle');
+    txt(svg,cx,y+51,on?String(p[3]):'not yet','py'+(on?'':' faint'),'middle');
+  });
+  $('rSk').textContent=L.fmt(known)+' of 17';
+  $('rSn').textContent=newest?newest[2]+', '+newest[3]:'none';
+  $('rSa').textContent=L.fmt(atoms)+' of 5';
+  $('rSy').textContent=L.fmt(17-known);
+}
+yS.addEventListener('input',drawSM);
+
+/* ---------- figure 6: how deep a probe can see ---------- */
+/* d = hbar c / E. Objects: Bohr radius and proton radius (PDG 2026), nuclei by the rule 1.2 A^(1/3),
+   quark radius limit 0.43e-18 m (ZEUS 2016), scale of the CMS result 1e-20 m (CERN, April 2026).
+   Probes: electrons up to 1 GeV and of 4 to 21 GeV (Nobel press release 1990), LHC 13.6 TeV (CERN Courier 2026). */
+var eS=$('eS');
+function eText(ev){
+  var u=['eV','keV','MeV','GeV','TeV'],k=Math.min(4,Math.floor(Math.log(ev)/Math.LN10/3+1e-9)),v=ev/Math.pow(1000,k);
+  return (ev===1.36e13?'13.6':L.sgn(v,v<9.95?1:0))+' '+u[k];
+}
+function drawRes(){
+  var lv=+eS.value,ev=lv>=13.13?1.36e13:Math.pow(10,lv),d=HBARC*1e-9/ev; /* metres: 197.327e6 eV times 1e-15 m */
+  $('eOut').textContent=eText(ev);
+  var svg=$('cRes'),pd=21,top=14,h=top+15*pd+14,w=frame(svg,h),ax=64;
+  function sy(m){return top+(-6-Math.log(m)/Math.LN10)*pd;}
+  var g=mk('g',{'class':'ax'},svg);
+  for(var e=-6;e>=-21;e-=3){mk('line',{x1:ax-5,x2:w,y1:sy(Math.pow(10,e)),y2:sy(Math.pow(10,e))},g);mk('text',{x:ax-9,y:sy(Math.pow(10,e))+4,'text-anchor':'end'},g).textContent=pow10(e)+' m';}
+  mk('line',{x1:ax,x2:ax,y1:top,y2:sy(1e-21),'class':'l-base'},svg);
+  /* resolved range: from the top down to d */
+  mk('rect',{x:ax-5,y:top,width:10,height:Math.max(0,sy(d)-top),'class':'f-band'},svg);
+  /* things */
+  mk('circle',{cx:ax,cy:sy(1.06e-10),r:4,'class':'d-c1'},svg);
+  txt(svg,ax+12,sy(1.06e-10)+4,'atom','t-ink');
+  mk('rect',{x:ax-3,y:sy(1.5e-14),width:6,height:sy(1.7e-15)-sy(1.5e-14),rx:3,'class':'bar-c1'},svg);
+  txt(svg,ax+12,sy(8e-15)+4,'nucleus','t-ink');
+  txt(svg,ax+12,sy(1.7e-15)+3,'proton, neutron','t-ink');
+  mk('path',{d:'M'+(ax-5)+' '+sy(4.3e-19)+'h10','class':'l-ink'},svg);
+  txt(svg,ax+12,sy(4.3e-19)+4,w<430?'quark: smaller than this (2016)':'quark: smaller than this (HERA, 2016)','t-ink');
+  /* probes */
+  [[9.9e-8,'visible light, 2 eV'],[2e-16,'electrons up to 1 GeV, 1950s'],[2.2e-17,'electrons of 4 to 21 GeV, 1968'],[1.45e-20,w<430?'LHC, 13.6 TeV: quarks still points':'LHC, 13.6 TeV: quarks still look like points (2026)']].forEach(function(p){
+    mk('path',{d:'M'+(ax+2)+' '+sy(p[0])+'h7','class':'l-base'},svg);
+    txt(svg,ax+12,sy(p[0])-3,p[1],'lbl');
+  });
+  /* the selected probe */
+  mk('line',{x1:ax-5,x2:w,y1:sy(d),y2:sy(d),'class':'l-res'},svg);
+  mk('circle',{cx:ax,cy:sy(d),r:4.5,'class':'d-c3'},svg);
+  txt(svg,w-2,sy(d)+(sy(d)<top+16?13:-6),len(d),'t-c3','end');
+  $('rEe').textContent=eText(ev);
+  $('rEd').textContent=len(d);
+  $('rEl').textContent=d>1.06e-10?'none of the four':d>1.5e-14?'the atom':d>1.7e-15?'nuclei':d>1e-16?'protons and neutrons':'quarks in the proton';
+  var ratio=2*RP*1e-15/d;
+  $('rEp').textContent=ratio>=1?'1/'+two(ratio):two(1/ratio)+' ×';
+}
+eS.addEventListener('input',drawRes);
+
+L.onChange(function(){drawLayers();drawOrb();drawNuc();drawMass();drawSM();drawRes();});
+})();
+</script>
+</body>
+</html>
