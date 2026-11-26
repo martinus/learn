@@ -77,7 +77,7 @@ The page text uses plain language: short, exact sentences are fast to read, also
 7. **"How sure is this?"** then **"Sources"** (`research.md`).
 8. **Page note:** where the page simplifies, and the date of the facts.
 
-Length: about 1,500 to 3,000 words from the title to the section "Terms". `texts` prints this number. A topic that needs more becomes two pages.
+Length: as a rough guide, 1,500 to 3,000 words from the title to the section "Terms". `texts` prints this number. It is no limit. A page may be longer if each section still tells the reader something new, and no fact is cut to reach a number.
 
 ## Numbers and times
 
