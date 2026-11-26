@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Did a student break a 40-year-old rule about hash tables?</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "Did a student break a 40-year-old rule about hash tables?"},
+ "summary": {"en": "In 1985 Andrew Yao conjectured that a hash table that is almost full cannot insert faster than random probing. A paper of 2024, which began with an undergraduate, describes a table that can, and proves the new limit. How the two new tables work, what they cost in real numbers, and why production hash maps stay as they are."},
+ "published": "2026-11-26",
+ "updated": "2026-11-26",
+ "languages": ["en"],
+ "tags": ["software", "mathematics"],
+ "model": "Claude Fable 5.2"
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+.model{display:block;width:100%;max-width:460px;height:auto}
+.s-free{fill:var(--surface);stroke:var(--muted);stroke-width:1}
+.s-occ{fill:var(--c1);opacity:.72;stroke:var(--c1);stroke-width:1}
+.s-take{fill:var(--surface);stroke:var(--c3);stroke-width:2.4}
+.p-dot{fill:var(--surface);stroke:var(--ink);stroke-width:1.2}
+.p-num{fill:var(--ink);font:500 11px var(--font-body)}
+.p-line{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+.b-track{fill:var(--rule);opacity:.55}
+.b-fill{fill:var(--c1)}
+.b-now{fill:var(--c3)}
+.t-now{fill:var(--c3);font:500 11px var(--font-body)}
+.l-uni{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:5 3}
+.d-ink{fill:var(--ink)}
+.sw.uni{border-top:2px dashed var(--ink)}
+.sw.box{height:10px;width:14px;border:0;background:var(--c1);border-radius:2px}
+.sw.box.now{background:var(--c3)}
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow">Software &middot; status of 26 November 2026</span>
+  <h1>Did a student break a 40-year-old rule about hash tables?</h1>
+  <!-- learn:byline -->
+  <p class="lead">In 1985 the computer scientist Andrew Yao conjectured a limit for a classic kind of hash table. When only one slot in <a class="term" href="#t-x"><math><mi>x</mi></math></a> is still free, the next insertion must look at about <math><mi>x</mi></math> slots, so a table that is 99% full needs about 100 probes. A paper by Mart&iacute;n Farach-Colton, Andrew Krapivin and William Kuszmaul, published in 2024, describes a table that needs about <math><mo stretchy="false">(</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></math> probes, and proves that no table of this kind can do better. Krapivin found the table as an undergraduate. This page explains the rule, the two new tables, what they cost in real numbers, and what changes for the hash maps in programs.</p>
+  <div class="status">
+    <b>Status: proven and reviewed, not used in production</b>
+    <span>The proof passed the review of <a class="term" href="#t-focs">FOCS</a> 2024. This page found no published objection to it as of 26 November 2026. The same authors extended the result in June and in November 2026. No general-purpose hash map library uses the new tables. Experimental libraries implement and measure them.</span>
+  </div>
+  <div class="short">
+    <div><h3>The rule</h3><span>A table that puts each key into the first free slot of its probe sequence cannot beat a random probe order in the worst case. A random order needs about <math><mi>x</mi></math> probes when one slot in <math><mi>x</mi></math> is free. Yao conjectured this in 1985.</span></div>
+    <div><h3>The result</h3><span>Funnel hashing follows the same placement rule and needs about <math><mo stretchy="false">(</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></math> probes. Elastic hashing drops the rule and finds an average key in a constant number of probes, however full the table is. Both come with proofs that they are optimal.</span></div>
+    <div><h3>The cost</h3><span>The bounds hide large constants. In a simulation on this page, funnel hashing as the proof specifies it beats a random probe order only when the table is more than about 99.7% full. Production hash maps grow long before that: the map of abseil at 87.5%.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2>What Yao proved and what he guessed</h2>
+  <p>The setting is open addressing with three restrictions. Keys are only inserted and never deleted. The array has a fixed size of <math><mi>n</mi></math> slots. And there is <a class="term" href="#t-reorder">no reordering</a>: a key stays in the slot where its insertion put it. The position of a key in its own probe sequence is its <a class="term" href="#t-probe">probe complexity</a>. A lookup of this key reads that many slots.</p>
+  <p>A table is <a class="term" href="#t-greedy">greedy</a> if an insertion walks along the probe sequence and takes the first free slot. Linear probing, quadratic probing and double hashing are greedy. The reference point of the theory is <a class="term" href="#t-uniform">uniform probing</a>: the probe sequence of each key is a random permutation of all slots.</p>
+
+  <figure>
+    <div class="fig-title">One insertion into a table without reordering</div>
+    <svg class="model" viewBox="0 0 340 104" role="img" aria-label="A row of 14 slots, 10 of them occupied. Numbers 1 to 5 mark the probe sequence of one key. Probes 1, 2 and 4 hit occupied slots, probes 3 and 5 free slots. Probe 3 is marked as the slot that a greedy table takes.">
+      <g id="mSlots"></g>
+    </svg>
+    <figcaption>The numbers are the probe sequence of one new key. A greedy table takes probe 3, the first free slot. A table that is not greedy may take probe 5. Every later lookup of this key then reads 3 or 5 slots.</figcaption>
+  </figure>
+
+  <p>Let the table be so full that one slot in <math><mi>x</mi></math> is free: <math><mi>x</mi><mo>=</mo><mn>8</mn></math> at 87.5%, and <math><mi>x</mi><mo>=</mo><mn>1,000</mn></math> at 99.9%. The papers write <a class="term" href="#t-x"><math><mi>&delta;</mi></math></a> (delta) for this free share <math><mn>1</mn><mo>/</mo><mi>x</mi></math>. With uniform probing, each probe hits a free slot with the probability <math><mn>1</mn><mo>/</mo><mi>x</mi></math>. Two costs follow, both counted in probes:</p>
+  <div class="formula"><math display="block"><mtext>last insertion</mtext><mo>&asymp;</mo><mi data-term="t-x" tabindex="0">x</mi><mo>,</mo><mspace width="1.2em"></mspace><mtext>average key</mtext><mo>&asymp;</mo><mi>ln</mi><mspace width="0.15em"></mspace><mi>x</mi></math></div>
+  <p>The first is the <a class="term" href="#t-worst">worst-case expected cost</a>: the expected number of probes for the most expensive single key, which is the last one inserted. The second is the <a class="term" href="#t-amort">amortized expected cost</a>: the average over all keys in the table. It is the expected cost of a lookup of a random key that is present. Both formulas are textbook results for uniform probing.</p>
+  <p>In 1972 Jeffrey Ullman conjectured that no greedy table has a lower average than this, apart from a constant factor. Yao proved it in 1985, in a paper with the title &ldquo;<a href="https://doi.org/10.1145/3828.3836">Uniform hashing is optimal</a>&rdquo;. This theorem stands. Yao also conjectured the same for the worst case: every greedy table needs about <math><mi>x</mi></math> probes for its last insertion. This conjecture is the rule of the title. It was open for 39 years.</p>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2>Funnel hashing: greedy and faster</h2>
+  <p>Funnel hashing cuts the array into <a class="term" href="#t-level">levels</a>. The first level holds about a quarter of all slots, and each further level has 3/4 of the size of the level before it. Each level consists of <a class="term" href="#t-bucket">buckets</a> of <math><mi>&beta;</mi></math> (beta) adjacent slots. A key hashes to one bucket in each level. The insertion scans the key&rsquo;s bucket in level 1 and takes the first free slot. If the bucket is full, it continues with the key&rsquo;s bucket in level 2, and so on.</p>
+<pre class="code" data-lang="cpp"><code>// C++11 or later. Key 0 is a free slot.
+// level[i]: buckets of beta slots each.
+// Level i+1 has 3/4 the size of level i.
+bool insert(Key k) {
+  size_t n = level.size();
+  for (size_t i = 0; i &lt; n; ++i) {
+    auto&amp; a = level[i];
+    size_t nb = a.size() / beta;
+    size_t b = hash(k, i) % nb;
+    for (size_t s = 0; s &lt; beta; ++s) {
+      Key&amp; slot = a[b * beta + s];
+      if (slot == 0) { // first free:
+        slot = k;      // take it
+        return true;
+      }
+    }                  // bucket full:
+  }                    // next level
+  reserve.push_back(k); // almost never
+  return false;
+}
+</code></pre>
+  <p>The probe sequence of a key is the chain of its buckets, and the insertion takes the first free slot in it. So the table is greedy in Yao&rsquo;s sense. A lookup follows the same chain. The proof fixes both parameters from <math><mi>x</mi></math>:</p>
+  <div class="formula"><math display="block"><mtext>levels</mtext><mo>=</mo><mn>4</mn><mspace width="0.15em"></mspace><msub><mi>log</mi><mn>2</mn></msub><mi data-term="t-x" tabindex="0">x</mi><mo>+</mo><mn>10</mn><mo>,</mo><mspace width="1.2em"></mspace><mi data-term="t-bucket" tabindex="0">&beta;</mi><mo>=</mo><mn>2</mn><mspace width="0.15em"></mspace><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math></div>
+  <p>For <math><mi>x</mi><mo>=</mo><mn>8</mn></math> that is 22 levels with buckets of 6 slots. An insertion reads at most 22 &times; 6 = 132 slots in the levels, whatever the state of the table is. In general the limit is the product of the two formulas. It grows with the square of a logarithm, and Yao&rsquo;s rule demands <math><mi>x</mi></math>.</p>
+  <p>The proof needs no single attempt to succeed. It only shows that each level fills up: once a level has received twice as many attempts as it has slots, fewer than 1 in <math><mn>64</mn><mi>x</mi></math> of its slots are still free, with a probability close to 1. So the levels fill from the top, and the free slots that the table must keep collect in the small levels at the bottom. A key that fails in every level goes to a small reserve array. The paper proves that fewer than <math><mi>n</mi><mo>/</mo><mo stretchy="false">(</mo><mn>8</mn><mi>x</mi><mo stretchy="false">)</mo></math> keys reach it, again with a probability close to 1. In the simulations of this page, no key did.</p>
+
+  <figure>
+    <div class="fig-title">A funnel table while it fills</div>
+    <div class="ctl">
+      <label for="f1S"><span>Occupied share of the whole table</span> <output id="f1Out">70.0%</output></label>
+      <input type="range" id="f1S" min="0" max="70" step="1" value="56">
+    </div>
+    <div class="legend">
+      <span><i class="sw box"></i><span>occupied share of a level</span></span>
+      <span><i class="sw box now"></i><span>&#9656; level that takes at least 10% of the new keys</span></span>
+    </div>
+    <svg class="chart" id="cF1" role="img" aria-label="22 horizontal bars, one for each level of a funnel table, show which share of the level is occupied. The levels fill from the top."></svg>
+    <div class="stats">
+      <div><small>Probes of an insertion now: funnel</small><b id="rF1a">28.6</b></div>
+      <div><small>Probes of an insertion now: uniform</small><b id="rF1b">3.3</b></div>
+      <div><small>Average over all keys so far: funnel</small><b id="rF1c">11.8</b></div>
+      <div><small>Average over all keys so far: uniform</small><b id="rF1d">1.7</b></div>
+    </div>
+    <figcaption>New keys fall through the full levels and land in the first level that still has room, so the table fills from the top. Each full level on the way costs 6 probes. At 87.5% the lower levels are still empty: they hold the free eighth of the table. Simulated on this page: 262,144 slots, planned for 87.5% <span class="nw">(<math><mi>x</mi><mo>=</mo><mn>8</mn></math>),</span> with the constants of the proof. &ldquo;Now&rdquo; is the mean of the last 2,048 insertions. The values for uniform probing come from its formulas.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">03</span>
+  <h2>Elastic hashing: reading ahead, stepping back</h2>
+  <p>Yao&rsquo;s theorem about the average, <math><mi>ln</mi><mspace width="0.15em"></mspace><mi>x</mi></math>, holds for greedy tables. The second table of the paper leaves this class but still never moves a key. Elastic hashing cuts the array into parts <math><msub><mi>A</mi><mn>1</mn></msub></math>, <math><msub><mi>A</mi><mn>2</mn></msub></math>, and so on, each half as large as the part before it. Inside a part, a key probes random slots. The insertions run in <a class="term" href="#t-batch">batches</a>. Batch <math><mi>i</mi></math> fills part <math><msub><mi>A</mi><mi>i</mi></msub></math> from 75% until only 1 slot in <math><mn>2</mn><mi>x</mi></math> is free, and at the same time part <math><msub><mi>A</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></math> from empty to 75%.</p>
+  <p>An insertion in batch <math><mi>i</mi></math> first tries up to <math><mi>f</mi></math> of its slots in the fuller part <math><msub><mi>A</mi><mi>i</mi></msub></math>. If one of them is free, it takes it. If none is free, it takes its first free slot in the emptier part <math><msub><mi>A</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></math>. There it succeeds after a few probes, because that part is at most 75% full. The limit <math><mi>f</mi></math> grows while <math><msub><mi>A</mi><mi>i</mi></msub></math> fills. With <math><mi>&epsi;</mi></math> (epsilon) for the share of <math><msub><mi>A</mi><mi>i</mi></msub></math> that is free at this moment, and a constant <math><mi>c</mi></math>:</p>
+  <div class="formula"><math display="block"><mi data-term="t-f" tabindex="0">f</mi><mo>=</mo><mi data-term="t-c" tabindex="0">c</mi><mo>&middot;</mo><mi>min</mi><mo stretchy="false">(</mo><msup><mrow><mo stretchy="false">(</mo><msub><mi>log</mi><mn>2</mn></msub><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mi data-term="t-eps" tabindex="0">&epsi;</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>,</mo><mspace width="0.3em"></mspace><msub><mi>log</mi><mn>2</mn></msub><mi data-term="t-x" tabindex="0">x</mi><mo stretchy="false">)</mo></math></div>
+  <p>So an insertion often reads many slots in a part that is nearly full and then steps back to an early slot of the next part. The paper names the table after this elastic movement. The table is not greedy, because the insertion gives up on <math><msub><mi>A</mi><mi>i</mi></msub></math> although later probes there may be free.</p>
+  <p>The gain comes from who pays for the search. To fill all but one slot in <math><mi>x</mi></math> with random probes, the insertions together need about <math><mi>n</mi><mspace width="0.15em"></mspace><mi>ln</mi><mspace width="0.15em"></mspace><mi>x</mi></math> probes. This is the <a class="term" href="#t-coupon">coupon collector</a> effect. In a greedy table, each of these probes also lengthens a later lookup, because the key ends where the search ended. In elastic hashing most of them are failed probes into the nearly full part. The insertion pays for them, at most about <math><mi>c</mi><mspace width="0.15em"></mspace><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math> each, and the lookup does not.</p>
+  <p>A lookup does not know the part of its key, so it follows one fixed order that mixes the probes of all parts. In the order of the paper, probe <math><mi>j</mi></math> of part <math><msub><mi>A</mi><mi>i</mi></msub></math> comes at a position of about <math><mi>i</mi><mo>&middot;</mo><msup><mi>j</mi><mn>2</mn></msup></math>. A key of batch <math><mi>i</mi></math> then costs a number of probes <span class="nw">in proportion to <math><mi>i</mi></math>.</span> Each batch has about half as many keys as the batch before, so the average over all keys is a constant, whatever <math><mi>x</mi></math> is.</p>
+
+  <figure>
+    <div class="fig-title">An elastic table while it fills</div>
+    <div class="ctl">
+      <label for="f3S"><span>Occupied share of the whole table</span> <output id="f3Out">99.22%</output></label>
+      <input type="range" id="f3S" min="0" max="80" step="1" value="56">
+    </div>
+    <div class="legend">
+      <span><i class="sw box"></i><span>occupied share of a part</span></span>
+      <span><i class="sw box now"></i><span>&#9656; part that takes at least 10% of the new keys</span></span>
+    </div>
+    <svg class="chart" id="cF3" role="img" aria-label="12 horizontal bars, one for each of the first 12 parts of an elastic table, show which share of the part is occupied. Two neighbouring parts take the new keys."></svg>
+    <div class="stats">
+      <div><small>Slots an insertion reads now: elastic</small><b id="rF3a">14.7</b></div>
+      <div><small>Slots an insertion reads now: uniform</small><b id="rF3b">128.0</b></div>
+      <div><small>Lookup, average of all keys so far: elastic</small><b id="rF3c">22.4</b></div>
+      <div><small>Lookup, average of all keys so far: uniform</small><b id="rF3d">4.9</b></div>
+    </div>
+    <figcaption>Two neighbouring parts take the new keys at any time. Insertions stay cheap near the end, where uniform probing needs hundreds of probes. The average lookup stops growing, but at a higher value than uniform probing has. Simulated on this page: 262,144 slots, planned for 99.9% <span class="nw">(<math><mi>x</mi><mo>=</mo><mn>1,024</mn></math>),</span> <span class="nw"><math><mi>c</mi><mo>=</mo><mn>2</mn></math>,</span> lookups in the probe order of the paper. &ldquo;Now&rdquo; is the mean of the last 256 insertions.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="num">04</span>
+  <h2>What is proven now</h2>
+  <p>The paper pairs each table with a lower bound, so the picture for tables without reordering is complete. All entries hold up to a constant factor.</p>
+  <div class="scroll-x"><table>
+    <thead><tr><th>Cost in probes</th><th>Uniform probing</th><th>Best greedy table</th><th>Best table of any kind</th></tr></thead>
+    <tbody>
+      <tr><td>Average key</td><td><math><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi></math></td><td><math><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi></math> (Yao, 1985)</td><td>constant (elastic hashing)</td></tr>
+      <tr><td>Most expensive key</td><td><math><mi>x</mi></math></td><td><math><mo stretchy="false">(</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></math> (funnel hashing)</td><td><math><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi></math> (elastic hashing)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">&ldquo;Average key&rdquo; is the amortized and &ldquo;most expensive key&rdquo; the worst-case expected cost of section 01. Source: Theorems 1, 2, 4 and 5 of the paper. The bound below is Theorem 7.</p>
+  <p>The lower bound for greedy tables builds on Yao&rsquo;s theorem. In a greedy table, the expected cost of an insertion never falls while the table fills. The average is at least of the order <math><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi></math>. So there is a moment, with one slot in <math><msup><mn>2</mn><mi>i</mi></msup></math> free, at which an insertion costs about <math><mi>i</mi><mo>&middot;</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi></math> probes. The last insertion pays at least as much, only to reach the slots that were free at that moment. These slots form a smaller table, and the same argument applies to it. The costs add up to a sum of the form <math><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mo>&hellip;</mo><mo>+</mo><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>, which grows like <math><mo stretchy="false">(</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup></math>.</p>
+  <p>One more bound covers the longest lookup in the whole table and not an expectation. With a probability above 1/2, some key needs about <math><mo stretchy="false">(</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>x</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mi>log</mi><mspace width="0.15em"></mspace><mi>log</mi><mspace width="0.15em"></mspace><mi>n</mi></math> probes in every table without reordering, greedy or not. Funnel hashing reaches this bound.</p>
+</section>
+
+<section>
+  <span class="num">05</span>
+  <h2>What the bounds cost in numbers</h2>
+  <p>The bounds say how the cost grows. They do not say how large it is. The paper contains no measurement, so this page simulates both tables as the paper specifies them. Funnel hashing runs with the constants of its proof. For elastic hashing the proof names no value of <math><mi>c</mi></math>, and this page uses 2. All numbers in this section are results of this page.</p>
+
+  <figure>
+    <div class="fig-title">Probes of each insertion while the table fills</div>
+    <div class="ctl">
+      <label for="f2S"><span>Planned fullness of the table</span> <output id="f2Out">98.44%</output></label>
+      <input type="range" id="f2S" min="3" max="10" step="1" value="6">
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i><span>funnel hashing, simulated</span></span>
+      <span><i class="sw uni"></i><span>uniform probing, formula</span></span>
+    </div>
+    <svg class="chart" id="cF2" role="img" aria-label="Two curves on logarithmic axes show the probes of an insertion against the occupied share of the table. Uniform probing rises in proportion to one divided by the free share. Funnel hashing starts higher and rises more slowly."></svg>
+    <div class="stats">
+      <div><small>Last insertions: funnel</small><b id="rF2a">202</b></div>
+      <div><small>Last insertion: uniform</small><b id="rF2b">64</b></div>
+      <div><small>Average key: funnel</small><b id="rF2c">40.9</b></div>
+      <div><small>Average key: uniform</small><b id="rF2d">4.2</b></div>
+    </div>
+    <figcaption>Funnel hashing rises more slowly than uniform probing, but it starts far higher. The curves cross only when the table is planned for more than 99.6%. Both axes are logarithmic. Simulated on this page: 1,048,576 slots, constants of the proof. &ldquo;Last insertions&rdquo; is the mean of the last 256. A funnel table is built for one fullness, so each slider position is a different table.</figcaption>
+  </figure>
+
+  <div class="scroll-x"><table>
+    <thead><tr><th>Fullness</th><th><math><mi>x</mi></math></th><th>Uniform</th><th>Funnel</th><th>Limit</th></tr></thead>
+    <tbody id="tCost">
+      <tr><td>87.5%</td><td>8</td><td>8</td><td>56</td><td>132</td></tr>
+      <tr><td>98.44%</td><td>64</td><td>64</td><td>202</td><td>408</td></tr>
+      <tr><td>99.61%</td><td>256</td><td>256</td><td>344</td><td>672</td></tr>
+      <tr><td>99.80%</td><td>512</td><td>512</td><td>427</td><td>828</td></tr>
+      <tr><td>99.90%</td><td>1,024</td><td>1,024</td><td>513</td><td>1,000</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Probes of the last insertions into a table that is planned for this fullness, from the simulation of the figure. Limit: the number of levels times the bucket size, the most that a funnel insertion reads in the levels.</p>
+  <p>With these constants, funnel hashing loses to uniform probing until the table is between 99.6% and 99.8% full. At 87.5% its last insertions cost 56 probes where uniform probing needs 8, and its average key costs 17.4 probes against 2.4. The constants are no tuning. They come from a proof that is written to be short. An independent <a class="term" href="#t-preprint">preprint</a> of September 2026, <a href="https://arxiv.org/abs/2609.39233">MultiTable</a>, describes a similar cascade of buckets that is sized for real hardware. Its author reports 5 levels for 100,000 keys at 90% fullness, where the formulas of the proof give 24.</p>
+  <p>Elastic hashing shows the same pattern in the figure of section 03. At 99.9% an average key costs 22.7 probes, and uniform probing needs 6.9. Uniform probing reaches 22.7 only at <math><mi>x</mi><mo>&asymp;</mo><msup><mi>e</mi><mn>22.7</mn></msup></math>, a table with one free slot in about 7 billion. So for every table that fits into memory, the constant is larger than the logarithm that it replaces. This is an inference of this page. It depends on the choice <math><mi>c</mi><mo>=</mo><mn>2</mn></math> and on the probe order of the paper.</p>
+</section>
+
+<section>
+  <span class="num">06</span>
+  <h2>Who did what</h2>
+  <p>Quanta Magazine <a href="https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/">reported the story</a> in February 2025. According to this report, Krapivin was an undergraduate at Rutgers University when he met the paper &ldquo;<a href="https://arxiv.org/abs/2111.12800">Tiny Pointers</a>&rdquo; in 2021. Two years later he worked through it and tried to make its pointers smaller. For that he needed a new hash table, and he built one without knowing Yao&rsquo;s conjecture. Farach-Colton, his former professor, was sceptical at first. Kuszmaul saw that the table refutes the conjecture.</p>
+  <p>So the answer to the title is yes, with two additions. The published result, with its proofs and lower bounds, is the joint work of the three authors. And the paper itself says that the level structure of funnel hashing appeared before, for other purposes: in multilevel adaptive hashing (1990) and in filter hashing (2005). New is the proof of what this structure does to Yao&rsquo;s conjecture.</p>
+  <ol class="steps">
+    <li><time>1972</time><span>Ullman conjectures that no greedy table has a lower average cost than uniform probing.</span></li>
+    <li><time>1985</time><span>Yao proves Ullman&rsquo;s conjecture and adds his own about the worst case.</span></li>
+    <li><time>Oct 2024</time><span>The paper &ldquo;<a href="https://arxiv.org/abs/2501.02305">Optimal Bounds for Open Addressing Without Reordering</a>&rdquo; appears at FOCS 2024. A public version follows on 4 January 2025.</span></li>
+    <li><time>Jun 2026</time><span>The same three authors show at <a class="term" href="#t-stoc">STOC</a> 2026 that a constant average is possible with greedy insertion too, if the lookup follows another probe order than the insertion.</span></li>
+    <li><time>3 Nov 2026</time><span>A <a href="https://arxiv.org/abs/2611.04186">new preprint</a> of the three authors removes the remaining costs. Without reordering, insertions in constant expected time go together with a constant average lookup. With reordering, insertions and all lookups take constant expected time at every fullness, also in a full table.</span></li>
+  </ol>
+</section>
+
+<section>
+  <span class="num">07</span>
+  <h2>What changes for a real hash map</h2>
+  <p>For the hash maps in today&rsquo;s programs, nothing changes. There are four reasons.</p>
+  <ul class="plain">
+    <li><strong>Real maps stay out of the region where the result applies.</strong> The <a href="https://abseil.io/about/design/swisstables">SwissTable</a> of abseil grows at 7/8, and <a href="https://github.com/martinus/unordered_dense">unordered_dense</a> 5 at 0.8. At 7/8, the worst case of uniform probing is 8 probes. Maps of this family also compare 16 slots with one instruction. A lookup in a fresh table of unordered_dense 5 reads between 1.03 and 1.09 groups of slots. These numbers come from a <a href="https://martin.ankerl.com/2026/09/09/hash-map-index-structures/">survey of nine C++ hash map libraries</a> by the publisher of this site.</li>
+    <li><strong>The model counts slots, and hardware counts cache misses.</strong> In funnel hashing, each further level is a jump to another place in memory. This is an inference of this page.</li>
+    <li><strong>The proofs need a fixed size, a known fullness and no deletions.</strong> For tables with deletions that never move a key, the paper cites a proof that the average cost must grow like a power of <math><mi>x</mi></math>.</li>
+    <li><strong>Real maps may move keys.</strong> Robin hood hashing does. With reordering, a constant average in a full table has been known since a method of Richard Brent from 1973.</li>
+  </ul>
+  <p>One project has measured the new tables. The Rust library <a href="https://github.com/aaron-ang/opthash-rs">opthash</a> implements both with the placement rules of the paper and adds what a usable map needs, such as deletion and growth. It calls itself experimental. Its benchmark of 30 October 2026 compares them with a table that copies the layout of <a href="https://github.com/rust-lang/hashbrown">hashbrown</a>, the SwissTable of Rust, without its limit of 7/8. The numbers are nanoseconds per operation on a 64-bit ARM machine, for tables of 1,048,576 slots:</p>
+  <div class="scroll-x"><table>
+    <thead><tr><th>Operation, fullness</th><th>Funnel</th><th>Elastic</th><th>Swiss layout</th></tr></thead>
+    <tbody>
+      <tr><td>Lookup, key present, 87.5%</td><td>31.1</td><td>39.7</td><td>3.3</td></tr>
+      <tr><td>Lookup, key absent, 87.5%</td><td>3.0</td><td>20.8</td><td>12.3</td></tr>
+      <tr><td>Lookup, key absent, 99.9%</td><td>20.3</td><td>96.7</td><td>531.5</td></tr>
+      <tr><td>Insertion, 99.2%</td><td>101.2</td><td>112.2</td><td>68.3</td></tr>
+      <tr><td>Insertion, 99.9%</td><td>185.7</td><td>269.4</td><td>417.3</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Source: pull request 172 of opthash, medians. &ldquo;Swiss layout&rdquo; is the table with the layout of hashbrown. &ldquo;Insertion&rdquo; times the insertions that fill the last half of the free slots.</p>
+  <p>A key that is present is found about ten times more slowly. Insertions win only at 99.9%, which fits the simulation of section 05. The funnel map rejects an absent key faster at every fullness, but this is no property of the table of the paper. In a greedy table a miss costs as much as the next insertion, because both stop at the first free slot. The funnel map of opthash adds a membership filter, and a key that the filter does not know needs no probe at all. These numbers come from one benchmark of one small project, and nobody else has confirmed them. A second project, an <a href="https://github.com/joshuaisaact/elastic-hash">implementation of elastic hashing in Zig</a>, reports faster insertions at 99% and slower lookups in large tables. Its author blames cache misses from the jumps between the parts.</p>
+  <p>The value of the result is in theory: two limits that were assumed for decades do not hold. Alex Conway of Cornell Tech told Quanta that the results may not lead to immediate applications. The MultiTable preprint claims that a cascade of buckets beats hashbrown at equal memory. Its author made these measurements, and nobody has reviewed them.</p>
+</section>
+
+<section>
+  <span class="num">08</span>
+  <h2>Terms</h2>
+  <dl class="gloss">
+    <div id="t-x"><dt><math><mi>x</mi></math> (how full the table is)</dt><dd>One slot in <math><mi>x</mi></math> is free, so the table is <math><mn>1</mn><mo>&minus;</mo><mn>1</mn><mo>/</mo><mi>x</mi></math> full: <math><mi>x</mi><mo>=</mo><mn>8</mn></math> at 87.5%, <math><mi>x</mi><mo>=</mo><mn>1,024</mn></math> at 99.9%. The papers write <math><mi>&delta;</mi></math> or <math><mi>&epsi;</mi></math> for the free share <math><mn>1</mn><mo>/</mo><mi>x</mi></math>.</dd></div>
+    <div id="t-probe"><dt>Probe complexity</dt><dd>The position of a key in its own probe sequence. A lookup of this key reads that many slots. It is fixed when the key is inserted, because the key never moves.</dd></div>
+    <div id="t-reorder"><dt>Reordering</dt><dd>Moving a key to another slot after its insertion. Robin hood hashing and cuckoo hashing reorder. The tables of this page do not. <a href="https://en.wikipedia.org/wiki/Open_addressing">Wikipedia: Open addressing</a></dd></div>
+    <div id="t-greedy"><dt>Greedy</dt><dd>An insertion is greedy if it takes the first free slot of the key&rsquo;s probe sequence. Then an insertion and a lookup that misses read the same slots.</dd></div>
+    <div id="t-uniform"><dt>Uniform probing</dt><dd>The idealized greedy table of the theory. The probe sequence of each key is a random permutation of all slots, independent of the other keys.</dd></div>
+    <div id="t-worst"><dt>Worst-case expected cost</dt><dd>The expected number of probes for the single most expensive key. The expectation runs over the random hash function. In a greedy table this key is the last one inserted.</dd></div>
+    <div id="t-amort"><dt>Amortized expected cost</dt><dd>The expected number of probes, averaged over all keys in the table. It is the expected cost of a lookup of a random key that is present. It says nothing about keys that are absent.</dd></div>
+    <div id="t-level"><dt>Level</dt><dd>One of the sub-arrays of a funnel table. Each level has 3/4 of the size of the level before it. A key tries the levels in order.</dd></div>
+    <div id="t-bucket"><dt>Bucket and <math><mi>&beta;</mi></math> (beta)</dt><dd>In funnel hashing, a bucket is a run of <math><mi>&beta;</mi></math> adjacent slots inside a level. A key hashes to one bucket per level. The proof sets <math><mi>&beta;</mi><mo>=</mo><mn>2</mn><mspace width="0.15em"></mspace><msub><mi>log</mi><mn>2</mn></msub><mi>x</mi></math>.</dd></div>
+    <div id="t-batch"><dt>Batch</dt><dd>In elastic hashing, a run of consecutive insertions that all go into the same two neighbouring parts of the array.</dd></div>
+    <div id="t-f"><dt><math><mi>f</mi></math></dt><dd>The largest number of slots that an insertion of elastic hashing tries in the fuller of its two parts before it turns to the emptier part.</dd></div>
+    <div id="t-eps"><dt><math><mi>&epsi;</mi></math> (epsilon)</dt><dd>On this page: the share of slots that is free, at one moment, in the fuller of the two parts that an elastic table is filling.</dd></div>
+    <div id="t-c"><dt><math><mi>c</mi></math></dt><dd>A constant of elastic hashing that scales the limit <math><mi>f</mi></math>. The proof only requires that it is large enough. The simulation of this page uses <math><mi>c</mi><mo>=</mo><mn>2</mn></math>.</dd></div>
+    <div id="t-coupon"><dt>Coupon collector</dt><dd>A classic problem of probability: how many random draws does it take to see most or all of <math><mi>n</mi></math> different coupons? To see all but a share <math><mn>1</mn><mo>/</mo><mi>x</mi></math> of them takes about <math><mi>n</mi><mspace width="0.15em"></mspace><mi>ln</mi><mspace width="0.15em"></mspace><mi>x</mi></math> draws. <a href="https://en.wikipedia.org/wiki/Coupon_collector%27s_problem">Wikipedia: Coupon collector&rsquo;s problem</a></dd></div>
+    <div id="t-focs"><dt>FOCS (Symposium on Foundations of Computer Science)</dt><dd>A yearly conference of the IEEE and one of the two main conferences of theoretical computer science. Papers are reviewed before they are accepted.</dd></div>
+    <div id="t-stoc"><dt>STOC (Symposium on Theory of Computing)</dt><dd>A yearly conference of the ACM, the other main conference of theoretical computer science, with the same kind of review.</dd></div>
+    <div id="t-preprint"><dt>Preprint</dt><dd>A scientific paper that its authors publish themselves, before a conference or a journal has had it reviewed by independent experts.</dd></div>
+  </dl>
+</section>
+
+<section>
+  <span class="num">09</span>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>Both tables, their parameters, all bounds and the outline of the proofs come from the paper of Farach-Colton, Krapivin and Kuszmaul. This page read its second public version in full. The history of the conjecture comes from the introduction of that paper. The follow-up of November 2026 comes from the introduction of its preprint. The benchmark numbers come from the pull request of opthash, and the numbers on production maps from the survey that is linked there.</span><span class="d">Who found what, and when, rests on the report of Quanta Magazine alone. That survey is by the publisher of this site.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>Every number in section 05 and in the figures of sections 02 and 03 is a simulation on this page, with the constants of the proofs and one fixed sequence of random numbers. The paper has no measurements. The fullness at which funnel hashing overtakes uniform probing, and the statement that the constant of elastic hashing is larger than <math><mi>ln</mi><mspace width="0.15em"></mspace><mi>x</mi></math> for every practical table, follow from these simulations. Two simplifications: a funnel level smaller than one bucket is left out, and lookups in the elastic table skip positions of the probe order that the paper leaves unused.</span><span class="d">The cost formulas of uniform probing are textbook knowledge of the model that wrote this page. Also inferred: that the conjecture was open for 39 years, and that cache misses limit funnel hashing.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>How the new tables perform as real code. One hobby project measured them on one machine, and a second reports a similar pattern. Nobody has confirmed either. The claims of the MultiTable preprint are measured by its author only.</span><span class="d">Read as an abstract only: the STOC 2026 paper and &ldquo;Tiny Pointers&rdquo;. Not read: Yao&rsquo;s paper of 1985. Its content is given as the 2024 paper reports it. A better constant <math><mi>c</mi></math> or probe order may lower the cost of elastic hashing. With the best fixed order for the simulated run, its average was 11.9 probes, still above 6.9.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">10</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://arxiv.org/abs/2501.02305">Farach-Colton, Krapivin, Kuszmaul: Optimal Bounds for Open Addressing Without Reordering</a> &middot; conference paper, FOCS 2024, public version 2 of 28 February 2025</li>
+    <li><a href="https://doi.org/10.1109/FOCS61266.2024.00045">IEEE: record of the same paper in the proceedings of FOCS 2024</a> &middot; bibliographic record, 27 October 2024, pages 594 to 605</li>
+    <li><a href="https://arxiv.org/abs/2611.04186">Farach-Colton, Krapivin, Kuszmaul: Incremental Open Addressing Has No Time-Space Tradeoff</a> &middot; preprint, 3 November 2026, introduction only</li>
+    <li><a href="https://www.conference-publishing.com/toc/STOC26/abs">Farach-Colton, Krapivin, Kuszmaul: Greedy Open Addressing Revisited: Beyond Yao&rsquo;s Lower Bound</a> &middot; conference paper, STOC 2026, June 2026, abstract only, in the list of abstracts of the conference</li>
+    <li><a href="https://doi.org/10.1145/3828.3836">Yao: Uniform hashing is optimal</a> &middot; journal paper, Journal of the ACM, July 1985, not read, reported by the first source</li>
+    <li><a href="https://arxiv.org/abs/2111.12800">Bender, Conway, Farach-Colton, Kuszmaul, Tagliavini: Tiny Pointers</a> &middot; paper, public version of 24 November 2021, abstract only</li>
+    <li><a href="https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/">Quanta Magazine, Steve Nadis: Undergraduate Upends a 40-Year-Old Data Science Conjecture</a> &middot; reporting, 10 February 2025</li>
+    <li><a href="https://github.com/aaron-ang/opthash-rs/pull/172">opthash: pull request 172, high-load benchmark</a> &middot; measurements of the project, 30 October 2026</li>
+    <li><a href="https://github.com/aaron-ang/opthash-rs">opthash: README</a> &middot; documentation, read on 26 November 2026</li>
+    <li><a href="https://github.com/aaron-ang/opthash-rs/blob/aace7e0b76bce3a57e245c4d3ad22e8029e39ef4/src/funnel.rs">opthash: src/funnel.rs</a> &middot; source code, state of 26 November 2026, comments on the membership filter only</li>
+    <li><a href="https://github.com/joshuaisaact/elastic-hash">Tuddenham: elastic-hash, README</a> &middot; measurements of the project, state of 28 March 2026</li>
+    <li><a href="https://arxiv.org/abs/2609.39233">Petkus: MultiTable: A Faster Hash Table at any Physical Load Factor up to and Including One</a> &middot; preprint, 30 September 2026, introduction and appendix F</li>
+    <li><a href="https://martin.ankerl.com/2026/09/09/hash-map-index-structures/">Leitner-Ankerl: The Index Structures of Fast C++ Hash Maps</a> &middot; blog post with measurements, 9 September 2026, rewritten on 2 October 2026</li>
+  </ul>
+</section>
+
+<p class="page-note">This page simplifies. It leaves out the reserve array of funnel hashing in the text, the rare third case of an elastic insertion, and all conditions on how small the free share may be. It gives the bounds without their constant factors. Its simulations use one table size and one sequence of random numbers each. An AI model wrote this page, and no person has checked it. Status of the facts: 26 November 2026.</p>
+
+</main>
+<!-- learn:footer -->
+<script>
+(function(){
+'use strict';
+var L=window.Learn,mk=L.mk;
+function $(id){return document.getElementById(id);}
+
+/* SIM-BEGIN: both tables as the paper specifies them. This part uses no DOM. */
+
+/* The same random numbers for every reader (mulberry32). */
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+
+/* Funnel hashing, section 3 of the paper. n slots, filled until a share 2^-p is free (x = 2^p).
+   Levels: 4p + 10. Bucket size: 2p. Each level has 3/4 of the buckets of the level before.
+   A level smaller than one bucket is left out. A bucket fills from the front, so its number
+   of keys is enough to know what an insertion reads. */
+function funnel(n,p,seed){
+  var R=rng(seed),x=Math.pow(2,p),levels=4*p+10,beta=2*p,m=n-n/x;
+  var reserve=n/x/2;while((n-reserve)%beta)reserve++;
+  var buckets=(n-reserve)/beta,sum=0,q=1,i,size=[],used=0;
+  for(i=0;i<levels;i++){sum+=q;q*=0.75;}
+  for(i=0,q=1;i<levels;i++){size.push(Math.round(buckets/sum*q));used+=size[i];q*=0.75;}
+  size[0]+=buckets-used;
+  var cnt=size.map(function(k){return new Uint8Array(k);});
+  /* reserve array: half uniform probing with at most LL probes, half two-choice buckets of 2 LL slots */
+  var LL=Math.ceil(Math.log2(Math.log2(n))),bSize=reserve>>1,cB=2*LL,cBuckets=Math.max(1,Math.floor((reserve-bSize)/cB));
+  var B=new Uint8Array(bSize),C=new Uint8Array(cBuckets);
+  var probes=new Uint16Array(m),lvl=new Uint8Array(m),inReserve=0;
+  for(var k=0;k<m;k++){
+    var pr=0,done=false;
+    for(i=0;i<levels&&!done;i++){
+      if(!size[i])continue;
+      var j=Math.floor(R()*size[i]),c=cnt[i][j];
+      if(c<beta){cnt[i][j]=c+1;pr+=c+1;lvl[k]=i+1;done=true;}
+      else pr+=beta;
+    }
+    if(!done){
+      inReserve++;lvl[k]=levels+1;
+      for(var t=0;t<LL&&!done;t++){var s=Math.floor(R()*bSize);pr++;if(!B[s]){B[s]=1;done=true;}}
+      if(!done){
+        var a=Math.floor(R()*cBuckets),b=Math.floor(R()*cBuckets);
+        if(C[a]<=C[b]&&C[a]<cB){pr+=2*C[a]+1;C[a]++;}
+        else if(C[b]<cB){pr+=2*C[b]+2;C[b]++;}
+        else pr+=2*cB;
+      }
+    }
+    probes[k]=pr;
+  }
+  return {n:n,m:m,levels:levels,beta:beta,size:size,probes:probes,lvl:lvl,inReserve:inReserve};
+}
+
+/* phi(i, j) of Lemma 1: the bits of j, each after a one, then a zero, then the bits of i.
+   Probe j in part i has the position phi(i, j) in the one probe sequence of a key. */
+function phi(i,j){
+  var bj=j.toString(2),s='';
+  for(var k=0;k<bj.length;k++)s+='1'+bj[k];
+  return parseInt(s+'0'+i.toString(2),2);
+}
+/* rank[(i-1)*J + j-1]: how many slots a lookup reads until it reaches probe j of part i,
+   if it follows the order of phi and skips the positions that phi does not use. */
+function order(K,J){
+  var all=[],i,j;
+  for(i=1;i<=K;i++)for(j=1;j<=J;j++)all.push([phi(i,j),i,j]);
+  all.sort(function(u,v){return u[0]-v[0];});
+  var rank=new Uint32Array(K*J);
+  all.forEach(function(e,r){rank[(e[1]-1)*J+e[2]-1]=r+1;});
+  return rank;
+}
+
+/* Elastic hashing, section 2 of the paper. Parts of halving size, batches, and the three cases. */
+function elastic(n,p,c,seed){
+  var R=rng(seed),x=Math.pow(2,p),m=n-n/x,K=Math.ceil(Math.log2(n)),size=[],rest=n,i;
+  for(i=0;i<K;i++){var sz=(i===K-1)?rest:Math.ceil(rest/2);size.push(sz);rest-=sz;}
+  var occ=size.map(function(s){return new Uint8Array(s);}),cnt=size.map(function(){return 0;});
+  function f(eps){var l=Math.log2(1/eps);return Math.ceil(c*Math.min(l*l,p)-1e-9);}
+  function full(i){return size[i]-Math.floor(size[i]/x/2);}
+  function put(i,limit){ /* probes 1..limit of the key in part i; returns the probe used, or 0 */
+    for(var j=1;j<=limit;j++){var s=Math.floor(R()*size[i]);if(!occ[i][s]){occ[i][s]=1;cnt[i]++;return j;}}
+    return 0;
+  }
+  var part=new Uint8Array(m),probe=new Uint32Array(m),read=new Uint32Array(m),case3=0,batch=0,j;
+  for(var k=0;k<m;k++){
+    if(batch===0){
+      j=put(0,1e9);part[k]=1;probe[k]=j;read[k]=j;
+      if(cnt[0]>=Math.ceil(0.75*size[0]))batch=1;
+      continue;
+    }
+    var a=batch-1,b=batch,e1=1-cnt[a]/size[a],e2=1-cnt[b]/size[b];
+    if(cnt[a]<full(a)&&e2>0.25){            /* case 1: try f slots in the fuller part */
+      var lim=f(e1);j=put(a,lim);
+      if(j){part[k]=a+1;probe[k]=j;read[k]=j;}
+      else{j=put(b,1e9);part[k]=b+1;probe[k]=j;read[k]=lim+j;}
+    }else if(cnt[a]>=full(a)){              /* case 2: the fuller part is done */
+      j=put(b,1e9);part[k]=b+1;probe[k]=j;read[k]=j;
+    }else{                                  /* case 3: the emptier part reached 75% too early */
+      case3++;j=put(a,1e9);part[k]=a+1;probe[k]=j;read[k]=j;
+    }
+    if(cnt[a]>=full(a)&&cnt[b]>=Math.ceil(0.75*size[b]))batch++;
+  }
+  return {n:n,m:m,K:K,size:size,part:part,probe:probe,read:read,case3:case3};
+}
+
+/* Figure of section 05: probes per insertion in 48 bins of log2(1 / free share), and the summary numbers. */
+function costFunnel(n,p){
+  var r=funnel(n,p,1),m=r.m,B=48,tot=0,k=0,b,W=256,last=0,bins=[];
+  for(b=1;b<=B;b++){
+    var end=Math.min(m,Math.round(n*(1-Math.pow(2,-b*p/B)))),s=0,k0=k;
+    for(;k<end;k++)s+=r.probes[k];
+    tot+=s;if(k>k0)bins.push([(b-0.5)/B*p,s/(k-k0)]);
+  }
+  for(k=m-W;k<m;k++)last+=r.probes[k];
+  return {bins:bins,avg:tot/m,last:last/W,limit:r.levels*r.beta,inReserve:r.inReserve};
+}
+
+/* Figures of sections 02 and 03: the state of a table at each slider step.
+   ends[s] is the number of keys at step s; unit[k] is the level or part of key k (from 1);
+   cost[k] is what the insertion of key k read; look[k] is what a lookup of key k reads. */
+function fillSteps(ends,unit,cap,cost,look,W){
+  var nu=cap.length,cnt=new Float64Array(nu+1),sum=0,k=0,out=[];
+  ends.forEach(function(end){
+    for(;k<end;k++){cnt[unit[k]-1]++;sum+=look[k];}
+    var a=Math.max(0,end-W),t=0,h=new Float64Array(nu+1),q,fill=[],hot=[];
+    for(q=a;q<end;q++){t+=cost[q];h[unit[q]-1]++;}
+    for(q=0;q<nu;q++){fill.push(cap[q]?cnt[q]/cap[q]:0);hot.push(end>a&&h[q]/(end-a)>=0.1);}
+    out.push({keys:end,fill:fill,hot:hot,now:end>a?t/(end-a):1,avg:end?sum/end:1});
+  });
+  return out;
+}
+function fillFunnel(n,p,steps){
+  var r=funnel(n,p,1),ends=[],s;
+  for(s=0;s<=steps;s++)ends.push(Math.round(s/steps*r.m));
+  return fillSteps(ends,r.lvl,r.size.map(function(k){return k*r.beta;}),r.probes,r.probes,2048);
+}
+function fillElastic(n,p,c,steps,shown){
+  var r=elastic(n,p,c,1),J=256,rank=order(r.K,J),look=new Uint32Array(r.m),ends=[],k,s;
+  for(k=0;k<r.m;k++)look[k]=rank[(r.part[k]-1)*J+Math.min(r.probe[k],J)-1];
+  for(s=0;s<=steps;s++)ends.push(Math.min(r.m,Math.round(n*(1-Math.pow(2,-s*p/steps)))));
+  return fillSteps(ends,r.part,r.size.slice(0,shown),r.read,look,256);
+}
+/* SIM-END */
+
+/* uniform probing with n slots and k keys: the next insertion, and the average over the k keys */
+function uniNext(n,k){return n/(n-k);}
+function uniAvg(n,k){return k?n/k*Math.log(n/(n-k)):1;}
+function pct(v,d){return L.sgn(v*100,d)+'%';}
+
+/* ---------- section 01: one insertion ---------- */
+(function(){
+  var g=$('mSlots'),occ=[1,1,0,1,1,1,0,1,1,1,1,0,1,1],seq={4:1,9:2,2:3,12:4,6:5},x0=16,w=22,y=46,i;
+  for(i=0;i<occ.length;i++){
+    mk('rect',{x:x0+i*w,y:y,width:w-3,height:w-3,rx:3,'class':i===2?'s-take':occ[i]?'s-occ':'s-free'},g);
+    if(seq[i]){
+      var cx=x0+i*w+(w-3)/2;
+      mk('line',{x1:cx,x2:cx,y1:30,y2:y-2,'class':'p-line'},g);
+      mk('circle',{cx:cx,cy:20,r:9,'class':'p-dot'},g);
+      L.label(g,cx,24,String(seq[i]),'p-num','middle');
+    }
+  }
+  L.label(g,x0+2*w+(w-3)/2,y+w+14,'greedy takes this slot','t-now','middle');
+  L.label(g,x0+6*w+(w-3)/2+34,y+w+14,'free','lbl','middle');
+  mk('line',{x1:x0+6*w+(w-3)/2+4,x2:x0+6*w+(w-3)/2+20,y1:y+w+10,y2:y+w+10,'class':'p-line'},g);
+  mk('line',{x1:x0+6*w+(w-3)/2,x2:x0+6*w+(w-3)/2,y1:y+w-1,y2:y+w+10,'class':'p-line'},g);
+})();
+
+/* ---------- bars: one row for each level or part ---------- */
+function drawBars(svg,st,o){
+  var rows=st.fill.length,m={l:30,r:8,t:18,b:22},h=m.t+rows*o.pitch+m.b,w=L.frame(svg,h),tw=w-m.l-m.r,i;
+  L.label(svg,m.l,11,o.title);
+  for(i=0;i<rows;i++){
+    var y=m.t+i*o.pitch,bh=o.pitch-3;
+    mk('rect',{x:m.l,y:y,width:tw,height:bh,rx:2,'class':'b-track'},svg);
+    if(st.fill[i]>0)mk('rect',{x:m.l,y:y,width:Math.max(1,tw*Math.min(1,st.fill[i])),height:bh,rx:2,'class':st.hot[i]?'b-now':'b-fill'},svg);
+    if(st.hot[i])L.label(svg,m.l-3,y+bh/2+4,'▸','t-now','end');
+    else if(i===0||(i+1)%o.every===0||i===rows-1)L.label(svg,m.l-5,y+bh/2+4,String(i+1),'lbl','end');
+  }
+  [0,0.25,0.5,0.75,1].forEach(function(v){
+    L.label(svg,m.l+v*tw,h-7,pct(v,0),'lbl',v===0?'start':v===1?'end':'middle');
+  });
+}
+
+/* ---------- section 02: a funnel table while it fills ---------- */
+var F1={n:262144,p:3,steps:70,st:null},f1S=$('f1S');
+function drawF1(){
+  if(!F1.st)F1.st=fillFunnel(F1.n,F1.p,F1.steps);
+  var st=F1.st[+f1S.value];
+  $('f1Out').textContent=pct(st.keys/F1.n,1);
+  drawBars($('cF1'),st,{pitch:12,every:5,title:'level, and the share of its slots that is occupied'});
+  $('rF1a').textContent=L.sgn(st.now,1);
+  $('rF1b').textContent=L.sgn(uniNext(F1.n,st.keys),1);
+  $('rF1c').textContent=L.sgn(st.avg,1);
+  $('rF1d').textContent=L.sgn(uniAvg(F1.n,st.keys),1);
+}
+f1S.addEventListener('input',drawF1);
+
+/* ---------- section 03: an elastic table while it fills ---------- */
+var F3={n:262144,p:10,c:2,steps:80,shown:12,st:null},f3S=$('f3S');
+function drawF3(){
+  if(!F3.st)F3.st=fillElastic(F3.n,F3.p,F3.c,F3.steps,F3.shown);
+  var st=F3.st[+f3S.value];
+  $('f3Out').textContent=pct(st.keys/F3.n,2);
+  drawBars($('cF3'),st,{pitch:16,every:1,title:'part, and the share of its slots that is occupied'});
+  $('rF3a').textContent=L.sgn(st.now,1);
+  $('rF3b').textContent=L.sgn(uniNext(F3.n,st.keys),1);
+  $('rF3c').textContent=L.sgn(st.avg,1);
+  $('rF3d').textContent=L.sgn(uniAvg(F3.n,st.keys),1);
+}
+f3S.addEventListener('input',drawF3);
+
+/* ---------- section 05: probes of each insertion ---------- */
+var F2={n:1048576,cache:{}},f2S=$('f2S');
+function drawF2(){
+  var p=+f2S.value,x=Math.pow(2,p),r=F2.cache[p]||(F2.cache[p]=costFunnel(F2.n,p));
+  $('f2Out').textContent=pct(1-1/x,2);
+  var svg=$('cF2'),h=250,w=L.frame(svg,h),m={l:40,r:14,t:18,b:26},Y=10.6;
+  function sx(t){return m.l+t/p*(w-m.l-m.r);}
+  function sy(v){return h-m.b-Math.log2(v)/Y*(h-m.t-m.b);}
+  var g=mk('g',{'class':'ax'},svg),t;
+  [1,4,16,64,256,1024].forEach(function(v){mk('line',{x1:m.l,x2:w-m.r,y1:sy(v),y2:sy(v)},g);mk('text',{x:m.l-6,y:sy(v)+4,'text-anchor':'end'},g).textContent=L.fmt(v);});
+  var step=Math.ceil(p/(w<430?4:8));
+  for(t=p;t>=0;t-=step)mk('text',{x:sx(t),y:h-7,'text-anchor':t===p?'end':t===0?'start':'middle'},g).textContent=t===0?'empty':pct(1-Math.pow(2,-t),t<3?0:t<4?1:2);
+  mk('path',{d:'M'+sx(0)+' '+sy(1)+'L'+sx(p)+' '+sy(x),'class':'l-uni'},svg);
+  var d='';r.bins.forEach(function(b,i){d+=(i?'L':'M')+sx(b[0]).toFixed(1)+' '+sy(b[1]).toFixed(1);});
+  mk('path',{d:d,'class':'l-c1'},svg);
+  mk('circle',{cx:sx(p),cy:sy(x),r:3.5,'class':'d-ink'},svg);
+  mk('circle',{cx:sx(p),cy:sy(r.last),r:4,'class':'d-c1'},svg);
+  L.label(svg,m.l,11,'probes, by fullness at that moment');
+  $('rF2a').textContent=L.fmt(r.last);
+  $('rF2b').textContent=L.fmt(x);
+  $('rF2c').textContent=L.sgn(r.avg,1);
+  $('rF2d').textContent=L.sgn(uniAvg(F2.n,F2.n-F2.n/x),1);
+}
+f2S.addEventListener('input',drawF2);
+
+L.onChange(function(){drawF1();drawF3();drawF2();});
+})();
+</script>
+</body>
+</html>
