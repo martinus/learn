@@ -8,9 +8,11 @@
                                           for example: new 2026-12-01-how-gps-works
   python3 tools/learn.py shots [SLUG]     write pictures of the pages into _shots/, to look at
                                           the result (needs Chrome). Without SLUG: all pages.
-  python3 tools/learn.py shots SLUG SET   add pictures with controls in another position. SET is a list
+  python3 tools/learn.py shots SLUG SET [SET ...]
+                                          add pictures with controls in other positions. SET is a list
                                           such as year:1950,orbitals:4 with the id of a slider and its
-                                          value, or the id of a button group and the number of the button
+                                          value, or the id of a button group and the number of the button.
+                                          The pictures of the first SET end with -set1, and so on
   python3 tools/learn.py texts SLUG       print the text of one explainer, to read it one more time.
                                           For a page with German text: English and German, key by key
   python3 tools/learn.py terms SLUG       list each abbreviation and each Greek or mathematical symbol of one
@@ -625,9 +627,10 @@ def take_shot(chrome, job):
     return target if target.is_file() else None
 
 
-def cmd_shots(slug, settings=None):
-    """settings: "id:value,id:value". Then the pictures show these controls in the given position, only for the
-    sections that contain one of them, and the pictures at rest stay in the folder."""
+def cmd_shots(slug, settings=()):
+    """settings: one or more of "id:value,id:value". Then the pictures show these controls in the given positions,
+    only for the sections that contain one of them, and the pictures at rest stay in the folder. The pictures of the
+    first position end with -set1, those of the second with -set2."""
     chrome = find_chrome()
     if not chrome:
         print("Chrome or Chromium is necessary for pictures, but it was not found. Set the variable CHROME to its path.", file=sys.stderr)
@@ -646,23 +649,25 @@ def cmd_shots(slug, settings=None):
         folder.mkdir(parents=True, exist_ok=True)
         built = OUT / it.slug / "index.html"
         text = built.read_text(encoding="utf-8")
-        parts = ["top"] + re.findall(r'<section id="(s\d+)">', text)
-        extra, mark = "", ""
+        groups = [(["top"] + re.findall(r'<section id="(s\d+)">', text), "", "")]
         if settings:
-            ids = [kv.split(":")[0] for kv in settings.split(",")]
-            missing = [i for i in ids if 'id="%s"' % i not in text]
-            if missing:
-                print("No element with the id %s in %s." % (", ".join(missing), it.slug), file=sys.stderr)
-                return 1
-            # Only the sections that contain one of the controls.
+            groups = []
             bodies = re.split(r'<section id="(s\d+)">', text)
-            parts = [bodies[k] for k in range(1, len(bodies), 2) if any('id="%s"' % i in bodies[k + 1] for i in ids)]
-            extra, mark = "&set=" + urllib.parse.quote(settings, safe=":,"), "-set"
+            for n, setting in enumerate(settings, 1):
+                ids = [kv.split(":")[0] for kv in setting.split(",")]
+                missing = [i for i in ids if 'id="%s"' % i not in text]
+                if missing:
+                    print("No element with the id %s in %s." % (", ".join(missing), it.slug), file=sys.stderr)
+                    return 1
+                # Only the sections that contain one of the controls.
+                parts = [bodies[k] for k in range(1, len(bodies), 2) if any('id="%s"' % i in bodies[k + 1] for i in ids)]
+                groups.append((parts, "&set=" + urllib.parse.quote(setting, safe=":,"), "-set%d" % n))
         for width, theme, lang in VARIANTS:
             lang = lang if lang in it.langs() else "en"
-            for part in parts:
-                jobs.append((built, "only=%s&theme=%s&lang=%s%s" % (part, theme, lang, extra), width,
-                             folder / ("%d-%s-%s-%s%s.png" % (width, theme, lang, part, mark))))
+            for parts, extra, mark in groups:
+                for part in parts:
+                    jobs.append((built, "only=%s&theme=%s&lang=%s%s" % (part, theme, lang, extra), width,
+                                 folder / ("%d-%s-%s-%s%s.png" % (width, theme, lang, part, mark))))
     if not slug:
         (SHOTS / "home").mkdir(parents=True)
         for width, theme, lang in VARIANTS:
@@ -674,10 +679,11 @@ def cmd_shots(slug, settings=None):
     for f in failed:
         print("ERROR  no picture: " + f, file=sys.stderr)
     print("Wrote %d picture(s) into %s/. One file for each section: width, colour mode, language, section." % (len(jobs) - len(failed), SHOTS.relative_to(ROOT)))
-    if settings:
-        print("These pictures end with -set and show the controls at: " + settings)
-    else:
-        print('These pictures show the page at rest. For another position of a control: shots SLUG "id:value,id:value".')
+    for n, setting in enumerate(settings, 1):
+        print("The pictures that end with -set%d show the controls at: %s" % (n, setting))
+    if not settings:
+        print('These pictures show the page at rest. For other positions of the controls, for example both ends of a slider: '
+              'shots SLUG "id:value,id:value" "id:value,id:value".')
     return 1 if failed else 0
 
 
@@ -695,6 +701,32 @@ setTimeout(function () {
   }
   function name(e) { return (e.id ? '#' + e.id : '') + ' "' + e.textContent.trim().slice(0, 40) + '"'; }
   try {
+    /* Before any control moves: a number in the page source that the script replaces at once is stale. */
+    if (/[?&]lang=en/.test(f.src)) {
+      var x = new XMLHttpRequest(), sel = 'main figure output, main figure .stats b';
+      x.open('GET', f.src.split('?')[0], false); x.send();
+      var old = new DOMParser().parseFromString(x.responseText, 'text/html').querySelectorAll(sel), now = d.querySelectorAll(sel);
+      if (old.length === now.length) [].forEach.call(old, function (e, i) {
+        var a = e.textContent.replace(/\\s+/g, ' ').trim(), b = now[i].textContent.replace(/\\s+/g, ' ').trim();
+        if (a !== b) log.push('WARNING the page source says "' + a + '" where the script writes "' + b + '" at the start' + (e.id ? ' (#' + e.id + ')' : '') + ': write the value of the script into the source');
+      });
+    }
+    /* A line can break between a formula and the sign after it or the bracket before it. */
+    [].forEach.call(d.querySelectorAll('main math:not([display="block"])'), function (m) {
+      if (m.closest('.nw, .formula, figure svg')) return;
+      var r = m.getBoundingClientRect(), p = m.parentNode, inTerm = p.matches && p.matches('a.term');
+      if (!r.width) return;
+      function apart(node, at) {
+        var g = d.createRange(); g.setStart(node, at); g.setEnd(node, at + 1);
+        var c = g.getBoundingClientRect();
+        return c.width && (c.top >= r.bottom - 2 || c.bottom <= r.top + 2);
+      }
+      var after = (inTerm && p.lastChild === m ? p : m).nextSibling, before = (inTerm && p.firstChild === m ? p : m).previousSibling;
+      if (after && after.nodeType === 3 && /^[.,;:)!?]/.test(after.data) && apart(after, 0))
+        log.push('WARNING a line breaks between the formula "' + m.textContent.trim().slice(0, 20) + '" and the "' + after.data[0] + '" after it: put both into <span class="nw">');
+      if (before && before.nodeType === 3 && /\\($/.test(before.data) && apart(before, before.data.length - 1))
+        log.push('WARNING a line breaks between a bracket and the formula "' + m.textContent.trim().slice(0, 20) + '" after it: put both into <span class="nw">');
+    });
     [].forEach.call(d.querySelectorAll('main input[type=range]'), function (e) {
       [e.min, e.max, e.getAttribute('value')].forEach(function (v) {
         e.value = v;
@@ -740,8 +772,9 @@ setTimeout(function () {
 
 def cmd_try(slug):
     """Use every control of one built page once, in a frame of 390 px, and print what the page then shows.
-    The pictures from "shots" show the page at rest. This command finds what they cannot show:
-    a script error, a control without effect, a result that is not a number, a formula that is too wide."""
+    The pictures from "shots" show the page at rest. This command finds what they cannot show, or show only to a
+    careful eye: a script error, a control without effect, a result that is not a number, a formula that is too wide,
+    a number in the page source that differs from what the script writes, and a line that breaks next to a formula."""
     chrome = find_chrome()
     if not chrome:
         print("Chrome or Chromium is necessary for this command, but it was not found. Set the variable CHROME to its path.", file=sys.stderr)
@@ -802,18 +835,18 @@ def cmd_texts(slug):
 
 
 def print_length(src):
-    """Print the number of English words from the title to the section "Terms", so that the length rule can be checked.
-    Captions, tables and code count. The labels of charts for screen readers do not."""
+    """Print the number of English words from the title to the section "Terms", for the pull request.
+    Captions and tables count. Code and the labels of charts for screen readers do not."""
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
-        print_plain_text(src)
+        print_plain_text(re.sub(r"<pre\b[^>]*>.*?</pre>", " ", src, flags=re.S | re.I))
     words = 0
     for line in out.getvalue().split("\n"):
         if re.match(r"## \d+ (Terms|How sure is this\?|Sources)$", line):
             break
         if not line.startswith("(label for screen readers)"):
             words += len(line.split())
-    print('\n%s words from the title to the section "Terms". The aim is 1,500 to 3,000 (writing.md, "Page structure").' % f"{words:,}")
+    print('\n%s words from the title to the section "Terms", without code. A rough guide is 1,500 to 3,000. It is no limit (writing.md, "Page structure").' % f"{words:,}")
     return 0
 
 
@@ -923,7 +956,7 @@ def main(argv):
     if cmd == "new" and len(argv) == 3:
         return cmd_new(argv[2])
     if cmd == "shots":
-        return cmd_shots(argv[2] if len(argv) > 2 else None, argv[3] if len(argv) > 3 else None)
+        return cmd_shots(argv[2] if len(argv) > 2 else None, argv[3:])
     if cmd == "texts" and len(argv) == 3:
         return cmd_texts(argv[2])
     if cmd == "terms" and len(argv) == 3:

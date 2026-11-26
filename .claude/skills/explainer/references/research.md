@@ -29,6 +29,7 @@ Use the highest level that you can read.
 - Look for a newer version: a new edition of the standard, a newer data release, a correction, a retraction, a follow-up study, the documentation of a newer release. Put the current year into the query.
 - Software: read the documentation and the release notes of the current release, and name the version on the page. A "latest" link drifts, so link the specific version when the page describes its behaviour.
 - A preprint is not a reviewed paper. Say which one the source is.
+- For a paper, list what cites it: `curl -s 'https://api.semanticscholar.org/graph/v1/paper/arXiv:<id>/citations?fields=title,publicationDate,externalIds&limit=200'`. Later papers of the same authors show the current state. `https://api.crossref.org/works/<doi>` gives the venue, the date and the pages for a DOI. Pages of the ACM refuse `curl` with 403, also when the link is correct.
 - If the newest source is old, the page says how old.
 - Every number that can change carries its date on the page.
 
@@ -39,6 +40,7 @@ Use the highest level that you can read.
 - If you saw only a snippet or an abstract (paywall), record that in the fact list and show it in the source entry on the page.
 - Read each number in context: unit, year, region, and what exactly was counted.
 - Numbers from two sources may be combined only when they measure the same thing. A combined number is an inference.
+- A benchmark of a library measures the library, not the algorithm of the paper behind it. Before you explain one of its numbers, read what the library adds, in its README and in the code of the measured path. In one session a fast lookup came from a filter that the library had added.
 - Link the exact page, not the home page of a site. Open every link once more before the hand-over, also the links in the text and in the glossary: `curl -sIL -o /dev/null -w '%{http_code} %{url_effective}\n' <url>` shows the status and where a redirect ends.
 
 ## Contested topics

@@ -14,7 +14,7 @@ Load it for these tasks. It holds the workflow, the source rules and the quality
 ```
 python3 tools/learn.py check            # validate all pages; the pass/fail gate, also in CI
 python3 tools/learn.py shots [slug]     # build, then screenshots into _shots/ (needs Chrome)
-python3 tools/learn.py shots slug "id:value"   # more screenshots, with a slider at this value or button number
+python3 tools/learn.py shots slug "id:value" "id:value"   # more screenshots, one set for each position of a slider or button number
 python3 tools/learn.py try slug         # use every slider and button once, report script errors (needs Chrome)
 python3 tools/learn.py texts slug       # page text as plain lines, and its word count
 python3 tools/learn.py terms slug       # each abbreviation and symbol with the sentence of its first use
