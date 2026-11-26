@@ -32,7 +32,7 @@
 .cm-panel:focus{outline:none}
 @media (min-width:900px){
   /* as wide as the space right of the text column allows, but at least 20rem */
-  .cm-panel{left:auto;top:4.2rem;bottom:5rem;right:1rem;width:clamp(20rem,calc(50vw - 24.2rem),26rem);max-height:none;border:1px solid var(--rule);border-radius:14px}
+  .cm-panel{left:auto;top:calc(4.2*var(--u));bottom:5rem;right:1rem;width:clamp(calc(20*var(--u)),calc(50vw - 24.2*var(--u)),calc(26*var(--u)));max-height:none;border:1px solid var(--rule);border-radius:14px}
 }
 .cm-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.7rem .6rem .5rem 1.1rem;border-bottom:1px solid var(--rule)}
 .cm-head h2{font:600 1rem/1.3 var(--font-body)}

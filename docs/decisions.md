@@ -33,6 +33,7 @@ This file lists decisions about the site and the reason for each. Read it before
 - **The home page is not in git.** The build writes it. Reason: two branches with two new explainers do not conflict.
 - **German text, where a page has it, is a dictionary with keys, not a second copy of the HTML.** The check compares the keys. Reason: a missing translation is an error that a program can find.
 - **Chrome is an optional tool** for preview pictures (`share.png`), for review pictures (`shots`) and for the test of the controls (`try`). Reason: Python alone cannot draw a web page. GitHub has Chrome, so the live site always gets preview pictures.
+- **The reader can change the text size with two buttons in the site bar.** There are six steps from 87.5% to 150%, and the browser keeps the selection (`localStorage`), like the colour mode. The text and the space around it grow. The width of the text column, the site bar and the charts keep their size. Reason: the reader can fit the text to the screen and to the eyes. The zoom of the browser changes the layout and the charts too, and it does not hold for one site only on every device. The site bar keeps its size so that it always fits a phone. The text inside a chart keeps its size, because each chart is drawn for sizes in px.
 - **Addresses:** a page is `/<date>-<slug>/`. The folder name never changes after publication. `#de` and `#en` set the language. `#s03` opens a section. A link cannot have the two at the same time.
 
 ## Comments from the reader

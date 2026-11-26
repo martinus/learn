@@ -10,6 +10,7 @@
      Learn.frame, Learn.label, Learn.press                                  helpers for a chart without Learn.plot
    Review mode, for pictures of a page (tools/learn.py shots uses it). Add to the address:
      ?theme=dark   ?lang=de   ?only=s03 (show one section; "top" is the page header)   ?review=1
+     ?font=1.25 (text size: one of the values in FONT)
      ?set=id:value,id:value (move controls: a value for a slider or a select, the number of the button for a group)
    These settings apply to one page view. The page does not store them.
    Term tips: <a class="term" href="#t-x"> shows the glossary entry with id t-x in a small box (see initTips).
@@ -33,6 +34,18 @@ var savedTheme=store.get('learn-theme');
 if(Q.theme==='light'||Q.theme==='dark')root.setAttribute('data-theme',Q.theme);
 else if(savedTheme==='light'||savedTheme==='dark')root.setAttribute('data-theme',savedTheme);
 function curTheme(){var a=root.getAttribute('data-theme');if(a==='dark'||a==='light')return a;return window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+
+/* ---- text size: set as early as possible ----
+   The buttons [data-font-step] in the site bar move one step in FONT. The value goes into --fs, and theme.css
+   scales every size in rem with it. Pictures for review ignore the stored value, so that they are always alike. */
+var FONT=[0.875,1,1.125,1.25,1.375,1.5];
+function fontIndex(v){var i=FONT.indexOf(+v);return i<0?1:i;}
+var fontAt=fontIndex(Q.font||(Q.review||Q.only?1:store.get('learn-font')));
+function showFont(){
+  if(fontAt===1)root.style.removeProperty('--fs');else root.style.setProperty('--fs',FONT[fontAt]);
+  [].forEach.call(document.querySelectorAll('[data-font-step]'),function(b){var n=fontAt+(+b.getAttribute('data-font-step'));b.disabled=n<0||n>=FONT.length;});
+}
+showFont();
 
 /* ---- language: set as early as possible ---- */
 var langs=(root.getAttribute('data-langs')||'en').split(/\s+/);
@@ -252,6 +265,11 @@ function start(){
   [].forEach.call(document.querySelectorAll('[data-lang-switch]'),function(g){g.hidden=langs.length<2;});
   [].forEach.call(document.querySelectorAll('[data-set-lang]'),function(b){b.addEventListener('click',function(){applyLang(b.getAttribute('data-set-lang'),true);});});
   [].forEach.call(document.querySelectorAll('[data-set-theme]'),function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-set-theme');root.setAttribute('data-theme',t);store.set('learn-theme',t);showTheme();});});
+  [].forEach.call(document.querySelectorAll('[data-font-step]'),function(b){b.addEventListener('click',function(){
+    fontAt=Math.max(0,Math.min(FONT.length-1,fontAt+(+b.getAttribute('data-font-step'))));
+    store.set('learn-font',String(FONT[fontAt]));tipHide();showFont();fire();
+  });});
+  showFont();
   if(window.MutationObserver)new MutationObserver(showTheme).observe(root,{attributes:true,attributeFilter:['data-theme']});
   if(window.matchMedia){var mq=window.matchMedia('(prefers-color-scheme: dark)');if(mq.addEventListener)mq.addEventListener('change',showTheme);}
   showTheme();
