@@ -203,6 +203,13 @@ class Explainer:
             if re.search(r"font-mono|monospace", style):
                 self.err('the <style> of the page uses a fixed-width font. It is for code only: '
                          'use <pre class="code"> for a block and class="mono" for a code word, and the text font for all other text')
+            # The buttons for the text size scale rem and em. A size in px stays as it is. Text in an SVG chart may
+            # have one, because a chart is drawn for sizes in px. Such a rule has "fill".
+            for rule in re.findall(r"[^{}]+\{[^{}]*\}", re.sub(r"/\*.*?\*/", "", style, flags=re.S)):
+                if re.search(r"font(-size)?\s*:[^;}]*\d(px|pt)\b", rule) and "fill" not in rule:
+                    self.err('the <style> of the page gives text a size in px: %s. Use rem or em, so that the buttons for '
+                             'the text size change it. Only text in an SVG chart (a rule with "fill") has a size in px'
+                             % " ".join(rule.split())[:70])
         # <sup> lifts its line, and a line can break between it and a unit. A formula in MathML does neither.
         if re.search(r"<su[pb]\b", src):
             self.err('the page uses <sup> or <sub>. Write a power or an index as a formula, for example '

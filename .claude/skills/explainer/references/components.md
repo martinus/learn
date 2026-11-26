@@ -33,6 +33,7 @@ The build replaces the four `learn:` markers. The viewport tag, font links, site
 ## What the build adds
 
 - **Section ids and anchors.** Write each section exactly as `<section>` followed by `<span class="num">01</span>` and one `<h2>`. The build turns this into `<section id="s01">` and makes the number a link. Write no ids yourself. Every section has its own number.
+- **Text size.** The buttons "A−" and "A+" in the site bar set `--fs` on `<html>`, from 0.875 to 1.5, and every size in `rem` or `em` follows. So give HTML text and its spacing a size in `rem` or `em`. `check` rejects a text size in px in the `<style>` of a page, except for text in an SVG chart (a rule with `fill`), which keeps its size. For a width or a position that must not grow with the text, use `calc(N*var(--u))`: `--u` is one rem at the normal size.
 - **Section navigation.** With three or more sections, the current section shows under the site bar, and on a wide screen all sections show in the left margin. The text is the `<h2>`, so keep headings short.
 - **Wide figures.** On a desktop, a `<figure>` that is a direct child of a section is 10 rem wider than the text.
 - **"Read next"** cards for up to three other pages.
@@ -329,6 +330,7 @@ URL settings for screenshots. They apply to one page view and are not stored. Co
 | `?lang=de` or `?lang=en` | language, on a page with German text |
 | `?only=s03` | show only section 03. `?only=top` shows only the page header |
 | `?review=1` | the page writes its content height into `data-review-height` on `<html>` |
+| `?font=1.5` | text size: 0.875, 1, 1.125, 1.25, 1.375 or 1.5. Pictures for review ignore the size that the browser stored |
 | `?set=year:1950,orbitals:4` | move controls before the picture: the id of a slider or a select with its value, or the id of a button group with the number of the button, counted from 0 |
 
 ## Comments
