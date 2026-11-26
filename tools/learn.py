@@ -586,6 +586,30 @@ def cmd_serve(port):
 
 
 SHOTS = ROOT / "_shots"
+
+
+def report_changed_pictures(before, targets):
+    """before: {name: (size, hash)} of the pictures of the last run. Print which of the new pictures differ.
+    For a change of the theme: run "shots" on main, then on the branch. A picture with another size has a part that
+    moved. A picture with the same size and other content has a part that looks different."""
+    both = [t for t in targets if str(t.relative_to(SHOTS)) in before]
+    if not both:
+        return
+    resized, repainted = [], []
+    for t in both:
+        size, digest = before[str(t.relative_to(SHOTS))]
+        if png_size(t) != size:
+            resized.append("%s: %s, was %s" % (t.relative_to(SHOTS), "x".join(map(str, png_size(t))), "x".join(map(str, size))))
+        elif hashlib.sha256(t.read_bytes()).hexdigest() != digest:
+            repainted.append(str(t.relative_to(SHOTS)))
+    print("Compared with the last run: %d of %d picture(s) have another size, %d more have other content, %d are the same."
+          % (len(resized), len(both), len(repainted), len(both) - len(resized) - len(repainted)))
+    for line in resized:
+        print("  other size     " + line)
+    for name in repainted[:40]:
+        print("  other content  " + name)
+    if len(repainted) > 40:
+        print("  ... and %d more with other content" % (len(repainted) - 40))
 VARIANTS = ((390, "light", "en"), (390, "dark", "de"), (1440, "light", "en"))
 
 
@@ -641,7 +665,11 @@ def cmd_shots(slug, settings=()):
     if slug and not items:
         print("No explainer with the name %s." % slug, file=sys.stderr)
         return 1
+    # Remember the pictures of the last run, to say afterwards which ones are different now.
+    before = {}
     if SHOTS.exists() and not settings:
+        for old in SHOTS.rglob("*.png"):
+            before[str(old.relative_to(SHOTS))] = (png_size(old), hashlib.sha256(old.read_bytes()).hexdigest())
         shutil.rmtree(SHOTS)
     jobs = []
     for it in items:
@@ -679,6 +707,7 @@ def cmd_shots(slug, settings=()):
     for f in failed:
         print("ERROR  no picture: " + f, file=sys.stderr)
     print("Wrote %d picture(s) into %s/. One file for each section: width, colour mode, language, section." % (len(jobs) - len(failed), SHOTS.relative_to(ROOT)))
+    report_changed_pictures(before, [job[3] for job, ok in zip(jobs, done) if ok])
     for n, setting in enumerate(settings, 1):
         print("The pictures that end with -set%d show the controls at: %s" % (n, setting))
     if not settings:

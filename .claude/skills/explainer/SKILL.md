@@ -163,7 +163,7 @@ The reader writes comments on a live page (footer button "Comment on this page")
 
 ## Change the theme or the tool
 
-- `site/assets/theme.css` and `theme.js` affect every page. Run `python3 tools/learn.py shots` (no slug) and look at all pages. This run takes a few minutes, so start it in the background. Also run `try` for one page: a script error in `theme.js` stops every page, and only the browser console shows it.
+- `site/assets/theme.css` and `theme.js` affect every page. Run `python3 tools/learn.py shots` (no slug) on `main` first and then with your change. The second run lists the pictures that have another size, where a part moved, and those that have other content. Look at each picture in the list, or at a sample of each kind if the list is the same for all pages. A list that is longer than your change explains is a fault. Each run takes a few minutes, so start it in the background. Also run `try` for one page: a script error in `theme.js` stops every page, and only the browser console shows it.
 - A new part goes into the theme only when a second page needs it. Until then it lives in the `<style>` of its page.
 - Document every shared part in `references/components.md`.
 - Keep the names of the colour variables, because pages use them.
