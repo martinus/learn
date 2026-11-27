@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How do magnets work?</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "How do magnets work?"},
+ "summary": {"en": "Every electron is a tiny magnet. In most materials the electrons cancel. In iron and a few others, the electric repulsion between electrons and a rule of quantum mechanics align them. This page follows the chain from one electron to a neodymium magnet, with six interactive graphics: the field, the atoms, the aligning force, the Curie point, the memory of a magnet and its limit."},
+ "published": "2026-11-27",
+ "updated": "2026-11-27",
+ "languages": ["en"],
+ "tags": ["science"],
+ "model": "Claude Fable 5.2"
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+.fig-seg{flex-wrap:wrap;border-radius:14px;align-self:flex-start}
+.fig-seg button{padding:.62rem .8rem;font-size:.86rem}
+.t-ink{fill:var(--ink);font:600 13px var(--font-body)}
+.d-ink{fill:var(--ink)}
+.val{fill:var(--ink);font:500 11px var(--font-body)}
+.cat{fill:var(--ink);font:500 12px var(--font-body)}
+.cat2{fill:var(--muted);font:11px var(--font-body)}
+/* figure 1: field lines */
+.fl{fill:none;stroke:var(--c1);stroke-width:1.3}
+.fl-h{fill:var(--c1)}
+.mg{fill:var(--tint);stroke:var(--ink);stroke-width:1.2}
+.rim{stroke:var(--c3);stroke-width:4;stroke-linecap:round}
+.halo{paint-order:stroke;stroke:var(--surface);stroke-width:4;stroke-linejoin:round}
+/* figure 2: orbitals */
+.ob{fill:var(--surface);stroke:var(--muted);stroke-width:1.2}
+.sp-u{fill:none;stroke:var(--c3);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sp-p{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.bar-c1{fill:var(--c1)}
+.bar-c3{fill:var(--c3)}
+.el{fill:var(--ink);font:500 12px var(--font-body)}
+.el.on{font-weight:700}
+.fm{fill:var(--ink)}
+/* figure 3: two electrons */
+.hm{fill:var(--c1)}
+.pf{fill:none;stroke:var(--muted);stroke-width:1}
+.dg{stroke:var(--c3);stroke-width:1.4;stroke-dasharray:4 3}
+/* figure 4: spins on a grid */
+.duo{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start}
+.duo .lat{flex:0 0 auto;width:min(100%,calc(20*var(--u)));height:auto;aspect-ratio:1;display:block;shape-rendering:crispEdges}
+.duo .chart{flex:1 1 16rem;width:auto;min-width:0}
+.up{fill:var(--c1)}
+.dn{fill:var(--tint)}
+.ring{fill:none;stroke:var(--c3);stroke-width:2.5}
+/* figure 5: grains */
+.gr{fill:var(--surface);stroke:var(--rule);stroke-width:1}
+.ea{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 2}
+.ar{fill:none;stroke:var(--c1);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ar.rv{stroke:var(--c3)}
+.hf{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* figure 6: scale */
+.gl{stroke:var(--rule);stroke-width:1}
+.mk-p{fill:var(--c3)}
+.mk-e{fill:var(--c1)}
+.mk-n{fill:var(--ink)}
+.rg{stroke:var(--c1);stroke-width:4;stroke-linecap:round}
+/* legend marks */
+.k{width:11px;height:11px;display:inline-block;box-sizing:border-box}
+.k.sq{background:var(--c3)}
+.k.ci{background:var(--c1);border-radius:50%}
+.k.di{background:var(--ink);transform:rotate(45deg) scale(.8)}
+.k.ku{background:var(--c1)}
+.k.kd{background:var(--tint);border:1px solid var(--muted)}
+.k.kf{background:var(--ink);width:8px;height:8px}
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow">Physics &middot; status of 27 November 2026</span>
+  <h1>How do magnets work?</h1>
+  <!-- learn:byline -->
+  <p class="lead">A magnet pulls on iron without touching it and without a power supply. The source is the electron. Each electron is a tiny magnet of fixed strength, through a property called <a class="term" href="#t-spin">spin</a>. In most materials the electrons cancel each other. In iron and a few other materials, a quantum effect of the electric force aligns them, and their sum is a <a class="term" href="#t-field">magnetic field</a> that a hand can feel. This page follows the chain from one electron to the neodymium magnet in a motor, and it says how each step is known.</p>
+  <div class="short">
+    <div><h3>The source</h3><span>Every electron is a magnet of the same fixed strength. A permanent magnet is a material that keeps a large share of its electrons pointing the same way.</span></div>
+    <div><h3>The glue</h3><span>Magnetic forces between atoms are about 2,600 times too weak to keep iron ordered up to its limit of 770&nbsp;&deg;C, as computed on this page. The order comes from the electric repulsion between electrons and a rule of quantum mechanics.</span></div>
+    <div><h3>The limit</h3><span>The unit of field strength is the tesla. Iron with all its electron magnets aligned gives 2.2 tesla, as computed on this page. The strongest common magnets contain the metal neodymium and reach 1.45 tesla, about 29,000 times the field of the Earth in Vienna.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2>A magnet is a current around its rim</h2>
+  <p>Every <a class="term" href="#t-field">magnetic field</a> has one of two sources: an electric current, or the built-in <a class="term" href="#t-moment">magnetic moment</a> of a particle such as the electron. Section 02 covers the second source. The first is older knowledge. In 1820, Hans Christian &Oslash;rsted saw a compass needle turn next to a wire that carried a current. Andr&eacute;-Marie Amp&egrave;re concluded that a magnet contains many small circular currents.</p>
+  <p>Amp&egrave;re&rsquo;s picture gives the right field. Think of a magnet as a stack of small current loops that all turn the same way. Inside, the currents of neighbouring loops run in opposite directions and cancel. At the surface nothing cancels them, so one current remains, and it runs around the rim of the magnet. Outside, a cylinder magnet has the field of a coil of the same shape. The strength of the rim current follows from the <a class="term" href="#t-magnetisation">magnetisation</a> <math><mi>M</mi></math>, the magnetic moment per volume:</p>
+  <div class="formula"><math display="block"><mi data-term="t-magnetisation" tabindex="0">M</mi><mo>=</mo><mfrac><msub><mi data-term="t-br" tabindex="0">B</mi><mi>r</mi></msub><msub><mi data-term="t-mu0" tabindex="0">&mu;</mi><mn>0</mn></msub></mfrac></math></div>
+  <p><math><msub><mi>B</mi><mi>r</mi></msub></math> is the <a class="term" href="#t-br">remanence</a>, the field that the material keeps without any outside field. <math><msub><mi>&mu;</mi><mn>0</mn></msub></math> is the <a class="term" href="#t-mu0">magnetic constant</a>. The unit of <math><mi>M</mi></math> is ampere per metre: it is the rim current for each metre of magnet length. <a class="term" href="#t-ndfeb">N52</a>, a strong grade of neodymium magnet, has <math><msub><mi>B</mi><mi>r</mi></msub><mo>=</mo><mn>1.45</mn></math> <a class="term" href="#t-field">tesla</a> (T), the unit of field strength, in the <a href="https://www.arnoldmagnetics.com/wp-content/uploads/2017/11/N52-151021.pdf">data sheet of Arnold Magnetic Technologies</a>. This page computes 1.15 million ampere per metre from it. A disc of this material that is 10&nbsp;mm high acts like one turn of wire with 11,500&nbsp;A. This current is no flow of electrons through the metal. It is the sum of the electron states of section 02, so it needs no power and makes no heat.</p>
+  <p>On the axis of a cylinder with the length <math><mi>L</mi></math> and the radius <math><mi>R</mi></math>, the field <math><mi>B</mi></math> at the centre of the pole face is:</p>
+  <div class="formula"><math display="block"><mi data-term="t-field" tabindex="0">B</mi><mo>=</mo><mfrac><msub><mi data-term="t-br" tabindex="0">B</mi><mi>r</mi></msub><mn>2</mn></mfrac><mo>&middot;</mo><mfrac><mi>L</mi><msqrt><msup><mi>L</mi><mn>2</mn></msup><mo>+</mo><msup><mi>R</mi><mn>2</mn></msup></msqrt></mfrac></math></div>
+  <p>The formula is the textbook result for the field of the rim current. It has a practical consequence. A thin disc has a weak field at its face, however strong its material is. A long rod approaches <math><msub><mi>B</mi><mi>r</mi></msub><mo>/</mo><mn>2</mn></math> at this point and never passes it. Far away, the field of every magnet falls with the cube of the distance.</p>
+
+  <figure>
+    <div class="fig-title">Field of a neodymium cylinder, 10 mm in diameter</div>
+    <div class="ctl">
+      <label for="lenS"><span>Length of the magnet</span> <output id="lenOut">10 mm</output></label>
+      <input type="range" id="lenS" min="1" max="30" step="1" value="10">
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i><span>field line</span></span>
+      <span><i class="sw c3"></i><span>the rim current that gives the same field</span></span>
+    </div>
+    <svg class="chart" id="cMag" role="img" aria-label="Cross-section of a cylinder magnet with its field lines. The lines leave the north pole at the top, run around the magnet and enter the south pole at the bottom. A short magnet has few lines, a long magnet has many."></svg>
+    <div class="stats">
+      <div><small>At the centre of the pole face</small><b id="rFace">0.65 T</b></div>
+      <div><small>10 mm above the pole face</small><b id="r10">55 mT</b></div>
+      <div><small>50 mm above the pole face</small><b id="r50">1.1 mT</b></div>
+      <div><small>Rim current with the same field</small><b id="rCur">11,500 A</b></div>
+    </div>
+    <figcaption>A disc of 1&nbsp;mm has about a fifth of the face field of the 10&nbsp;mm cylinder, with the same material. The number of lines is proportional to the magnetic flux through the middle of the magnet. The picture is a cut through the axis, and the dot is the point 10&nbsp;mm above the pole face. Computed on this page for a uniform magnetisation with <math><msub><mi>B</mi><mi>r</mi></msub><mo>=</mo><mn>1.45</mn></math>&nbsp;T, the nominal value of the grade N52 (Arnold Magnetic Technologies, data sheet revision of August 2021).</figcaption>
+  </figure>
+
+  <p>With the slider at 10&nbsp;mm, the field is 0.65&nbsp;T at the pole face, 55&nbsp;mT at a distance of 10&nbsp;mm and 1.1&nbsp;mT at 50&nbsp;mm. This is still 22 times the field of the Earth in Vienna. The <a href="https://geomag.bgs.ac.uk/data_service/models_compass/wmm_calc.html">World Magnetic Model</a> gives 49&nbsp;&micro;T there for 27 November 2026.</p>
+  <p class="aside">Why a moving charge makes a magnetic field at all is a result of special relativity. A force that one observer calls magnetic is an electric force for an observer who moves along with the charge. Magnetism and electricity are one force, seen from different frames of reference. This paragraph is textbook physics from the knowledge of the model that wrote this page.</p>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2>The current is the spin of electrons</h2>
+  <p>An electron has a charge, a mass and a third fixed property, the <a class="term" href="#t-spin">spin</a>. Spin behaves like a rotation of fixed size, and it makes the electron a magnet. The <a class="term" href="#t-moment">magnetic moment</a> of the electron is almost exactly one <a class="term" href="#t-mub">Bohr magneton</a>:</p>
+  <div class="formula"><math display="block"><msub><mi data-term="t-mub" tabindex="0">&mu;</mi><mi>B</mi></msub><mo>=</mo><mfrac><mrow><mi data-term="t-mub" tabindex="0">e</mi><mi data-term="t-mub" tabindex="0">&hbar;</mi></mrow><mrow><mn>2</mn><msub><mi data-term="t-mub" tabindex="0">m</mi><mi>e</mi></msub></mrow></mfrac><mo>=</mo><mn>9.274</mn><mo>&times;</mo><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>24</mn></mrow></msup><mspace width="0.3em"></mspace><mtext>J/T</mtext></math></div>
+  <p><math><mi>e</mi></math> is the charge of the electron, <math><mi>&hbar;</mi></math> is the reduced Planck constant and <math><msub><mi>m</mi><mi>e</mi></msub></math> is the mass of the electron. The value is the <a href="https://physics.nist.gov/cgi-bin/cuu/Value?mub">recommended value of 2022</a> from <a class="term" href="#t-codata">CODATA</a>, the international committee for the constants of physics. The unit joule per tesla gives the energy that it costs to turn the moment against a field. In a field of 1&nbsp;T, turning one electron over costs 0.12&nbsp;<a class="term" href="#t-ev">meV</a>, thousandths of an electronvolt. The thermal energy at room temperature is 25&nbsp;meV, about 200 times more. A field of 1&nbsp;T is therefore far too weak to hold single electrons in line against heat. Both numbers are computed on this page.</p>
+  <p>The moment of the electron is among the best-measured numbers in physics. A group at Northwestern University and Harvard held one single electron in a magnetic trap. In 2023 it <a href="https://arxiv.org/abs/2209.13084">reported</a> a moment of 1.001&nbsp;159&nbsp;652&nbsp;180&nbsp;59 Bohr magnetons, with an uncertainty of 0.13 parts in a trillion. The first direct sign was older. In 1922, Otto Stern and Walther Gerlach sent a beam of atoms through a magnetic field. The experiment showed that the magnetic moment of an atom takes only certain fixed values.</p>
+  <p>Classical physics cannot build a magnet from moving charges in a material. Niels Bohr showed this in his thesis of 1911, and J.&nbsp;H. van Leeuwen proved it independently in 1919. If the charges follow classical mechanics and are in thermal equilibrium, their magnetic effects cancel exactly. In his <a href="https://www.nobelprize.org/prizes/physics/1977/vleck/lecture/">Nobel lecture of 1977</a>, John Van Vleck summed up the result: there should be &ldquo;no magnetism at all&rdquo;. A magnet on a refrigerator is therefore a quantum effect at room temperature, at a size that a hand can hold.</p>
+  <p>Most materials are still not magnetic, because their electrons cancel in pairs. The <a class="term" href="#t-pauli">Pauli principle</a> allows two electrons in one <a class="term" href="#t-orbital">orbital</a> only if their spins are opposite, and such a pair has no net moment. The page on <a href="../2026-11-25-inside-the-atom/">what an atom is made of</a> explains orbitals and shells. A filled shell contributes nothing. Only a partly filled shell can leave electrons without a partner. <a class="term" href="#t-hund">Hund&rsquo;s rule</a> of 1925 says how such a shell fills. The electrons first take separate orbitals with parallel spins, and they pair up only when no empty orbital is left. Section 03 gives the reason.</p>
+  <p>The ten elements from scandium to zinc fill the 3d shell, which has five orbitals. The figure shows their free atoms.</p>
+
+  <figure>
+    <div class="fig-title">Unpaired electrons from scandium to zinc</div>
+    <div class="ctl">
+      <label for="elS"><span>Element</span> <output id="elOut">Iron (Fe)</output></label>
+      <input type="range" id="elS" min="0" max="9" step="1" value="5">
+    </div>
+    <div class="legend">
+      <span><i class="sw c3"></i><span>unpaired electron</span></span>
+      <span><i class="sw ink"></i><span>electron in a pair</span></span>
+      <span><i class="k kf"></i><span>ferromagnet as a metal</span></span>
+    </div>
+    <svg class="chart" id="cShell" role="img" aria-label="The orbitals of the 4s and 3d shells of the selected atom, with one arrow for each electron. Below, bars give the number of unpaired electrons of the ten elements from scandium to zinc: 1, 2, 3, 6, 5, 4, 3, 2, 1 and 0. Iron, cobalt and nickel are marked as ferromagnets."></svg>
+    <div class="stats">
+      <div><small>Electrons in 4s and 3d</small><b id="rEl">8</b></div>
+      <div><small>Unpaired electrons</small><b id="rUn">4</b></div>
+      <div><small>Spin moment of the free atom</small><b id="rMo">4 <math><msub><mi>&mu;</mi><mi>B</mi></msub></math></b></div>
+      <div><small>As a metal</small><b id="rMe">ferromagnet</b></div>
+    </div>
+    <figcaption>An arrow is one electron, and its direction is the spin. The free iron atom has four unpaired electrons. Chromium and manganese have more, and they are no ferromagnets. Ground states of the free atoms: Atomic Spectra Database of <a class="term" href="#t-nist">NIST</a>, the standards institute of the United States, read on 27 November 2026. The spin moment counts one Bohr magneton for each unpaired electron.</figcaption>
+  </figure>
+
+  <p>Chromium has six unpaired electrons and manganese has five. Neither metal is a <a class="term" href="#t-ferro">ferromagnet</a>, the kind of material that permanent magnets are made of. In this row, only iron, cobalt and nickel are ferromagnets. Unpaired electrons make each atom a magnet. A piece of metal is a magnet only if its atoms agree on one direction. Where the atomic moments point in random directions, the material is a <a class="term" href="#t-para">paramagnet</a>: a field aligns its moments a little, and the effect ends with the field.</p>
+  <p class="small">The motion of an electron around the nucleus is a current as well, and it adds a second moment. This page follows the spin only, which gives most of the moment in iron. This sentence rests on the knowledge of the model that wrote this page.</p>
+</section>
+
+<section>
+  <span class="num">03</span>
+  <h2>An electric force aligns the spins</h2>
+  <p>The first candidate for the aligning force is the magnetic force between neighbouring atoms. It is far too weak. Two neighbouring atoms in iron are 0.248&nbsp;nm apart, and each carries a moment of about 2.2&nbsp;<math><msub><mi>&mu;</mi><mi>B</mi></msub></math>. The magnetic energy between two such moments is at most 0.034&nbsp;<a class="term" href="#t-ev">meV</a>, as computed on this page with the formula for two <a class="term" href="#t-dipole">dipoles</a>. This is the thermal energy at 0.4&nbsp;K, a temperature just above absolute zero. Iron keeps its magnetic order up to 1,043&nbsp;K, its <a class="term" href="#t-curie">Curie temperature</a>. The force that aligns the spins must be about 2,600 times stronger. Pierre Weiss met this problem in 1907. Van Vleck recounts that the model of Weiss needed an internal field of the order of 1,000 times the magnetisation, far above what classical electrodynamics gives.</p>
+  <p>Werner Heisenberg <a href="https://doi.org/10.1007/BF01328601">found the source in 1928</a>. It is the <strong><a class="term" href="#t-exchange">exchange interaction</a></strong>, and it is electric. Two facts combine. First, electrons repel each other, and the energy of this repulsion is high when they are close. Second, the <a class="term" href="#t-pauli">Pauli principle</a> is a rule for the <a class="term" href="#t-wave">wave function</a> of two electrons: it must change its sign when the two electrons swap. For two electrons with parallel spins, this rule forces the wave function to zero wherever both would be at the same place. Electrons with parallel spins therefore keep apart, and their repulsion energy is lower. Electrons with opposite spins have no such rule and come close. The direction of the spins changes the electric energy, although no magnetic force acts.</p>
+  <p>The figure shows the rule in the simplest case with an exact solution: two electrons in a one-dimensional box, in two different orbitals.</p>
+
+  <figure>
+    <div class="fig-title">Where two electrons in a box are found</div>
+    <div class="seg fig-seg" role="group" aria-label="Select the two orbitals" id="orbSeg">
+      <button type="button" aria-pressed="true">Orbitals 1 and 2</button>
+      <button type="button" aria-pressed="false">1 and 3</button>
+      <button type="button" aria-pressed="false">2 and 3</button>
+    </div>
+    <div class="legend">
+      <span><i class="k ku"></i><span>likely positions of the pair</span></span>
+      <span><i class="sw c3"></i><span>both electrons at the same place</span></span>
+    </div>
+    <svg class="chart" id="cBox" role="img" aria-label="Two square maps. The horizontal axis is the position of the first electron in the box, the vertical axis the position of the second. With parallel spins the map is empty along the diagonal, where both electrons are at the same place. With opposite spins the map is densest on the diagonal."></svg>
+    <div class="stats">
+      <div><small>Parallel: mean distance</small><b id="rPm">0.38</b></div>
+      <div><small>Opposite: mean distance</small><b id="rOm">0.16</b></div>
+      <div><small>Parallel: closer than 0.1</small><b id="rPc">1.6 %</b></div>
+      <div><small>Opposite: closer than 0.1</small><b id="rOc">38.5 %</b></div>
+    </div>
+    <figcaption>Each point of a map is one pair of positions, and a darker point is more likely. On the dashed diagonal, both electrons are at the same place. With parallel spins the diagonal stays empty for every pair of orbitals. Distances are in units of the box width. &ldquo;Opposite&rdquo; is the state in which the two spins add up to zero. Computed on this page from the textbook wave functions of a particle in a box. The model contains no repulsion: it shows where the electrons are, and the repulsion energy follows from that.</figcaption>
+  </figure>
+
+  <p>The energy that parallel spins save is the exchange energy. Its size in iron is of the order of <math><msub><mi data-term="t-kb" tabindex="0">k</mi><mi>B</mi></msub></math> times the Curie temperature, where <math><msub><mi>k</mi><mi>B</mi></msub></math> is the <a class="term" href="#t-kb">Boltzmann constant</a>. This is 90&nbsp;meV, about 2,600 times the magnetic energy above. No source states this number. It is an estimate of this page.</p>
+  <p>Parallel spins also have a price. Electrons that keep apart need wave functions with more curvature, and this means more energy of motion. The material decides which side wins:</p>
+  <ul class="plain">
+    <li><strong><a class="term" href="#t-ferro">Ferromagnet</a>:</strong> parallel wins, and the moments of the atoms add up. Iron, cobalt and nickel are the examples in the row of section 02.</li>
+    <li><strong><a class="term" href="#t-antiferro">Antiferromagnet</a>:</strong> neighbouring moments point in opposite directions, and the piece has no field outside. Louis N&eacute;el described this order in 1932.</li>
+    <li><strong><a class="term" href="#t-ferri">Ferrimagnet</a>:</strong> the opposite moments have unequal sizes, so a net moment remains. N&eacute;el introduced this case later.</li>
+    <li><strong><a class="term" href="#t-alter">Altermagnet</a>:</strong> a class that physicists have studied in the last few years. The neighbouring spins cancel as in an antiferromagnet, and the material still shares properties with a ferromagnet. In June 2026, the <a href="https://www.eurekalert.org/news-releases/1136396">Institut Laue-Langevin</a> in Grenoble reported neutron measurements on manganese telluride that confirm a prediction for this class.</li>
+  </ul>
+  <p>For a metal, this picture is a simplification. In iron, the electrons that carry the moment also move through the crystal. A theory with moments fixed to the atoms (Heisenberg) and a theory with moving electrons (Edmund Stoner, 1936) each explain a part. A <a href="https://arxiv.org/abs/1807.11291">history of the field by Navinder Singh</a> (preprint of 2018) notes that theory alone has not proved the sign of the exchange for any ferromagnetic material. Numerical methods come closer. A <a href="https://arxiv.org/abs/2405.00477">study by Pavizhakumari, Skovhus and Olsen</a> (2025) computes Curie temperatures between 680 and 1,128&nbsp;K for iron, depending on the approximation. The measured value is 1,043&nbsp;K.</p>
+</section>
+
+<section>
+  <span class="num">04</span>
+  <h2>Heat ends the order at the Curie point</h2>
+  <p>The exchange interaction favours order, and heat favours disorder. The standard model for this contest is the <a class="term" href="#t-ising">Ising model</a>. Wilhelm Lenz proposed it in 1920, and his student Ernst Ising solved it for a chain of spins in 1925. Each site <math><mi>i</mi></math> of a grid holds a spin <math><msub><mi>s</mi><mi>i</mi></msub></math> that is +1 or &minus;1. Each pair of neighbours with equal spins lowers the energy <math><mi>E</mi></math> by <math><mi>J</mi></math>, the exchange energy of one pair:</p>
+  <div class="formula"><math display="block"><mi>E</mi><mo>=</mo><mo form="prefix">&minus;</mo><mi data-term="t-exchange" tabindex="0">J</mi><munder><mo>&sum;</mo><mrow><mo stretchy="false">&lang;</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy="false">&rang;</mo></mrow></munder><msub><mi data-term="t-ising" tabindex="0">s</mi><mi>i</mi></msub><msub><mi>s</mi><mi>j</mi></msub></math></div>
+  <p>The sum runs over all pairs of neighbours. At the temperature <math><mi>T</mi></math>, statistical mechanics gives a state with the energy <math><mi>E</mi></math> a probability that is proportional to <math><msup><mi>e</mi><mrow><mo form="prefix">&minus;</mo><mi>E</mi><mo>/</mo><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></msup></math>. The <a class="term" href="#t-metropolis">Metropolis algorithm</a> of <a href="https://doi.org/10.1063/1.1699114">1953</a> draws states with this probability. It visits each spin and flips it if the flip does not raise the energy. It accepts a flip that raises the energy by <math><mi>&Delta;</mi><mi>E</mi></math> with the probability <math><msup><mi>e</mi><mrow><mo form="prefix">&minus;</mo><mi>&Delta;</mi><mi>E</mi><mo>/</mo><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></msup></math>.</p>
+<pre class="code" data-lang="cpp"><code>// C++20. One sweep over an N x N grid.
+// s[i] is +1 or -1. T is k_B * T / J.
+void sweep(std::vector&lt;int&gt;&amp; s, int N,
+           double T, Rng&amp; rng) {
+  // a flip costs dE = 2 * s * (neighbours)
+  const double p4 = std::exp(-4.0 / T);
+  const double p8 = std::exp(-8.0 / T);
+  for (int y = 0; y &lt; N; ++y)
+    for (int x = 0; x &lt; N; ++x) {
+      int up = ((y + N - 1) % N) * N + x;
+      int dn = ((y + 1) % N) * N + x;
+      int lf = y * N + (x + N - 1) % N;
+      int rt = y * N + (x + 1) % N;
+      int i = y * N + x;
+      int dE = 2 * s[i]
+          * (s[up] + s[dn] + s[lf] + s[rt]);
+      // downhill always, uphill by chance
+      if (dE &lt;= 0 ||
+          rng.uniform() &lt; (dE == 4 ? p4 : p8))
+        s[i] = -s[i];
+    }
+}
+</code></pre>
+  <p>For a square grid, Lars Onsager <a href="https://doi.org/10.1103/PhysRev.65.117">solved the model exactly in 1944</a>. Order exists only below a sharp temperature, the <a class="term" href="#t-curie">Curie temperature</a> <math><msub><mi>T</mi><mi>C</mi></msub></math>:</p>
+  <div class="formula"><math display="block"><msub><mi data-term="t-kb" tabindex="0">k</mi><mi>B</mi></msub><msub><mi data-term="t-curie" tabindex="0">T</mi><mi>C</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi data-term="t-exchange" tabindex="0">J</mi></mrow><mrow><mi>ln</mi><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><msqrt><mn>2</mn></msqrt><mo stretchy="false">)</mo></mrow></mfrac><mo>&asymp;</mo><mn>2.269</mn><mspace width="0.2em"></mspace><mi>J</mi></math></div>
+  <p>Below <math><msub><mi>T</mi><mi>C</mi></msub></math>, the average spin of an infinite grid is the eighth root of <math><mn>1</mn><mo>&minus;</mo><mn>1</mn><mo>/</mo><msup><mi>sinh</mi><mn>4</mn></msup><mo stretchy="false">(</mo><mn>2</mn><mi>J</mi><mo>/</mo><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi><mo stretchy="false">)</mo></math>. Chen Ning Yang <a href="https://doi.org/10.1103/PhysRev.85.808">published the proof in 1952</a>. The figure runs the code above on a grid of 64 &times; 64 spins and compares the result with this formula.</p>
+
+  <figure>
+    <div class="fig-title">Spins on a grid, below and above the Curie temperature</div>
+    <div class="ctl">
+      <label for="tS"><span>Temperature</span> <output id="tOut">0.88 <math><msub><mi>T</mi><mi>C</mi></msub></math></output></label>
+      <input type="range" id="tS" min="0.4" max="1.8" step="0.02" value="0.88">
+    </div>
+    <div class="legend">
+      <span><i class="k ku"></i><span>spin up</span></span>
+      <span><i class="k kd"></i><span>spin down</span></span>
+      <span><i class="sw c2"></i><span>exact, infinite grid</span></span>
+      <span><i class="sw c3"></i><span>simulated, 64 &times; 64</span></span>
+    </div>
+    <div class="duo">
+      <svg class="lat" id="cLat" viewBox="0 0 64 64" role="img" aria-label="A grid of 64 by 64 spins after the simulation. Below the Curie temperature nearly all spins point up, with small islands of opposite spins. Above it, up and down are mixed in patches of all sizes."></svg>
+      <svg class="chart" id="cMT" role="img" aria-label="Average spin against temperature. The exact curve stays near 1 at low temperature and falls steeply to 0 at the Curie temperature. A point marks the simulated value for the selected temperature."></svg>
+    </div>
+    <div class="stats">
+      <div><small>Temperature, <math><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi><mo>/</mo><mi>J</mi></math></small><b id="rT">2.00</b></div>
+      <div><small>Average spin, simulated</small><b id="rSim">0.91</b></div>
+      <div><small>Average spin, exact</small><b id="rEx">0.91</b></div>
+      <div><small>Spins against the majority</small><b id="rMin">3.6 %</b></div>
+    </div>
+    <figcaption>The order does not fade evenly. It holds up to about 90&nbsp;% of the Curie temperature and collapses within the last tenth. Each position of the slider starts with all spins up, runs 300 sweeps to settle and averages over 150 more. The random numbers are the same each time, so a position always gives the same picture. Points of earlier positions stay in the chart. Computed on this page.</figcaption>
+  </figure>
+
+  <p>The simulation follows the exact curve at low temperature. Near <math><msub><mi>T</mi><mi>C</mi></msub></math> it lies above the curve, because a grid of 4,096 spins keeps a majority by chance where an infinite grid has none. Above <math><msub><mi>T</mi><mi>C</mi></msub></math>, a ferromagnet is a <a class="term" href="#t-para">paramagnet</a>.</p>
+  <p>The table in the study of Pavizhakumari and others lists the measured Curie temperatures of the three metals: 1,043&nbsp;K (770&nbsp;&deg;C) for iron, 1,388&nbsp;K (1,115&nbsp;&deg;C) for cobalt and 627&nbsp;K (354&nbsp;&deg;C) for nickel. <a class="term" href="#t-ndfeb">Nd&#8322;Fe&#8321;&#8324;B</a>, the compound in neodymium magnets, has only 586&nbsp;K (313&nbsp;&deg;C), measured on single crystals by <a href="https://arxiv.org/abs/1508.07792">Susner and others</a> (preprint of 2015).</p>
+  <p class="aside">The model is a toy. Its spins point only up or down, and its grid is flat. Real spins point in any direction, and real magnets have three dimensions. The sharp transition is common to all of them.</p>
+</section>
+
+<section>
+  <span class="num">05</span>
+  <h2>Why a nail is no magnet</h2>
+  <p>At room temperature, iron is far below its Curie temperature, so its spins are aligned. A nail still attracts nothing. The alignment holds only inside small regions, the <a class="term" href="#t-domain">domains</a>, and the domains point in different directions. Felix Bloch described the boundaries between domains in 1932. Lev Landau and Evgeny Lifshitz explained the pattern of the domains in 1935.</p>
+  <p>Domains save energy. A piece that is magnetised in one direction fills the space around it with a field, and this field holds energy. If the piece splits into domains with opposite directions, the field lines close inside the material and the outside field nearly vanishes. Each boundary, a <a class="term" href="#t-domain">domain wall</a>, costs energy, because the spins inside the wall are not parallel to their neighbours. The material settles in the pattern with the lowest total energy.</p>
+  <p>An outside field moves the walls. The domains that point along the field grow, and the nail is a magnet as long as the field lasts. This is how a magnet attracts iron: it magnetises the iron and then pulls it towards the stronger field. In pure iron the walls move easily in both directions, so the nail loses its magnetisation when the magnet is gone. This paragraph and the one before it are textbook physics from the knowledge of the model.</p>
+  <p>A permanent magnet must stop its walls from forming and moving. Its material needs a strong <a class="term" href="#t-anisotropy">magnetic anisotropy</a>: the crystal has one direction, the easy axis, along which the magnetisation prefers to lie. Turning the magnetisation away from the axis costs the energy <math><mi>K</mi></math> for each unit of volume. <a class="term" href="#t-ndfeb">Nd&#8322;Fe&#8321;&#8324;B</a> has <math><mi>K</mi><mo>=</mo><mn>4.9</mn></math>&nbsp;MJ/m&sup3;. Its <a class="term" href="#t-ms">saturation magnetisation</a> <math><msub><mi>M</mi><mi>s</mi></msub></math>, the magnetisation with all moments aligned, corresponds to a field of 1.61&nbsp;T. Both values are from a <a href="https://arxiv.org/abs/1903.11922">review by Fischbacher and others</a> (2018), from a group at the Danube University Krems in Lower Austria. The second need is the structure. A <a class="term" href="#t-sinter">sintered</a> magnet consists of many small crystal grains. The review names small grains and thin non-magnetic layers between them as essential for a magnet that resists reversal.</p>
+  <p>The simplest model of one grain is from <a href="https://doi.org/10.1098/rsta.1948.0007">Edmund Stoner and Erich Wohlfarth</a> (1948). The grain is a single domain. An outside field <math><mi>H</mi></math> against its magnetisation tries to turn it. Like the magnetisation, <math><mi>H</mi></math> is counted in ampere per metre, and multiplied by <math><msub><mi>&mu;</mi><mn>0</mn></msub></math> it is a value in tesla. The magnetisation flips when the field passes a threshold, and it does not flip back when the field is gone. The scale of the threshold is the <a class="term" href="#t-hk">anisotropy field</a>:</p>
+  <div class="formula"><math display="block"><msub><mi data-term="t-hk" tabindex="0">H</mi><mi>K</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi data-term="t-anisotropy" tabindex="0">K</mi></mrow><mrow><msub><mi data-term="t-mu0" tabindex="0">&mu;</mi><mn>0</mn></msub><msub><mi data-term="t-ms" tabindex="0">M</mi><mi>s</mi></msub></mrow></mfrac></math></div>
+  <p>For Nd&#8322;Fe&#8321;&#8324;B this is 7.65&nbsp;T, as computed on this page from the two values above. The figure applies a field to 11 such grains. Their easy axes lie between 2.5 and 27.5 degrees away from the direction of the field.</p>
+
+  <figure>
+    <div class="fig-title">Eleven grains in a field: the loop is the memory</div>
+    <div class="ctl">
+      <label for="hS"><span>Applied field</span> <output id="hOut">0.00 <math><msub><mi>H</mi><mi>K</mi></msub></math></output></label>
+      <input type="range" id="hS" min="-1.3" max="1.3" step="0.02" value="0">
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i><span>grain, as magnetised at the start</span></span>
+      <span><i class="sw c3"></i><span>grain that has flipped</span></span>
+      <span><i class="sw ink"></i><span>applied field</span></span>
+    </div>
+    <svg class="chart" id="cGr" role="img" aria-label="Eleven grains in a row, each with an arrow for the direction of its magnetisation and a dashed line for its easy axis. An arrow below shows the direction and strength of the applied field."></svg>
+    <svg class="chart" id="cHy" role="img" aria-label="Magnetisation of the eleven grains against the applied field. The curve is a loop. Coming from a strong positive field, the magnetisation stays near plus 1 until the field reaches about minus 0.5 of the anisotropy field, then falls in steps to minus 1. On the way back it stays near minus 1 until about plus 0.5."></svg>
+    <div class="stats">
+      <div><small>Applied field, in <math><msub><mi>H</mi><mi>K</mi></msub></math></small><b id="rH">0.00</b></div>
+      <div><small>The same for Nd&#8322;Fe&#8321;&#8324;B</small><b id="rHT">0.00 T</b></div>
+      <div><small>Magnetisation, in <math><msub><mi>M</mi><mi>s</mi></msub></math></small><b id="rM">0.96</b></div>
+      <div><small>Grains flipped</small><b id="rRev">0 of 11</b></div>
+    </div>
+    <figcaption>Move the slider to the left end and back to the middle. The grains stay flipped, and the magnetisation is now &minus;0.96. At zero field the magnet has two stable states, and its history decides between them. Computed on this page with the model of Stoner and Wohlfarth. The chart draws the full loop, and the ring is the present state.</figcaption>
+  </figure>
+
+  <p>The loop is called <a class="term" href="#t-hysteresis">hysteresis</a>, and it is the memory of a magnet. The field that brings the magnetisation to zero is the <a class="term" href="#t-coercivity">coercivity</a>. In this model it is 0.62&nbsp;<math><msub><mi>H</mi><mi>K</mi></msub></math>.</p>
+  <p>Real magnets stay far below the model. The data sheet of N52 gives a coercivity of at least 875&nbsp;kA/m. Multiplied by <math><msub><mi>&mu;</mi><mn>0</mn></msub></math>, this is 1.1&nbsp;T, or 14&nbsp;% of the anisotropy field, as computed on this page. Fischbacher and others write that the highest possible coercivity is never reached in experiments, and that this gap has the name Brown&rsquo;s paradox. In their simulations, defects and misaligned grains lower it. Heat lowers it further. The data sheet gives a loss of 0.62&nbsp;% of the coercivity for each degree, measured between 20 and 60&nbsp;&deg;C. Magnets for motors therefore replace a part of the neodymium by <a class="term" href="#t-rare">dysprosium</a>. With about 10 weight percent of it, a magnet keeps a coercivity above 1&nbsp;T at 450&nbsp;K (177&nbsp;&deg;C), according to the same review.</p>
+</section>
+
+<section>
+  <span class="num">06</span>
+  <h2>How strong a magnet can get</h2>
+  <p>The field of a permanent magnet has a ceiling: the number of unpaired electrons in a volume. Iron has <span class="nw">8.49 &times; <math><msup><mn>10</mn><mn>28</mn></msup></math></span> atoms in a cubic metre, as computed on this page from its density and its atomic mass. The study of Pavizhakumari and others computes a spin of 1.10&nbsp;<math><mi>&hbar;</mi></math> for each atom, which is a moment of 2.2&nbsp;<math><msub><mi>&mu;</mi><mi>B</mi></msub></math>. With all moments aligned, the <a class="term" href="#t-magnetisation">magnetisation</a> is 1.73 million ampere per metre. Multiplied by <math><msub><mi data-term="t-mu0" tabindex="0">&mu;</mi><mn>0</mn></msub></math>, this is 2.2&nbsp;T. Iron cannot give more. Nd&#8322;Fe&#8321;&#8324;B reaches 1.61&nbsp;T, and the grade N52 keeps 1.45&nbsp;T of it as <a class="term" href="#t-br">remanence</a>.</p>
+  <p>Stronger fields need a current in a coil. A copper coil turns its electric power into heat, so strong magnets use <a class="term" href="#t-super">superconductors</a>. A typical <a class="term" href="#t-mri">MRI scanner</a> of a hospital works at 1.5 to 3&nbsp;T, according to <a href="https://nationalmaglab.org/news-events/news/national-maglab-racks-up-another-record/">MagLab</a>, the National High Magnetic Field Laboratory of the United States. The bending magnets of the <a class="term" href="#t-lhc">LHC</a>, the particle accelerator of <a href="https://home.cern/science/engineering/pulling-together-superconducting-electromagnets">CERN</a> near Geneva, make 8.3&nbsp;T with a current of 11,080&nbsp;A. In January 2026, the <a href="https://english.casad.cas.cn/newsroom/ma/202601/t20260129_1147591.html">Chinese Academy of Sciences</a> reported 35.6&nbsp;T for a magnet in Beijing that consists only of superconductors. The strongest continuous fields come from hybrid magnets, a coil of normal metal inside a superconducting coil. A hybrid magnet in Hefei in China <a href="https://english.hf.cas.cn/nr/headline/202208/t20220812_311419.html">reached 45.22&nbsp;T</a> in August 2022. MagLab had held the record with 45&nbsp;T since 1999. Pulsed magnets go higher for a short time. The <a href="https://nationalmaglab.org/about-the-maglab/facts-figures/world-records/">list of records of MagLab</a> gives 100.75&nbsp;T for one of its pulsed magnets.</p>
+
+  <figure>
+    <div class="fig-title">Field strengths, from the Earth to the record</div>
+    <div class="legend">
+      <span><i class="k di"></i><span>nature</span></span>
+      <span><i class="k sq"></i><span>permanent magnet</span></span>
+      <span><i class="k ci"></i><span>electromagnet</span></span>
+    </div>
+    <svg class="chart" id="cScale" role="img" aria-label="Ten field strengths on a logarithmic scale from 10 microtesla to 1000 tesla: the Earth in Vienna 49 microtesla, a strong refrigerator magnet 10 millitesla, the pole face of the neodymium cylinder 0.65 tesla, the remanence of N52 1.45 tesla, the ceiling of iron 2.2 tesla, a typical MRI scanner 1.5 to 3 tesla, the bending magnets of the LHC 8.3 tesla, a superconducting magnet 35.6 tesla, a hybrid magnet 45.22 tesla and a pulsed magnet 100.75 tesla."></svg>
+    <figcaption>The scale is logarithmic: each step is a factor of 100. Permanent magnets end near 2&nbsp;T, and the strongest continuous field is about 20 times higher. Sources: World Magnetic Model 2025 for 27 November 2026 (Earth), MagLab (refrigerator magnet, MRI scanner, pulsed magnet), Arnold Magnetic Technologies (N52), CERN (LHC), Chinese Academy of Sciences (35.6&nbsp;T in January 2026, 45.22&nbsp;T in August 2022). The pole face and the ceiling of iron are computed on this page.</figcaption>
+  </figure>
+
+  <p>The neodymium magnet dates from 1984. Two groups published the compound in the same issue of the Journal of Applied Physics: <a href="https://doi.org/10.1063/1.333572">Masato Sagawa and colleagues</a>, and John Croat and colleagues. According to Fischbacher and others, magnets based on it dominate the market for strong magnets.</p>
+</section>
+
+<section>
+  <span class="num">07</span>
+  <h2>What this means in practice</h2>
+  <ul class="plain">
+    <li><strong>Shape and distance decide the pull.</strong> A thin disc is weak at its face, and every magnet loses its field with the cube of the distance (section 01). This is an inference of this page from the formulas above.</li>
+    <li><strong>Heat is the enemy.</strong> The data sheet of N52 gives a Curie temperature of 310&nbsp;&deg;C, and the coercivity falls long before that (section 05). This page infers from the model of section 05 that a magnet which got too hot can stay weaker after it cools, because some of its grains have flipped.</li>
+    <li><strong>The supply is a risk for Europe.</strong> On average, a hybrid or electric car contains 1.25&nbsp;kg of strong magnets, and a wind turbine with direct drive needs 400&nbsp;kg for each megawatt, according to Fischbacher and others. The EU gets 98&nbsp;% of its <a class="term" href="#t-rare">rare-earth</a> magnets from China, according to a <a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/779220/EPRS_ATA%282025%29779220_EN.pdf">briefing of the European Parliamentary Research Service</a> of November 2025. Since 4 April 2025, China requires an export licence for seven rare earths and for magnets that contain them. A wider set of controls of October 2025 is suspended. On 9 November 2026, the <a href="https://www.mofcom.gov.cn/zwgk/zcfb/art/2026/art_91466027f465467985942a639a9485f4.html">Chinese Ministry of Commerce</a> extended the suspension to 10 January 2027. Status of this point: 27 November 2026.</li>
+    <li><strong>Hard disks write with heat.</strong> Sintered neodymium magnets move the arm of a hard disk, as the review of Fischbacher and others notes. The newest drives also use the effect of heat on the coercivity. Their method, <a class="term" href="#t-hamr">HAMR</a>, heats the spot under the head with a laser while the head writes. On 3 March 2026, <a href="https://investors.seagate.com/news/news-details/2026/Seagate-Delivers-Industrys-Highest-Capacity-Hard-Drives-with-Next-Generation-Mozaic-4/default.aspx">Seagate announced</a> that drives of this kind with up to 44&nbsp;TB ship in volume to two cloud providers. The rest of this point is knowledge of the model: a disk stores each bit in the magnetisation of small grains, and a hot grain has a lower coercivity, so the head can flip grains that are stable when cold.</li>
+    <li><strong>Holding costs nothing.</strong> A magnet that holds a note on a refrigerator does no work, because nothing moves. It needs no supply of energy, like a nail in a wall. This is an inference of this page.</li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">08</span>
+  <h2>Terms</h2>
+  <dl class="gloss">
+    <div id="t-alter"><dt>Altermagnet</dt><dd>A material in which neighbouring spins cancel, as in an antiferromagnet, while the symmetry of its crystal still gives it some properties of a ferromagnet. Physicists have studied this class in the last few years. <a href="https://en.wikipedia.org/wiki/Altermagnetism">Wikipedia: Altermagnetism</a></dd></div>
+    <div id="t-hk"><dt>Anisotropy field <math><msub><mi>H</mi><mi>K</mi></msub></math></dt><dd>The field that turns the magnetisation of an ideal grain out of its easy axis: <math><msub><mi>H</mi><mi>K</mi></msub><mo>=</mo><mn>2</mn><mi>K</mi><mo>/</mo><msub><mi>&mu;</mi><mn>0</mn></msub><msub><mi>M</mi><mi>s</mi></msub></math>. For Nd&#8322;Fe&#8321;&#8324;B it corresponds to 7.65&nbsp;T.</dd></div>
+    <div id="t-antiferro"><dt>Antiferromagnet</dt><dd>A material in which the moments of neighbouring atoms point in opposite directions and cancel. It has no field outside. <a href="https://en.wikipedia.org/wiki/Antiferromagnetism">Wikipedia: Antiferromagnetism</a></dd></div>
+    <div id="t-mub"><dt>Bohr magneton <math><msub><mi>&mu;</mi><mi>B</mi></msub></math></dt><dd>The natural unit for the magnetic moment of an electron, <span class="nw">9.274 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>24</mn></mrow></msup></math></span> joule per tesla. It is built from the charge <math><mi>e</mi></math> of the electron, the reduced Planck constant <math><mi>&hbar;</mi></math> and the mass <math><msub><mi>m</mi><mi>e</mi></msub></math> of the electron. <a href="https://en.wikipedia.org/wiki/Bohr_magneton">Wikipedia: Bohr magneton</a></dd></div>
+    <div id="t-kb"><dt>Boltzmann constant <math><msub><mi>k</mi><mi>B</mi></msub></math></dt><dd>The constant that turns a temperature into an energy: <math><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></math> is the typical thermal energy of one particle at the temperature <math><mi>T</mi></math>. At 20&nbsp;&deg;C it is 25&nbsp;meV.</dd></div>
+    <div id="t-codata"><dt>CODATA</dt><dd>The Committee on Data of the International Science Council. It publishes the recommended values of the constants of physics. The values on this page are those of 2022.</dd></div>
+    <div id="t-coercivity"><dt>Coercivity</dt><dd>The opposing field that brings the magnetisation of a magnet to zero. A high coercivity means that the magnet is hard to demagnetise. Data sheets give it in ampere per metre. <a href="https://en.wikipedia.org/wiki/Coercivity">Wikipedia: Coercivity</a></dd></div>
+    <div id="t-curie"><dt>Curie temperature <math><msub><mi>T</mi><mi>C</mi></msub></math></dt><dd>The temperature above which a ferromagnet loses its magnetic order. Iron has 1,043&nbsp;K (770&nbsp;&deg;C). <a href="https://en.wikipedia.org/wiki/Curie_temperature">Wikipedia: Curie temperature</a></dd></div>
+    <div id="t-dipole"><dt>Dipole</dt><dd>The simplest source of a magnetic field: a small current loop, or a small magnet with a north and a south pole. Its field falls with the cube of the distance.</dd></div>
+    <div id="t-domain"><dt>Domain, domain wall</dt><dd>A domain is a region in which all moments point the same way. A domain wall is the boundary between two domains. Inside the wall, the direction of the moments turns step by step from one side to the other. <a href="https://en.wikipedia.org/wiki/Magnetic_domain">Wikipedia: Magnetic domain</a></dd></div>
+    <div id="t-ev"><dt>eV (electronvolt), meV</dt><dd>A unit of energy: the energy that one electron gains across a voltage of 1 volt. 1&nbsp;meV is a thousandth of it.</dd></div>
+    <div id="t-exchange"><dt>Exchange interaction, exchange energy <math><mi>J</mi></math></dt><dd>The difference in electric energy between two electrons with parallel spins and two with opposite spins. It follows from the repulsion between electrons and the Pauli principle. <math><mi>J</mi></math> is its size for one pair of neighbours. <a href="https://en.wikipedia.org/wiki/Exchange_interaction">Wikipedia: Exchange interaction</a></dd></div>
+    <div id="t-ferri"><dt>Ferrimagnet</dt><dd>A material in which neighbouring moments point in opposite directions but have unequal sizes, so a net moment remains. <a href="https://en.wikipedia.org/wiki/Ferrimagnetism">Wikipedia: Ferrimagnetism</a></dd></div>
+    <div id="t-ferro"><dt>Ferromagnet</dt><dd>A material in which the moments of neighbouring atoms align in the same direction without an outside field. Iron, cobalt and nickel are ferromagnets. <a href="https://en.wikipedia.org/wiki/Ferromagnetism">Wikipedia: Ferromagnetism</a></dd></div>
+    <div id="t-hamr"><dt>HAMR (heat-assisted magnetic recording)</dt><dd>A method for hard disks. A laser heats the spot under the head while the head writes. <a href="https://en.wikipedia.org/wiki/Heat-assisted_magnetic_recording">Wikipedia: Heat-assisted magnetic recording</a></dd></div>
+    <div id="t-hund"><dt>Hund&rsquo;s rule</dt><dd>The electrons of a partly filled shell first take separate orbitals with parallel spins. The state with the largest total spin has the lowest energy. Friedrich Hund stated the rule in 1925. <a href="https://en.wikipedia.org/wiki/Hund%27s_rules">Wikipedia: Hund&rsquo;s rules</a></dd></div>
+    <div id="t-hysteresis"><dt>Hysteresis</dt><dd>The state depends on the history and not only on the present input. For a magnet: at the same field, the magnetisation depends on the fields that were applied before. <a href="https://en.wikipedia.org/wiki/Magnetic_hysteresis">Wikipedia: Magnetic hysteresis</a></dd></div>
+    <div id="t-ising"><dt>Ising model, spin <math><msub><mi>s</mi><mi>i</mi></msub></math></dt><dd>A model of a magnet: each site <math><mi>i</mi></math> of a grid holds a spin <math><msub><mi>s</mi><mi>i</mi></msub></math> that is +1 or &minus;1, and only neighbours interact. <a href="https://en.wikipedia.org/wiki/Ising_model">Wikipedia: Ising model</a></dd></div>
+    <div id="t-lhc"><dt>LHC (Large Hadron Collider)</dt><dd>The particle accelerator of the research centre CERN near Geneva, a ring of 27&nbsp;km. Superconducting magnets bend the path of its protons. <a href="https://home.cern/science/accelerators/large-hadron-collider">CERN: The Large Hadron Collider</a></dd></div>
+    <div id="t-anisotropy"><dt>Magnetic anisotropy, anisotropy constant <math><mi>K</mi></math></dt><dd>The energy of a crystal depends on the direction of its magnetisation. The direction with the lowest energy is the easy axis. <math><mi>K</mi></math> is the energy per volume that it costs to turn the magnetisation away from it. <a href="https://en.wikipedia.org/wiki/Magnetocrystalline_anisotropy">Wikipedia: Magnetocrystalline anisotropy</a></dd></div>
+    <div id="t-mu0"><dt>Magnetic constant <math><msub><mi>&mu;</mi><mn>0</mn></msub></math></dt><dd>The constant that links a current to its magnetic field in SI units: <span class="nw">1.2566 &times; <math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>6</mn></mrow></msup></math></span> tesla metre per ampere. A magnetisation or a field <math><mi>H</mi></math> in ampere per metre, multiplied by it, gives a value in tesla.</dd></div>
+    <div id="t-field"><dt>Magnetic field <math><mi>B</mi></math>, tesla (T)</dt><dd>The field says which force acts on a moving charge or on a magnet at each point of space. Its strength <math><mi>B</mi></math> has the unit tesla. 1&nbsp;mT is a thousandth and 1&nbsp;&micro;T a millionth of a tesla. <a href="https://en.wikipedia.org/wiki/Magnetic_field">Wikipedia: Magnetic field</a></dd></div>
+    <div id="t-moment"><dt>Magnetic moment</dt><dd>The strength and direction of a small magnet. For a current loop it is the current times the area of the loop. A field tries to turn a moment into its own direction. <a href="https://en.wikipedia.org/wiki/Magnetic_moment">Wikipedia: Magnetic moment</a></dd></div>
+    <div id="t-magnetisation"><dt>Magnetisation <math><mi>M</mi></math></dt><dd>The magnetic moment per volume of a material, in ampere per metre. <a href="https://en.wikipedia.org/wiki/Magnetization">Wikipedia: Magnetization</a></dd></div>
+    <div id="t-metropolis"><dt>Metropolis algorithm</dt><dd>A method to draw random states with the probabilities of statistical mechanics. It proposes a small change, always accepts it if the energy falls, and accepts it with the probability <math><msup><mi>e</mi><mrow><mo form="prefix">&minus;</mo><mi>&Delta;</mi><mi>E</mi><mo>/</mo><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></msup></math> if the energy rises by <math><mi>&Delta;</mi><mi>E</mi></math>. <a href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm">Wikipedia: Metropolis&ndash;Hastings algorithm</a></dd></div>
+    <div id="t-mri"><dt>MRI scanner (magnetic resonance imaging)</dt><dd>A medical scanner that makes pictures of the inside of the body with a strong magnetic field and radio waves. <a href="https://en.wikipedia.org/wiki/Magnetic_resonance_imaging">Wikipedia: Magnetic resonance imaging</a></dd></div>
+    <div id="t-ndfeb"><dt>Neodymium magnet, Nd&#8322;Fe&#8321;&#8324;B, N52</dt><dd>A magnet made of the compound Nd&#8322;Fe&#8321;&#8324;B: 2 atoms of neodymium and 1 atom of boron for 14 atoms of iron. N52 is one of the strongest common grades. <a href="https://en.wikipedia.org/wiki/Neodymium_magnet">Wikipedia: Neodymium magnet</a></dd></div>
+    <div id="t-nist"><dt>NIST</dt><dd>The National Institute of Standards and Technology of the United States. It publishes reference data, among them the constants of physics and the spectra of atoms.</dd></div>
+    <div id="t-orbital"><dt>Orbital, shell, 3d and 4s</dt><dd>An orbital is one of the allowed wave shapes of an electron in an atom. It holds at most two electrons. A shell is a group of orbitals with similar energy. The 3d shell has five orbitals, and the 4s shell has one. <a href="https://en.wikipedia.org/wiki/Atomic_orbital">Wikipedia: Atomic orbital</a></dd></div>
+    <div id="t-para"><dt>Paramagnet</dt><dd>A material whose atoms have magnetic moments that point in random directions. A field aligns them a little, and the effect ends with the field. <a href="https://en.wikipedia.org/wiki/Paramagnetism">Wikipedia: Paramagnetism</a></dd></div>
+    <div id="t-pauli"><dt>Pauli principle</dt><dd>No two electrons can be in the same state. In its general form: the wave function of two electrons changes its sign when the two swap. Wolfgang Pauli stated it in 1925. <a href="https://en.wikipedia.org/wiki/Pauli_exclusion_principle">Wikipedia: Pauli exclusion principle</a></dd></div>
+    <div id="t-rare"><dt>Rare earths, dysprosium</dt><dd>A group of 17 metallic elements. Neodymium and dysprosium belong to it. Dysprosium in a neodymium magnet raises the coercivity at high temperature. <a href="https://en.wikipedia.org/wiki/Rare-earth_element">Wikipedia: Rare-earth element</a></dd></div>
+    <div id="t-br"><dt>Remanence <math><msub><mi>B</mi><mi>r</mi></msub></math></dt><dd>The field that a magnetised material keeps inside when no outside field acts and the field lines close without a gap. It is the usual measure for the strength of a magnet material. <a href="https://en.wikipedia.org/wiki/Remanence">Wikipedia: Remanence</a></dd></div>
+    <div id="t-ms"><dt>Saturation magnetisation <math><msub><mi>M</mi><mi>s</mi></msub></math></dt><dd>The magnetisation of a material when all its moments are aligned. It is the highest value that the material can reach.</dd></div>
+    <div id="t-sinter"><dt>Sintered</dt><dd>Made from a fine powder that is pressed and then heated below its melting point until the grains bond. <a href="https://en.wikipedia.org/wiki/Sintering">Wikipedia: Sintering</a></dd></div>
+    <div id="t-spin"><dt>Spin</dt><dd>A fixed property of a particle that behaves like a rotation of fixed size. It makes the electron a small magnet. Measured along any axis, the spin of an electron has one of two values, called up and down. <a href="https://en.wikipedia.org/wiki/Spin_(physics)">Wikipedia: Spin</a></dd></div>
+    <div id="t-super"><dt>Superconductor</dt><dd>A material that carries a current without resistance below a certain temperature. A coil made of it holds a strong field without a loss of power. <a href="https://en.wikipedia.org/wiki/Superconductivity">Wikipedia: Superconductivity</a></dd></div>
+    <div id="t-wave"><dt>Wave function</dt><dd>The description of a particle in quantum mechanics. Its square gives the probability to find the particle at each place. For two electrons it is one function of both positions. <a href="https://en.wikipedia.org/wiki/Wave_function">Wikipedia: Wave function</a></dd></div>
+  </dl>
+</section>
+
+<section>
+  <span class="num">09</span>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>From primary sources that this page read in full or in the parts it uses: the history in sections 02, 03 and 05 (Nobel lecture of Van Vleck), the constants and the measured moment of the electron (NIST, Fan and others), the ground states of the atoms (NIST), the Curie temperatures and the spin of iron (Pavizhakumari and others), the values for neodymium magnets (Fischbacher and others, Susner and others, data sheet of Arnold), and the record fields (MagLab, Chinese Academy of Sciences, CERN).</span><span class="d">The statement about altermagnets rests on a press release of the Institut Laue-Langevin. The export rules rest on the announcement of the Chinese Ministry of Commerce, read in Chinese, and on a briefing of the research service of the European Parliament. The share of 98&nbsp;% is from that briefing. The capacity of the hard disks is a statement of the maker Seagate.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>Computed on this page: all field values of the cylinder magnet, the rim current, the magnetic energy between two iron atoms and the factor of 2,600, the exchange energy of 90&nbsp;meV, the maps of the two electrons, the simulation of the grid, the loop of the 11 grains, the anisotropy field of 7.65&nbsp;T, the 14&nbsp;%, and the ceiling of 2.2&nbsp;T for iron. Also inferred: that a magnet which got too hot can stay weaker, and the two points of section 07 that are marked there.</span><span class="d">From the knowledge of the model, without a source in the list: the years and names for &Oslash;rsted, Amp&egrave;re, Lenz and Ising, the link to special relativity, the formulas for the field of a cylinder and of two dipoles, the distance between iron atoms and the density and atomic mass of iron, the formulas of Onsager and Yang, the price of parallel spins in energy of motion, the two paragraphs about domains and moving walls, that a copper coil heats up, and how a hard disk stores bits and how heat helps it to write. The papers of Heisenberg, Onsager, Yang, Metropolis, Stoner and Wohlfarth, Sagawa and Croat are linked, but this page did not read them. Their year, journal and authors are checked against the register of Crossref.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>For iron, the simple picture of section 03 is incomplete. The sources describe two partial theories, and calculations miss the measured Curie temperature by up to a third.</span><span class="d">The export rules can change: the suspension ends on 10 January 2027. The records of magnet laboratories rest on their own statements. The 2.2&nbsp;<math><msub><mi>&mu;</mi><mi>B</mi></msub></math> of iron is a calculated value. The 1.25&nbsp;kg for each car and the 400&nbsp;kg for each megawatt are figures that the review of 2018 cites from older sources. The history by Singh and the paper of Susner and others are preprints. The lectures of Feynman on magnetism were not readable for this page, because their server refuses automatic access.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">10</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://www.nobelprize.org/uploads/2018/06/vleck-lecture.pdf">John H. Van Vleck: Quantum Mechanics, the Key to Understanding Magnetism</a> &middot; Nobel lecture, 8 December 1977</li>
+    <li><a href="https://physics.nist.gov/cgi-bin/cuu/Value?mub">NIST: CODATA value of the Bohr magneton</a> &middot; official data, CODATA adjustment of 2022</li>
+    <li><a href="https://arxiv.org/abs/2209.13084">Fan, Myers, Sukra, Gabrielse: Measurement of the Electron Magnetic Moment</a> &middot; reviewed paper (Physical Review Letters 130, 071801), 13 February 2023, read as version 2 on arXiv</li>
+    <li><a href="https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=Sc-Zn+I&amp;units=1&amp;format=0&amp;order=0&amp;at_num_out=on&amp;sp_name_out=on&amp;shells_out=on&amp;conf_out=on&amp;level_out=on&amp;e_out=0&amp;submit=Retrieve+Data">NIST Atomic Spectra Database: ground states of the atoms from scandium to zinc</a> &middot; official data, read on 27 November 2026</li>
+    <li><a href="https://arxiv.org/abs/2405.00477">Pavizhakumari, Skovhus, Olsen: Beyond the random phase approximation for calculating Curie temperatures in ferromagnets</a> &middot; reviewed paper (Journal of Physics: Condensed Matter 37, 115806, 2025), read as the arXiv version of 23 October 2024</li>
+    <li><a href="https://arxiv.org/abs/1903.11922">Fischbacher, Kovacs, Gusenbauer, Oezelt, Exl, Bance, Schrefl: Micromagnetics of rare-earth efficient permanent magnets</a> &middot; reviewed paper (Journal of Physics D: Applied Physics 51, 193002), 2018</li>
+    <li><a href="https://arxiv.org/abs/1508.07792">Susner and others: Growth and Characterization of Ce-Substituted Nd&#8322;Fe&#8321;&#8324;B Single Crystals</a> &middot; preprint, 31 August 2015</li>
+    <li><a href="https://www.arnoldmagnetics.com/wp-content/uploads/2017/11/N52-151021.pdf">Arnold Magnetic Technologies: Sintered Neodymium-Iron-Boron Magnets, N52</a> &middot; data sheet of the maker, revision of 2 August 2021</li>
+    <li><a href="https://arxiv.org/abs/1807.11291">Navinder Singh: The story of magnetism: from Heisenberg, Slater, and Stoner to Van Vleck</a> &middot; preprint, 30 July 2018</li>
+    <li><a href="https://geomag.bgs.ac.uk/web_service/GMModels/wmm/2025?latitude=48.21&amp;longitude=16.37&amp;altitude=0&amp;date=2026-11-27&amp;format=json">British Geological Survey: World Magnetic Model 2025, value for Vienna</a> &middot; official model, computed for 27 November 2026</li>
+    <li><a href="https://nationalmaglab.org/about-the-maglab/facts-figures/world-records/">National High Magnetic Field Laboratory: World Records</a> &middot; page of the laboratory, last changed on 30 June 2026</li>
+    <li><a href="https://nationalmaglab.org/news-events/news/national-maglab-racks-up-another-record/">National High Magnetic Field Laboratory: National MagLab Racks up New Record with Hybrid Magnet</a> &middot; news of the laboratory, 9 November 2016</li>
+    <li><a href="https://english.hf.cas.cn/nr/headline/202208/t20220812_311419.html">Hefei Institutes of Physical Science: China Claims New World Record for Strongest Steady Magnetic Field</a> &middot; press release, 12 August 2022</li>
+    <li><a href="https://english.casad.cas.cn/newsroom/ma/202601/t20260129_1147591.html">Chinese Academy of Sciences: Ultra-Strong Magnet Sets World Record</a> &middot; report of China Daily on the site of the academy, 29 January 2026</li>
+    <li><a href="https://home.cern/science/engineering/pulling-together-superconducting-electromagnets">CERN: Pulling together: superconducting electromagnets</a> &middot; page of the laboratory, read on 27 November 2026</li>
+    <li><a href="https://www.mofcom.gov.cn/zwgk/zcfb/art/2026/art_91466027f465467985942a639a9485f4.html">Ministry of Commerce of China and General Administration of Customs: Announcement No. 58 of 2026</a> &middot; official announcement in Chinese, 9 November 2026</li>
+    <li><a href="https://www.europarl.europa.eu/RegData/etudes/ATAG/2025/779220/EPRS_ATA%282025%29779220_EN.pdf">European Parliamentary Research Service: China&rsquo;s rare-earth export restrictions</a> &middot; briefing, November 2025</li>
+    <li><a href="https://investors.seagate.com/news/news-details/2026/Seagate-Delivers-Industrys-Highest-Capacity-Hard-Drives-with-Next-Generation-Mozaic-4/default.aspx">Seagate: Seagate Delivers Industry&rsquo;s Highest Capacity Hard Drives with Next-Generation Mozaic 4+</a> &middot; press release, 3 March 2026</li>
+    <li><a href="https://www.eurekalert.org/news-releases/1136396">Institut Laue-Langevin: A new route towards smaller devices and ultrafast information processing</a> &middot; press release, 12 June 2026</li>
+    <li><a href="https://www.jetro.go.jp/biznews/2026/11/dfd9100d347161f5.html">Japan External Trade Organization: report on the extension of the Chinese suspensions</a> &middot; reporting in Japanese, 13 November 2026</li>
+  </ul>
+</section>
+
+<p class="page-note">This page simplifies. It treats a magnet as uniformly magnetised, follows only the spin of the electrons, and explains the exchange interaction with moments that are fixed to atoms. For iron this is a part of the answer (section 03). The grid of section 04 and the grains of section 05 are models and no real materials. The page leaves out electromagnets in detail, the magnetic field of the Earth and its source, and the weak magnetism of all other materials. Status of the facts: 27 November 2026.</p>
+
+</main>
+<!-- learn:footer -->
+<script>
+(function(){
+'use strict';
+var L=window.Learn,mk=L.mk;
+function $(id){return document.getElementById(id);}
+function onSeg(id,fn){var g=$(id);[].forEach.call(g.querySelectorAll('button'),function(b,i){b.addEventListener('click',function(){L.press(g,b);fn(i);});});}
+var MU0=4e-7*Math.PI;
+
+/* ---------- figure 1: field of a uniformly magnetised cylinder ---------- */
+/* Remanence of the grade N52: Arnold Magnetic Technologies, data sheet rev. 210802. Radius in mm. */
+var BR=1.45,RAD=5;
+/* field on the axis, z above the pole face, for a cylinder of the length len (all in mm) */
+function axisB(len,z){return BR/2*((z+len)/Math.sqrt((z+len)*(z+len)+RAD*RAD)-z/Math.sqrt(z*z+RAD*RAD));}
+/* complete elliptic integrals K(m) and E(m), m = k squared, by the arithmetic-geometric mean */
+function ellKE(m){
+  var a=1,b=Math.sqrt(1-m),c=Math.sqrt(m),s=c*c/2,p=0.5;
+  for(var i=0;i<8&&Math.abs(c)>1e-10;i++){var an=(a+b)/2;c=(a-b)/2;b=Math.sqrt(a*b);a=an;p*=2;s+=p*c*c;}
+  var K=Math.PI/(2*a);
+  return [K,K*(1-s)];
+}
+/* flux function of one current loop (radius a, height z0) at the point (rho, z). Lines of equal value are field lines. */
+function loopPsi(a,z0,rho,z){
+  var dz=z-z0,m=4*a*rho/((a+rho)*(a+rho)+dz*dz);
+  if(m<1e-12)return 0;
+  if(m>0.999999)m=0.999999;
+  var ke=ellKE(m);
+  return Math.sqrt(a*rho/m)*((1-m/2)*ke[0]-ke[1]);
+}
+/* the rim current of the magnet as a stack of loops. The result grows with the length, as the total current does. */
+function magPsi(len,rho,z){
+  var n=Math.max(8,Math.round(len*2)),s=0;
+  for(var i=0;i<n;i++)s+=loopPsi(RAD,-len/2+(i+0.5)*len/n,rho,z);
+  return s*len/n;
+}
+var PSI_STEP=magPsi(30,RAD,0)/9; /* one line on each side for this much flux through the middle of the magnet */
+function fmtB(b){if(b>=0.1)return L.sgn(b,2)+' T';var v=b*1000;return L.sgn(v,v>=10?0:v>=1?1:2)+' mT';}
+function sig3(v){var q=Math.pow(10,Math.floor(Math.log(v)/Math.LN10)-2);return Math.round(v/q)*q;}
+var lenS=$('lenS');
+function drawMag(){
+  var len=+lenS.value,svg=$('cMag');
+  $('lenOut').textContent=len+' mm';
+  var w0=Math.max(260,svg.getBoundingClientRect().width||640);
+  var sc=Math.min(7.5,Math.max(6,w0/54)),ZH=26.5,h=Math.round(2*ZH*sc),w=L.frame(svg,h),XH=w/(2*sc),cx=w/2,cy=h/2;
+  var g=0.5,nx=Math.ceil(XH/g)+2,nz=Math.ceil(ZH/g)+2,psi=[],i,j;
+  for(j=0;j<nz;j++){var row=[];for(i=0;i<nx;i++)row.push(i?magPsi(len,i*g,j*g):0);psi.push(row);}
+  var top=psi[0][Math.round(RAD/g)],nl=Math.max(1,Math.round(top/PSI_STEP)),d='',heads=[];
+  for(var k=1;k<=nl;k++){
+    var v=top*Math.pow((k-0.5)/nl,2); /* inside the magnet, the lines have equal distances */
+    for(j=0;j<nz-1;j++)for(i=0;i<nx-1;i++){
+      var a=psi[j][i],b=psi[j][i+1],c=psi[j+1][i+1],e=psi[j+1][i],pts=[];
+      if((a<v)!==(b<v))pts.push([(i+(v-a)/(b-a))*g,j*g]);
+      if((b<v)!==(c<v))pts.push([(i+1)*g,(j+(v-b)/(c-b))*g]);
+      if((e<v)!==(c<v))pts.push([(i+(v-e)/(c-e))*g,(j+1)*g]);
+      if((a<v)!==(e<v))pts.push([i*g,(j+(v-a)/(e-a))*g]);
+      if(pts.length>=2)d+='M'+(pts[0][0]*sc).toFixed(1)+' '+(pts[0][1]*sc).toFixed(1)+'L'+(pts[1][0]*sc).toFixed(1)+' '+(pts[1][1]*sc).toFixed(1);
+    }
+    /* where this line crosses the middle plane outside the magnet */
+    for(i=Math.round(RAD/g);i<nx-1;i++){var p=psi[0][i],q=psi[0][i+1];if((p>=v)!==(q>=v)){heads.push((i+(v-p)/(q-p))*g);break;}}
+  }
+  mk('rect',{x:cx-RAD*sc,y:cy-len/2*sc,width:2*RAD*sc,height:len*sc,'class':'mg'},svg);
+  [[1,1],[-1,1],[1,-1],[-1,-1]].forEach(function(q){mk('path',{d:d,'class':'fl',transform:'translate('+cx+' '+cy+') scale('+q[0]+' '+q[1]+')'},svg);});
+  heads.forEach(function(r){[1,-1].forEach(function(sg){
+    var x=cx+sg*r*sc;if(x<6||x>w-6)return;
+    mk('path',{d:'M'+(x-4)+' '+(cy-4)+'L'+(x+4)+' '+(cy-4)+'L'+x+' '+(cy+5)+'Z','class':'fl-h'},svg);
+  });});
+  mk('line',{x1:cx-RAD*sc,x2:cx-RAD*sc,y1:cy-len/2*sc,y2:cy+len/2*sc,'class':'rim'},svg);
+  mk('line',{x1:cx+RAD*sc,x2:cx+RAD*sc,y1:cy-len/2*sc,y2:cy+len/2*sc,'class':'rim'},svg);
+  L.label(svg,cx-RAD*sc-9,cy-len/2*sc-5,'N','t-ink halo','end');
+  L.label(svg,cx-RAD*sc-9,cy+len/2*sc+14,'S','t-ink halo','end');
+  var yp=cy-(len/2+10)*sc;
+  if(yp>8){mk('circle',{cx:cx,cy:yp,r:3.5,'class':'d-ink'},svg);L.label(svg,cx+8,yp+4,fmtB(axisB(len,10)),'val halo');}
+  $('rFace').textContent=fmtB(axisB(len,0));
+  $('r10').textContent=fmtB(axisB(len,10));
+  $('r50').textContent=fmtB(axisB(len,50));
+  $('rCur').textContent=L.fmt(sig3(BR/MU0*len/1000))+' A';
+}
+lenS.addEventListener('input',drawMag);
+
+/* ---------- figure 2: the 3d row ---------- */
+/* Ground states: NIST Atomic Spectra Database. [symbol, name, electrons in 3d, electrons in 4s, ferromagnet as a metal] */
+var EL=[['Sc','Scandium',1,2,0],['Ti','Titanium',2,2,0],['V','Vanadium',3,2,0],['Cr','Chromium',5,1,0],['Mn','Manganese',5,2,0],
+        ['Fe','Iron',6,2,1],['Co','Cobalt',7,2,1],['Ni','Nickel',8,2,1],['Cu','Copper',10,1,0],['Zn','Zinc',10,2,0]];
+function unpaired(e){return (e[2]<=5?e[2]:10-e[2])+(e[3]===1?1:0);}
+var elS=$('elS');
+function arrow(svg,x,y,up,cls){
+  var y0=up?y+24:y+8,y1=up?y+8:y+24,hd=up?5:-5;
+  mk('path',{d:'M'+x+' '+y0+'L'+x+' '+y1+'M'+(x-4)+' '+(y1+hd)+'L'+x+' '+y1+'L'+(x+4)+' '+(y1+hd),'class':cls},svg);
+}
+function drawShell(){
+  var sel=+elS.value,e=EL[sel],svg=$('cShell'),w=L.frame(svg,262),bw=38,gap=6,x0=(w-(6*bw+4*gap+20))/2,y=26,i;
+  $('elOut').textContent=e[1]+' ('+e[0]+')';
+  L.label(svg,x0+bw/2,y-8,'4s','lbl','middle');
+  L.label(svg,x0+bw+20+(5*bw+4*gap)/2,y-8,'3d, five orbitals','lbl','middle');
+  function box(x,n){
+    mk('rect',{x:x,y:y,width:bw,height:32,rx:4,'class':'ob'},svg);
+    if(n>=1)arrow(svg,x+(n===2?13:19),y,true,n===1?'sp-u':'sp-p');
+    if(n===2)arrow(svg,x+25,y,false,'sp-p');
+  }
+  box(x0,e[3]);
+  for(i=0;i<5;i++)box(x0+bw+20+i*(bw+gap),(e[2]>i?1:0)+(e[2]>5+i?1:0));
+  /* bars for the ten elements */
+  var top=96,base=206,l=8,step=(w-2*l)/10,bwid=Math.min(34,step-8);
+  L.label(svg,l,top-6,'unpaired electrons');
+  mk('line',{x1:l,x2:w-l,y1:base,y2:base,'class':'l-base'},svg);
+  EL.forEach(function(a,k){
+    var u=unpaired(a),xc=l+(k+0.5)*step,bh=u*15;
+    mk('rect',{x:xc-bwid/2,y:base-bh,width:bwid,height:bh,'class':k===sel?'bar-c3':'bar-c1'},svg);
+    L.label(svg,xc,base-bh-5,String(u),'val','middle');
+    L.label(svg,xc,base+17,a[0],'el'+(k===sel?' on':''),'middle');
+    if(a[4])mk('rect',{x:xc-4,y:base+26,width:8,height:8,'class':'fm'},svg);
+  });
+  $('rEl').textContent=String(e[2]+e[3]);
+  $('rUn').textContent=String(unpaired(e));
+  $('rMo').innerHTML=unpaired(e)+' <math><msub><mi>μ</mi><mi>B</mi></msub></math>';
+  $('rMe').textContent=e[4]?'ferromagnet':'no ferromagnet';
+}
+elS.addEventListener('input',drawShell);
+
+/* ---------- figure 3: two electrons in a box ---------- */
+var PAIRS=[[1,2],[1,3],[2,3]],pairSel=0;
+function phi(n,x){return Math.SQRT2*Math.sin(n*Math.PI*x);}
+/* probability density for electron 1 at x1 and electron 2 at x2. sg = -1: parallel spins. sg = +1: opposite spins. */
+function dens(a,b,sg,x1,x2){var v=(phi(a,x1)*phi(b,x2)+sg*phi(b,x1)*phi(a,x2))/Math.SQRT2;return v*v;}
+function pairStats(a,b,sg){
+  var n=160,h=1/n,mean=0,close=0;
+  for(var i=0;i<n;i++)for(var j=0;j<n;j++){
+    var x1=(i+0.5)*h,x2=(j+0.5)*h,p=dens(a,b,sg,x1,x2)*h*h,dd=Math.abs(x1-x2);
+    mean+=p*dd;if(dd<0.1)close+=p;
+  }
+  return {mean:mean,close:close};
+}
+function drawBox(){
+  var pr=PAIRS[pairSel],svg=$('cBox'),w0=Math.max(260,svg.getBoundingClientRect().width||640);
+  var q=Math.min(190,Math.floor((w0-28)/2)),w=L.frame(svg,q+44),gap=28,xa=(w-2*q-gap)/2,y0=20,N=34,c=q/N,mx=0,i,j,s;
+  var grids=[-1,1].map(function(sg){var gr=[];for(j=0;j<N;j++)for(i=0;i<N;i++){var v=dens(pr[0],pr[1],sg,(i+0.5)/N,(j+0.5)/N);gr.push(v);if(v>mx)mx=v;}return gr;});
+  grids.forEach(function(gr,p){
+    var x0=xa+p*(q+gap);
+    for(j=0;j<N;j++)for(i=0;i<N;i++){
+      var o=gr[j*N+i]/mx;if(o<0.02)continue;
+      mk('rect',{x:(x0+i*c).toFixed(1),y:(y0+(N-1-j)*c).toFixed(1),width:(c+0.3).toFixed(1),height:(c+0.3).toFixed(1),'class':'hm',opacity:o.toFixed(2)},svg);
+    }
+    mk('line',{x1:x0,y1:y0+q,x2:x0+q,y2:y0,'class':'dg'},svg);
+    mk('rect',{x:x0,y:y0,width:q,height:q,'class':'pf'},svg);
+    L.label(svg,x0+q/2,y0-7,p?'spins opposite':'spins parallel','cat','middle');
+    L.label(svg,x0+q/2,y0+q+15,'position of electron 1','lbl','middle');
+  });
+  var t=L.label(svg,xa-6,y0+q/2,'electron 2','lbl','middle');t.setAttribute('transform','rotate(-90 '+(xa-6)+' '+(y0+q/2)+')');
+  var par=pairStats(pr[0],pr[1],-1),opp=pairStats(pr[0],pr[1],1);
+  $('rPm').textContent=L.sgn(par.mean,2);
+  $('rOm').textContent=L.sgn(opp.mean,2);
+  $('rPc').textContent=L.sgn(100*par.close,1)+' %';
+  $('rOc').textContent=L.sgn(100*opp.close,1)+' %';
+}
+onSeg('orbSeg',function(i){pairSel=i;drawBox();});
+
+/* ---------- figure 4: Ising model with the Metropolis algorithm ---------- */
+var NI=64,TC=2/Math.log(1+Math.SQRT2);
+function Rng(seed){this.x=seed>>>0;}
+/* xorshift with 32 bits. The same generator is in the C++ program that checks this page. */
+Rng.prototype.uniform=function(){var x=this.x;x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;this.x=x;return x/4294967296;};
+function sweep(s,N,T,rng){
+  var p4=Math.exp(-4/T),p8=Math.exp(-8/T);
+  for(var y=0;y<N;y++)for(var x=0;x<N;x++){
+    var up=((y+N-1)%N)*N+x,dn=((y+1)%N)*N+x,lf=y*N+(x+N-1)%N,rt=y*N+(x+1)%N,i=y*N+x;
+    var dE=2*s[i]*(s[up]+s[dn]+s[lf]+s[rt]);
+    if(dE<=0||rng.uniform()<(dE===4?p4:p8))s[i]=-s[i];
+  }
+}
+function exactM(T){return T>=TC?0:Math.pow(1-Math.pow(Math.sinh(2/T),-4),0.125);}
+var tS=$('tS'),isState=null,isTrail={};
+function isRun(){
+  var f=+tS.value,T=f*TC,s=new Int8Array(NI*NI),rng=new Rng(2026),m=0,k,i,t;
+  for(i=0;i<NI*NI;i++)s[i]=1;
+  for(k=0;k<300;k++)sweep(s,NI,T,rng);
+  for(k=0;k<150;k++){sweep(s,NI,T,rng);t=0;for(i=0;i<NI*NI;i++)t+=s[i];m+=Math.abs(t)/(NI*NI);}
+  t=0;for(i=0;i<NI*NI;i++)t+=s[i];
+  isState={f:f,T:T,s:s,m:m/150,minor:(NI*NI-Math.abs(t))/2/(NI*NI)};
+  isTrail[f.toFixed(2)]=isState.m;
+}
+function drawIsing(){
+  if(!isState||isState.f!==+tS.value)isRun();
+  var st=isState,lat=$('cLat'),d='',x,y,run;
+  L.clear(lat);
+  mk('rect',{x:0,y:0,width:NI,height:NI,'class':'dn'},lat);
+  for(y=0;y<NI;y++){
+    run=-1;
+    for(x=0;x<=NI;x++){
+      var on=x<NI&&st.s[y*NI+x]===1;
+      if(on&&run<0)run=x;
+      if(!on&&run>=0){d+='M'+run+' '+y+'h'+(x-run)+'v1h'+(run-x)+'z';run=-1;}
+    }
+  }
+  mk('path',{d:d,'class':'up'},lat);
+  var svg=$('cMT'),p=L.plot(svg,{h:250,x0:0.4,x1:1.8,y0:0,y1:1}),e='',k;
+  mk('line',{x1:p.sx(1),x2:p.sx(1),y1:p.sy(0),y2:p.sy(1),'class':'l-base'},svg);
+  L.label(svg,p.sx(1)+5,p.sy(0.5)+4,'Curie temperature');
+  for(k=0;k<=300;k++){var f=0.4+0.6*k/300;e+=(k?'L':'M')+p.sx(f).toFixed(1)+' '+p.sy(exactM(f*TC)).toFixed(1);}
+  e+='L'+p.sx(1.8).toFixed(1)+' '+p.sy(0).toFixed(1);
+  mk('path',{d:e,'class':'l-c2'},svg);
+  for(var key in isTrail)if(+key!==st.f)mk('circle',{cx:p.sx(+key),cy:p.sy(isTrail[key]),r:2.5,'class':'d-c3'},svg);
+  mk('circle',{cx:p.sx(st.f),cy:p.sy(st.m),r:6,'class':'ring'},svg);
+  mk('circle',{cx:p.sx(st.f),cy:p.sy(st.m),r:2.5,'class':'d-c3'},svg);
+  L.label(svg,p.w-p.m.r-2,p.m.t+10,'average spin','lbl','end');
+  L.label(svg,p.m.l+6,p.h-p.m.b-8,'temperature');
+  $('tOut').innerHTML=L.sgn(st.f,2)+' <math><msub><mi>T</mi><mi>C</mi></msub></math>';
+  $('rT').textContent=L.sgn(st.T,2);
+  $('rSim').textContent=L.sgn(st.m,2);
+  $('rEx').textContent=L.sgn(exactM(st.T),2);
+  $('rMin').textContent=L.sgn(100*st.minor,1)+' %';
+}
+tS.addEventListener('input',drawIsing);
+
+/* ---------- figure 5: grains of Stoner and Wohlfarth ---------- */
+/* Energy of one grain: sin^2(theta - phi) / 2 - h cos(theta). theta: direction of the magnetisation,
+   phi: direction of the easy axis, both measured from the field. h: field in units of the anisotropy field. */
+var ANG=[],HKT=2*4.9e6*MU0/1.61; /* anisotropy field of Nd2Fe14B as mu0*H in tesla: K = 4.9 MJ/m3, mu0*Ms = 1.61 T */
+(function(){for(var k=1;k<=11;k++)ANG.push((k%2?1:-1)*2.5*k*Math.PI/180);})();
+function relax(th,h,ph){ /* go downhill to the nearest minimum of the energy */
+  for(var i=0;i<400;i++){var g=0.5*Math.sin(2*(th-ph))+h*Math.sin(th);th-=0.35*g;if(Math.abs(g)<1e-9)break;}
+  return th;
+}
+function swGo(st,target){ /* change the field in small steps, so that each grain follows its own minimum */
+  var n=Math.max(1,Math.ceil(Math.abs(target-st.h)/0.01-1e-9)),h0=st.h;
+  for(var k=1;k<=n;k++){var h=h0+(target-h0)*k/n;st.th=st.th.map(function(t,i){return relax(t,h,ANG[i]);});}
+  st.h=target;
+}
+function swM(st){var s=0;st.th.forEach(function(t){s+=Math.cos(t);});return s/st.th.length;}
+var sw={h:0,th:ANG.slice()},swLoop=[];
+(function(){
+  swGo(sw,1.3);
+  var c={h:sw.h,th:sw.th.slice()},h;
+  for(h=1.3;h>-1.3001;h-=0.01){swGo(c,h);swLoop.push([h,swM(c)]);}
+  for(h=-1.3;h<1.3001;h+=0.01){swGo(c,h);swLoop.push([h,swM(c)]);}
+  swGo(sw,0);
+})();
+var hS=$('hS');
+function drawGrains(){
+  var svg=$('cGr'),w=L.frame(svg,96),n=ANG.length,step=(w-16)/n,r=Math.min(15,step/2-3),cy=24;
+  sw.th.forEach(function(t,i){
+    var cx=8+(i+0.5)*step,ph=ANG[i],ex=Math.cos(ph)*(r+3),ey=-Math.sin(ph)*(r+3);
+    mk('circle',{cx:cx,cy:cy,r:r,'class':'gr'},svg);
+    mk('line',{x1:cx-ex,y1:cy-ey,x2:cx+ex,y2:cy+ey,'class':'ea'},svg);
+    var ax=Math.cos(t)*(r-3),ay=-Math.sin(t)*(r-3),tx=cx+ax,ty=cy+ay,bx=cx-ax,by=cy-ay,a=Math.atan2(ay,ax);
+    mk('path',{d:'M'+bx.toFixed(1)+' '+by.toFixed(1)+'L'+tx.toFixed(1)+' '+ty.toFixed(1)+
+      'M'+(tx-5*Math.cos(a-0.5)).toFixed(1)+' '+(ty-5*Math.sin(a-0.5)).toFixed(1)+'L'+tx.toFixed(1)+' '+ty.toFixed(1)+'L'+(tx-5*Math.cos(a+0.5)).toFixed(1)+' '+(ty-5*Math.sin(a+0.5)).toFixed(1),
+      'class':'ar'+(Math.cos(t)<0?' rv':'')},svg);
+  });
+  /* the applied field as an arrow from the middle */
+  var y=68,xm=w/2,len=sw.h/1.3*(w/2-14);
+  mk('line',{x1:xm,x2:xm,y1:y-7,y2:y+7,'class':'l-base'},svg);
+  if(Math.abs(len)>7){var sg=len>0?1:-1,xe=xm+len;mk('path',{d:'M'+xm+' '+y+'L'+xe.toFixed(1)+' '+y+'M'+(xe-6*sg).toFixed(1)+' '+(y-5)+'L'+xe.toFixed(1)+' '+y+'L'+(xe-6*sg).toFixed(1)+' '+(y+5),'class':'hf'},svg);}
+  L.label(svg,xm,y+22,Math.abs(len)>7?'applied field':'no field applied','lbl','middle');
+}
+function drawLoop(){
+  var svg=$('cHy'),p=L.plot(svg,{h:250,x0:-1.3,x1:1.3,y0:-1.5,y1:1.5}),d='';
+  mk('line',{x1:p.sx(0),x2:p.sx(0),y1:p.sy(-1.15),y2:p.sy(1.15),'class':'l-base'},svg);
+  mk('line',{x1:p.sx(-1.3),x2:p.sx(1.3),y1:p.sy(0),y2:p.sy(0),'class':'l-base'},svg);
+  swLoop.forEach(function(q,i){d+=(i?'L':'M')+p.sx(q[0]).toFixed(1)+' '+p.sy(q[1]).toFixed(1);});
+  mk('path',{d:d,'class':'l-c1'},svg);
+  /* direction marks on the two branches */
+  var xu=p.sx(0.45),yu=p.sy(0.98),xl=p.sx(-0.45),yl=p.sy(-0.98);
+  mk('path',{d:'M'+(xu+5)+' '+(yu-5)+'L'+(xu-5)+' '+yu+'L'+(xu+5)+' '+(yu+5)+'Z','class':'fl-h'},svg);
+  mk('path',{d:'M'+(xl-5)+' '+(yl-5)+'L'+(xl+5)+' '+yl+'L'+(xl-5)+' '+(yl+5)+'Z','class':'fl-h'},svg);
+  var m=swM(sw);
+  mk('circle',{cx:p.sx(sw.h),cy:p.sy(m),r:7,'class':'ring'},svg);
+  mk('circle',{cx:p.sx(sw.h),cy:p.sy(m),r:3,'class':'d-c3'},svg);
+  L.label(svg,p.m.l+6,p.m.t+10,'magnetisation / saturation');
+  L.label(svg,p.w-p.m.r-2,p.h-p.m.b-6,'applied field / anisotropy field','lbl','end');
+  var rev=sw.th.filter(function(t){return Math.cos(t)<0;}).length;
+  $('hOut').innerHTML=L.sgn(sw.h,2)+' <math><msub><mi>H</mi><mi>K</mi></msub></math>';
+  $('rH').textContent=L.sgn(sw.h,2);
+  $('rHT').textContent=L.sgn(sw.h*HKT,2)+' T';
+  $('rM').textContent=L.sgn(m,2);
+  $('rRev').textContent=rev+' of '+ANG.length;
+}
+hS.addEventListener('input',function(){swGo(sw,+hS.value);drawGrains();drawLoop();});
+
+/* ---------- figure 6: field strengths ---------- */
+/* [name, note, tesla, kind, upper end of a range]. Kinds: n nature, p permanent magnet, e electromagnet. */
+var SCALE=[
+  ['Earth, in Vienna','',49.2e-6,'n'],
+  ['Strong refrigerator magnet','',0.01,'p'],
+  ['Neodymium cylinder of section 01','pole face',axisB(10,0),'p'],
+  ['Neodymium magnet N52','remanence',1.45,'p'],
+  ['Iron, all moments aligned','ceiling',2.2,'p'],
+  ['MRI scanner','typical',1.5,'e',3],
+  ['LHC bending magnets','',8.3,'e'],
+  ['Superconducting magnet, Beijing','2026',35.6,'e'],
+  ['Hybrid magnet, Hefei','2022',45.22,'e'],
+  ['Pulsed magnet, MagLab','',100.75,'e']
+];
+function teslaText(b,hi){
+  if(hi)return L.sgn(b,1)+' to '+L.sgn(hi,0)+' T';
+  if(b<1e-3)return L.sgn(b*1e6,0)+' µT';
+  if(b<0.1)return L.sgn(b*1e3,0)+' mT';
+  return L.sgn(b,b>=30?2:b>=3?1:2).replace(/([.,]\d*?)0+$/,'$1').replace(/[.,]$/,'')+' T';
+}
+function drawScale(){
+  var svg=$('cScale'),rh=42,top=6,h=top+SCALE.length*rh+26,w=L.frame(svg,h),l=10,r=16,yb=top+SCALE.length*rh;
+  function sx(b){return l+(Math.log(b)/Math.LN10+5)/8*(w-l-r);}
+  var g=mk('g',{'class':'ax'},svg);
+  [[1e-5,'10 µT'],[1e-3,'1 mT'],[0.1,'0.1 T'],[10,'10 T'],[1000,'1,000 T']].forEach(function(a,i){
+    mk('line',{x1:sx(a[0]),x2:sx(a[0]),y1:top,y2:yb},g);
+    mk('text',{x:sx(a[0]),y:yb+16,'text-anchor':i===0?'start':i===4?'end':'middle'},g).textContent=a[1];
+  });
+  SCALE.forEach(function(a,i){
+    var y=top+i*rh,x=sx(a[2]),ym=y+27;
+    var t=mk('text',{x:l,y:y+13,'class':'cat'},svg);t.textContent=a[0];
+    if(a[1]){var s=mk('tspan',{'class':'cat2',dx:6},t);s.textContent=a[1];}
+    mk('line',{x1:l,x2:w-r,y1:ym,y2:ym,'class':'gl'},svg);
+    var xe=x;
+    if(a[4]){xe=sx(a[4]);mk('line',{x1:x,x2:xe,y1:ym,y2:ym,'class':'rg'},svg);}
+    else if(a[3]==='p')mk('rect',{x:x-5,y:ym-5,width:10,height:10,'class':'mk-p'},svg);
+    else if(a[3]==='e')mk('circle',{cx:x,cy:ym,r:5.5,'class':'mk-e'},svg);
+    else mk('path',{d:'M'+x+' '+(ym-6.5)+'L'+(x+6.5)+' '+ym+'L'+x+' '+(ym+6.5)+'L'+(x-6.5)+' '+ym+'Z','class':'mk-n'},svg);
+    var right=xe<w-r-78;
+    var v=mk('text',{x:right?xe+10:x-10,y:ym+4,'class':'val','text-anchor':right?'start':'end'},svg);v.textContent=teslaText(a[2],a[4]);
+  });
+}
+
+/* Learn.onChange calls the function at the start, and again when the page width changes. */
+L.onChange(function(){drawMag();drawShell();drawBox();drawIsing();drawGrains();drawLoop();drawScale();});
+})();
+</script>
+</body>
+</html>
