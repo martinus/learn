@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How a 17-million-line proof shrank to 113,000 lines</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "How a 17-million-line proof shrank to 113,000 lines"},
+ "summary": {"en": "Five days after the machine-checked proof of the Riemann Hypothesis appeared, a team at Anthropic published the same five theorems in 1/154 of the text. What was cut, how it was cut, which checks each version has passed, and what the long and the short version teach about proofs written by AI."},
+ "published": "2026-11-27",
+ "updated": "2026-11-27",
+ "languages": ["en"],
+ "tags": ["mathematics", "ai"],
+ "model": "Claude Fable 5.2"
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+.b-or{fill:var(--c1)}
+.b-rd{fill:var(--c2)}
+.b-cp{fill:var(--c3)}
+.b-track{fill:var(--rule);opacity:.5}
+.t-name{fill:var(--ink);font:500 12px var(--font-body)}
+.t-val{fill:var(--ink);font:600 12px var(--font-body);font-variant-numeric:tabular-nums}
+.t-fold{fill:var(--ink);font:400 11.5px var(--font-body)}
+.t-num{fill:var(--muted);font:400 11px var(--font-body);font-variant-numeric:tabular-nums}
+.sw.box{height:.62rem;width:.9rem;border:0;border-radius:2px;background:var(--c1)}
+.sw.box.rd{background:var(--c2)}
+.sw.box.cp{background:var(--c3)}
+.matrix th,.matrix td{vertical-align:top;text-align:left}
+.matrix th,.matrix td{padding-left:.2rem;padding-right:.2rem}
+.matrix th{letter-spacing:.02em}
+.matrix td:first-child{min-width:5.6rem}
+.matrix .pill{white-space:nowrap;padding-left:.28rem;padding-right:.28rem;letter-spacing:.02em}
+.matrix small{display:block;color:var(--muted);margin-top:.2rem;line-height:1.35}
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow">Mathematics &middot; status of 27 November 2026</span>
+  <h1>How a 17-million-line proof shrank to 113,000 lines</h1>
+  <!-- learn:byline -->
+  <p class="lead">The <a class="term" href="#t-rh">Riemann Hypothesis</a> is a statement from 1859 about the zeros of one function. It fixes how evenly the prime numbers are spread. On 20 November 2026 Levent Alpöge published a proof that he found with the AI Claude: 17.4 million lines for the proof checker <a class="term" href="#t-lean">Lean</a>. Five days later a team at Anthropic published the same theorems in 112,827 lines. This page explains what was cut and how, which checks each version has passed, and what the two versions teach. The problem itself is the subject of <a href="../2026-11-21-riemann-hypothesis-claim/">an earlier page</a>.</p>
+  <div class="status">
+    <b>Status: three versions that programs accept, none that a person has reviewed</b>
+    <span>The last check of the original proof finished on 25 November 2026 at 21:49 UTC. The checks of the two short editions finished on 26 November. No mathematician has read one of the three versions to the end, and the Clay institute lists the problem as &ldquo;Active&rdquo;, not as solved (read on 27 November).</span>
+  </div>
+  <div class="short">
+    <div><h3>What shrank</h3><span>The proof, by a factor of 154. The five theorems that it proves kept their exact wording.</span></div>
+    <div><h3>How</h3><span>Largely by simpler mathematics for the steps in between, not only by tidying. Anthropic has not published the method, the model or the cost.</span></div>
+    <div><h3>What it teaches</h3><span>A statement that a program can check makes a complete rewrite safe. Reading by people stays the slow part.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2>The same theorems in 1/154 of the text</h2>
+  <p>In Lean, a theorem is a type and a proof is a program of that type. Checking the proof is type checking. A small trusted core, the <a class="term" href="#t-kernel">kernel</a>, does this, and it does not need to understand the mathematics. The proofs here build on <a class="term" href="#t-mathlib">Mathlib</a>, the mathematics library of the Lean community.</p>
+  <p>Both the original and the short proof have the same shape as a software project with a small public header. The file <span class="mono">Statements.lean</span> has 16 lines and imports only Mathlib. It states what is claimed. <span class="mono">Main.lean</span> proves five theorems of these types. All other files are implementation.</p>
+<pre class="code"><code>-- Statements.lean, 1 of 4 definitions
+def RiemannZetaZerosOnLine : Prop :=
+  ∀ s : ℂ, riemannZeta s = 0 →
+    (¬∃ n : ℕ, s = -2 * ((n : ℂ) + 1)) →
+    s ≠ 1 → s.re = 1 / 2
+
+-- Main.lean, 1 of 5 theorems
+theorem riemannHypothesis :
+    RiemannHypothesis :=
+  New.zeta_zeros_on_line New.grh
+</code></pre>
+  <p>The definition reads: for every complex number <span class="mono">s</span>, if the <a class="term" href="#t-zeta">zeta function</a> is zero at <span class="mono">s</span>, and <span class="mono">s</span> is none of &minus;2, &minus;4, &minus;6, &hellip; and not 1, then the real part of <span class="mono">s</span> is 1/2. <span class="mono">RiemannHypothesis</span> is Mathlib&rsquo;s own definition of the same statement. The other three theorems state the <a class="term" href="#t-grh">Generalized Riemann Hypothesis</a> for one family of similar functions.</p>
+  <p>On 25 November 2026 at about 20:40 <a class="term" href="#t-utc">UTC</a>, Luke Sernau of Anthropic published the repository <a href="https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207">lsernau/grh-lean</a>. It holds two new proofs of the same five theorems: a &ldquo;readable&rdquo; edition and a &ldquo;compact&rdquo; edition. The chart compares them with the original.</p>
+
+  <figure>
+    <div class="fig-title">Three proofs of the same five theorems</div>
+    <div class="ctl">
+      <div class="seg" id="metric" role="group" aria-label="What the bars measure">
+        <button type="button" aria-pressed="true">Lines</button>
+        <button type="button" aria-pressed="false">Files</button>
+        <button type="button" aria-pressed="false">Export</button>
+        <button type="button" aria-pressed="false">Kernel time</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="sw box"></i><span>original, 20 Nov</span></span>
+      <span><i class="sw box rd"></i><span>readable edition, 25 Nov</span></span>
+      <span><i class="sw box cp"></i><span>compact edition, 25 Nov</span></span>
+    </div>
+    <svg class="chart" id="cSize" role="img" aria-label="Three bars on one linear scale: the original proof with 17,374,215 lines, the readable edition with 477,124 lines and the compact edition with 112,827 lines"></svg>
+    <div class="stats">
+      <div><small>Measured</small><b id="sWhat">lines of Lean</b></div>
+      <div><small>Original &divide; readable</small><b id="sRd">36&times;</b></div>
+      <div><small>Original &divide; compact</small><b id="sCp">154&times;</b></div>
+    </div>
+    <figcaption>All bars of one view share a linear scale that starts at zero. Lines include comments and blank lines. &ldquo;Export&rdquo; is the size of the file that the kernels check. &ldquo;Kernel time&rdquo; is one run of Lean&rsquo;s own kernel over that file: on one thread for the original, on a machine with 192 cores for the short editions, so it is a rough comparison. Sources: the count of Bartosz Naskręcki for the original, a count of this page for the short editions, and the logs of Andrew Sutherland, 20 to 26 November 2026.</figcaption>
+  </figure>
+
+  <p>The short repository counts differently, and both numbers are in use: about 76,000 lines of code for the compact edition and about 300,000 for the readable one, without comments and blank lines. With them, the files have 112,827 and 477,124 lines.</p>
+  <p>The view &ldquo;Export&rdquo; shows a detail that the line count hides. An <a class="term" href="#t-export">export</a> holds the proof after Lean has expanded all automation into explicit terms, together with everything it needs from Mathlib. The compact edition has less source text than the readable one, but its export is larger: 5.17 GB against 4.49 GB. <a href="https://math.mit.edu/~drew/shortgrh/">Andrew Sutherland</a> of the university <a class="term" href="#t-mit">MIT</a> gives the reason: the compact edition has fewer declarations, and they have larger proof terms on average. Short source that leans on automation can expand into more work for the checker, as a short template can expand into a large binary.</p>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2>How the proof was shortened</h2>
+  <p>The size of the original was no secret. In his <a href="https://alpo.ge/remark.pdf">note of 20 November</a>, Alpöge wrote that he may have built &ldquo;strange suboptimal choices&rdquo; into the argument and that he expected short arguments to follow. They followed in five days:</p>
+  <ol class="steps">
+    <li><time>20 Nov</time><span>Alpöge publishes the proof: 175,187 Lean files with 17,374,215 lines. The Lean community opens a repository to clean it up.</span></li>
+    <li><time>21 Nov</time><span>The Lean and Mathlib communities certify the statement and the proof.</span></li>
+    <li><time>24 Nov</time><span>Three mathematicians announce a <a class="term" href="#t-polymath">Polymath project</a> on the blog of Terence Tao. Its aim is a proof that people can read.</span></li>
+    <li><time>25 Nov, about 20:40 UTC</time><span>Sernau publishes the two short editions.</span></li>
+    <li><time>25 Nov, 22:24 UTC</time><span>The community repository moves its main branch to the readable edition. The work on the original stays on a branch.</span></li>
+    <li><time>26 Nov</time><span>Independent checks of both short editions finish. A first text of the compact edition for people appears, written by AI.</span></li>
+  </ol>
+
+  <h3>Why the first version was so long</h3>
+  <p>Three observations come from the <a href="https://leanprover.zulipchat.com/#narrow/channel/658556-Riemann-Hypothesis/topic/Why.20clean.20up.20the.20proof/near/642816120">discussion of the Lean community</a> on 23 November.</p>
+  <ul class="plain">
+    <li><strong>No library was built.</strong> Mario Carneiro wrote that the AI systems of the labs go for the goal at all costs, and that 90 % of proving a big result is building a library. He predicted that the proof could shrink by 98 % or more.</li>
+    <li><strong>Dead code.</strong> The number theorist David Loeffler found a structure that states a large theorem, the full local Langlands correspondence. About 6,000 files import it. Nothing ever proves it, and nothing needs it: the proof seems to use only a much simpler special case.</li>
+    <li><strong>Many small files.</strong> A profile of one build of the community repository counted 103 CPU hours, about half of them for loading imports. This page infers the average of the original from its two totals: 99 lines per file.</li>
+  </ul>
+
+  <h3>What Sernau says about the method</h3>
+  <p>Sernau announced the short proof in the <a href="https://leanprover.zulipchat.com/#narrow/channel/658556-Riemann-Hypothesis/topic/New.20proof.20in.20300k.20lines/near/643702366">forum of the Lean community</a>. He wrote that he had worked on it with a few colleagues for some days, and that he is not able to say much about the methods. The README of the repository adds that Claude wrote the Lean text and the documents. He named three things:</p>
+  <ul class="plain">
+    <li><strong>Unroll, simplify, roll up.</strong> He described &ldquo;unrolling definitions to get a long, flat proof&rdquo;, looking for simplifications there, and rolling the result up again. This lets a simplification cross the boundary between two definitions. A compiler does the same when it inlines functions before it optimises. The comparison stops at one point: a compiler must keep the behaviour of the program, and here only the final theorems had to stay.</li>
+    <li><strong>New arguments.</strong> Sernau wrote that much of the gain came from simpler proofs of results in between, so many of the arguments are new. Whole theories left the proof. Section 03 lists them.</li>
+    <li><strong>Golf first, then clarity.</strong> The team first reduced the proof to the compact edition and then rewrote it for clarity. So the readable edition is the later one. It also states some results that the five theorems do not use, for people who want to write the proof as a text.</li>
+  </ul>
+  <p>The repository says of itself that it follows the method of Alpöge&rsquo;s proof, that many steps are proved by other arguments, and that parts were ported from the original and rewritten, mostly background material.</p>
+  <p class="aside">Not public: the Claude model, the tools around it, the computing power and the prompts. A maintainer of the community repository, Thomas Murrills, thanked Sernau and regretted this point: tools for cleaning up such proofs would help the whole community.</p>
+</section>
+
+<section>
+  <span class="num">03</span>
+  <h2>What is inside the short proof</h2>
+  <p>Each edition has two parts. <span class="mono">Lib</span> holds background that the authors class as known in the literature and that Mathlib lacks. <span class="mono">New</span> holds the argument itself. <span class="mono">Lib</span> imports nothing from <span class="mono">New</span>. The original had no such border. In the compact edition, Naskręcki counts 24,850 lines of code with 1,571 theorems in <span class="mono">New</span> and 51,280 lines of code in <span class="mono">Lib</span>. So two thirds of the short proof are library work that the proof needs and Mathlib does not have.</p>
+
+  <figure>
+    <div class="fig-title">Where the lines of the compact edition are</div>
+    <div class="ctl">
+      <div class="seg" id="part" role="group" aria-label="Part of the proof">
+        <button type="button" aria-pressed="true">Background (Lib)</button>
+        <button type="button" aria-pressed="false">Argument (New)</button>
+      </div>
+    </div>
+    <svg class="chart" id="cFold" role="img" aria-label="Bar chart of the folders of the compact edition by lines. In the background part, the folder Weil is the largest with 9,502 lines and the folder Analytic the smallest with 702 lines"></svg>
+    <div class="stats">
+      <div><small>Part</small><b id="fPart">Lib</b></div>
+      <div><small>Folders</small><b id="fN">16</b></div>
+      <div><small>Lines</small><b id="fSum">77,850</b></div>
+    </div>
+    <figcaption>One bar is one folder. Both views share one scale. Lines include comments and blank lines. Count of this page on commit <span class="mono">72fead1</span> of 25 November 2026.</figcaption>
+  </figure>
+
+  <p>The names are those of the repository. The smallest folder of the background, <span class="mono">Analytic</span>, holds the classical analysis of prime numbers. The large folders belong to algebra and geometry: representations, cohomology, <a class="term" href="#t-shimura">Shimura varieties</a>. A statement about the zeros of an analytic function is proved here mostly with tools from other fields.</p>
+  <p>The guide of the readable edition warns that <span class="mono">Lib</span> is no general library. It proves parts of standard theories, &ldquo;often in a weaker form that suffices here&rdquo; and with its own definitions.</p>
+
+  <h3>The argument in one inequality</h3>
+  <p>The folder <span class="mono">Endgame</span> and the file <span class="mono">New/Main.lean</span> finish the proof, in 684 lines together. The central lemma has a short statement:</p>
+<pre class="code"><code>lemma star_inequality {P} {D : Data P} :
+    D.m * D.remainder
+      ≤ D.logB ^ 2 * D.budget
+</code></pre>
+  <ul class="plain">
+    <li><span class="mono">remainder</span> is a weighted count of primes up to a bound <span class="mono">x</span>, minus its expected value. The Riemann Hypothesis follows if this error is small. A theorem of Edmund Landau from 1905 shows that a bound from above is enough.</li>
+    <li><span class="mono">m</span> is the number of <a class="term" href="#t-theta">theta lifts</a> that the proof chains. The source sets it between <math><msqrt><mi>x</mi></msqrt></math> and <span class="nw">2<math><msqrt><mi>x</mi></msqrt></math>.</span></li>
+    <li>The right side is a budget for all errors of the construction.</li>
+  </ul>
+  <p>Divide by <span class="mono">m</span>: the error of the count is at most the budget divided by about <span class="nw"><math><msqrt><mi>x</mi></msqrt></math>.</span> A comment in the source says it in one phrase: <span class="mono">the saving x^(-1/2) is 1/m</span>.</p>
+  <p>The inequality comes from one quantity that the proof bounds from two sides: the <a class="term" href="#t-covol">covolume</a> of a lattice of theta lifts. Theorems A and B of the source bound it from above. Theorem C bounds it from below. A large main amount appears in both bounds and cancels. The remainder is what is left.</p>
+
+  <h3>What was cut</h3>
+  <p>Sernau lists what the short proof no longer needs. This page does not explain these theories. Each of them was a dependency of the original.</p>
+  <ul class="plain">
+    <li>The dependence on a weak form of <a class="term" href="#t-vandiver">Vandiver&rsquo;s conjecture</a>. The original uses no unproved assumption, so it had to prove this form itself. The <a href="../2026-11-21-riemann-hypothesis-claim/#s06">earlier page</a> describes this step, which goes beyond the published mathematics.</li>
+    <li>Resolution of singularities, a large theorem of algebraic geometry from 1964.</li>
+    <li>The local Langlands correspondence, patching, Hida theory and the group GSp4, all from modern number theory.</li>
+    <li>The &ldquo;slope inequality&rdquo; of the original. A product formula for one determinant replaces it.</li>
+  </ul>
+  <p>One limit of the border between known and new: the authors call it a working classification. The compact edition lists 196 citations. For 57 of them, the cited place was compared with the source and confirmed. For 102, only the work was found.</p>
+</section>
+
+<section>
+  <span class="num">04</span>
+  <h2>Which checks each version passed</h2>
+  <p>A check by a program can fail in two ways: the files prove another statement than the one intended, or they assume something without proof. The table shows what covers these two risks for each version, and what covers the third risk, that nobody understands the result.</p>
+
+  <figure>
+    <div class="fig-title">State of the checks on 27 November 2026</div>
+    <div class="scroll-x">
+    <table class="matrix">
+      <thead><tr><th>Check</th><th>Original</th><th>Readable</th><th>Compact</th></tr></thead>
+      <tbody>
+        <tr><td>Builds without errors and without <a class="term" href="#t-sorry">sorry</a><small>175,187, 803 and 794 modules</small></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td></tr>
+        <tr><td>Uses only the three standard <a class="term" href="#t-axioms">axioms</a><small>the same three in all versions</small></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td></tr>
+        <tr><td>Lean&rsquo;s kernel replays every module<small>no module rejected</small></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td></tr>
+        <tr><td><a class="term" href="#t-checkers">Independent checkers</a> accept the proof<small>original: nanoda and con-leche on the export, lean4lean on the modules. Short editions: four checkers on the export</small></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td></tr>
+        <tr><td>The statements equal the challenge (<a class="term" href="#t-comparator">Comparator</a>)<small>original: one run of 122 h 45 min. Readable: one machine, about 4 h. Compact: three machines, 2 to 5 h</small></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td><td><span class="pill done">Passed</span></td></tr>
+        <tr><td>Repeated by people outside the authors<small>original: several, and the joint statement of 21 Nov. Readable: Sutherland. Compact: Sutherland and Rubinstein</small></td><td><span class="pill done">Yes</span></td><td><span class="pill done">Yes</span></td><td><span class="pill done">Yes</span></td></tr>
+        <tr><td>A consequence that does not mention the zeta function<small>original: the criterion of Robin. Compact: the bound of Schoenfeld</small></td><td><span class="pill done">Passed</span></td><td><span class="pill no">Not run</span></td><td><span class="pill done">Passed</span></td></tr>
+        <tr><td>A text for people<small>original: two texts, both with open steps. Compact: 1,356 pages made by AI, no human review</small></td><td><span class="pill prog">Partial</span></td><td><span class="pill no">None</span></td><td><span class="pill rep">Draft</span></td></tr>
+        <tr><td>A mathematician has read the whole proof</td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <figcaption>Sources: the two check lists of Sutherland (last changed on 25 and 26 November), the check of Michael Rubinstein (26 November) and the repositories. The rows about the original repeat the <a href="../2026-11-21-riemann-hypothesis-claim/#s05">earlier page</a>.</figcaption>
+  </figure>
+
+  <p><strong>The wrong statement.</strong> Comparator takes a challenge file that states the five theorems with <span class="mono">sorry</span> in place of the proofs. It checks that the solution proves exactly these statements with the permitted axioms, and then runs the kernels. Sutherland reports that <span class="mono">Statements.lean</span> is the same file, byte for byte, in the two short editions, and that its four definitions equal those of the original as text.</p>
+  <p>One difference stays. The original builds on Mathlib of 21 August 2026, the short editions on Mathlib of 13 October 2026. Sutherland compared the two challenge files. The definitions at the top, such as <span class="mono">riemannZeta</span> and <span class="mono">RiemannHypothesis</span>, are the same terms. Of 50,232 declarations below them with the same name, 10,750 differ in some respect. He writes that he has not checked formally that the two versions are equivalent.</p>
+  <p><strong>The hidden assumption.</strong> A text search of both short editions finds no declared axiom, no <span class="mono">sorry</span> outside the challenge file and no code that runs during the build. Sutherland calls this search a precaution. The proof of this point is the list of axioms and the kernel runs.</p>
+  <p><strong>The bound of Schoenfeld.</strong> A second project derives a classical bound from the compact edition. Take the count of primes up to <span class="mono">x</span> in a weighted form. For every <span class="mono">x</span> from 73.2 on, it differs from <span class="mono">x</span> by less than:</p>
+  <div class="formula"><math display="block"><mfrac><mrow><msqrt><mi>x</mi></msqrt><mo>&sdot;</mo><msup><mrow><mo stretchy="false">(</mo><mi>ln</mi><mo>&#8289;</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></mrow><mrow><mn>8</mn><mi>&pi;</mi></mrow></mfrac></math></div>
+  <p>The statement uses only primes, a square root, a logarithm and the number &pi;, so it does not depend on how Mathlib defines the zeta function. Lowell Schoenfeld showed in 1976 that the Riemann Hypothesis implies this bound. The combined proof passed Comparator on 26 November. AI agents wrote that project too.</p>
+  <p><strong>What no program checks.</strong> The README of the short proof says it plainly: the proof has passed machine checks only, no mathematician has read it through, and no paper comes with it. Naskręcki published a text of the compact edition on 26 November. AI agents wrote it, other AI agents reviewed it, and its own README says that no person has refereed it. Kim Morrison, who moved the community repository to the short proof, wrote on 27 November about the many AI translations of this kind that there is &ldquo;zero evidence that anyone has read any of them&rdquo;.</p>
+</section>
+
+<section>
+  <span class="num">05</span>
+  <h2>What the two versions teach</h2>
+  <div class="worlds">
+    <div class="world a">
+      <span class="tag">17.4 million lines</span>
+      <h3>From the original</h3>
+      <dl>
+        <dt>Correct is not tidy</dt><dd>The kernel accepted a proof with dead code and with detours that nobody had measured.</dd>
+        <dt>The mess costs</dt><dd>Lean&rsquo;s kernel needed 48 hours for the export, and about half an hour for each short edition.</dd>
+        <dt>It holds more mathematics</dt><dd>Some results on the way are new, and the short proof dropped them.</dd>
+      </dl>
+    </div>
+    <div class="world b">
+      <span class="tag">113,000 lines</span>
+      <h3>From the short version</h3>
+      <dl>
+        <dt>What was not needed</dt><dd>Several heavy theories, and one step beyond the published mathematics.</dd>
+        <dt>Where the new part is</dt><dd>In about 25,000 lines of code, apart from the background.</dd>
+        <dt>Lines are a weak measure</dt><dd>Fewer lines gave a larger export, and a line count can be gamed.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h3>From the original</h3>
+  <p><strong>The long version is not obsolete.</strong> Somebody asked what would have been lost if Anthropic had published only the short proof. Loeffler answered on 26 November: significant new mathematics. His example is a <a href="https://galoisrepresentations.org/2026/11/25/bounds-on-k-groups-and-reducible-modularity-lifting/">blog post by the number theorist Frank Calegari</a> about an intermediate result of the original, connected with Vandiver&rsquo;s conjecture. The short proof no longer contains it. Calegari writes that a part can be interesting even if the final proof does not need it. He also writes that he has found no precise statement of that result yet, only texts that AI made from the Lean files.</p>
+  <p><strong>Dead code hides the dependencies.</strong> The unused Langlands structure of section 02 made the proof look as if it rested on one of the hardest recent theorems. It did not. For mathematicians, the list of what a proof needs is a result of its own.</p>
+
+  <h3>From the short version</h3>
+  <p><strong>Fewer dependencies open new questions.</strong> In the <a href="https://rh-polymath.zulipchat.com/#narrow/channel/658843-Selmer-groups/topic/Simplified.20proof/near/643793640">forum of the Polymath project</a>, Loeffler notes that the short proof needs no form of Vandiver&rsquo;s conjecture and seems to need a second tool, Kato&rsquo;s Euler system, no longer. He calls these the two largest obstacles to extending the proof to a wider class of number fields.</p>
+  <p><strong>The compact edition is near a floor for mechanical shortening.</strong> Vincent Zhang reported an experiment <a href="https://rh-polymath.zulipchat.com/#narrow/channel/658820-Lean-proof/topic/Shorter.20Lean.20proof/near/644052935">in the same forum</a> on 27 November. An AI agent tried to shorten the compact edition and to keep it valid. Result: from 76,206 to 76,199 lines of code. Replacing proof blocks by stronger automation worked in 0 of 370 attempts, and he found no dead code. A public variant with &ldquo;53,691 lines&rdquo; turned out to have renamed 841 declarations to two or three characters. The count of identifier tokens is almost the same in both: 710,957 and 710,651. This is one report by one person, and nobody has repeated it.</p>
+  <p><strong>One definition can set the cost of a check.</strong> The checker lean4lean accepts the compact export in 29 minutes with 7 GB of memory. For the readable export it needs 2 hours 35 minutes and 332 GB. Of this time, 2 hours 12 minutes go to one definition, <span class="mono">tiltTheory</span>, which the compact edition defines in another way. Sernau found that moving one hypothesis into its own lemma removes the problem, and wrote that he does not know why.</p>
+
+  <h3>From the week between them</h3>
+  <p><strong>A fixed statement makes a rewrite safe.</strong> This page infers it from the timeline. The community moved its main branch from its cleaned copy of the original to 477,000 lines by other authors in less than two hours. This works because the same 16 lines of statements and the same Comparator run decide what counts. No review of the new text was needed for that decision.</p>
+  <p><strong>The rewrite overtook the cleanup.</strong> For five days, many contributors with AI agents had removed code from the original, pull request by pull request. The repository had 541 forks on 27 November. Some of them wrote that the short proof overtook this work. Daniel Ang asked whether a complete rethink can be crowdsourced at all, or needs a few people with much computing power.</p>
+  <p><strong>The target was changed at once.</strong> One reader called the compact edition &ldquo;reward hacking for fewer lines&rdquo;. The community chose the readable edition, which is four times longer, as its base. Loeffler asked the maintainers to stop merging changes that save lines at the cost of readability.</p>
+</section>
+
+<section>
+  <span class="num">06</span>
+  <h2>What this means in practice</h2>
+  <p>Nothing changes for the result. Programs accept the theorem in three forms, and mathematics as a community has accepted none of them. For encryption and daily life, the <a href="../2026-11-21-riemann-hypothesis-claim/#s08">earlier page</a> gives the answer: no effect.</p>
+  <p>For work with AI agents on software, this page draws three inferences. No source states them.</p>
+  <ul class="plain">
+    <li><strong>The first working version of an agent can be far from the smallest one.</strong> Here the factor was 154, and a second pass found it in days. The second pass was cheap to trust because a machine checks the specification completely. A test suite checks samples. The same rewrite of a program needs more care.</li>
+    <li><strong>Measure what you want.</strong> Lines of code fell while the export grew, and a renaming pass produced a &ldquo;shorter&rdquo; proof with the same number of tokens. An agent that is rewarded for a number will move the number.</li>
+    <li><strong>Review is the scarce resource.</strong> In the week after the announcement, AI produced two shorter proofs, a text of 1,356 pages and many summaries. The number of people who can judge the mathematics did not change. Naskręcki, quoted by heise online, sees the limit no longer in the formal proof, but in the reading by people.</li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">07</span>
+  <h2>Terms</h2>
+  <dl class="gloss">
+    <div id="t-rh"><dt>Riemann Hypothesis</dt><dd>The conjecture of Bernhard Riemann from 1859: every zero of the zeta function, apart from the known ones at &minus;2, &minus;4, &hellip;, has the real part 1/2. It is equivalent to a sharp bound on how far the count of primes can differ from its prediction. <a href="../2026-11-21-riemann-hypothesis-claim/">The earlier page explains it</a></dd></div>
+    <div id="t-zeta"><dt>Zeta function (Riemann zeta function, ζ)</dt><dd>A function of one complex number. Where the real part of its argument is above 1, it is the sum of the powers of 1/n with this argument as exponent, over all whole numbers n from 1 on. Its zeros control the distribution of the primes. <a href="https://en.wikipedia.org/wiki/Riemann_zeta_function">Wikipedia</a></dd></div>
+    <div id="t-grh"><dt>Generalized Riemann Hypothesis (GRH)</dt><dd>The same statement for a family of functions similar to zeta. The proofs here cover the Dirichlet L-functions, which describe primes in arithmetic progressions such as 3, 7, 11, 19, 23, &hellip; <a href="https://en.wikipedia.org/wiki/Generalized_Riemann_hypothesis">Wikipedia</a></dd></div>
+    <div id="t-lean"><dt>Lean</dt><dd>A programming language and proof checker. A mathematical statement is a type, and a proof is a program of that type. <a href="https://lean-lang.org/">lean-lang.org</a></dd></div>
+    <div id="t-mathlib"><dt>Mathlib</dt><dd>The mathematics library of the Lean community, with the definitions that the theorems here use: complex numbers, the zeta function, Dirichlet characters. <a href="https://leanprover-community.github.io/">leanprover-community.github.io</a></dd></div>
+    <div id="t-kernel"><dt>Kernel</dt><dd>The small part of Lean that type checks finished proof terms. Everything else in Lean, such as automation, only produces terms for the kernel. A bug outside the kernel cannot make a false theorem pass.</dd></div>
+    <div id="t-axioms"><dt>The three standard axioms</dt><dd>Statements that Lean accepts without proof and that almost all of Mathlib uses: <span class="mono">propext</span>, <span class="mono">Quot.sound</span> and <span class="mono">Classical.choice</span>, the axiom of choice. A proof that needs a fourth axiom assumes something more.</dd></div>
+    <div id="t-sorry"><dt>sorry</dt><dd>A Lean keyword that stands in for a missing proof. Lean accepts the file with a warning, and the theorem then depends on an extra axiom. A finished proof contains none.</dd></div>
+    <div id="t-export"><dt>Export</dt><dd>A file with all declarations that a theorem depends on, as fully explicit terms, Mathlib included. Checkers other than Lean read this format.</dd></div>
+    <div id="t-checkers"><dt>Independent checkers</dt><dd>Kernels written again from scratch by other people: nanoda in Rust, lean4lean in Lean itself, con-leche and its Rust port con-ron. A bug in Lean&rsquo;s kernel is unlikely to exist in all of them.</dd></div>
+    <div id="t-comparator"><dt>Comparator</dt><dd>A tool of the Lean project. It compares the statements of a solution with a challenge file, checks the list of axioms, and runs Lean&rsquo;s kernel and the independent checkers on the export. <a href="https://github.com/leanprover/comparator">github.com/leanprover/comparator</a></dd></div>
+    <div id="t-theta"><dt>Theta lift</dt><dd>A method from the theory of automorphic forms. It turns a highly symmetric function for one group of symmetries into one for another group. The proof applies it many times in a chain: about the square root of the bound up to which it counts primes. <a href="https://en.wikipedia.org/wiki/Theta_correspondence">Wikipedia</a></dd></div>
+    <div id="t-covol"><dt>Covolume of a lattice</dt><dd>A lattice is a regular grid of points in a space of many dimensions. Its covolume is the volume of one cell of the grid. A grid of short vectors has a small covolume.</dd></div>
+    <div id="t-shimura"><dt>Shimura varieties</dt><dd>Geometric spaces whose points carry arithmetic information. Modern number theory uses them to connect symmetric functions with equations in whole numbers. <a href="https://en.wikipedia.org/wiki/Shimura_variety">Wikipedia</a></dd></div>
+    <div id="t-vandiver"><dt>Vandiver&rsquo;s conjecture</dt><dd>An open question of number theory, named after Harry Vandiver. It says that a prime p never divides a certain class number that belongs to the p-th roots of 1. <a href="https://en.wikipedia.org/wiki/Kummer%E2%80%93Vandiver_conjecture">Wikipedia</a></dd></div>
+    <div id="t-polymath"><dt>Polymath project</dt><dd>An open collaboration of many mathematicians on one problem, in public forums. Results appear under a shared pseudonym. <a href="https://terrytao.wordpress.com/2026/11/24/g-r-h-polymath/">The announcement</a></dd></div>
+    <div id="t-mit"><dt>MIT</dt><dd>Massachusetts Institute of Technology, a university in Cambridge near Boston, USA.</dd></div>
+    <div id="t-utc"><dt>UTC</dt><dd>Coordinated Universal Time. Austria is one hour ahead of it in winter.</dd></div>
+  </dl>
+</section>
+
+<section>
+  <span class="num">08</span>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>The sizes, the theorem statements, the layout and the quoted lemma come from the repository of the short proof, which this page cloned and counted on 27 November 2026. The checks come from the published logs of Sutherland and Rubinstein. The statements about the method are Sernau&rsquo;s own posts.</span><span class="d">Only reported: the words of Naskręcki in section 06, by heise online. The size of the original is Naskręcki&rsquo;s count, which this page did not repeat. The 1,356 pages are the page count of the PDF in his repository on 27 November. The Lean code on this page is quoted from the repository and was not compiled for this page.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>The average of 99 lines per file, the ratios in the first chart, the lesson about the fixed statement in section 05 and all three points of section 06 are inferences of this page.</span><span class="d">From the knowledge of the model, without a source: the short descriptions of resolution of singularities and of the glossary terms, and the comparison with a compiler.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>Whether the proof is correct mathematics in the sense of the community: no person has reviewed any version. Whether the statements about the newer Mathlib equal those about the older one: not checked formally. How the short proof was made: the authors gave only an outline.</span><span class="d">Single sources: the experiment of Zhang, and each forum post. A forum post is evidence for what its author wrote, not for whether it is true. The mathematics in section 03 is simplified from comments in the source and was not checked by a mathematician.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">09</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207">Luke Sernau and colleagues at Anthropic, with Claude: lsernau/grh-lean, commit 72fead1</a> &middot; source code with README, guide and list of references, 25 November 2026</li>
+    <li><a href="https://leanprover.zulipchat.com/#narrow/channel/658556-Riemann-Hypothesis/topic/New.20proof.20in.20300k.20lines/near/643702366">Lean community forum: &ldquo;New proof in 300k lines&rdquo;</a> &middot; forum posts of Sernau, Loeffler, Murrills, Morrison, Ang and others, 25 to 27 November 2026</li>
+    <li><a href="https://math.mit.edu/~drew/shortgrh/">Andrew Sutherland, MIT: verification files for the shorter proof</a> &middot; logs and report, last changed 26 November 2026, 20:46 UTC</li>
+    <li><a href="https://math.mit.edu/~drew/grh/">Andrew Sutherland, MIT: verification files for the original proof</a> &middot; logs and report, last changed 25 November 2026, 22:05 UTC</li>
+    <li><a href="https://mrubinst.github.io/grh-lean-compact-check/">Michael Rubinstein, University of Waterloo: check of the compact edition</a> &middot; logs and report, 26 November 2026</li>
+    <li><a href="https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/">Michael Rubinstein: page about the proof, with his guide of 265 pages</a> &middot; working draft of 22 November 2026</li>
+    <li><a href="https://alpo.ge/remark.pdf">Levent Alpöge: the note that announced the proof</a> &middot; 20 November 2026</li>
+    <li><a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/">Lean FRO and Mathlib Initiative: joint statement about the original proof</a> &middot; 21 November 2026</li>
+    <li><a href="https://github.com/leanprover-community/riemann-hypothesis">Lean community: repository that maintains the proof</a> &middot; README, read on 27 November 2026</li>
+    <li><a href="https://github.com/nasqret/riemann-rev">Bartosz Naskręcki: riemann-rev, with the size table and the write-up of the compact edition</a> &middot; repository, state of 27 November 2026; the write-up is made by AI and not reviewed</li>
+    <li><a href="https://leanprover.zulipchat.com/#narrow/channel/658556-Riemann-Hypothesis/topic/Why.20clean.20up.20the.20proof/near/642816120">Lean community forum: &ldquo;Why clean up the proof&rdquo;</a> &middot; forum posts of Carneiro, Loeffler and Kharkov, 23 November 2026</li>
+    <li><a href="https://terrytao.wordpress.com/2026/11/24/g-r-h-polymath/">Anurag Sahay, Will Sawin and Lior Silberman: G.R.H. Polymath</a> &middot; guest post on the blog of Terence Tao, 24 November 2026</li>
+    <li><a href="https://rh-polymath.zulipchat.com/#narrow/channel/658820-Lean-proof/topic/Shorter.20Lean.20proof/near/644052935">Polymath forum: &ldquo;Shorter Lean proof&rdquo; and &ldquo;Simplified proof&rdquo;</a> &middot; forum posts of Zhang and Loeffler, 26 and 27 November 2026</li>
+    <li><a href="https://galoisrepresentations.org/2026/11/25/bounds-on-k-groups-and-reducible-modularity-lifting/">Frank Calegari: Bounds on K-groups and reducible modularity lifting</a> &middot; blog post of a number theorist, 25 November 2026</li>
+    <li><a href="https://www.claymath.org/millennium/riemann-hypothesis/">Clay Mathematics Institute: its page about the Riemann Hypothesis</a> &middot; read on 27 November 2026</li>
+    <li><a href="https://www.heise.de/en/news/Riemann-hypothesis-Claude-cuts-AI-proof-by-more-than-99-11539304.html">heise online: Claude cuts AI proof by more than 99 %</a> &middot; reporting, 26 November 2026</li>
+  </ul>
+</section>
+
+<p class="page-note">The charts take their numbers from the sources named in the captions. Section 03 simplifies advanced mathematics and follows the comments in the source code, which an AI wrote. Times of checks come from different machines and versions of Lean. Status of the facts: 27 November 2026.</p>
+
+</main>
+<!-- learn:footer -->
+<script>
+(function(){
+'use strict';
+var L=window.Learn;
+function $(id){return document.getElementById(id);}
+
+/* Figure 1. Sources: Naskręcki (original lines and files), own count on commit 72fead1 (short editions),
+   Sutherland's logs (export bytes, time of leanchecker --from-export with Lean's default kernel). */
+var ED=[{n:'Original',c:'b-or'},{n:'Readable edition',c:'b-rd'},{n:'Compact edition',c:'b-cp'}];
+var MET=[
+ {what:'lines of Lean',v:[17374215,477124,112827],f:function(v){return L.fmt(v)+' lines';}},
+ {what:'Lean files',v:[175187,803,794],f:function(v){return L.fmt(v)+' files';}},
+ {what:'export size',v:[61.570595788,4.485867644,5.172274528],f:function(v){return v.toFixed(2)+' GB';}},
+ {what:'kernel time',v:[2883,29.483,33.083],f:function(v){return v>=60?Math.floor(v/60)+' h '+Math.round(v%60)+' min':Math.round(v)+' min';}}
+];
+var metric=0;
+function ratio(a,b){var r=a/b;return (r>=20?L.fmt(Math.round(r)):r.toFixed(1))+'×';}
+function drawSize(){
+  var svg=$('cSize'),m=MET[metric],rowH=46,w=L.frame(svg,rowH*3+6),max=m.v[0];
+  for(var i=0;i<3;i++){
+    var y=i*rowH+16,bw=Math.max(2,(w-2)*m.v[i]/max);
+    L.label(svg,0,y,ED[i].n,'t-name');
+    L.label(svg,w,y,m.f(m.v[i]),'t-val','end');
+    L.mk('rect',{x:0,y:y+7,width:w,height:14,rx:2,'class':'b-track'},svg);
+    L.mk('rect',{x:0,y:y+7,width:bw,height:14,rx:2,'class':ED[i].c},svg);
+  }
+  $('sWhat').textContent=m.what;
+  $('sRd').textContent=ratio(m.v[0],m.v[1]);
+  $('sCp').textContent=ratio(m.v[0],m.v[2]);
+  svg.setAttribute('aria-label','Three bars on one linear scale: the original proof with '+m.f(m.v[0])+', the readable edition with '+m.f(m.v[1])+' and the compact edition with '+m.f(m.v[2]));
+}
+[].forEach.call($('metric').querySelectorAll('button'),function(b,i){
+  b.addEventListener('click',function(){metric=i;L.press($('metric'),b);drawSize();});
+});
+
+/* Figure 2. Lines per folder of grh-compact/src at commit 72fead1, counted with wc -l on 27 November 2026. */
+var PART=[
+ {name:'Lib',n:16,sum:77850,rows:[['Weil',9502],['Shimura',8489],['General',8382],['Adelic',7171],['Cohomology',7124],['ClassField',6713],['DiscreteSeries',6047],['PadicHodge',5867],['GaloisRep',4321],['PadicComparison',3517],['LocalGL',3220],['SiegelWeil',2312],['CM',1868],['GLn',1740],['Cyclotomic',875],['Analytic',702]]},
+ {name:'New',n:21,sum:34948,rows:[['Filling',6497],['Exchange',4258],['Selmer',4104],['Rows',3231],['Seesaw',3143],['RealPlace',3117],['Lift',1873],['Curve',1525],['Columns',1376],['TwistedHecke',1304],['Data',1233],['DiscreteSeries',824],['9 small folders, Main.lean',2463]]}
+];
+var part=0;
+function drawFold(){
+  var svg=$('cFold'),p=PART[part],rowH=21,w=L.frame(svg,16*rowH+6),x0=118,max=9502,room=w-x0-48;
+  p.rows.forEach(function(r,i){
+    var y=i*rowH+15;
+    L.label(svg,x0-8,y,r[0],'t-fold','end');
+    L.mk('rect',{x:x0,y:y-10,width:Math.max(2,room*r[1]/max),height:13,rx:2,'class':'b-cp'},svg);
+    L.label(svg,x0+Math.max(2,room*r[1]/max)+5,y,L.fmt(r[1]),'t-num');
+  });
+  $('fPart').textContent=p.name;
+  $('fN').textContent=L.fmt(p.n);
+  $('fSum').textContent=L.fmt(p.sum);
+  svg.setAttribute('aria-label','Bar chart of the folders of the compact edition by lines, part '+p.name+': the largest is '+p.rows[0][0]+' with '+L.fmt(p.rows[0][1])+' lines');
+}
+[].forEach.call($('part').querySelectorAll('button'),function(b,i){
+  b.addEventListener('click',function(){part=i;L.press($('part'),b);drawFold();});
+});
+
+L.onChange(function(){drawSize();drawFold();});
+})();
+</script>
+</body>
+</html>

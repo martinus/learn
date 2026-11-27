@@ -10,11 +10,11 @@
   "de": "Ein möglicher Beweis der Riemannschen Vermutung"
  },
  "summary": {
-  "en": "For 167 years nobody could solve the most famous riddle in mathematics. Now a mathematician and an AI say that they did, and the experts for the checking program agree. A first text for people exists, with open steps. What the riddle is, what the idea is, and how sure we can be.",
-  "de": "167 Jahre lang konnte niemand das berühmteste Rätsel der Mathematik lösen. Jetzt sagen ein Mathematiker und eine KI, sie hätten es geschafft, und die Fachleute für das Prüfprogramm stimmen zu. Ein erster Text für Menschen liegt vor, mit offenen Schritten. Was das Rätsel ist, was die Idee ist und wie sicher das Ergebnis ist."
+  "en": "For 167 years nobody could solve the most famous riddle in mathematics. Now a mathematician and an AI say that they did, and the experts for the checking program agree. A first text for people exists, with open steps. Five days later a much shorter proof followed. What the riddle is, what the idea is, and how sure we can be.",
+  "de": "167 Jahre lang konnte niemand das berühmteste Rätsel der Mathematik lösen. Jetzt sagen ein Mathematiker und eine KI, sie hätten es geschafft, und die Fachleute für das Prüfprogramm stimmen zu. Ein erster Text für Menschen liegt vor, mit offenen Schritten. Fünf Tage später folgte ein viel kürzerer Beweis. Was das Rätsel ist, was die Idee ist und wie sicher das Ergebnis ist."
  },
  "published": "2026-11-21",
- "updated": "2026-11-25",
+ "updated": "2026-11-27",
  "languages": [
   "en",
   "de"
@@ -58,17 +58,18 @@
 <main class="explainer">
 
 <header>
-  <span class="eyebrow" data-i18n="ey">Developing story &middot; status of 25 November 2026</span>
+  <span class="eyebrow" data-i18n="ey">Developing story &middot; status of 27 November 2026</span>
   <h1 data-i18n="h1">A claimed proof of the Riemann Hypothesis</h1>
   <!-- learn:byline -->
   <p class="lead" data-i18n="lead">For 167 years, nobody could solve the most famous riddle in mathematics. On 20 November 2026 the mathematician Levent Alpöge said that he solved it together with Claude, an <a class="term" href="#t-ai">AI</a> program. This page explains the riddle, the idea, and how sure we can be. You need no mathematics from school to read it.</p>
   <div class="status">
-    <b data-i18n="st_b">Status: the checks passed, and a first text for people exists, but it is not complete</b>
-    <span data-i18n="st_t">On 21 November, the communities behind the checking program <a class="term" href="#t-lean">Lean</a> wrote in a joint statement that they have full confidence in the proof. All long checks that ended since then passed. One run still continued on 24 November. New: Jimmie Adriazola of Arizona State University wrote the proof as a text of 287 pages (section 06). This text still uses steps that it does not prove, and no independent person has checked it. The <a class="term" href="#t-clay">Clay institute</a> lists the riddle as active, not as solved. The author of the second proof, made by people only, wrote on 22 November that his paper is not ready and contains errors (section 07).</span>
+    <b data-i18n="st_b">Status: all checks passed, and a much shorter proof exists, but no complete text for people</b>
+    <span data-i18n="st_t">On 21 November, the communities behind the checking program <a class="term" href="#t-lean">Lean</a> wrote in a joint statement that they have full confidence in the proof. All long checks have ended and passed, the last one on 25 November. New: on the same day, a team at Anthropic published a much shorter computer file that proves the same claims. It has about 113,000 lines in place of 17 million, and checking programs accept it too. <a href="../2026-11-27-riemann-proof-shortened/">A separate page explains how the proof became shorter</a>. Jimmie Adriazola of Arizona State University wrote the first proof as a text of 287 pages (section 06). This text still uses steps that it does not prove, and no independent person has checked it. The <a class="term" href="#t-clay">Clay institute</a> lists the riddle as active, not as solved. The author of the second proof, made by people only, wrote on 22 November that his paper is not ready and contains errors (section 07).</span>
   </div>
   <details class="changes">
     <summary><span data-i18n="chg_h">What changed on this page</span></summary>
     <ol>
+      <li><time data-i18n="chg8d">27 Nov 2026</time><span data-i18n="chg8t">Section 05: the last long check ended on 25 November and passed, so all checks on the list are complete. On the same day, a team at Anthropic published a much shorter proof of the same claims. <a href="../2026-11-27-riemann-proof-shortened/">A separate page</a> explains it.</span></li>
       <li><time data-i18n="chg7d">25 Nov 2026</time><span data-i18n="chg7t">Terms with a dotted line now show a short explanation on hover or tap. Section 09 has many new terms. The text links to the papers, projects and organizations.</span></li>
       <li><time data-i18n="chg6d">25 Nov 2026</time><span data-i18n="chg6t">New section 06: Jimmie Adriazola wrote the proof as a text of 287 pages. It shows the route of the proof and says which steps are still open. Section 05: more long runs ended and passed, the Clay institute now lists the riddle as active, and Alpöge calls the number of 250,000 pages a joke. The sections after 05 have new numbers.</span></li>
       <li><time data-i18n="chg5d">24 Nov 2026</time><span data-i18n="chg5t">New in section 04: what the note says about the method of work, what is not public (model, prompts, computing power), and what other problems can take from it.</span></li>
@@ -296,7 +297,7 @@
     <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k10t">Lean&rsquo;s own checking program finished its long run.</span><span class="d" data-i18n="k10d">It examined the complete file in one run of 48 hours and accepted the proof on 22 November at 18:44 <a class="term" href="#t-utc">UTC</a>. A variant of this checking program with the name &ldquo;paranoid&rdquo; needed 72 hours and accepted the proof on 23 November at 19:01 UTC.</span></span></li>
     <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k11t">The complete test in one run passed.</span><span class="d" data-i18n="k11d">A tool with the name Comparator does the main checks in one run: it compares the claim, looks for hidden shortcuts and starts two checking programs. After 64 hours, on 23 November at 09:10 UTC, it reported: &ldquo;Your solution is okay!&rdquo; Sutherland notes that this run did not build the files again. It used the files from his first build.</span></span></li>
     <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k12t">A consequence without the zeta function.</span><span class="d" data-i18n="k12d">A known result from 1984, the <a class="term" href="#t-robin">criterion of Robin</a>, connects the riddle with a simple rule. Take a whole number above 5,040 and add all numbers that divide it. The rule says that this sum stays below a certain limit. The riddle is true exactly if the rule is true for all these numbers. A separate project had proved this connection in Lean. Together with the new proof, the rule itself is now proved, and three checking programs accepted it. On 24 November, the separate project also passed the complete test on its own. The rule does not mention the zeta function from section 02. So this check does not depend on how the library defines that function.</span></span></li>
-    <li><span class="pill prog" data-i18n="plRun">Running</span><span><span data-i18n="k9t">One long run on Sutherland&rsquo;s list.</span><span class="d" data-i18n="k9d">It was not complete on 24 November at 05:25 UTC. It is a newer version of the complete test and runs since 20 November. Two of its three checking programs had accepted the proof by then. The third started on 23 November at about 21:31 UTC. It is Lean&rsquo;s own checking program, which needed 48 hours when it ran alone.</span></span></li>
+    <li><span class="pill done" data-i18n="plOk">Passed</span><span><span data-i18n="k9t">The newer complete test passed too.</span><span class="d" data-i18n="k9d">It is a newer version of the complete test and ran since 20 November. On 25 November at 21:49 UTC it reported: &ldquo;Your solution is okay!&rdquo; It needed 122 hours and 45 minutes, because each of its checking programs used only one processor core. With this run, all checks on Sutherland&rsquo;s list are complete.</span></span></li>
     <li><span class="pill no" data-i18n="plNo">Not yet</span><span><span data-i18n="k5t">People understand the proof.</span><span class="d" data-i18n="k5d">No independent mathematician has confirmed an explanation of why it works. After a first look, the well-known mathematician <a href="https://terrytao.wordpress.com/2026/11/20/unforced-euler-singularity-unforced-navier-stokes-singularity-and-the-generalized-riemann-hypothesis/">Terence Tao wrote</a> that the proof seems to use two large areas of modern mathematics, and that it takes time to see how the parts fit together. First texts now show the route (section 06).</span></span></li>
     <li><span class="pill prog" data-i18n="plPart">Begun</span><span><span data-i18n="k6t">A text that people can read.</span><span class="d" data-i18n="k6d">A text of 287 pages exists in a version of 24 November (section 06). It still uses steps that it does not prove, and no independent person has checked it. The note of Alpöge mentions a text of more than 250,000 pages, which he did not publish. The Next Web reports from his posts of 23 November: he meant this number as a joke. The pages exist, but they were never meant as a real write-up.</span></span></li>
     <li><span class="pill no" data-i18n="plNo">Not yet</span><span><span data-i18n="k7t">Official recognition, and the prize of 1 million dollars.</span><span class="d" data-i18n="k7d">The <a class="term" href="#t-clay">Clay institute</a> has not recognized a solution. Its website lists the riddle as &ldquo;Active&rdquo;, in a group of its own next to the unsolved and the solved problems (read on 25 November). The Next Web reports that it stood with the unsolved problems before. The news page of the institute had no statement about the two proofs on that day. Its rules require a publication, then a waiting time of two years or more, and general acceptance by mathematicians.</span></span></li>
@@ -449,7 +450,9 @@
   <ul class="sources">
     <li><a href="https://alpo.ge/remark.pdf" data-i18n="src1">The note by Levent Alpöge (alpo.ge/remark.pdf)</a></li>
     <li><a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/" data-i18n="src8">Lean and Mathlib communities: joint statement of 21 November 2026</a></li>
-    <li><a href="https://math.mit.edu/~drew/grh/" data-i18n="src2">Andrew Sutherland, MIT: public list of the checks (state of 24 November 2026, 05:25 UTC)</a></li>
+    <li><a href="https://math.mit.edu/~drew/grh/" data-i18n="src2">Andrew Sutherland, MIT: public list of the checks (state of 25 November 2026, 22:05 UTC)</a></li>
+    <li><a href="https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207" data-i18n="src20">Luke Sernau and colleagues at Anthropic, with Claude: the shorter proof (repository, 25 November 2026)</a></li>
+    <li><a href="https://math.mit.edu/~drew/shortgrh/" data-i18n="src21">Andrew Sutherland, MIT: checks of the shorter proof (state of 26 November 2026, 20:46 UTC)</a></li>
     <li><a href="https://github.com/jimjamzola/RH-Alpoge-Reconstruction/blob/aa9c86bf2a7d29b08575641fecea19a2a603e87c/manuscript/main.pdf" data-i18n="src15">Jimmie Adriazola: The Alpöge Proof of the Riemann Hypothesis (manuscript of 287 pages, version of 24 November 2026, not reviewed)</a></li>
     <li><a href="https://github.com/jimjamzola/RH-Alpoge-Reconstruction/tree/aa9c86bf2a7d29b08575641fecea19a2a603e87c" data-i18n="src16">Jimmie Adriazola: repository of the manuscript, with the status reports of 21 to 24 November 2026</a></li>
     <li><a href="https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/" data-i18n="src17">Michael Rubinstein, University of Waterloo: guide to the proof (working draft, version 2 of 22 November 2026)</a></li>
@@ -468,16 +471,16 @@
   </ul>
 </section>
 
-<p class="page-note" data-i18n="foot">The charts calculate their data in your browser. Sections 03, 06 and 07 simplify very advanced mathematics. Status of the checks in section 05: 24 November 2026, 05:25 UTC. Section 06 uses the version of the text of 24 November 2026, read on 25 November. Section 04 about the method: 24 November 2026. Section 07 about the second proof: 23 November 2026.</p>
+<p class="page-note" data-i18n="foot">The charts calculate their data in your browser. Sections 03, 06 and 07 simplify very advanced mathematics. Status of the checks in section 05: 25 November 2026, 22:05 UTC. Status box: 27 November 2026. Section 06 uses the version of the text of 24 November 2026, read on 25 November. Section 04 about the method: 24 November 2026. Section 07 about the second proof: 23 November 2026.</p>
 </main>
 <!-- learn:footer -->
 <script type="application/json" id="i18n-de">
 {
-"ey": "Laufende Entwicklung &middot; Stand: 25. November 2026",
+"ey": "Laufende Entwicklung &middot; Stand: 27. November 2026",
 "h1": "Ein möglicher Beweis der Riemannschen Vermutung",
 "lead": "167 Jahre lang konnte niemand das berühmteste Rätsel der Mathematik lösen. Am 20. November 2026 erklärte der Mathematiker Levent Alpöge, er habe es gemeinsam mit Claude gelöst, einem <a class=\"term\" href=\"#t-ai\">KI</a>-Programm. Diese Seite erklärt das Rätsel, die Idee und wie sicher das Ergebnis ist. Schulmathematik ist dafür nicht nötig.",
-"st_b": "Stand: Die Prüfungen sind bestanden, und ein erster Text für Menschen liegt vor, aber er ist nicht vollständig",
-"st_t": "Am 21. November haben die Gemeinschaften hinter dem Prüfprogramm <a class=\"term\" href=\"#t-lean\">Lean</a> in einer gemeinsamen Erklärung geschrieben, dass sie volles Vertrauen in den Beweis haben. Alle langen Prüfungen, die seither fertig wurden, haben bestanden. Ein Lauf dauerte am 24. November noch an. Neu: Jimmie Adriazola von der Arizona State University hat den Beweis als Text mit 287 Seiten aufgeschrieben (Abschnitt 06). Dieser Text verwendet noch Schritte, die er nicht beweist, und kein unabhängiger Mensch hat ihn geprüft. Das <a class=\"term\" href=\"#t-clay\">Clay-Institut</a> führt das Rätsel als aktiv, nicht als gelöst. Der Autor des zweiten Beweises, den nur Menschen gemacht haben, schrieb am 22. November, dass seine Arbeit nicht fertig ist und Fehler enthält (Abschnitt 07).",
+"st_b": "Stand: Alle Prüfungen sind bestanden, und es gibt einen viel kürzeren Beweis, aber keinen vollständigen Text für Menschen",
+"st_t": "Am 21. November haben die Gemeinschaften hinter dem Prüfprogramm <a class=\"term\" href=\"#t-lean\">Lean</a> in einer gemeinsamen Erklärung geschrieben, dass sie volles Vertrauen in den Beweis haben. Alle langen Prüfungen sind fertig und bestanden, die letzte am 25. November. Neu: Am selben Tag hat ein Team von Anthropic eine viel kürzere Computerdatei veröffentlicht, die dieselben Behauptungen beweist. Sie hat etwa 113.000 Zeilen statt 17 Millionen, und Prüfprogramme akzeptieren auch sie. <a href=\"../2026-11-27-riemann-proof-shortened/\">Eine eigene Seite erklärt, wie der Beweis kürzer wurde</a> (englisch). Jimmie Adriazola von der Arizona State University hat den ersten Beweis als Text mit 287 Seiten aufgeschrieben (Abschnitt 06). Dieser Text verwendet noch Schritte, die er nicht beweist, und kein unabhängiger Mensch hat ihn geprüft. Das <a class=\"term\" href=\"#t-clay\">Clay-Institut</a> führt das Rätsel als aktiv, nicht als gelöst. Der Autor des zweiten Beweises, den nur Menschen gemacht haben, schrieb am 22. November, dass seine Arbeit nicht fertig ist und Fehler enthält (Abschnitt 07).",
 "c1h": "Das Rätsel",
 "c1t": "<a class=\"term\" href=\"#t-prime\">Primzahlen</a> tauchen ohne erkennbares Muster auf. Die <a class=\"term\" href=\"#t-rh\">Riemannsche Vermutung</a> sagt: Dahinter steckt eine strenge Ordnung.",
 "c2h": "Die Behauptung",
@@ -595,7 +598,6 @@
 "s5p1": "Der Beweis ist eine Computerdatei mit 175.187 Teilen und etwa 17 Millionen Zeilen. Ein Prüfprogramm mit dem Namen <a class=\"term\" href=\"#t-lean\">Lean</a> kontrolliert jeden Schritt. Man kann an einen sehr strengen Buchprüfer denken. Der Buchprüfer versteht das Geschäft nicht. Aber er rechnet jede Zeile nach und akzeptiert nichts ohne Begründung.",
 "s5p2": "So eine Prüfung kann trotzdem auf zwei Arten schiefgehen. Die Datei kann eine andere, leichtere Behauptung beweisen als das echte Rätsel. Oder sie enthält eine versteckte Abkürzung: einen Schritt, den sie annimmt, aber nicht beweist. Darum müssen andere Leute diese Punkte kontrollieren. Andrew Sutherland von der Universität <a class=\"term\" href=\"#t-mit\">MIT</a> führt eine <a href=\"https://math.mit.edu/~drew/grh/\">öffentliche Liste</a> aller Prüfungen.",
 "plOk": "Bestanden",
-"plRun": "Läuft",
 "plNo": "Noch nicht",
 "k1t": "Die Prüfung klappt auf anderen Computern.",
 "k1d": "Dutzende Personen ließen die Datei auf eigenen Computern laufen. Alle bekamen das gleiche Ergebnis, mit null Fehlern.",
@@ -665,13 +667,17 @@
 "g5d": "Eine größere Fassung des Rätsels für eine ganze Familie ähnlicher Formeln. Beide Beweise behaupten, auch diese Fassung zu lösen. Die geprüfte Computerdatei deckt eine wichtige Gruppe dieser Formeln ab. <a href=\"https://en.wikipedia.org/wiki/Generalized_Riemann_hypothesis\">Mehr dazu: Wikipedia (englisch)</a>",
 "srch": "Quellen",
 "src1": "Die Notiz von Levent Alpöge (alpo.ge/remark.pdf, englisch)",
-"src2": "Andrew Sutherland, MIT: öffentliche Liste der Prüfungen (Stand vom 24. November 2026, 6:25 Uhr MEZ, englisch)",
+"src2": "Andrew Sutherland, MIT: öffentliche Liste der Prüfungen (Stand vom 25. November 2026, 23:05 Uhr MEZ, englisch)",
+"src20": "Luke Sernau und Kollegen bei Anthropic, mit Claude: der kürzere Beweis (Repository, 25. November 2026, englisch)",
+"src21": "Andrew Sutherland, MIT: Prüfungen des kürzeren Beweises (Stand vom 26. November 2026, 21:46 Uhr MEZ, englisch)",
 "src3": "Scientific American: unabhängige Mathematiker über die Prüfungen (englisch)",
 "src4": "Ravi Vakil: Ankündigung der Arbeit von Alessandro Masullo (englisch)",
 "src6": "Nacionale: die Schritte der Überprüfung und die Clay-Regeln (englisch)",
 "src7": "John Baez: die Arbeit von Masullo und die Einwände dagegen (englisch)",
-"foot": "Die Diagramme berechnen ihre Daten in Ihrem Browser. Die Abschnitte 03, 06 und 07 vereinfachen sehr anspruchsvolle Mathematik. Stand der Prüfungen in Abschnitt 05: 24. November 2026, 6:25 Uhr (MEZ). Abschnitt 06 verwendet die Fassung des Textes vom 24. November 2026, gelesen am 25. November. Abschnitt 04 zur Methode: 24. November 2026. Abschnitt 07 über den zweiten Beweis: 23. November 2026.",
+"foot": "Die Diagramme berechnen ihre Daten in Ihrem Browser. Die Abschnitte 03, 06 und 07 vereinfachen sehr anspruchsvolle Mathematik. Stand der Prüfungen in Abschnitt 05: 25. November 2026, 23:05 Uhr (MEZ). Kasten zum Stand: 27. November 2026. Abschnitt 06 verwendet die Fassung des Textes vom 24. November 2026, gelesen am 25. November. Abschnitt 04 zur Methode: 24. November 2026. Abschnitt 07 über den zweiten Beweis: 23. November 2026.",
 "chg_h": "Was sich auf dieser Seite geändert hat",
+"chg8d": "27. Nov. 2026",
+"chg8t": "Abschnitt 05: Die letzte lange Prüfung wurde am 25. November fertig und ist bestanden, damit sind alle Prüfungen auf der Liste abgeschlossen. Am selben Tag hat ein Team von Anthropic einen viel kürzeren Beweis derselben Behauptungen veröffentlicht. <a href=\"../2026-11-27-riemann-proof-shortened/\">Eine eigene Seite</a> (englisch) erklärt ihn.",
 "chg3d": "22. Nov. 2026",
 "chg3t": "Neu: die gemeinsame Erklärung der Lean- und Mathlib-Gemeinschaften, die den Beweis bestätigt. Die Liste der Prüfungen in Abschnitt 05 ist neu. Abschnitt 07 nennt die zwei konkreten Einwände gegen den zweiten Beweis. Die Seite ist außerdem auf learn.ankerl.com umgezogen.",
 "chg2d": "21. Nov. 2026, Nachmittag",
@@ -681,8 +687,8 @@
 "s5p5": "<strong>Die Bestätigung.</strong> Am 21. November haben die Menschen, die Lean und seine Mathematik-Bibliothek entwickeln, eine <a href=\"https://leanprover-community.github.io/blog/posts/riemann-hypothesis/\">gemeinsame Erklärung</a> veröffentlicht. Sie schreiben, dass sie &bdquo;volles Vertrauen&ldquo; haben, dass der Beweis richtig ist, und sie bestätigen die Behauptung und den Beweis. Die zwei Organisationen, die diese Arbeit leiten, die <a class=\"term\" href=\"#t-fro\">Lean FRO</a> und die <a class=\"term\" href=\"#t-mathlib\">Mathlib Initiative</a>, unterstützen die Erklärung. Die Liste zeigt die Prüfungen dahinter und die Prüfungen, die danach kamen:",
 "k8t": "Ein neuer Aufbau in einer abgeschotteten Umgebung.",
 "k8d": "Ein anderer Computer hat alle Teile noch einmal gebaut, abgeschirmt von äußeren Einflüssen. Das Ergebnis ist mit dem veröffentlichten identisch, Byte für Byte.",
-"k9t": "Ein langer Lauf auf Sutherlands Liste.",
-"k9d": "Am 24. November um 6:25 Uhr (MEZ) war er nicht fertig. Er ist eine neuere Version des Gesamttests und läuft seit 20. November. Zwei seiner drei Prüfprogramme hatten den Beweis bis dahin akzeptiert. Das dritte hat am 23. November um etwa 22:31 Uhr (MEZ) begonnen. Es ist das eigene Prüfprogramm von Lean, das allein 48 Stunden gebraucht hat.",
+"k9t": "Auch der neuere Gesamttest ist bestanden.",
+"k9d": "Er ist eine neuere Version des Gesamttests und lief seit 20. November. Am 25. November um 22:49 Uhr (MEZ) meldete er, übersetzt: „Ihre Lösung ist in Ordnung!“ Er brauchte 122 Stunden und 45 Minuten, weil jedes seiner Prüfprogramme nur einen Prozessorkern verwendet hat. Mit diesem Lauf sind alle Prüfungen auf Sutherlands Liste abgeschlossen.",
 "l64": "Baez schreibt, dass die Einwände noch reparierbar oder selbst falsch sein können. Er sagt nicht, dass der Beweis funktioniert, und er sagt nicht, dass er gescheitert ist.",
 "src8": "Lean- und Mathlib-Gemeinschaften: gemeinsame Erklärung vom 21. November 2026 (englisch)",
 "src9": "Kingy AI: Überblick über die Prüfungen und die ersten Reaktionen, mit den Worten von Terence Tao (englisch)",
