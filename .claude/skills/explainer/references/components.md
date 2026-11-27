@@ -72,7 +72,7 @@ The fixed-width font (`--font-mono`) means code: a code block, terminal output, 
 
 ### Code block
 
-Escape `<`, `>` and `&`. A phone shows about 38 characters per line and hides the rest of a longer line until the reader scrolls the block. `try` reports such a block with its longest line. Put a comment where the reader should look.
+Escape `<`, `>` and `&`. A phone shows 37 characters per line and hides the rest of a longer line until the reader scrolls the block. `try` reports such a block with its longest line. Put a comment where the reader should look.
 
 ```html
 <pre class="code" data-lang="cpp"><code>// C++20
