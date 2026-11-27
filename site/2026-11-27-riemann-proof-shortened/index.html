@@ -61,13 +61,14 @@
   <h2>The same theorems in 1/154 of the text</h2>
   <p>In Lean, a theorem is a type and a proof is a program of that type. Checking the proof is type checking. A small trusted core, the <a class="term" href="#t-kernel">kernel</a>, does this, and it does not need to understand the mathematics. The proofs here build on <a class="term" href="#t-mathlib">Mathlib</a>, the mathematics library of the Lean community.</p>
   <p>Both the original and the short proof have the same shape as a software project with a small public header. The file <span class="mono">Statements.lean</span> has 16 lines and imports only Mathlib. It states what is claimed. <span class="mono">Main.lean</span> proves five theorems of these types. All other files are implementation.</p>
-<pre class="code"><code>-- Statements.lean, 1 of 4 definitions
+<pre class="code"><code>-- from Statements.lean (16 lines)
 def RiemannZetaZerosOnLine : Prop :=
   ∀ s : ℂ, riemannZeta s = 0 →
-    (¬∃ n : ℕ, s = -2 * ((n : ℂ) + 1)) →
+    (¬∃ n : ℕ,
+        s = -2 * ((n : ℂ) + 1)) →
     s ≠ 1 → s.re = 1 / 2
 
--- Main.lean, 1 of 5 theorems
+-- from Main.lean, 1 of 5 theorems
 theorem riemannHypothesis :
     RiemannHypothesis :=
   New.zeta_zeros_on_line New.grh
@@ -162,7 +163,8 @@ theorem riemannHypothesis :
 
   <h3>The argument in one inequality</h3>
   <p>The folder <span class="mono">Endgame</span> and the file <span class="mono">New/Main.lean</span> finish the proof, in 684 lines together. The central lemma has a short statement:</p>
-<pre class="code"><code>lemma star_inequality {P} {D : Data P} :
+<pre class="code"><code>lemma star_inequality
+    {P} {D : Data P} :
     D.m * D.remainder
       ≤ D.logB ^ 2 * D.budget
 </code></pre>
