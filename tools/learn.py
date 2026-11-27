@@ -6,7 +6,7 @@
   python3 tools/learn.py serve [port]     build, then serve _site/ on http://localhost:8000
   python3 tools/learn.py new DATE-SLUG    start a new explainer from the template,
                                           for example: new 2026-12-01-how-gps-works
-  python3 tools/learn.py shots [SLUG]     write pictures of the pages into _shots/, to look at
+  python3 tools/learn.py shots [SLUG]     write pictures of the pages into _shots/, to look at. With SLUG, the pictures of the other pages stay
                                           the result (needs Chrome). Without SLUG: all pages.
   python3 tools/learn.py shots SLUG SET [SET ...]
                                           add pictures with controls in other positions. SET is a list
@@ -676,11 +676,15 @@ def cmd_shots(slug, settings=()):
         print("No explainer with the name %s." % slug, file=sys.stderr)
         return 1
     # Remember the pictures of the last run, to say afterwards which ones are different now.
+    # With a slug, only the folder of this page is replaced, so the pictures of a second page stay for review.
     before = {}
-    if SHOTS.exists() and not settings:
-        for old in SHOTS.rglob("*.png"):
-            before[str(old.relative_to(SHOTS))] = (png_size(old), hashlib.sha256(old.read_bytes()).hexdigest())
-        shutil.rmtree(SHOTS)
+    if not settings:
+        for folder in ([SHOTS / it.slug for it in items] if slug else [SHOTS]):
+            if not folder.exists():
+                continue
+            for old in folder.rglob("*.png"):
+                before[str(old.relative_to(SHOTS))] = (png_size(old), hashlib.sha256(old.read_bytes()).hexdigest())
+            shutil.rmtree(folder)
     jobs = []
     for it in items:
         folder = SHOTS / it.slug
@@ -858,6 +862,14 @@ setTimeout(function () {
     [].forEach.call(d.querySelectorAll('main .formula'), function (e) {
       if (e.scrollWidth > e.clientWidth + 1) log.push('WARNING a formula is ' + e.scrollWidth + ' px wide in a block of ' + e.clientWidth + ' px, so the reader must scroll it: ' + e.textContent.trim().slice(0, 40));
     });
+    /* A code line or a table column beyond the right edge is hidden until the reader scrolls sideways. */
+    [].forEach.call(d.querySelectorAll('main pre.code, main .scroll-x'), function (e) {
+      if (e.scrollWidth <= e.clientWidth + 1) return;
+      var code = e.tagName === 'PRE', longest = '';
+      if (code) e.textContent.split('\\n').forEach(function (l) { if (l.length > longest.length) longest = l; });
+      log.push('WARNING a ' + (code ? 'code block' : 'table') + ' is ' + e.scrollWidth + ' px wide in a block of ' + e.clientWidth + ' px, so its right part is hidden until the reader scrolls: '
+        + (code ? 'longest line of ' + longest.length + ' characters, "' + longest.trim().slice(0, 40) + '"' : e.textContent.trim().replace(/\\s+/g, ' ').slice(0, 50)));
+    });
     var wide = d.documentElement.scrollWidth, win = d.documentElement.clientWidth;
     log.push((wide > win ? 'ERROR the page is wider than the window: ' : 'width: ') + wide + ' px of content in ' + win + ' px');
   } catch (e) { log.push('ERROR while using the controls: ' + e.message); }
@@ -869,7 +881,8 @@ setTimeout(function () {
 def cmd_try(slug):
     """Use every control of one built page once, in a frame of 390 px, and print what the page then shows.
     The pictures from "shots" show the page at rest. This command finds what they cannot show, or show only to a
-    careful eye: a script error, a control without effect, a result that is not a number, a formula that is too wide,
+    careful eye: a script error, a control without effect, a result that is not a number, a formula, a code block
+    or a table that is too wide,
     a number in the page source that differs from what the script writes, a line that breaks next to a formula,
     and a chart label under a line or under another label, at the start and in each position of a control."""
     chrome = find_chrome()

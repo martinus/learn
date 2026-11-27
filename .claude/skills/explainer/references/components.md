@@ -72,7 +72,7 @@ The fixed-width font (`--font-mono`) means code: a code block, terminal output, 
 
 ### Code block
 
-Escape `<`, `>` and `&`. A phone shows about 42 characters per line and scrolls a longer line inside the block, so keep lines short. Put a comment where the reader should look.
+Escape `<`, `>` and `&`. A phone shows 37 characters per line and hides the rest of a longer line until the reader scrolls the block. `try` reports such a block with its longest line. Put a comment where the reader should look.
 
 ```html
 <pre class="code" data-lang="cpp"><code>// C++20
@@ -228,6 +228,8 @@ The section directly before "Sources". It uses the check list with three fixed p
 <div class="scroll-x"><table> ... </table></div>   <!-- a table may scroll sideways, the page may not -->
 ```
 
+A phone shows about four short columns. The columns beyond that are hidden until the reader scrolls, and `try` reports such a table. If the last column carries the main point, make the table narrower: put a note under the text of the first column in `<small>` and keep only a word or a pill in the other cells.
+
 ## Figures
 
 Every graphic sits in a `<figure>`. The order inside is fixed: title, controls, legend, chart, numbers, caption.
@@ -253,6 +255,7 @@ Every graphic sits in a `<figure>`. The order inside is fixed: title, controls, 
 
 - Legend marks: `sw` (line in `--c1`), `sw c2` (dashed), `sw c3`, `sw ink`, `sw band` (filled range).
 - Action button: `<button type="button" class="act">`.
+- Button group, to choose one of a few views: `<div class="seg" id="view" role="group" aria-label="...">` inside `<div class="ctl">`, with one `<button type="button" aria-pressed="true">` for the view at the start and `aria-pressed="false"` for the others. On a click, call `L.press(group, button)` and redraw. `shots <slug> "view:2"` shows the third button.
 - Small picture next to text: `<div class="split"><svg ...></svg><div class="txt">...</div></div>`. It stacks on a phone.
 - Chart mark classes: lines `l-c1`, `l-c2`, `l-c3`, `l-ink`, `l-base`; filled range `f-band`; dots `d-c1`, `d-c3`; text `lbl`, `t-c2`, `t-c3`.
 - A picture with a fixed layout (diagram, map) is a normal inline `<svg viewBox="...">` with `max-width` and the classes above.
