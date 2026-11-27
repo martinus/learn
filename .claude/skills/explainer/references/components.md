@@ -304,6 +304,7 @@ Each of these happened on an earlier page.
 - **A fixed-size picture inside a wide figure does not grow.** Check it at 1440 px.
 - **Sticky parts cover content.** After a jump to a section, the site bar and the section row sit above the text. The theme reserves space with `scroll-padding-top`. If you add a sticky part, test a jump to every section.
 - **Pictures find what `check` cannot:** text that touches, a row that covers a heading, a menu with a transparent background. A fault can exist in one position of a control only: at the end of a slider, the line of the selected value crossed a label. Look at every picture, also those of the end positions (`shots <slug> "id:value"`).
+- **A label under a line.** The name of an axis in a corner of the chart lies under a curve that reaches this corner. `try` reports a chart label that a line or another label crosses, at 390 px, at the start and in each position it sets. Move the label to a corner that the curve does not reach, or widen the range of the axis. A label that must lie on lines gets a halo in the `<style>` of the page, and `try` then accepts it: `paint-order:stroke;stroke:var(--surface);stroke-width:4`. `try` ignores a line in the colour of the grid (`--rule`).
 
 ## A second language
 

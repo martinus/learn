@@ -2,6 +2,8 @@
 
 The reader wants to know, for every statement on a page, whether it is sourced, inferred or uncertain. Nobody checks the facts after you, so these rules are the only quality control of the content.
 
+Contents: When to search · Which sources · Is the source current? · Read the source itself · Contested topics · Fact list · How the three kinds appear on the page · Section "How sure is this?" · Source list · Stories in progress
+
 ## When to search
 
 Your training data ends at a cutoff and the world has moved on since. Treat what you remember as a hint where to look, not as a fact.
@@ -29,7 +31,8 @@ Use the highest level that you can read.
 - Look for a newer version: a new edition of the standard, a newer data release, a correction, a retraction, a follow-up study, the documentation of a newer release. Put the current year into the query.
 - Software: read the documentation and the release notes of the current release, and name the version on the page. A "latest" link drifts, so link the specific version when the page describes its behaviour.
 - A preprint is not a reviewed paper. Say which one the source is.
-- For a paper, list what cites it: `curl -s 'https://api.semanticscholar.org/graph/v1/paper/arXiv:<id>/citations?fields=title,publicationDate,externalIds&limit=200'`. Later papers of the same authors show the current state. `https://api.crossref.org/works/<doi>` gives the venue, the date and the pages for a DOI. Pages of the ACM refuse `curl` with 403, also when the link is correct.
+- For a paper, list what cites it: `curl -s 'https://api.semanticscholar.org/graph/v1/paper/arXiv:<id>/citations?fields=title,publicationDate,externalIds&limit=200'`. Later papers of the same authors show the current state. `https://api.crossref.org/works/<doi>` gives the venue, the date and the pages for a DOI, and `https://export.arxiv.org/api/query?id_list=<id>` gives the journal reference of a preprint. The first address answers 429 after a few requests in a row.
+- Some servers refuse automatic access, also when the link is correct: the ACM, AIP and the Royal Society answer a DOI with 403, ScienceDirect shows a captcha, and `feynmanlectures.caltech.edu` blocks `curl` and the fetch tool. Do not work around a refusal. Confirm a DOI with Crossref, take the fact from a source that you can read, and name the refusal in the pull request.
 - If the newest source is old, the page says how old.
 - Every number that can change carries its date on the page.
 
@@ -41,7 +44,7 @@ Use the highest level that you can read.
 - Read each number in context: unit, year, region, and what exactly was counted.
 - Numbers from two sources may be combined only when they measure the same thing. A combined number is an inference.
 - A benchmark of a library measures the library, not the algorithm of the paper behind it. Before you explain one of its numbers, read what the library adds, in its README and in the code of the measured path. In one session a fast lookup came from a filter that the library had added.
-- Link the exact page, not the home page of a site. Open every link once more before the hand-over, also the links in the text and in the glossary: `curl -sIL -o /dev/null -w '%{http_code} %{url_effective}\n' <url>` shows the status and where a redirect ends.
+- Link the exact page, not the home page of a site. Open every link once more before the hand-over, also the links in the text and in the glossary: `curl -sIL --max-time 30 -o /dev/null -w '%{http_code} %{url_effective}\n' <url>` shows the status and where a redirect ends. Give every `curl` call `--max-time`, because a server that does not answer otherwise blocks the command for minutes.
 
 ## Contested topics
 

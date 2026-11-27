@@ -53,6 +53,7 @@ The page text uses plain language: short, exact sentences are fast to read, also
 - Link the first mention of a project, an organisation, an instrument, a dataset, a paper, a law or a software to its own page. The reader can then go one step deeper without a search.
 - A glossary entry may end with one link to a page that explains the concept further, for a reader new to the field. An encyclopedia article (Wikipedia) is acceptable there, because it is reading help and not a source.
 - A link is not a source. A fact on the page still needs its entry in "Sources".
+- Link another page of this site where it explains a term that this page needs: `<a href="../<folder>/">`, with `#s02` for one section. `check` tests that the folder exists.
 - Write the link on the name itself: "the [Planck satellite]", not "see [here]". At most about one link per paragraph, so the text stays readable.
 - Use a comparison only where it speeds up a new idea, and prefer an exact one from software (a cache, a queue, a checksum, interface and implementation). Say where it stops holding. One comparison per idea.
 

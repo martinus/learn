@@ -286,6 +286,9 @@ class Explainer:
         for target in set(re.findall(r'href="#([^"]*)"', text)):
             if target not in ids and target not in sections and target not in LANGS:
                 self.err('a link points to "#%s", but the page has no element with this id' % target)
+        for folder in set(re.findall(r'href="\.\./([^"/#?]*)', text)):
+            if not (SITE / folder / "index.html").is_file():
+                self.err('a link points to "../%s/", but the site has no page with this folder name' % folder)
         for url in set(re.findall(r'href="(http://[^"]*)"', text)):
             self.err("the link %s uses http. Use https, or leave the link out if the site has no https" % url)
 
@@ -763,12 +766,67 @@ setTimeout(function () {
       if (before && before.nodeType === 3 && /\\($/.test(before.data) && apart(before, before.data.length - 1))
         log.push('WARNING a line breaks between a bracket and the formula "' + m.textContent.trim().slice(0, 20) + '" after it: put both into <span class="nw">');
     });
+    /* A label of a chart that lies under a line of the chart, or under another label. The pictures show this only
+       to a careful eye, and only in the position of the controls that the picture has. */
+    var seen = {};
+    function labels(fig, when) {
+      if (!fig) return;
+      [].forEach.call(fig.querySelectorAll('svg'), function (svg) {
+        var probe = d.createElementNS('http://www.w3.org/2000/svg', 'line');
+        probe.setAttribute('style', 'stroke:var(--rule)'); svg.appendChild(probe);
+        var grid = w.getComputedStyle(probe).stroke; svg.removeChild(probe);
+        var texts = [];
+        [].forEach.call(svg.querySelectorAll('text'), function (t) {
+          var cs = w.getComputedStyle(t), r = t.getBoundingClientRect(), s = t.textContent.trim();
+          if (s && r.width && cs.visibility !== 'hidden' && +cs.opacity > 0.05)
+            texts.push({t: t, s: s.slice(0, 30), halo: /stroke/.test(cs.paintOrder), l: r.left + 1, r: r.right - 1, u: r.top + 3, b: r.bottom - 3});
+        });
+        /* filled shapes: a line that runs under one of them is not visible there */
+        var covers = [];
+        [].forEach.call(svg.querySelectorAll('circle, rect, ellipse, polygon, path'), function (c) {
+          var cs = w.getComputedStyle(c);
+          if (cs.fill !== 'none' && +cs.opacity > 0.9 && +cs.fillOpacity > 0.9) covers.push({e: c, r: c.getBoundingClientRect()});
+        });
+        function hidden(line, label, x, y) {
+          return covers.some(function (c) {
+            return x > c.r.left && x < c.r.right && y > c.r.top && y < c.r.bottom &&
+              (line.compareDocumentPosition(c.e) & 4) && (c.e.compareDocumentPosition(label) & 4);
+          });
+        }
+        function warn(key, msg) {
+          if (seen[svg.id + key]) return;
+          seen[svg.id + key] = 1;
+          log.push('WARNING in the chart #' + svg.id + ' ' + msg + ' (' + when + '): move one of them');
+        }
+        texts.forEach(function (a, i) {
+          texts.slice(i + 1).forEach(function (b) {
+            if (a.l < b.r - 1 && b.l < a.r - 1 && a.u < b.b - 1 && b.u < a.b - 1) warn(a.s + '|' + b.s, 'the labels "' + a.s + '" and "' + b.s + '" overlap');
+          });
+        });
+        /* A label with a halo (paint-order: stroke) is made to lie on a line, and a line in the colour of the grid may cross a label. */
+        var open = texts.filter(function (a) { return !a.halo; });
+        [].forEach.call(open.length ? svg.querySelectorAll('path, line, polyline') : [], function (e) {
+          var cs = w.getComputedStyle(e);
+          if (e.closest('.ax') || (cs.fill !== 'none' && e.tagName !== 'line') || cs.stroke === 'none' || cs.stroke === grid || +cs.opacity < 0.05) return;
+          var m = e.getScreenCTM(), n = e.getTotalLength();
+          if (!m || !n) return;
+          for (var s = 0, step = Math.max(2, n / 1500); s <= n; s += step) {
+            var p = e.getPointAtLength(s), x = p.x * m.a + p.y * m.c + m.e, y = p.x * m.b + p.y * m.d + m.f;
+            open.forEach(function (a) {
+              if (x > a.l && x < a.r && y > a.u && y < a.b && !hidden(e, a.t, x, y)) warn(a.s + '|line', 'a line (class "' + (e.getAttribute('class') || 'none') + '") crosses the label "' + a.s + '"');
+            });
+          }
+        });
+      });
+    }
+    [].forEach.call(d.querySelectorAll('main figure'), function (g) { labels(g, 'at the start'); });
     [].forEach.call(d.querySelectorAll('main input[type=range]'), function (e) {
       [e.min, e.max, e.getAttribute('value')].forEach(function (v) {
         e.value = v;
         e.dispatchEvent(new w.Event('input', {bubbles: true}));
         e.dispatchEvent(new w.Event('change', {bubbles: true}));
         log.push('slider #' + e.id + ' = ' + e.value + ': ' + state(e));
+        labels(e.closest('figure'), 'slider #' + e.id + ' = ' + e.value);
       });
     });
     [].forEach.call(d.querySelectorAll('main select'), function (e) {
@@ -776,11 +834,13 @@ setTimeout(function () {
         e.value = o.value;
         e.dispatchEvent(new w.Event('change', {bubbles: true}));
         log.push('select #' + e.id + ' = ' + o.value + ': ' + state(e));
+        labels(e.closest('figure'), 'select #' + e.id + ' = ' + o.value);
       });
     });
     [].forEach.call(d.querySelectorAll('main figure button, main input[type=checkbox], main details > summary'), function (e) {
       e.click();
       log.push((e.tagName === 'SUMMARY' ? 'list' : e.tagName === 'INPUT' ? 'checkbox' : 'button') + name(e) + ': ' + state(e));
+      labels(e.closest('figure'), 'after ' + name(e));
     });
     var terms = d.querySelectorAll('main a.term, main [data-term]'), tipBad = 0;
     function tap(e) { e.dispatchEvent(new w.MouseEvent('click', {bubbles: true, cancelable: true})); }
@@ -810,7 +870,8 @@ def cmd_try(slug):
     """Use every control of one built page once, in a frame of 390 px, and print what the page then shows.
     The pictures from "shots" show the page at rest. This command finds what they cannot show, or show only to a
     careful eye: a script error, a control without effect, a result that is not a number, a formula that is too wide,
-    a number in the page source that differs from what the script writes, and a line that breaks next to a formula."""
+    a number in the page source that differs from what the script writes, a line that breaks next to a formula,
+    and a chart label under a line or under another label, at the start and in each position of a control."""
     chrome = find_chrome()
     if not chrome:
         print("Chrome or Chromium is necessary for this command, but it was not found. Set the variable CHROME to its path.", file=sys.stderr)
