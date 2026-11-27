@@ -49,6 +49,13 @@
     <b>Status: three versions that programs accept, none that a person has reviewed</b>
     <span>The last check of the original proof finished on 25 November 2026 at 21:49 UTC. The checks of the two short editions finished on 26 November. No mathematician has read one of the three versions to the end, and the Clay institute lists the problem as &ldquo;Active&rdquo;, not as solved (read on 27 November).</span>
   </div>
+  <details class="changes">
+    <summary><span>What changed on this page</span></summary>
+    <ol>
+      <li><time>27 Nov 2026</time><span>After a comment of a reader: section 05 links the cleanup of the original and says how far it came, 21 % fewer lines in five days. Section 02 links the branch.</span></li>
+      <li><time>27 Nov 2026</time><span>First version.</span></li>
+    </ol>
+  </details>
   <div class="short">
     <div><h3>What shrank</h3><span>The proof, by a factor of 154. The five theorems that it proves kept their exact wording.</span></div>
     <div><h3>How</h3><span>Largely by simpler mathematics for the steps in between, not only by tidying. Anthropic has not published the method, the model or the cost.</span></div>
@@ -97,7 +104,7 @@ theorem riemannHypothesis :
       <div><small>Original &divide; readable</small><b id="sRd">36&times;</b></div>
       <div><small>Original &divide; compact</small><b id="sCp">154&times;</b></div>
     </div>
-    <figcaption>All bars of one view share a linear scale that starts at zero. Lines include comments and blank lines. &ldquo;Export&rdquo; is the size of the file that the kernels check. &ldquo;Kernel time&rdquo; is one run of Lean&rsquo;s own kernel over that file: on one thread for the original, on a machine with 192 cores for the short editions, so it is a rough comparison. Sources: the count of Bartosz Naskręcki for the original, a count of this page for the short editions, and the logs of Andrew Sutherland, 20 to 26 November 2026.</figcaption>
+    <figcaption>All bars of one view share a linear scale that starts at zero. Lines include comments and blank lines. &ldquo;Export&rdquo; is the size of the file that the kernels check. &ldquo;Kernel time&rdquo; is one run of Lean&rsquo;s own kernel over that file: on one thread for the original, on a machine with 192 cores for the short editions, so it is a rough comparison. Sources: counts of this page on the published files, which agree with the counts of Bartosz Naskręcki, and the logs of Andrew Sutherland, 20 to 26 November 2026.</figcaption>
   </figure>
 
   <p>The short repository counts differently, and both numbers are in use: about 76,000 lines of code for the compact edition and about 300,000 for the readable one, without comments and blank lines. With them, the files have 112,827 and 477,124 lines.</p>
@@ -113,7 +120,7 @@ theorem riemannHypothesis :
     <li><time>21 Nov</time><span>The Lean and Mathlib communities certify the statement and the proof.</span></li>
     <li><time>24 Nov</time><span>Three mathematicians announce a <a class="term" href="#t-polymath">Polymath project</a> on the blog of Terence Tao. Its aim is a proof that people can read.</span></li>
     <li><time>25 Nov, about 20:40 UTC</time><span>Sernau publishes the two short editions.</span></li>
-    <li><time>25 Nov, 22:24 UTC</time><span>The community repository moves its main branch to the readable edition. The work on the original stays on a branch.</span></li>
+    <li><time>25 Nov, 22:24 UTC</time><span>The community repository moves its main branch to the readable edition. The work on the original stays on the branch <a href="https://github.com/leanprover-community/riemann-hypothesis/tree/alpoge"><span class="mono">alpoge</span></a>.</span></li>
     <li><time>26 Nov</time><span>Independent checks of both short editions finish. A first text of the compact edition for people appears, written by AI.</span></li>
   </ol>
 
@@ -257,7 +264,7 @@ theorem riemannHypothesis :
 
   <h3>From the week between them</h3>
   <p><strong>A fixed statement makes a rewrite safe.</strong> This page infers it from the timeline. The community moved its main branch from its cleaned copy of the original to 477,000 lines by other authors in less than two hours. This works because the same 16 lines of statements and the same Comparator run decide what counts. No review of the new text was needed for that decision.</p>
-  <p><strong>The rewrite overtook the cleanup.</strong> For five days, many contributors with AI agents had removed code from the original, pull request by pull request. The repository had 541 forks on 27 November. Some of them wrote that the short proof overtook this work. Daniel Ang asked whether a complete rethink can be crowdsourced at all, or needs a few people with much computing power.</p>
+  <p><strong>The rewrite overtook the cleanup.</strong> For five days, many contributors with AI agents had removed code from the original, pull request by pull request. The result is public on the branch <a href="https://github.com/leanprover-community/riemann-hypothesis/tree/alpoge"><span class="mono">alpoge</span></a> of the community repository, and the <a href="https://github.com/leanprover-community/riemann-hypothesis/pulls?q=is%3Apr+is%3Amerged+merged%3A%3C2026-11-25T22%3A24%3A00Z">list of the merged pull requests</a> shows each step. This page counted on 27 November: 3,821 pull requests were merged before the switch. The cleaned proof then had 13,710,769 lines in 58,956 files. That is 21 % fewer lines and 66 % fewer files than the original. The short proof has 99 % fewer lines. The repository had 541 forks on 27 November. Some of them wrote that the short proof overtook this work. Daniel Ang asked whether a complete rethink can be crowdsourced at all, or needs a few people with much computing power.</p>
   <p><strong>The target was changed at once.</strong> One reader called the compact edition &ldquo;reward hacking for fewer lines&rdquo;. The community chose the readable edition, which is four times longer, as its base. Loeffler asked the maintainers to stop merging changes that save lines at the cost of readability.</p>
 </section>
 
@@ -303,9 +310,9 @@ theorem riemannHypothesis :
   <h2>How sure is this?</h2>
   <ul class="checks">
     <li><span class="pill done">Sourced</span>
-        <span><span>The sizes, the theorem statements, the layout and the quoted lemma come from the repository of the short proof, which this page cloned and counted on 27 November 2026. The checks come from the published logs of Sutherland and Rubinstein. The statements about the method are Sernau&rsquo;s own posts.</span><span class="d">Only reported: the words of Naskręcki in section 06, by heise online. The size of the original is Naskręcki&rsquo;s count, which this page did not repeat. The 1,356 pages are the page count of the PDF in his repository on 27 November. The Lean code on this page is quoted from the repository and was not compiled for this page.</span></span></li>
+        <span><span>The sizes, the theorem statements, the layout and the quoted lemma come from the repository of the short proof, which this page cloned and counted on 27 November 2026. The checks come from the published logs of Sutherland and Rubinstein. The statements about the method are Sernau&rsquo;s own posts.</span><span class="d">Only reported: the words of Naskręcki in section 06, by heise online. This page also counted the original and the cleanup branch of the community repository, as all Lean files of each version on GitHub. The count of the original equals Naskręcki&rsquo;s. The number of merged pull requests comes from the search of GitHub. The 1,356 pages are the page count of the PDF in his repository on 27 November. The Lean code on this page is quoted from the repository and was not compiled for this page.</span></span></li>
     <li><span class="pill rep">Inferred</span>
-        <span><span>The average of 99 lines per file, the ratios in the first chart, the lesson about the fixed statement in section 05 and all three points of section 06 are inferences of this page.</span><span class="d">From the knowledge of the model, without a source: the short descriptions of resolution of singularities and of the glossary terms, and the comparison with a compiler.</span></span></li>
+        <span><span>The average of 99 lines per file, the ratios in the first chart, the percentages of the cleanup in section 05, the lesson about the fixed statement in section 05 and all three points of section 06 are inferences of this page.</span><span class="d">From the knowledge of the model, without a source: the short descriptions of resolution of singularities and of the glossary terms, and the comparison with a compiler.</span></span></li>
     <li><span class="pill prog">Uncertain</span>
         <span><span>Whether the proof is correct mathematics in the sense of the community: no person has reviewed any version. Whether the statements about the newer Mathlib equal those about the older one: not checked formally. How the short proof was made: the authors gave only an outline.</span><span class="d">Single sources: the experiment of Zhang, and each forum post. A forum post is evidence for what its author wrote, not for whether it is true. The mathematics in section 03 is simplified from comments in the source and was not checked by a mathematician.</span></span></li>
   </ul>
@@ -324,6 +331,7 @@ theorem riemannHypothesis :
     <li><a href="https://alpo.ge/remark.pdf">Levent Alpöge: the note that announced the proof</a> &middot; 20 November 2026</li>
     <li><a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/">Lean FRO and Mathlib Initiative: joint statement about the original proof</a> &middot; 21 November 2026</li>
     <li><a href="https://github.com/leanprover-community/riemann-hypothesis">Lean community: repository that maintains the proof</a> &middot; README, read on 27 November 2026</li>
+    <li><a href="https://github.com/leanprover-community/riemann-hypothesis/tree/alpoge">Lean community: branch <span class="mono">alpoge</span> with the cleanup of the original</a> &middot; source code and history, last commit of 26 November 2026, 03:56 UTC</li>
     <li><a href="https://github.com/nasqret/riemann-rev">Bartosz Naskręcki: riemann-rev, with the size table and the write-up of the compact edition</a> &middot; repository, state of 27 November 2026; the write-up is made by AI and not reviewed</li>
     <li><a href="https://leanprover.zulipchat.com/#narrow/channel/658556-Riemann-Hypothesis/topic/Why.20clean.20up.20the.20proof/near/642816120">Lean community forum: &ldquo;Why clean up the proof&rdquo;</a> &middot; forum posts of Carneiro, Loeffler and Kharkov, 23 November 2026</li>
     <li><a href="https://terrytao.wordpress.com/2026/11/24/g-r-h-polymath/">Anurag Sahay, Will Sawin and Lior Silberman: G.R.H. Polymath</a> &middot; guest post on the blog of Terence Tao, 24 November 2026</li>
