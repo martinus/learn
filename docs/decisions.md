@@ -28,6 +28,7 @@ This file lists decisions about the site and the reason for each. Read it before
 ## Technology
 
 - **No framework and no packages.** Plain HTML, CSS and JavaScript. The tool uses the Python standard library. Reason: the site must be easy to build in ten years, and an AI model can read all of it.
+- **The theme joins a formula with the punctuation next to it.** When a page loads, `theme.js` puts each inline formula and the sign directly after it, or the bracket directly before it, into one element that does not break. Reason: where a line breaks depends on the width of the window and on the text size, so a check at fixed widths cannot find every lone full stop or bracket.
 - **One self-contained `index.html` for each explainer,** with its own script and its German text. Reason: a page is easy to move, to review and to repair.
 - **The build inserts the shared parts** (head, site bar, byline, section links, "Read next", footer). Reason: a change of the shared parts reaches all pages without an edit of each page.
 - **The home page is not in git.** The build writes it. Reason: two branches with two new explainers do not conflict.
