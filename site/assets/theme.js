@@ -76,8 +76,25 @@ function applyLang(l,save){
   var tl=root.getAttribute('data-title-'+l);
   document.title=tl||EN_TITLE;
   [].forEach.call(document.querySelectorAll('[data-set-lang]'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-set-lang')===l);});
+  glue();
   fillNav();
   fire();
+}
+/* A line must not break between a formula and the sign after it, or the bracket before it. The place of a line
+   break depends on the width of the window and on the text size, so no page can test it. This joins them. */
+function glue(){
+  [].forEach.call(document.querySelectorAll('main math:not([display="block"])'),function(m){
+    if(m.closest('.nw,.formula,svg'))return;
+    var p=m.parentNode,e=p.matches&&p.matches('a.term')&&p.childNodes.length===1?p:m;
+    var a=e.nextSibling,b=e.previousSibling;
+    var after=a&&a.nodeType===3?/^[.,;:)!?]+/.exec(a.data):null,before=b&&b.nodeType===3&&/\($/.test(b.data);
+    if(!after&&!before)return;
+    var s=document.createElement('span');s.className='nw';
+    e.parentNode.insertBefore(s,e);
+    if(before){b.data=b.data.slice(0,-1);s.appendChild(document.createTextNode('('));}
+    s.appendChild(e);
+    if(after){s.appendChild(document.createTextNode(after[0]));a.data=a.data.slice(after[0].length);}
+  });
 }
 function showTheme(){var t=curTheme();[].forEach.call(document.querySelectorAll('[data-set-theme]'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-set-theme')===t);});}
 function fire(){if(!started)return;listeners.forEach(function(f){try{f();}catch(e){if(window.console)console.error(e);}});}

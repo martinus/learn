@@ -100,7 +100,7 @@ Write mathematics as MathML, which browsers draw without a library. `writing.md`
 - Write a sign as `<mo form="prefix">&minus;</mo>` when it follows another operator, as in "= −1". Without it the minus gets the wide spacing of a subtraction.
 - Set a symbol as `<math>` in every HTML text: headings, labels, legends, number boxes, cards and the glossary. For a value that the script writes, set `innerHTML` with `<math>`. Text inside an SVG chart stays plain, because MathML does not work there.
 - Do not write `xmlns` on `<math>`. HTML does not need it.
-- A power of ten in the text is a formula too: `<math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>`. `check` rejects `<sup>` and `<sub>`, because they lift the line. A line can break between a formula and its unit, so keep them together: `<span class="nw">1.7 &times; <math>...</math>&nbsp;m</span>`. It can also break between a formula and the full stop, comma or bracket next to it. `try` reports these places at 390 px, and the same `nw` joins them. Text in an SVG chart uses the Unicode signs (10⁻¹⁵).
+- A power of ten in the text is a formula too: `<math><msup><mn>10</mn><mrow><mo form="prefix">&minus;</mo><mn>15</mn></mrow></msup></math>`. `check` rejects `<sup>` and `<sub>`, because they lift the line. A line can break between a formula and its unit, so keep them together: `<span class="nw">1.7 &times; <math>...</math>&nbsp;m</span>`. The theme joins a formula with the sign directly after it and with the bracket directly before it when the page loads, so write no span for these. It does not join text that the page script writes later: `try` reports a break there at 390 px, and `nw` joins it. Text in an SVG chart uses the Unicode signs (10⁻¹⁵).
 - A formula wider than a phone scrolls inside its block, and `try` reports it. Aim for under about 330 px at 390 px width: name a long term in the text and use the name.
 - The formula uses a math font of the device and loads none. A device without one shows plainer signs, and a tall root or bracket does not grow there. So keep the content of `<msqrt>` and of stretching brackets flat.
 
@@ -288,7 +288,7 @@ L.onChange(draw);             // calls draw now, and again when the page width o
 ## Rules for graphics
 
 1. **One graphic, one message.** The caption states it. If it does not fit into one sentence, make two graphics.
-2. **Useful at rest.** The start position of each control shows the most instructive state.
+2. **Useful at rest.** The start position of each control shows the most instructive state. A caption that names a value of this position says "in the start position", because the caption stays when the reader moves the control.
 3. **The reader changes one thing.** One slider or button with a clear effect beats a static picture. Three controls on one chart are too many.
 4. **Real data.** Compute the values, or take them from a source and name it with the date of the data. Never draw a curve that only looks about right.
 5. **Honest scales.** Bars start at zero. Charts that are compared share a scale. Say when an axis is logarithmic.

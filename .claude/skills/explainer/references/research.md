@@ -33,6 +33,8 @@ Use the highest level that you can read.
 - A preprint is not a reviewed paper. Say which one the source is.
 - For a paper, list what cites it: `curl -s 'https://api.semanticscholar.org/graph/v1/paper/arXiv:<id>/citations?fields=title,publicationDate,externalIds&limit=200'`. Later papers of the same authors show the current state. `https://api.crossref.org/works/<doi>` gives the venue, the date and the pages for a DOI, and `https://export.arxiv.org/api/query?id_list=<id>` gives the journal reference of a preprint. The first address answers 429 after a few requests in a row.
 - Some servers refuse automatic access, also when the link is correct: the ACM, AIP and the Royal Society answer a DOI with 403, ScienceDirect shows a captcha, and `feynmanlectures.caltech.edu` blocks `curl` and the fetch tool. Do not work around a refusal. Confirm a DOI with Crossref, take the fact from a source that you can read, and name the refusal in the pull request.
+- Call `curl` with its own identification and set no browser `User-Agent`. A false identification works around a refusal, and it can cause one: the Guardian answered 403 to a browser name and 200 to plain `curl`.
+- In a cloud session, a refusal of every host in the first minutes can be temporary. Test one address again before you plan around it. `github.com` pages of other repositories stay refused there: read a file at `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/<path>`, and confirm a link to a folder through its `README.md` at that address.
 - If the newest source is old, the page says how old.
 - Every number that can change carries its date on the page.
 
