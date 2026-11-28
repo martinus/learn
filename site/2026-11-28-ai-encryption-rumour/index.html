@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Did AI break encryption? The rumour and the facts</title>
+<script type="application/json" id="explainer-meta">
+{
+ "title": {"en": "Did AI break encryption? The rumour and the facts"},
+ "summary": {"en": "Since 24 November 2026, a rumour says that AI models of OpenAI or Anthropic found a fast way to factor large numbers, which would break RSA. No lab has published or confirmed this. What the source of the rumour wrote, what is public, why a polynomial-time algorithm is not yet an attack, and which parts of TLS and SSH each kind of break would take down."},
+ "published": "2026-11-28",
+ "updated": "2026-11-28",
+ "languages": ["en"],
+ "tags": ["technology", "ai"],
+ "model": "Claude Fable 5.2"
+}
+</script>
+<!-- learn:head -->
+<style>
+/* Styles that only this explainer uses. Shared parts are in assets/theme.css. */
+.fig-seg{flex-wrap:wrap;border-radius:14px;align-self:flex-start}
+.fig-seg button{padding:.62rem .8rem;font-size:.86rem}
+.l-ref{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:2 3}
+.d-ink{fill:var(--ink)}
+.lbl-h{fill:var(--ink);font:500 11px var(--font-body);paint-order:stroke;stroke:var(--surface);stroke-width:4}
+#fall b{font-weight:600}
+#fall .u{color:var(--muted)}
+</style>
+</head>
+<body>
+<!-- learn:header -->
+<main class="explainer">
+
+<header>
+  <span class="eyebrow">Cryptography &middot; status of 28 November 2026</span>
+  <h1>Did AI break encryption? The rumour and the facts</h1>
+  <!-- learn:byline -->
+  <p class="lead">RSA keys are safe as long as nobody can factor a large number, which means to split it into its prime factors. Since 24 November 2026, a rumour says that AI models of OpenAI or Anthropic found a fast algorithm for this. News reports now warn of broken encryption on the whole internet. This page shows what the source of the rumour wrote, what is public, and what a fast algorithm would break.</p>
+  <div class="status">
+    <b>Status: a rumour, and no published attack</b>
+    <span>On 28 November 2026, no lab has published or confirmed a faster way to break a cryptosystem that is in use. The rumour goes back to the computer scientist Scott Aaronson. He writes that he expects a theoretical result that puts no system in use in danger, and that he cannot confirm more. He told the Guardian on 28 November that the AI companies have announced nothing concrete on encryption. This page found no statement on the news pages of OpenAI and Anthropic.</span>
+  </div>
+  <details class="changes">
+    <summary><span>What changed on this page</span></summary>
+    <ol>
+      <li><time>28 Nov 2026</time><span>First version.</span></li>
+    </ol>
+  </details>
+  <div class="short">
+    <div><h3>The rumour</h3><span>On 24 November, Scott Aaronson wrote that he had heard many rumours of a fast factoring algorithm at the labs, and that he did not know how far to believe them. He later added that the part he is sure of is much smaller.</span></div>
+    <div><h3>The public record</h3><span>Papers of the same week prove new running times for factoring. At real key sizes, all of them are slower than the method known since the 1990s. The largest RSA number factored in public has 896 bits. A 2048-bit key needs about 35 billion times more work.</span></div>
+    <div><h3>What would break</h3><span>A fast factoring algorithm breaks RSA and nothing else directly. Over 65% of the human traffic to Cloudflare already uses a key exchange that does not depend on factoring. The signatures in certificates and software updates have no replacement in wide use.</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="num">01</span>
+  <h2>What Aaronson wrote, in order</h2>
+  <p><a href="https://scottaaronson.blog/">Scott Aaronson</a> is a computer scientist at the University of Texas at Austin. His field is the theory of computation, and his blog is a meeting place for it. Every news report on the rumour that this page found goes back to him.</p>
+  <ol class="steps">
+    <li><time>23 Nov</time><span>Anthropic and OpenAI each publish a proof of <a class="term" href="#t-vpvnp">VP&nbsp;&ne;&nbsp;VNP</a>, a conjecture from the late 1970s about the limits of computation. Each proof comes with a file for the proof checker <a class="term" href="#t-lean">Lean</a>.</span></li>
+    <li><time>24 Nov</time><span>Under his post on these proofs, a reader asks whether factoring is easy and whether a lab knows it. Aaronson answers that he has heard many rumours of this for one or both labs, and that he does not know how far to believe them. He is almost certain only that the labs hold important results on cryptography. He adds that the details may have changed on the way from mouth to mouth.</span></li>
+    <li><time>25 Nov</time><span>Google researchers publish six papers written by an AI system, two of them on factoring. Aaronson comments that he sees big theoretical results in them, and none that matters for cryptography in practice.</span></li>
+    <li><time>25 Nov</time><span>In a new post he repeats that he is almost certain, from several sources, that the labs hold &ldquo;one or more bombshells&rdquo; in cryptography. He writes that he is much less sure what they are, and that he does not want to spread rumours that nobody has checked.</span></li>
+    <li><time>26 Nov</time><span><a href="https://www.nature.com/articles/d41586-026-03875-6">Nature</a> reports on the rumours and states that they could not be confirmed.</span></li>
+    <li><time>by 27 Nov</time><span>Aaronson adds a note to his comment of 24 November: people should stop citing him as a witness for a fast factoring algorithm, because the parts he is sure of &ldquo;fall well short of Factoring in P&rdquo;. P is the class of problems with a polynomial-time algorithm.</span></li>
+    <li><time>27 Nov</time><span>In a third post, written as a satirical phone call, he says what he does know. The labs will soon release a &ldquo;major breakthrough in theoretical cryptanalysis&rdquo;, and it will not put any system in use in danger. About the rumours of more dangerous results he has no specific information.</span></li>
+    <li><time>28 Nov</time><span>The <a href="https://www.theguardian.com/technology/2026/nov/28/ai-artificial-intelligence-encryption-global-chaos">Guardian</a> quotes Aaronson: the AI companies have made no concrete announcement on encryption, and he calls the rumours well attested. In the same article, Alan Woodward of the University of Surrey says that a discovery would probably not undo encryption within days, and that hurdles remain before anyone could use it widely.</span></li>
+  </ol>
+  <p>So the source makes two statements of different strength. He claims knowledge of a theoretical result that harms no system in use. He passes on, with open doubt, rumours of something worse. Most headlines join the two. The Guardian adds that the result could go either way: a new way to break encryption, or a proof that no shortcut exists.</p>
+  <p>Aaronson also says why he does not dismiss the rumours. Earlier rumours about mathematical results of the labs were correct. In the same weeks, the labs published proofs of old conjectures together with files for a proof checker, among them the <a href="../2026-11-21-riemann-hypothesis-claim/">Riemann Hypothesis</a> and the <a href="../2026-11-25-matrix-multiplication-exponent/">exponent of matrix multiplication</a>. He considers it unlikely that every cryptosystem in use survives such models without damage. This is his estimate, and no evidence of a break.</p>
+  <p>The rumours grow as they travel. A reader comment under the post of 25 November quotes a list from a social network: factoring, broken <a class="term" href="#t-ecc">elliptic curves</a>, a weakness in a <a class="term" href="#t-lattice">lattice problem</a>. Nobody gives evidence for any item on it.</p>
+</section>
+
+<section>
+  <span class="num">02</span>
+  <h2>What is public on 28 November</h2>
+  <p>Several results of this autumn concern the two problems behind today&rsquo;s public-key cryptography. One is factoring. The other is the <a class="term" href="#t-dlog">discrete logarithm</a>, which protects Diffie-Hellman key exchange and elliptic-curve signatures. None of the results is an attack on a key size in use.</p>
+  <div class="scroll-x"><table>
+    <thead><tr><th>Result</th><th>Claimed running time</th><th>Keys in use</th></tr></thead>
+    <tbody>
+      <tr><td>Factoring with a complete proof<br><small>Google, AI system Cogentic, 25 Nov</small></td><td><math><msub><mi>L</mi><mi>N</mi></msub><mo stretchy="false">[</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>,</mo><mn>105</mn><mo stretchy="false">]</mo></math></td><td>not affected</td></tr>
+      <tr><td>Factoring without random numbers<br><small>Google, Cogentic, 25 Nov</small></td><td><math><mi>exp</mi><mo stretchy="false">(</mo><mn>3</mn><mo>&sdot;</mo><msup><mrow><mo stretchy="false">(</mo><mi>ln</mi><mi>N</mi><mo stretchy="false">)</mo></mrow><mrow><mn>3</mn><mo>/</mo><mn>4</mn></mrow></msup><mo stretchy="false">)</mo></math></td><td>not affected</td></tr>
+      <tr><td>Discrete logarithm, also on elliptic curves<br><small>Zhejiang University, preprint, 27 Nov</small></td><td><math><msup><mn>2</mn><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>b</mi><mo>/</mo><msqrt><mrow><mi>log</mi><mi>log</mi><mi>b</mi></mrow></msqrt><mo stretchy="false">)</mo></mrow></msup></math></td><td>see below</td></tr>
+      <tr><td>896-bit RSA number factored<br><small>Stephen Weis with Claude, 19 Sep</small></td><td>30 GPU-years, known method</td><td>1024 bits at risk, 2048 bits not</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small"><math><mi>N</mi></math> is the number to factor, and <math><mi>b</mi></math> is the number of bits of the prime that defines the group. Section 03 explains the notation <span class="nw"><math><msub><mi>L</mi><mi>N</mi></msub></math>.</span></p>
+  <p><strong>The two Google papers</strong> come from <a href="https://github.com/google-research/google-research/tree/master/cogentic_research_papers">a list of papers</a> that an AI system named Cogentic wrote on top of the model Gemini 4. Neither makes factoring faster in practice. The standard method, the <a class="term" href="#t-gnfs">general number field sieve (GNFS)</a>, is fast in practice, but the proof of its running time rests on unproven assumptions about how often certain numbers have only small prime factors. The first paper proves the same kind of running time without these assumptions, and pays for it with a constant of 105 where the standard estimate has 1.923. The second paper gives a method without random numbers, with a bound far above both. The readme files say that a Lean proof exists and will follow. It is not public yet.</p>
+  <p><strong>The <a class="term" href="#t-preprint">preprint</a> from Zhejiang University</strong> gives a method for discrete logarithms that uses no random numbers, also for elliptic curves. Its abstract says that it depends on a construction that OpenAI published in October 2026, and that it follows the claimed refutations of the <a class="term" href="#t-eth">Exponential Time Hypothesis</a>. This page infers that the bound says nothing about a 256-bit curve. Take the hidden constant as 1 and base-2 logarithms, so that log log 256 = 3. The exponent is then 256 / &radic;3 &asymp; 148, above the 128 of the earlier methods, which need about <math><msup><mn>2</mn><mrow><mi>b</mi><mo>/</mo><mn>2</mn></mrow></msup></math> steps according to the abstract. The new bound would be the lower one only above 65,536 bits. The abstract gives no constant, so the real crossing point is unknown. This page read only the abstract.</p>
+  <p><strong>The factoring record</strong> moved twice in September 2026, from 829 to 862 and then to 896 bits. Both teams let AI agents port the GNFS software CADO-NFS to graphics processors. <a href="https://saweis.net/posts/rsa-896.html">Stephen Weis</a> of Anthropic writes that his run took 10 days on up to 2,048 GPUs and did not improve the algorithm. Eric Lu of Cognition, who set the 862-bit record, <a href="https://cognition.com/blog/factoring-rsa-260">estimates</a> that a 1024-bit key now costs about 30 million US dollars, and that a 2048-bit key is about a billion times harder than that.</p>
+  <p><strong>The lists of the two labs</strong> hold no factoring algorithm for normal computers. OpenAI&rsquo;s <a href="https://github.com/openai/math">collection of manuscripts</a> has two entries with the word factoring. One factors polynomials, and one is a circuit for a quantum computer. Anthropic&rsquo;s <a href="https://github.com/anthropics/formal-math">repository of formal proofs</a> lists four projects, none on cryptography. This page searched both on 28 November.</p>
+  <p>One earlier case shows how a lab handled such a result. In July 2026, <a href="https://www.anthropic.com/research/discovering-cryptographic-weaknesses">Anthropic published</a> an attack that a model had found on HAWK, a candidate for a future signature standard. Anthropic writes that it informed the authors in June and sent copies to the US government and industry partners before the release. No deployed system was affected. This page infers that a lab with a more serious result would again wait and coordinate first. To an outsider, that waiting looks the same as &ldquo;sitting on&rdquo; a result.</p>
+</section>
+
+<section>
+  <span class="num">03</span>
+  <h2>Why polynomial time is not yet an attack</h2>
+  <p>The rumour says &ldquo;factoring in polynomial time&rdquo;. The size of the input is the number of bits <math><mi>n</mi></math> of the key, so this means at most <math><mi>c</mi><mo>&sdot;</mo><msup><mi>n</mi><mi>k</mi></msup></math> steps. Nothing in the rumour gives the exponent <math><mi>k</mi></math> or the constant <span class="nw"><math><mi>c</mi></math>.</span></p>
+  <p>Number theorists measure factoring algorithms on a scale between polynomial and exponential:</p>
+  <div class="formula"><math display="block">
+    <msub><mi data-term="t-lnot" tabindex="0">L</mi><mi>N</mi></msub><mo stretchy="false">[</mo><mi data-term="t-lnot" tabindex="0">&alpha;</mi><mo>,</mo><mi>c</mi><mo stretchy="false">]</mo><mo>=</mo><mi>exp</mi><mo stretchy="false">(</mo><mi>c</mi><mo>&sdot;</mo><msup><mrow><mo stretchy="false">(</mo><mi>ln</mi><mi>N</mi><mo stretchy="false">)</mo></mrow><mi>&alpha;</mi></msup><mo>&sdot;</mo><msup><mrow><mo stretchy="false">(</mo><mi>ln</mi><mi>ln</mi><mi>N</mi><mo stretchy="false">)</mo></mrow><mrow><mn>1</mn><mo>&minus;</mo><mi>&alpha;</mi></mrow></msup><mo stretchy="false">)</mo>
+  </math></div>
+  <p>Here <math><mi>N</mi></math> is the number to factor, and <math><mi>ln</mi><mi>N</mi></math> is about 0.69 times its number of bits. With <math><mi>&alpha;</mi><mo>=</mo><mn>1</mn></math> the formula gives <span class="nw"><math><msup><mi>N</mi><mi>c</mi></msup></math>,</span> which is exponential in the number of bits. With <math><mi>&alpha;</mi><mo>=</mo><mn>0</mn></math> it gives <span class="nw"><math><msup><mrow><mo stretchy="false">(</mo><mi>ln</mi><mi>N</mi><mo stretchy="false">)</mo></mrow><mi>c</mi></msup></math>,</span> which is polynomial. Everything between is called <a class="term" href="#t-subexp">subexponential</a>. The <a class="term" href="#t-gnfs">GNFS</a> stands at <math><mi>&alpha;</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>3</mn></math> with <span class="nw"><math><mi>c</mi><mo>&asymp;</mo><mn>1.923</mn></math>,</span> as the Google paper cites. The rumoured algorithm would stand at <span class="nw"><math><mi>&alpha;</mi><mo>=</mo><mn>0</mn></math>.</span></p>
+  <p>The chart puts the GNFS estimate next to a polynomial that you choose. The GNFS line fits the public numbers. It predicts that 896 bits cost 2.6 times the work of 862 bits. The two records took 30 and 13.5 GPU-years on different hardware, a ratio of 2.2.</p>
+
+  <figure>
+    <div class="fig-title">Steps to factor a key: known method and a polynomial one</div>
+    <div class="ctl">
+      <label for="kS"><span>Exponent of the polynomial algorithm</span> <output id="kOut"><math><msup><mi>n</mi><mn>12</mn></msup></math></output></label>
+      <input type="range" id="kS" min="1" max="20" step="1" value="12">
+    </div>
+    <div class="ctl">
+      <label for="cS"><span>Its constant factor</span> <output id="cOut"><math><msup><mn>2</mn><mn>0</mn></msup></math></output></label>
+      <input type="range" id="cS" min="0" max="100" step="10" value="0">
+    </div>
+    <div class="legend">
+      <span><i class="sw"></i><span>GNFS, standard estimate</span></span>
+      <span><i class="sw c3"></i><span>polynomial algorithm, hypothetical</span></span>
+    </div>
+    <svg class="chart" id="cCost" role="img" aria-label="Line chart of the number of steps to factor a key, on a logarithmic scale, against the key size from 512 to 4,096 bits. The curve of the general number field sieve rises from 2 to the power 64 to 2 to the power 157. A second curve shows a hypothetical polynomial algorithm with the chosen exponent and constant. A dot marks the factoring record at 896 bits."></svg>
+    <div class="stats">
+      <div><small>GNFS, 2,048 bits</small><b id="rG"><math><msup><mn>2</mn><mn>117</mn></msup></math> steps</b></div>
+      <div><small>Polynomial, 2,048 bits</small><b id="rP"><math><msup><mn>2</mn><mn>132</mn></msup></math> steps</b></div>
+      <div><small>Polynomial against GNFS</small><b id="rR"><math><msup><mn>2</mn><mn>15</mn></msup></math> &times; slower</b></div>
+      <div><small>Polynomial is faster from</small><b id="rX">3,096 bits</b></div>
+    </div>
+    <figcaption>In the start position, with exponent 12 and constant 1, the polynomial algorithm loses against the known method at 2,048 bits and wins only above 3,096 bits. A curve above <math><msup><mn>2</mn><mn>200</mn></msup></math> leaves the chart. The GNFS curve is <math><msub><mi>L</mi><mi>N</mi></msub><mo stretchy="false">[</mo><mn>1</mn><mo>/</mo><mn>3</mn><mo>,</mo><mn>1.923</mn><mo stretchy="false">]</mo></math> without its lower-order terms. A step of one algorithm need not cost the same as a step of the other. Computed on this page. The record is that of Stephen Weis, September 2026.</figcaption>
+  </figure>
+
+  <p>Three readings of the chart, all computed on this page:</p>
+  <ul class="plain">
+    <li>At 2,048 bits, <math><msup><mi>n</mi><mi>k</mi></msup></math> is <span class="nw"><math><msup><mn>2</mn><mrow><mn>11</mn><mi>k</mi></mrow></msup></math>.</span> A polynomial algorithm with constant 1 beats the GNFS at this size only when its exponent is below 10.6.</li>
+    <li>With exponent 3, the same key costs <math><msup><mn>2</mn><mn>33</mn></msup></math> steps, about 8.6 billion. If a step is a simple operation, a laptop does this in seconds. Longer keys would not help: a key of 16,384 bits costs only 512 times more.</li>
+    <li>The constant counts as much as the exponent. Exponent 2 with a constant of <math><msup><mn>2</mn><mn>100</mn></msup></math> is a polynomial algorithm, and no computer can run it.</li>
+  </ul>
+  <p>An algorithm of the last kind is a <a class="term" href="#t-galactic">galactic algorithm</a>. Aaronson writes that he does not know whether a first polynomial algorithm for factoring would be one. He also writes that he would not want the security of the internet to rest on it. The security would then depend only on the hope that nobody lowers the constants. Nature adds a rule from experience: when a problem was shown to be in P, practical algorithms usually followed.</p>
+  <p>The Google result shows the same gap from the other side. Its proven bound has the exponent <math><mi>&alpha;</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>3</mn></math> of the GNFS, and the best proven bound before it, of 1992, had <span class="nw"><math><mi>&alpha;</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>2</mn></math>.</span> This page put 2,048 bits into both formulas. The new bound gives <span class="nw"><math><msup><mn>2</mn><mn>6,382</mn></msup></math>,</span> and the old one gives <span class="nw"><math><msup><mn>2</mn><mn>146</mn></msup></math>.</span> The new bound is the lower one only for numbers of more than about <span class="nw">6 &times; <math><msup><mn>10</mn><mn>13</mn></msup></math>&nbsp;bits.</span> This is an illustration and no running time, because both formulas describe the limit of large numbers. It shows why &ldquo;asymptotically faster&rdquo; and &ldquo;dangerous for your key&rdquo; are different statements.</p>
+</section>
+
+<section>
+  <span class="num">04</span>
+  <h2>What each break would take down</h2>
+  <p>A cryptosystem is safe only while one mathematical problem stays hard. The systems in use rest on four problems. RSA rests on factoring. Classic Diffie-Hellman rests on the <a class="term" href="#t-dlog">discrete logarithm</a> in the integers modulo a prime. X25519, ECDSA and Ed25519 rest on the discrete logarithm on <a class="term" href="#t-ecc">elliptic curves</a>. The post-quantum standards <a class="term" href="#t-mlkem">ML-KEM and ML-DSA</a>, made to resist quantum computers, rest on <a class="term" href="#t-lattice">lattice problems</a>.</p>
+  <p>What an attacker gains depends on the job of the broken part:</p>
+  <ul class="plain">
+    <li><strong>Key exchange.</strong> A break is retroactive. An attacker who recorded a session years ago can compute its key and read it. This is the &ldquo;<a class="term" href="#t-hndl">harvest now, decrypt later</a>&rdquo; attack.</li>
+    <li><strong>Signature.</strong> A break works from that day on. An attacker can forge a certificate and pose as a server, or sign a false software update. Sessions of the past stay secret.</li>
+  </ul>
+  <p>Choose below which problems become easy. The start position is the rumour: factoring alone.</p>
+
+  <figure>
+    <div class="fig-title">Which parts hold when a problem becomes easy</div>
+    <div class="ctl">
+      <span>Assume a practical attack on one or more of</span>
+      <div class="seg fig-seg" role="group" aria-label="Choose the problems that become easy" id="brk">
+        <button type="button" id="bF" data-k="F" aria-pressed="true">Factoring</button>
+        <button type="button" id="bD" data-k="D" aria-pressed="false">Discrete log</button>
+        <button type="button" id="bE" data-k="E" aria-pressed="false">Elliptic curves</button>
+        <button type="button" id="bL" data-k="L" aria-pressed="false">Lattices</button>
+      </div>
+    </div>
+    <ul class="checks" id="fall"></ul>
+    <div class="stats">
+      <div><small>Parts that hold</small><b id="rHold">7 of 8</b></div>
+      <div><small>Certificate signatures in use</small><b id="rCert">ECDSA holds</b></div>
+      <div><small>Hybrid key exchange</small><b id="rHyb">holds</b></div>
+      <div><small>Problems assumed easy</small><b id="rEasy">1 of 4</b></div>
+    </div>
+    <figcaption>In the start position, factoring alone takes down RSA and leaves seven of the eight parts. The hybrid key exchange falls only when elliptic curves and lattices both fall. Each button is an assumption, and none of them is a known attack. Which problem each scheme rests on is textbook knowledge and stands in its standard.</figcaption>
+  </figure>
+
+  <p>The four buttons are less independent than they look. Aaronson writes that techniques for factoring would not unlikely carry over to the discrete logarithm, and from there perhaps to elliptic curves. The best known methods for the first two problems are already close relatives.</p>
+  <p>The last two rows never change. Symmetric ciphers and hash functions do not rest on any of the four problems. A break of public-key cryptography exposes the session keys. A cipher such as AES stays as strong as before.</p>
+</section>
+
+<section>
+  <span class="num">05</span>
+  <h2>How this differs from the quantum threat</h2>
+  <p>The current move to new cryptography has one known enemy. <a class="term" href="#t-shor">Shor&rsquo;s algorithm</a> factors and computes discrete logarithms in polynomial time on a large quantum computer, and no such computer exists yet. The US standards body NIST published three standards against it in 2024. In October 2026 it set the schedule in the final version of its <a href="https://csrc.nist.gov/pubs/ir/8547/final">transition report</a>. RSA, Diffie-Hellman, ECDSA and EdDSA are deprecated after 2030 and disallowed after 2035.</p>
+  <p>The work started with key exchange, because of recorded traffic. It is far along. <a href="https://blog.cloudflare.com/post-quantum-roadmap/">Cloudflare wrote</a> in April 2026 that over 65% of the human traffic to its network is encrypted in a post-quantum way. OpenSSH uses a <a class="term" href="#t-hybrid">hybrid key exchange</a> by default since version 10.0 of April 2025.</p>
+  <p>Signatures come later, because they need new certificates and new trust lists in every client. <a href="https://blog.cloudflare.com/pq-ca-with-mtcs/">Cloudflare aims</a> for early 2027 to have post-quantum certificates accepted by Chrome. OpenSSH enabled a hybrid signature scheme in version 10.6 of October 2026. Steven Murdoch of University College London tells the Guardian that this move was slow before the rumour: the target was about 2032, and he expected it to be missed.</p>
+  <p>This page infers two differences between a break by a normal algorithm and the quantum threat:</p>
+  <ul class="plain">
+    <li><strong>No machine has to be built.</strong> A practical algorithm runs on existing computers on the day someone has it. The schedule to 2035 assumes years of warning.</li>
+    <li><strong>The new schemes are not exempt.</strong> They were chosen to resist Shor&rsquo;s algorithm. Nothing proves that lattice problems resist new mathematics. The HAWK attack of July 2026 hit a lattice scheme, although Anthropic writes that it does not carry over to lattice cryptography in general.</li>
+  </ul>
+  <p>The hybrid design is the answer to the second point. It combines an elliptic-curve exchange with ML-KEM, and the session key is safe while one of the two holds. NIST describes such hybrids as a hedge against a flaw in one of the parts, and as a temporary measure.</p>
+</section>
+
+<section>
+  <span class="num">06</span>
+  <h2>Would a proof of P&nbsp;&ne;&nbsp;NP save encryption?</h2>
+  <p>Aaronson expects that AI models will prove P&nbsp;&ne;&nbsp;NP before long. He answers this question in his comments, and the answer is no.</p>
+  <p>Factoring is not one of the hardest problems in NP. A claimed factorization is easy to check, and a claim that a number has no small factor can be checked too. Problems with both properties are not expected to be <a class="term" href="#t-npc">NP-complete</a>. So factoring can be easy while P&nbsp;&ne;&nbsp;NP holds. This part is textbook knowledge.</p>
+  <p>P&nbsp;&ne;&nbsp;NP is necessary for public-key cryptography and not sufficient. Russell Impagliazzo described in 1995 five possible worlds between &ldquo;P&nbsp;=&nbsp;NP&rdquo; and &ldquo;public-key cryptography exists&rdquo;, and nobody knows which one is ours. Aaronson writes that the successes of AI in mathematics do not change his guess that secure cryptography exists. His reason: AI solves problems that have structure, and cryptographers design problems to have none.</p>
+  <p>Aaronson calls the proofs of this week steps towards P&nbsp;&ne;&nbsp;NP. He notes that such a proof would for the first time open a way to prove that a cryptosystem is secure. Nature reports that researchers are cautiously optimistic for this reason.</p>
+</section>
+
+<section>
+  <span class="num">07</span>
+  <h2>What this means in practice</h2>
+  <p>No published result of this week is a reason to replace a key today. This is an inference of this page from sections 02 and 03, and no authority has said it in these words. The steps below are sensible with or without the rumour, and the public results of 2026 support each of them.</p>
+  <ul class="plain">
+    <li><strong>Remove 1024-bit RSA.</strong> This is no rumour. Two teams factored numbers of 862 and 896 bits in September 2026, and one of them estimates about 30 million US dollars for a 1024-bit key.</li>
+    <li><strong>Switch on hybrid key exchange.</strong> It protects recorded sessions if elliptic curves fall. In OpenSSH it is the default since 10.0, and since 10.6 the server logs each client that connects without it.</li>
+    <li><strong>Find the long-lived signing keys.</strong> Certificates expire and can be reissued. The keys for software updates, firmware and remote login are harder to change. Cloudflare gives the same order for the quantum threat: long-lived keys first.</li>
+    <li><strong>Make the algorithm a setting.</strong> Cloudflare recommends to keep software current and to automate the issue of certificates. A system that can change its algorithm with a configuration change can react to a break. A system with a fixed algorithm needs a new release first. Alan Woodward says in the Guardian that banks and governments &ldquo;need to be agile&rdquo;.</li>
+  </ul>
+  <p>What you cannot do is switch web certificates to post-quantum signatures now. They are not in production: Cloudflare, for one, aims for early 2027. If a practical attack on RSA and ECDSA signatures appeared before that, the web would have no ready replacement. This is the scenario that the worried comments describe, and it is the one for which no evidence exists.</p>
+</section>
+
+<section>
+  <span class="num">08</span>
+  <h2>Terms</h2>
+  <dl class="gloss">
+    <div id="t-dlog"><dt>Discrete logarithm</dt><dd>Given <math><mi>g</mi></math> and <math><msup><mi>g</mi><mi>x</mi></msup></math> in a finite group, find <span class="nw"><math><mi>x</mi></math>.</span> Computing the power is fast, and no fast method is known for the way back. Diffie-Hellman key exchange rests on it. <a href="https://en.wikipedia.org/wiki/Discrete_logarithm">Wikipedia: Discrete logarithm</a></dd></div>
+    <div id="t-ecc"><dt>Elliptic curve</dt><dd>A set of points with an addition rule, used as the group for a discrete logarithm. The methods in practical use need about <math><msup><mn>2</mn><mrow><mi>b</mi><mo>/</mo><mn>2</mn></mrow></msup></math> steps for a curve of <math><mi>b</mi></math> bits, so 256-bit keys are enough. X25519, ECDSA and Ed25519 use such curves. <a href="https://en.wikipedia.org/wiki/Elliptic-curve_cryptography">Wikipedia: Elliptic-curve cryptography</a></dd></div>
+    <div id="t-eth"><dt>ETH (Exponential Time Hypothesis)</dt><dd>The conjecture that the logic puzzle 3-SAT with <math><mi>n</mi></math> variables needs <math><msup><mn>2</mn><mrow><mi>c</mi><mi>n</mi></mrow></msup></math> steps for some fixed <span class="nw"><math><mi>c</mi><mo>&gt;</mo><mn>0</mn></math>.</span> Papers of OpenAI and Anthropic of autumn 2026 claim to refute it. <a href="https://en.wikipedia.org/wiki/Exponential_time_hypothesis">Wikipedia: Exponential time hypothesis</a></dd></div>
+    <div id="t-galactic"><dt>Galactic algorithm</dt><dd>An algorithm with the best known growth rate and a constant so large that it never pays off for an input that fits on Earth. <a href="https://en.wikipedia.org/wiki/Galactic_algorithm">Wikipedia: Galactic algorithm</a></dd></div>
+    <div id="t-gnfs"><dt>GNFS (general number field sieve)</dt><dd>The fastest known method to factor large numbers on normal computers, developed around 1990. It collects many relations between numbers that have only small prime factors and solves a large linear system. The factoring records of 2026 used it. <a href="https://en.wikipedia.org/wiki/General_number_field_sieve">Wikipedia: General number field sieve</a></dd></div>
+    <div id="t-hndl"><dt>Harvest now, decrypt later</dt><dd>An attacker stores encrypted traffic today and decrypts it when the key exchange can be broken. It works against every recorded session whose key exchange falls later.</dd></div>
+    <div id="t-hybrid"><dt>Hybrid key exchange</dt><dd>Two key exchanges run side by side, one classic and one post-quantum, and the session key is derived from both results. An attacker must break both. X25519MLKEM768 in TLS and mlkem768x25519-sha256 in SSH are of this kind.</dd></div>
+    <div id="t-lnot"><dt><math><msub><mi>L</mi><mi>N</mi></msub><mo stretchy="false">[</mo><mi>&alpha;</mi><mo>,</mo><mi>c</mi><mo stretchy="false">]</mo></math> (L-notation)</dt><dd>A scale for running times between polynomial <span class="nw">(<math><mi>&alpha;</mi><mo>=</mo><mn>0</mn></math>)</span> and exponential <span class="nw">(<math><mi>&alpha;</mi><mo>=</mo><mn>1</mn></math>)</span> in the number of bits of <span class="nw"><math><mi>N</mi></math>.</span> <math><mi>&alpha;</mi></math> decides the class, and <math><mi>c</mi></math> scales the exponent. <a href="https://en.wikipedia.org/wiki/L-notation">Wikipedia: L-notation</a></dd></div>
+    <div id="t-lattice"><dt>Lattice problem</dt><dd>A lattice is a regular grid of points in a space of several hundred dimensions. Finding a grid point close to a given point is believed to be hard, also for quantum computers. <a href="https://en.wikipedia.org/wiki/Lattice-based_cryptography">Wikipedia: Lattice-based cryptography</a></dd></div>
+    <div id="t-lean"><dt>Lean</dt><dd>A program that checks a mathematical proof step by step. The proof must be written in Lean&rsquo;s formal language. If Lean accepts the file, the theorem follows from the axioms, provided that the statement in the file is the intended one. <a href="https://lean-lang.org/">lean-lang.org</a></dd></div>
+    <div id="t-mlkem"><dt>ML-KEM, ML-DSA, SLH-DSA</dt><dd>The three post-quantum standards that NIST published in 2024. ML-KEM is a key exchange and ML-DSA a signature, both built on lattice problems. SLH-DSA is a signature built only on hash functions. <a href="https://csrc.nist.gov/projects/post-quantum-cryptography">NIST: Post-quantum cryptography</a></dd></div>
+    <div id="t-npc"><dt>NP-complete</dt><dd>The hardest problems in NP. A fast algorithm for one of them gives a fast algorithm for every problem in NP. 3-SAT and the travelling salesman problem are examples.</dd></div>
+    <div id="t-preprint"><dt>Preprint</dt><dd>A scientific paper that its authors publish before a journal has reviewed it. Its results can still turn out to be wrong.</dd></div>
+    <div id="t-shor"><dt>Shor&rsquo;s algorithm</dt><dd>A quantum algorithm of 1994 that factors and computes discrete logarithms in polynomial time. It needs a large, error-corrected quantum computer. <a href="https://en.wikipedia.org/wiki/Shor%27s_algorithm">Wikipedia: Shor&rsquo;s algorithm</a></dd></div>
+    <div id="t-subexp"><dt>Subexponential</dt><dd>Growing faster than every polynomial and slower than every exponential function <span class="nw"><math><msup><mn>2</mn><mrow><mi>c</mi><mi>n</mi></mrow></msup></math>.</span> The term describes the limit of large inputs and says nothing about one fixed size.</dd></div>
+    <div id="t-vpvnp"><dt>VP&nbsp;&ne;&nbsp;VNP</dt><dd>Leslie Valiant&rsquo;s version of P&nbsp;&ne;&nbsp;NP for arithmetic formulas, stated at the end of the 1970s. It says that the permanent of a matrix cannot be computed by a small circuit of additions and multiplications, although the similar determinant can. <a href="https://en.wikipedia.org/wiki/Arithmetic_circuit_complexity">Wikipedia: Arithmetic circuit complexity</a></dd></div>
+  </dl>
+</section>
+
+<section>
+  <span class="num">09</span>
+  <h2>How sure is this?</h2>
+  <ul class="checks">
+    <li><span class="pill done">Sourced</span>
+        <span><span>What Aaronson wrote and when: his three posts and his comments, read in full. The running times of the Google papers: their readme files and the introduction of the first paper. The factoring records: the announcements of the two people who set them. The NIST dates, the Cloudflare numbers and the OpenSSH versions: the documents themselves.</span><span class="d">Only from reporting: that the rumours could not be confirmed, and that practical algorithms usually followed a proof that a problem is in P (both Nature). What Aaronson, Alan Woodward and Steven Murdoch said on 28 November (the Guardian). The scaling factors of 35 billion and 2.6 come from postquantum.com, and this page computed the same values.</span></span></li>
+    <li><span class="pill rep">Inferred</span>
+        <span><span>All values in the chart and the three readings under it. The comparison of the bounds at 2,048 bits and the crossing at 6 &times; <math><msup><mn>10</mn><mn>13</mn></msup></math> bits. The estimate for the 256-bit curve in section 02. That a lab would coordinate before it publishes a break. The two differences from the quantum threat. That no key needs to be replaced today.</span><span class="d">From the model&rsquo;s own knowledge, without a source: which problem each scheme rests on, why factoring is not expected to be NP-complete, and the glossary.</span></span></li>
+    <li><span class="pill prog">Uncertain</span>
+        <span><span>Whether any lab holds an algorithm that endangers a system in use. Nobody outside the labs can know this on 28 November. The only named source for the rumour says that he cannot confirm it. Whether the proofs of the Google papers and of the Zhejiang preprint are correct: none has been reviewed, and the Lean files of Google are not public.</span><span class="d">Read in part: Nature up to its login wall, the Zhejiang preprint as an abstract. The article of <a href="https://www.derstandard.at/story/3000000351471/geruechte-um-grosse-ki-entdeckung-zu-verschluesselung">Der Standard</a> showed only its first paragraph, and this page takes no fact from it. This page searched the news pages and the two repositories of the labs, and not their posts on social networks.</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="num">10</span>
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://scottaaronson.blog/?p=10362#comment-2044495">Scott Aaronson: comment 23 under &ldquo;I&rsquo;ve been drinking wine in my kitchen&rdquo;</a> &middot; own writing, 24 November 2026, with a note added by 27 November</li>
+    <li><a href="https://scottaaronson.blog/?p=10379">Scott Aaronson: post of 25 November 2026</a> &middot; own writing, with updates of 26 November and his comments 27 and 176</li>
+    <li><a href="https://scottaaronson.blog/?p=10387">Scott Aaronson: Every call</a> &middot; own writing, 27 November 2026, with his comments 9 and 20</li>
+    <li><a href="https://github.com/google-research/google-research/tree/master/cogentic_research_papers">Google Research: Cogentic research papers</a> &middot; list of AI-written preprints, entries of 25 November 2026</li>
+    <li><a href="https://github.com/google-research/google-research/tree/master/cogentic_research_papers/integer_factorization">Google Research: Unconditional Integer Factorization in Time L_N[1/3, O(1)]</a> &middot; AI-written preprint, 25 November 2026, readme and introduction read</li>
+    <li><a href="https://github.com/google-research/google-research/tree/master/cogentic_research_papers/deterministic_factoring_l34">Google Research: Unconditional Deterministic Subexponential Integer Factoring</a> &middot; AI-written preprint, 25 November 2026, readme only</li>
+    <li><a href="https://eprint.iacr.org/2026/3020">Liu, Zhang, Ren: A Deterministic Subexponential-time Algorithm for the Discrete Logarithm Problem</a> &middot; preprint, received 24 November 2026, approved 27 November, abstract only</li>
+    <li><a href="https://github.com/openai/math/blob/main/CONTENTS.md">OpenAI: math, list of manuscripts and history</a> &middot; company repository, read on 28 November 2026</li>
+    <li><a href="https://github.com/anthropics/formal-math">Anthropic: formal-math</a> &middot; company repository, read on 28 November 2026</li>
+    <li><a href="https://saweis.net/posts/rsa-896.html">Stephen A. Weis: RSA-896</a> &middot; own announcement, September 2026</li>
+    <li><a href="https://cognition.com/blog/factoring-rsa-260">Eric Lu, Cognition: Factoring RSA-260</a> &middot; own report, 9 September 2026</li>
+    <li><a href="https://www.anthropic.com/research/discovering-cryptographic-weaknesses">Anthropic: Discovering cryptographic weaknesses with Claude</a> &middot; company report, 28 July 2026</li>
+    <li><a href="https://csrc.nist.gov/pubs/ir/8547/final">NIST IR 8547: Transition to Post-Quantum Cryptography Standards</a> &middot; official report, final version, October 2026</li>
+    <li><a href="https://blog.cloudflare.com/post-quantum-roadmap/">Cloudflare: Cloudflare targets 2029 for full post-quantum security</a> &middot; company report, 7 April 2026</li>
+    <li><a href="https://blog.cloudflare.com/pq-ca-with-mtcs/">Cloudflare: Building a post-quantum certificate authority with Merkle Tree Certificates</a> &middot; company report, 29 September 2026</li>
+    <li><a href="https://www.openssh.com/releasenotes.html">OpenSSH: release notes</a> &middot; documentation, versions 10.0 of 9 April 2025 and 10.6 of 6 October 2026</li>
+    <li><a href="https://www.nature.com/articles/d41586-026-03875-6">Nature: Has AI just cracked Internet encryption? Rumoured &lsquo;bombshell&rsquo; stuns scientists</a> &middot; reporting, 26 November 2026, read up to the login wall</li>
+    <li><a href="https://www.theguardian.com/technology/2026/nov/28/ai-artificial-intelligence-encryption-global-chaos">The Guardian: AI labs sitting on &lsquo;bombshell&rsquo; revelations that could cause global chaos, experts warn</a> &middot; reporting, 28 November 2026</li>
+    <li><a href="https://postquantum.com/security-pqc/rsa-896-factored-claude-gpus/">postquantum.com: RSA-896 Factored With Claude, 16 Days After RSA-260</a> &middot; reporting, September 2026</li>
+  </ul>
+</section>
+
+<p class="page-note">This page simplifies in three places. The cost formulas leave out lower-order terms and count abstract steps, so they compare growth and give no running times. The figure in section 04 treats the four problems as independent and each break as total. Real attacks are often partial and specific to one parameter set. The page covers the rumour about OpenAI and Anthropic and leaves out the wider debate on what AI means for mathematics. Status of the facts: 28 November 2026.</p>
+
+</main>
+<!-- learn:footer -->
+<script>
+(function(){
+'use strict';
+var L=window.Learn,mk=L.mk;
+function $(id){return document.getElementById(id);}
+var LN2=Math.LN2;
+var SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+function sup(n){return String(n).split('').map(function(ch){return SUP[+ch];}).join('');}
+function pow2(e){return '<math><msup><mn>2</mn><mn>'+L.fmt(e)+'</mn></msup></math>';}
+
+/* ---------- figure 1: steps to factor, GNFS against a polynomial ---------- */
+/* log2 of L_N[1/3, (64/9)^(1/3)] for a number of `bits` bits, without the o(1) term.
+   The constant is the heuristic GNFS value that the Google paper cites (Buhler, Lenstra, Pomerance; Coppersmith). */
+var C_GNFS=Math.pow(64/9,1/3);
+function gnfs(bits){var ln=bits*LN2;return C_GNFS*Math.pow(ln,1/3)*Math.pow(Math.log(ln),2/3)/LN2;}
+/* log2 of 2^c * n^k, with n = number of bits */
+function poly(bits,k,c){return c+k*Math.log(bits)/LN2;}
+var RECORD_BITS=896; /* Stephen Weis, 19 September 2026 */
+var kS=$('kS'),cS=$('cS');
+function drawCost(){
+  var k=+kS.value,c=+cS.value;
+  $('kOut').innerHTML='<math><msup><mi>n</mi><mn>'+k+'</mn></msup></math>';
+  $('cOut').innerHTML=pow2(c);
+  var svg=$('cCost'),h=290,w=L.frame(svg,h),m={l:40,r:14,t:24,b:40};
+  var X0=512,X1=4096,Y1=200;
+  function sx(b){return m.l+(b-X0)/(X1-X0)*(w-m.l-m.r);}
+  function sy(v){return h-m.b-v/Y1*(h-m.t-m.b);}
+  var g=mk('g',{'class':'ax'},svg);
+  [0,40,80,120,160,200].forEach(function(v){
+    mk('line',{x1:m.l,x2:w-m.r,y1:sy(v),y2:sy(v)},g);
+    mk('text',{x:m.l-6,y:sy(v)+4,'text-anchor':'end'},g).textContent=v?'2'+sup(v):'1';
+  });
+  (w<430?[512,2048,3072,4096]:[512,1024,2048,3072,4096]).forEach(function(b){
+    mk('text',{x:sx(b),y:h-m.b+16,'text-anchor':b===X0?'start':b===X1?'end':'middle'},g).textContent=L.fmt(b);
+  });
+  L.label(svg,w-m.r,h-5,'key size in bits','lbl','end');
+  L.label(svg,m.l,13,'steps, logarithmic scale');
+  /* reference line at 2,048 bits */
+  mk('line',{x1:sx(2048),x2:sx(2048),y1:m.t,y2:h-m.b,'class':'l-ref'},svg);
+  var d='',b,v;
+  for(b=X0;b<=X1;b+=16){d+=(d?'L':'M')+sx(b).toFixed(1)+' '+sy(gnfs(b)).toFixed(1);}
+  mk('path',{d:d,'class':'l-c1'},svg);
+  d='';
+  for(b=X0;b<=X1;b+=16){v=poly(b,k,c);if(v>Y1)continue;d+=(d?'L':'M')+sx(b).toFixed(1)+' '+sy(v).toFixed(1);}
+  if(d)mk('path',{d:d,'class':'l-c3'},svg);
+  var gv=gnfs(2048),pv=poly(2048,k,c);
+  mk('circle',{cx:sx(2048),cy:sy(gv),r:4,'class':'d-c1'},svg);
+  if(pv<=Y1)mk('circle',{cx:sx(2048),cy:sy(pv),r:4,'class':'d-c3'},svg);
+  mk('circle',{cx:sx(RECORD_BITS),cy:sy(gnfs(RECORD_BITS)),r:4,'class':'d-ink'},svg);
+  L.label(svg,sx(RECORD_BITS)+7,sy(gnfs(RECORD_BITS))+16,'record: 896 bits','lbl-h');
+  L.label(svg,sx(2048)+6,m.t+11,'2,048 bits','lbl-h');
+  /* numbers */
+  var diff=Math.round(pv)-Math.round(gv);
+  $('rG').innerHTML=pow2(Math.round(gv))+' steps';
+  $('rP').innerHTML=pow2(Math.round(pv))+' steps';
+  $('rR').innerHTML=diff===0?'about equal':pow2(Math.abs(diff))+' × '+(diff>0?'slower':'faster');
+  /* first key size, in steps of 8 bits, from which the polynomial needs fewer steps and stays below */
+  var from=null,below=false;
+  for(b=256;b<=32768;b+=8){
+    var lower=poly(b,k,c)<gnfs(b);
+    if(lower&&!below)from=b;
+    below=lower;
+  }
+  $('rX').textContent=!below?'no size up to 32,768 bits':from===256?'every size':L.fmt(from)+' bits';
+}
+kS.addEventListener('input',drawCost);
+cS.addEventListener('input',drawCost);
+
+/* ---------- figure 2: which parts hold ---------- */
+/* need: the part is broken when one of these problems is easy. all: broken only when all of them are easy.
+   F factoring, D discrete logarithm modulo a prime, E discrete logarithm on elliptic curves, L lattice problems.
+   Sources of the "used" column: Cloudflare (April 2026) for the share of hybrid key exchange, OpenSSH release notes for 10.0. */
+var PARTS=[
+  {n:'RSA signatures and RSA key transport',u:'web certificates, code signing, older SSH keys',need:['F'],kind:'both'},
+  {n:'Diffie-Hellman modulo a prime',u:'older TLS and VPN setups',need:['D'],kind:'kex'},
+  {n:'ECDSA and Ed25519 signatures',u:'web certificates, SSH keys, signed packages',need:['E'],kind:'sig'},
+  {n:'X25519 key exchange alone',u:'TLS and SSH without a post-quantum part',need:['E'],kind:'kex'},
+  {n:'Hybrid key exchange, X25519 with ML-KEM',u:'over 65% of human traffic to Cloudflare, OpenSSH since 10.0',all:['E','L'],kind:'kex'},
+  {n:'ML-KEM and ML-DSA alone',u:'post-quantum standards of 2024',need:['L'],kind:'both'},
+  {n:'SLH-DSA signatures',u:'post-quantum standard built on hash functions',need:[],kind:'sig'},
+  {n:'AES, ChaCha20, SHA-2',u:'encryption of the data itself, hash functions',need:[],kind:'sym'}
+];
+var NAME={F:'factoring',D:'the discrete logarithm',E:'elliptic curves',L:'lattice problems'};
+var EFFECT={
+  sig:'An attacker can forge signatures from the day of the break. Earlier sessions stay secret.',
+  kex:'An attacker can read recorded sessions, also old ones.',
+  both:'An attacker can forge signatures, and can read recorded sessions whose key travelled this way.'
+};
+var brk=$('brk');
+function drawFall(){
+  var easy={};
+  [].forEach.call(brk.querySelectorAll('button'),function(b){easy[b.getAttribute('data-k')]=b.getAttribute('aria-pressed')==='true';});
+  var hold=0,html='',state=[];
+  PARTS.forEach(function(p){
+    var broken,note;
+    if(p.all){
+      var down=p.all.filter(function(x){return easy[x];});
+      broken=down.length===p.all.length;
+      note=broken?EFFECT[p.kind]:down.length?'One of its two parts is broken. The other part still protects the key.':'Broken only if elliptic curves and lattice problems both become easy.';
+    }else{
+      broken=p.need.some(function(x){return easy[x];});
+      note=broken?EFFECT[p.kind]:p.need.length?'Rests on '+NAME[p.need[0]]+'.':'Rests on none of the four problems.';
+    }
+    state.push(broken);
+    if(!broken)hold++;
+    html+='<li><span class="pill '+(broken?'prog':'done')+'">'+(broken?'Broken':'Holds')+'</span><span><span><b>'+p.n+'</b> <span class="u">&middot; '+p.u+'</span></span><span class="d">'+note+'</span></span></li>';
+  });
+  $('fall').innerHTML=html;
+  $('rHold').textContent=hold+' of '+PARTS.length;
+  $('rCert').textContent=state[0]&&state[2]?'none holds':state[0]?'ECDSA holds':state[2]?'RSA holds':'RSA and ECDSA hold';
+  $('rHyb').textContent=state[4]?'broken':'holds';
+  $('rEasy').textContent=Object.keys(easy).filter(function(x){return easy[x];}).length+' of 4';
+}
+[].forEach.call(brk.querySelectorAll('button'),function(b){
+  b.addEventListener('click',function(){b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');drawFall();});
+});
+
+L.onChange(function(){drawCost();drawFall();});
+})();
+</script>
+</body>
+</html>
